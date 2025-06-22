@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "name": "Sữa, bơ, phô mai",
+    "image": "/images/milk.png",
+    "imgLarge": "/image.png"
+  },
+  {
+    "id": 2,
+    "name": "Rau - Củ - Trái cây",
+    "image": "/images/vegetables.png",
+    "imgLarge": "/image.png"
+  },
+  {
+    "id": 3,
+    "name": "Chăm sóc cá nhân",
+    "image": "/images/personal-care.png",
+    "imgLarge": "/image.png"
+  },
+  {
+    "id": 4,
+    "name": "Thịt, cá, trứng, hải sản",
+    "image": "/images/meat.png",
+    "imgLarge": "/image.png"
+  },
+  {
+    "id": 5,
+    "name": "Bánh kẹo",
+    "image": "/images/snacks.png",
+    "imgLarge": "/image.png"
+  },
+  {
+    "id": 6,
+    "name": "Đồ uống có cồn",
+    "image": "/images/alcohol.png",
+    "imgLarge": "/image.png"
+  },
+  {
+    "id": 7,
+    "name": "Đồ uống giải khát",
+    "image": "/images/soft-drinks.png",
+    "imgLarge": "/image.png"
+  },
+  {
+    "id": 8,
+    "name": "Mì ăn liền",
+    "image": "/images/instant-noodles.png",
+    "imgLarge": "/image.png"
+  },
+  {
+    "id": 9,
+    "name": "Thực phẩm khô",
+    "image": "/images/dry-food.png",
+    "imgLarge": "/image.png"
+  },
+  {
+    "id": 10,
+    "name": "Thực phẩm đông lạnh",
+    "image": "/images/frozen-food.png",
+    "imgLarge": "/image.png"
+  },
+  {
+    "id": 11,
+    "name": "Trứng - Đậu hũ",
+    "image": "/images/eggs-tofu.png",
+    "imgLarge": "/image.png"
+  },
+  {
+    "id": 12,
+    "name": "Chăm sóc bé",
+    "image": "/images/baby-care.png",
+    "imgLarge": "/image.png"
+  },
+  {
+    "id": 13,
+    "name": "Đồ dùng gia đình",
+    "image": "/images/home-tools.png",
+    "imgLarge": "/image.png"
+  },
+  {
+    "id": 14,
+    "name": "Gia vị",
+    "image": "/images/spices.png",
+    "imgLarge": ""
+  },
+  {
+    "id": 15,
+    "name": "Hóa phẩm - Tẩy rửa",
+    "image": "/images/cleaning.png",
+    "imgLarge": "/image.png"
+  },
+  {
+    "id": 16,
+    "name": "Thực phẩm chế biến",
+    "image": "/images/processed-food.png",
+    "imgLarge": "/image.png"
+  }
+]

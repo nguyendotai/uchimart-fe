@@ -1,0 +1,9 @@
+[
+  { "id": 1, "name": "Acecook", "image": "/acecook.png" },
+  { "id": 2, "name": "Colgate", "image": "/colgate.jfif" },
+  { "id": 3, "name": "Cocoon", "image": "/cocoon.png" },
+  { "id": 4, "name": "LG", "image": "/lg.png" },
+  { "id": 5, "name": "Milo", "image": "/milo.jfif" },
+  { "id": 6, "name": "Nestle", "image": "/nestle.png" },
+  { "id": 7, "name": "Nivea", "image": "/nivea.png" }
+]
