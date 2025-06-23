@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "../UI/ProductCard";
 import { Category } from "@/app/types/Category";
 import { Product } from "@/app/types/Product";
+import { FaAnglesRight } from "react-icons/fa6";
 
 const ListProductByCate = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -73,9 +74,10 @@ const ListProductByCate = () => {
             </div>
 
             <div className="mt-4 flex justify-center">
-              <span className="flex justify-center w-[12%] bg-[#921573] text-white shadow rounded-sm p-2">
-                Xem Thêm
-              </span>
+              <a href="" className="flex justify-center items-center gap-2 w-[12%] border border-[#921573] bg-white text-[#921573] shadow rounded-2xl p-2 transition-all duration-200 ease-in-out hover:bg-[#921573] hover:text-white">
+                <span>Xem Thêm</span>
+                <span><FaAnglesRight></FaAnglesRight></span>
+              </a>
             </div>
           </div>
         );
