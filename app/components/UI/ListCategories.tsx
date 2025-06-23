@@ -34,7 +34,7 @@ const ListCategories = () => {
           Danh mục
         </span>
       </div>
-      <div className="max-h-[570px] overflow-y-auto pr-1 scrollbar-custom">
+      <div className="max-h-[590px] overflow-y-auto pr-1 scrollbar-custom">
         {categories.map((category, index) => (
           <div
             key={index}

@@ -7,6 +7,9 @@ import ListCategories from "@/app/components/UI/ListCategories";
 import ProductImages from "@/app/components/UIProductDetail/ProductImages";
 import BuyBox from "@/app/components/UIProductDetail/BuyBox";
 import ProductInfo from "@/app/components/UIProductDetail/ProductInfo";
+import RelatedProducts from "@/app/components/UIProductDetail/RelatedProducts";
+import SliderBanner from "@/app/components/UIProductDetail/SliderBanner";
+import ListSaleProduct from "@/app/components/UIProductDetail/ListSaleProduct";
 
 const DetailProduct = () => {
   const params = useParams();
@@ -63,18 +66,26 @@ const DetailProduct = () => {
         </div>
 
         {/* Center - Images */}
-        <div className="w-[47%]">
-          <ProductImages product={product} />
-          <ProductInfo product={product} brand={brand}></ProductInfo>
-        </div>
+        <div className="w-[82%] ">
+          <div className="flex gap-2 justify-between">
+            <div className="w-[56.5%]">
+              <ProductImages product={product} />
+              <ProductInfo product={product} brand={brand}></ProductInfo>
+              <SliderBanner></SliderBanner>
+            </div>
 
-        {/* Right - Info */}
-        <BuyBox
-          product={product}
-          brand={brand}
-          allProducts={allProducts}
-          onSelect={(p) => setProduct(p)}
-        />
+            {/* Right - Info */}
+            <BuyBox
+              product={product}
+              brand={brand}
+              allProducts={allProducts}
+              onSelect={(p) => setProduct(p)}
+            />
+          </div>
+          {/* Related Product */}
+          <RelatedProducts currentProduct={product} allProducts={allProducts} />
+          <ListSaleProduct currentProduct={product} allProducts={allProducts} />
+        </div>
       </div>
     </div>
   );
