@@ -68,7 +68,7 @@ const DetailProduct = () => {
         {/* Center - Images */}
         <div className="w-[82%] ">
           <div className="flex gap-2 justify-between">
-            <div className="w-[56.5%]">
+            <div className="w-[58.5%]">
               <ProductImages product={product} />
               <ProductInfo product={product} brand={brand}></ProductInfo>
               <SliderBanner></SliderBanner>

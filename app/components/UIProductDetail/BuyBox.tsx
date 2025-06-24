@@ -27,7 +27,7 @@ const BuyBox = ({ product, brand, allProducts, onSelect }: Props) => {
     product.price !== undefined && product.price > product.promotion_price;
 
   return (
-    <div className="w-[42.5%] bg-white p-4 rounded-xl shadow sticky top-32 self-start">
+    <div className="w-[40%] bg-white p-4 rounded-xl shadow sticky top-32 self-start">
       {/* Brand */}
       {brand && (
         <div className="mb-1.5 flex items-center gap-2 w-full">

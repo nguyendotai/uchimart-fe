@@ -45,10 +45,10 @@ const ProductVariants = ({ currentProduct, allProducts }: Props) => {
               )}
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-green-600 bg-[#C6FBC2] px-1.5 py-1 rounded text-[10px]">
+              <span className="text-green-600 bg-[#C6FBC2] px-1.5 py-1 rounded text-[9px]">
                 {variant.status_text}
               </span>
-              <span className="text-gray-400 text-[9px] flex items-center">
+              <span className="text-gray-400 text-[8px] flex items-center">
                 <GoDotFill></GoDotFill>
                 <span>{variant.deliveryTime}</span>
               </span>
