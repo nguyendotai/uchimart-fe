@@ -10,6 +10,7 @@ import ProductInfo from "@/app/components/UIProductDetail/ProductInfo";
 import RelatedProducts from "@/app/components/UIProductDetail/RelatedProducts";
 import SliderBanner from "@/app/components/UIProductDetail/SliderBanner";
 import ListSaleProduct from "@/app/components/UIProductDetail/ListSaleProduct";
+import PageTransitionWrapper from "@/app/components/Animation/PageTransitionWrapper";
 
 const DetailProduct = () => {
   const params = useParams();
@@ -49,15 +50,8 @@ const DetailProduct = () => {
 
   const brand = brands.find((b) => b.id === product?.brand_id);
 
-  if (loading) {
-    return <div className="text-center mt-10">Đang tải sản phẩm...</div>;
-  }
-
-  if (!product) {
-    return <div className="text-center mt-10">Không tìm thấy sản phẩm</div>;
-  }
-
   return (
+  <PageTransitionWrapper>
     <div className="w-full">
       <div className="container mx-auto mt-2 flex justify-between">
         {/* Sidebar */}
@@ -66,29 +60,36 @@ const DetailProduct = () => {
         </div>
 
         {/* Center - Images */}
-        <div className="w-[82%] ">
-          <div className="flex gap-2 justify-between">
-            <div className="w-[58.5%]">
-              <ProductImages product={product} />
-              <ProductInfo product={product} brand={brand}></ProductInfo>
-              <SliderBanner></SliderBanner>
-            </div>
+        <div className="w-[82%]">
+          {loading || !product ? (
+            <div className="text-center mt-10">Đang tải sản phẩm...</div>
+          ) : (
+            <>
+              <div className="flex gap-2 justify-between">
+                <div className="w-[58.5%]">
+                  <ProductImages product={product} />
+                  <ProductInfo product={product} brand={brand} />
+                  <SliderBanner />
+                </div>
 
-            {/* Right - Info */}
-            <BuyBox
-              product={product}
-              brand={brand}
-              allProducts={allProducts}
-              onSelect={(p) => setProduct(p)}
-            />
-          </div>
-          {/* Related Product */}
-          <RelatedProducts currentProduct={product} allProducts={allProducts} />
-          <ListSaleProduct currentProduct={product} allProducts={allProducts} />
+                <BuyBox
+                  product={product}
+                  brand={brand}
+                  allProducts={allProducts}
+                  onSelect={(p) => setProduct(p)}
+                />
+              </div>
+
+              <RelatedProducts currentProduct={product} allProducts={allProducts} />
+              <ListSaleProduct currentProduct={product} allProducts={allProducts} />
+            </>
+          )}
         </div>
       </div>
     </div>
-  );
+  </PageTransitionWrapper>
+);
+
 };
 
 export default DetailProduct;

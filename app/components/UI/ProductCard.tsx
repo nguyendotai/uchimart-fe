@@ -43,7 +43,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       {/* Button */}
       <div className="flex justify-between gap-2 py-1">
         <Link
-          href={`/Product/${product.id}`}
+          href={`/product/${product.id}`}
           className="flex justify-center items-center bg-[#921573] border border-[#921573] text-white rounded-[5px] p-2 w-[79%] transition-all duration-200 ease-in-out hover:bg-white hover:text-[#921573]"
         >
           Mua ngay

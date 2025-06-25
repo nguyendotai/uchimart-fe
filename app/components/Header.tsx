@@ -9,9 +9,23 @@ import { mainNavItems } from "../../public/Data/nav";
 
 const Header = () => {
   return (
-     <div className="container mx-auto rounded-t-md bg-white">
-      {/* Desktop layout */}
-      <div className="hidden md:flex justify-between items-center pt-4 pb-2 gap-4">
+    <div className="container mx-auto rounded-t-md bg-white">
+      {/* --- Mobile layout (<768px) --- */}
+      <div className="flex sm:hidden items-center justify-between py-3">
+        {/* Logo */}
+        <a href="/" className="relative w-[100px] h-[40px]">
+          <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+        </a>
+
+        {/* User + Cart */}
+        <div className="flex gap-4 items-center">
+          <UserAccount />
+          <Cart />
+        </div>
+      </div>
+
+      {/* --- Tablet & Desktop layout (≥768px) --- */}
+      <div className="hidden sm:flex justify-between items-center pt-4 pb-2 gap-4">
         {/* Logo */}
         <a className="relative w-full h-[60px] flex-[2]" href="/">
           <Image src="/logo.png" alt="Ảnh" fill className="object-contain" />
@@ -48,20 +62,6 @@ const Header = () => {
               </span>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Mobile layout */}
-      <div className="md:hidden flex items-center justify-between py-3">
-        {/* Logo */}
-        <a href="/" className="relative w-[100px] h-[40px]">
-          <Image src="/logo.png" alt="Logo" fill className="object-contain" />
-        </a>
-
-        {/* User + Cart */}
-        <div className="flex gap-4 items-center">
-          <UserAccount />
-          <Cart />
         </div>
       </div>
     </div>

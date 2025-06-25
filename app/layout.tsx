@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import NavService from "./components/NavService";
 import FadeIn from "./components/Animation/FadeIn";
 import StaggerFadeIn from "./components/Animation/StaggerFadeIn";
+import PageTransitionWrapper from "./components/Animation/PageTransitionWrapper";
 
 export default function RootLayout({
   children,
@@ -15,19 +16,17 @@ export default function RootLayout({
     <html lang="en">
       <body className="flex flex-col min-h-screen font-sans bg-gray-100 text-gray-800">
         {/* Header */}
-          <header className="fixed top-0 left-0 right-0 px-4 bg-[efefefef] z-100">
-            <Header></Header>
-          </header>
+        <header className="fixed top-0 left-0 right-0 px-4 bg-[efefefef] z-100">
+          <Header></Header>
+        </header>
 
-          <nav className="mt-[121px] px-2 bg-[efefefef]">
-            <NavService></NavService>
-          </nav>
+        <nav className="mt-[121px] px-2 bg-[efefefef]">
+          <NavService></NavService>
+        </nav>
 
         {/* Main */}
         <main className="flex-1 container mx-auto py-2 bg-[efefefef]">
-          <StaggerFadeIn>
-            {children}
-          </StaggerFadeIn>
+          {children}
         </main>
 
         {/* Footer */}
