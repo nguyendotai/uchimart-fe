@@ -1,32 +1,28 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import ProductCard from "../UI/ProductCard";
-import { Product} from "@/app/types/Product";
+import { Product } from "@/app/types/Product";
 
 interface Props {
   categoryId: number;
 }
 
-const ListSaleProduct= ({ categoryId } : Props) => {
+const ListSaleProduct = ({ categoryId }: Props) => {
   const [saleProducts, setSaleProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-      fetch("/data/products.json")
+    fetch("/data/products.json")
       .then((res) => {
-              if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-              return res.json() as Promise<Product[]>;
-            })
-            .then((products) => {
-              const filtered = products
-                .filter(
-                  (p) =>
-                    p.price !== undefined &&
-                    p.price > p.promotion_price
-                )
-                .slice(0, 4);
-              setSaleProducts(filtered);
-            })
-            .catch((err) => console.error("Lỗi tải dữ liệu:", err));
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json() as Promise<Product[]>;
+      })
+      .then((products) => {
+        const filtered = products
+          .filter((p) => p.price !== undefined && p.price > p.promotion_price)
+          .slice(0, 4);
+        setSaleProducts(filtered);
+      })
+      .catch((err) => console.error("Lỗi tải dữ liệu:", err));
   }, [saleProducts, categoryId]);
 
   return (

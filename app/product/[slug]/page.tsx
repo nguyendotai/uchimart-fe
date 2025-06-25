@@ -14,7 +14,7 @@ import PageTransitionWrapper from "@/app/components/Animation/PageTransitionWrap
 
 const DetailProduct = () => {
   const params = useParams();
-  const id = Number(params?.id);
+  const slug = params?.slug as string;
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [product, setProduct] = useState<Product | null>(null);
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -27,7 +27,7 @@ const DetailProduct = () => {
         return res.json() as Promise<Product[]>;
       })
       .then((products) => {
-        const found = products.find((p) => p.id === id) || null;
+        const found = products.find((p) => p.slug === slug) || null;
         setProduct(found);
         setAllProducts(products);
       })
@@ -36,7 +36,7 @@ const DetailProduct = () => {
         setProduct(null);
       })
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [slug]);
 
   useEffect(() => {
     fetch("/data/brands.json")

@@ -21,6 +21,7 @@ export interface Product {
   display_unit:string;
   origin: string;
   usage: string;
+  slug: string;
   ingredient: string;
   expired_at: string;
   updated_at: string; // Hoặc Date nếu bạn parse về Date object

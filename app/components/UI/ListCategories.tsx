@@ -9,15 +9,19 @@ const ListCategories = () => {
   const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]); // Sử dụng useState để lưu trữ danh mục
   useEffect(() => {
-    async function fetchCategories() {
-      const response = await fetch("/data/categories.json");
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data: Category[] = await response.json();
-      setCategories(data); // Cập nhật state với dữ liệu categories
-    }
-    fetchCategories();
+    fetch("/data/categories.json")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data: Category[]) => {
+        setCategories(data); // Cập nhật state với dữ liệu categories
+      })
+      .catch((error) => {
+        console.error("Failed to fetch categories:", error);
+      });
   }, []);
 
   const handleCategoryClick = (categoryId: number) => {
@@ -34,7 +38,7 @@ const ListCategories = () => {
           Danh mục
         </span>
       </div>
-      <div className="max-h-[590px] overflow-y-auto pr-1 scrollbar-custom">
+      <div className="max-h-[625px] overflow-y-auto pr-1 scrollbar-custom">
         {categories.map((category, index) => (
           <div
             key={index}

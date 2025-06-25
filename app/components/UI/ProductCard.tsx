@@ -28,7 +28,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
       {/* Ảnh */}
       <Link
-        href={`/product/${product.id}`}
+        href={`/product/${product.slug}`}
         className="w-full h-[230px] bg-white flex items-center justify-center overflow-hidden"
       >
         <Image

@@ -20,7 +20,7 @@ export default function PageTransitionWrapper({ children }: { children: React.Re
         initial="initial"
         animate="animate"
         exit="exit"
-        className="min-h-screen"
+        className=""
       >
         {children}
       </motion.div>
