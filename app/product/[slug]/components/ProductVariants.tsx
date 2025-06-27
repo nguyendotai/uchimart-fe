@@ -18,15 +18,15 @@ const ProductVariants = ({ currentProduct, allProducts }: Props) => {
   return (
     <div className="flex flex-wrap gap-3 my-4 justify-between">
       {variants.map((variant) => {
-        const isSelected = variant.id === currentProduct.id;
+        const isSelected = variant.slug === currentProduct.slug;
         const unitPrice =
           variant.pack_size > 0
             ? Math.round(variant.promotion_price / variant.pack_size)
             : null;
         return (
           <Link
-            key={variant.id}
-            href={`/product/${variant.id}`}
+            key={variant.slug}
+            href={`/product/${variant.slug}`}
             className={`border w-[31%] rounded-md p-2 text-sm block ${
               isSelected ? "border-blue-500 bg-[#EEF6FF]" : "border-gray-300"
             }`}

@@ -1,29 +1,28 @@
 "use client";
 import React from "react";
 import { Product } from "@/app/types/Product";
-import ProductCard from "../UI/ProductCard";
+import ProductCard from "../../../components/UI/ProductCard";
 
 type Props = {
   currentProduct: Product;
   allProducts: Product[];
 };
 
-const ListSaleProduct = ({ currentProduct, allProducts }: Props) => {
+const RelatedProducts = ({ currentProduct, allProducts }: Props) => {
   const related = allProducts
-  .filter(
-    (p) =>
-      p.id !== currentProduct.id &&
-      p.category_id === currentProduct.category_id &&
-      p.promotion_price && p.promotion_price < p.price
-  )
-  .slice(0, 4);
+    .filter(
+      (p) =>
+        p.category_id === currentProduct.category_id &&
+        p.id !== currentProduct.id
+    )
+    .slice(0, 4); // Lấy tối đa 4 sản phẩm liên quan
 
   if (related.length === 0) return null;
 
   return (
     <div className="mt-6">
       <h2 className="text-2xl font-semibold mb-2 p-2 bg-white w-[19%] text-center rounded-xl">
-        Sản phẩm giảm giá
+        Sản phẩm liên quan
       </h2>
       <ul className="flex flex-wrap gap-4 justify-between">
         {related.map((product) => (
@@ -39,4 +38,4 @@ const ListSaleProduct = ({ currentProduct, allProducts }: Props) => {
   );
 };
 
-export default ListSaleProduct;
+export default RelatedProducts;

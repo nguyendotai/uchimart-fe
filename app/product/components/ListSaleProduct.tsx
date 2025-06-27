@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import ProductCard from "../UI/ProductCard";
+import ProductCard from "../../components/UI/ProductCard";
 import { Product } from "@/app/types/Product";
 
 interface Props {
@@ -18,7 +18,12 @@ const ListSaleProduct = ({ categoryId }: Props) => {
       })
       .then((products) => {
         const filtered = products
-          .filter((p) => p.price !== undefined && p.price > p.promotion_price)
+          .filter(
+            (p) =>
+              p.price !== undefined &&
+              p.price > p.promotion_price &&
+              p.category_id === categoryId
+          )
           .slice(0, 4);
         setSaleProducts(filtered);
       })

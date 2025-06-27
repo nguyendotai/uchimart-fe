@@ -50,7 +50,7 @@ export default function ImageSlider() {
   return (
     <div className="relative w-full h-[450px] rounded-xl bg-[#fff] flex justify-center items-center">
       {/* Vùng chứa slider */}
-      <div className="relative w-[93%] h-[80%] rounded-xl overflow-hidden">
+      <div className="relative w-[93%] h-[80%] rounded-xl overflow-hidden ">
         <AnimatePresence mode="wait">
           <motion.div
             key={index}

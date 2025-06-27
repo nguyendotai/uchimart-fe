@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import ImageSlider from "./components/UI/ImageSlider";
 import ListCategories from "./components/UI/ListCategories";

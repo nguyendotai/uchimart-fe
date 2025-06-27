@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import { FaUser, FaHistory, FaCog } from "react-icons/fa";
 import { HiBadgeCheck } from "react-icons/hi";

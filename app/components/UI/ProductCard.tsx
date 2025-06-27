@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import { FaShoppingCart, FaStar } from "react-icons/fa";
 import { MdEventAvailable } from "react-icons/md";
@@ -5,8 +6,11 @@ import { GoDotFill } from "react-icons/go";
 import { Product } from "@/app/types/Product";
 import Image from "next/image";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/store/slices/cartSlice";
 
 const ProductCard = ({ product }: { product: Product }) => {
+  const dispatch = useDispatch();
   const hasSale =
     product.promotion_price !== undefined &&
     product.promotion_price < product.price;
@@ -48,7 +52,10 @@ const ProductCard = ({ product }: { product: Product }) => {
         >
           Mua ngay
         </Link>
-        <button className="flex justify-center items-center bg-[#921573] border border-[#921573] text-white rounded-[5px] p-2 w-[20%] transition-all duration-200 ease-in-out hover:bg-white hover:text-[#921573]">
+        <button
+          onClick={() => dispatch(addToCart(product))}
+          className="flex justify-center items-center bg-[#921573] border border-[#921573] text-white rounded-[5px] p-2 w-[20%] transition-all duration-200 ease-in-out hover:bg-white hover:text-[#921573]"
+        >
           <FaShoppingCart />
         </button>
       </div>

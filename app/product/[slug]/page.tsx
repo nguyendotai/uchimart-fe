@@ -4,12 +4,12 @@ import { useParams } from "next/navigation";
 import { Product } from "@/app/types/Product";
 import { Brand } from "@/app/types/Brand";
 import ListCategories from "@/app/components/UI/ListCategories";
-import ProductImages from "@/app/components/UIProductDetail/ProductImages";
-import BuyBox from "@/app/components/UIProductDetail/BuyBox";
-import ProductInfo from "@/app/components/UIProductDetail/ProductInfo";
-import RelatedProducts from "@/app/components/UIProductDetail/RelatedProducts";
-import SliderBanner from "@/app/components/UIProductDetail/SliderBanner";
-import ListSaleProduct from "@/app/components/UIProductDetail/ListSaleProduct";
+import ProductImages from "@/app/product/[slug]/components/ProductImages";
+import BuyBox from "@/app/product/[slug]/components/BuyBox";
+import ProductInfo from "@/app/product/[slug]/components/ProductInfo";
+import RelatedProducts from "@/app/product/[slug]/components/RelatedProducts";
+import SliderBanner from "@/app/product/[slug]/components/SliderBanner";
+import ListSaleProduct from "@/app/product/[slug]/components/ListSaleProduct";
 import PageTransitionWrapper from "@/app/components/Animation/PageTransitionWrapper";
 
 const DetailProduct = () => {
@@ -51,45 +51,50 @@ const DetailProduct = () => {
   const brand = brands.find((b) => b.id === product?.brand_id);
 
   return (
-  <PageTransitionWrapper>
-    <div className="w-full">
-      <div className="container mx-auto mt-2 flex justify-between">
-        {/* Sidebar */}
-        <div className="w-[17%] bg-white shadow rounded-xl p-2 sticky top-32 self-start">
-          <ListCategories />
-        </div>
+    <PageTransitionWrapper>
+      <div className="w-full">
+        <div className="container mx-auto mt-2 flex justify-between">
+          {/* Sidebar */}
+          <div className="w-[17%] bg-white shadow rounded-xl p-2 sticky top-32 self-start">
+            <ListCategories />
+          </div>
 
-        {/* Center - Images */}
-        <div className="w-[82%]">
-          {loading || !product ? (
-            <div className="text-center mt-10">Đang tải sản phẩm...</div>
-          ) : (
-            <>
-              <div className="flex gap-2 justify-between">
-                <div className="w-[58.5%]">
-                  <ProductImages product={product} />
-                  <ProductInfo product={product} brand={brand} />
-                  <SliderBanner />
+          {/* Center - Images */}
+          <div className="w-[82%]">
+            {loading || !product ? (
+              <div className="text-center mt-10">Đang tải sản phẩm...</div>
+            ) : (
+              <>
+                <div className="flex gap-2 justify-between">
+                  <div className="w-[58.5%]">
+                    <ProductImages product={product} />
+                    <ProductInfo product={product} brand={brand} />
+                    <SliderBanner />
+                  </div>
+
+                  <BuyBox
+                    product={product}
+                    brand={brand}
+                    allProducts={allProducts}
+                    onSelect={(p) => setProduct(p)}
+                  />
                 </div>
 
-                <BuyBox
-                  product={product}
-                  brand={brand}
+                <RelatedProducts
+                  currentProduct={product}
                   allProducts={allProducts}
-                  onSelect={(p) => setProduct(p)}
                 />
-              </div>
-
-              <RelatedProducts currentProduct={product} allProducts={allProducts} />
-              <ListSaleProduct currentProduct={product} allProducts={allProducts} />
-            </>
-          )}
+                <ListSaleProduct
+                  currentProduct={product}
+                  allProducts={allProducts}
+                />
+              </>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  </PageTransitionWrapper>
-);
-
+    </PageTransitionWrapper>
+  );
 };
 
 export default DetailProduct;

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Search from "./UI/Search";
 import Image from "next/image";

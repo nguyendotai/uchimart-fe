@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import ProductCard from "../UI/ProductCard";
+import ProductCard from "../../components/UI/ProductCard";
 import { Product } from "@/app/types/Product";
 
 type Props = {
@@ -9,13 +9,9 @@ type Props = {
   sortBy: string;
 };
 
-const CategoryProductPreview = ({
-  categoryId,
-  categoryName,
-  sortBy,
-}: Props) => {
+const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [visibleCount, setVisibleCount] = useState(4);
+  const [visibleCount, setVisibleCount] = useState(8);
 
   useEffect(() => {
     fetch("/data/products.json")
@@ -50,7 +46,7 @@ const CategoryProductPreview = ({
             break;
         }
         setAllProducts(sorted);
-        setVisibleCount(4);
+        setVisibleCount(8);
       })
       .catch((err) => {
         console.error("Lỗi khi tải sản phẩm:", err);
@@ -62,7 +58,7 @@ const CategoryProductPreview = ({
     visibleCount >= allProducts.length && allProducts.length > 4;
   const handleToggle = () => {
     if (isExpanded) {
-      setVisibleCount(4); // Thu gọn
+      setVisibleCount(8); // Thu gọn
     } else {
       setVisibleCount((prev) => prev + 4); // Xem thêm
     }

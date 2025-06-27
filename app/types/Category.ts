@@ -3,6 +3,7 @@ export interface Category {
   name: string;
   image: string;
   imgLarge: string;
+  description: string;
 }
 
 export interface CategoryChild{

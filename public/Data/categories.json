@@ -3,97 +3,112 @@
     "id": 1,
     "name": "Sữa, bơ, phô mai",
     "image": "/milk.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Danh mục 'Sữa, bơ, phô mai' cung cấp các sản phẩm từ sữa chất lượng cao như sữa tươi, sữa tiệt trùng, bơ lạt, bơ mặn và các loại phô mai nhập khẩu đa dạng từ các quốc gia nổi tiếng. Đây là nguồn thực phẩm giàu canxi và protein, hỗ trợ phát triển xương chắc khỏe, tăng cường hệ miễn dịch và phù hợp cho mọi lứa tuổi, từ trẻ em đang phát triển đến người lớn cần bổ sung dinh dưỡng mỗi ngày."
   },
   {
     "id": 2,
     "name": "Rau - Củ - Trái cây",
     "image": "/vegetables.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Chuyên mục này mang đến sự tươi mới mỗi ngày với các loại rau xanh, củ quả và trái cây được thu hoạch trực tiếp từ các nông trại uy tín. Rau củ quả không chỉ giúp làm phong phú bữa ăn mà còn là nguồn cung cấp vitamin, chất xơ và khoáng chất dồi dào, hỗ trợ tiêu hóa, tăng cường sức đề kháng và làm đẹp da. Phù hợp cho mọi thực đơn từ ăn kiêng, thuần chay đến dinh dưỡng cho trẻ nhỏ."
   },
   {
     "id": 3,
     "name": "Chăm sóc cá nhân",
     "image": "/personal-care.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Tập hợp đầy đủ các sản phẩm chăm sóc cá nhân cần thiết trong cuộc sống hiện đại như dầu gội, sữa tắm, kem đánh răng, nước súc miệng, lăn khử mùi và sản phẩm vệ sinh nữ. Những sản phẩm này giúp bảo vệ sức khỏe, nâng cao chất lượng cuộc sống và mang lại cảm giác tự tin, thoải mái suốt cả ngày dài."
   },
   {
     "id": 4,
     "name": "Thịt, cá, trứng, hải sản",
     "image": "/meat.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Danh mục này bao gồm thực phẩm tươi sống như thịt bò, thịt gà, cá biển, tôm, mực và trứng sạch từ các nguồn cung uy tín. Đây là nhóm thực phẩm chính trong khẩu phần ăn hàng ngày, giàu protein, sắt và các vitamin thiết yếu giúp phát triển cơ bắp, cải thiện trí não và tăng cường năng lượng cho cơ thể."
   },
   {
     "id": 5,
     "name": "Bánh kẹo",
     "image": "/snacks.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Khu vực dành cho những ai yêu thích hương vị ngọt ngào và món ăn vặt đa dạng. Bánh quy, kẹo cứng, kẹo dẻo, socola, snack, các loại bánh truyền thống và hiện đại đều có mặt tại đây, phù hợp với mọi độ tuổi. Là món quà nhỏ cho trẻ em, món tráng miệng lý tưởng hoặc đơn giản là để nhâm nhi mỗi khi rảnh rỗi."
   },
   {
     "id": 6,
     "name": "Đồ uống có cồn",
     "image": "/alcohol.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Đa dạng các loại bia nội địa và nhập khẩu, rượu vang đỏ, vang trắng, rượu mạnh như vodka, whiskey, brandy,... phù hợp cho những buổi tiệc sang trọng, họp mặt bạn bè hay dùng làm quà biếu. Sản phẩm được tuyển chọn kỹ lưỡng, đảm bảo chất lượng và nguồn gốc rõ ràng."
   },
   {
     "id": 7,
     "name": "Đồ uống giải khát",
     "image": "/soft-drinks.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Thư giãn và giải nhiệt hiệu quả với các loại nước giải khát như nước ngọt có gas, nước ép trái cây tự nhiên, trà đóng chai, nước khoáng và nước thể thao. Những sản phẩm này không chỉ giải khát mà còn giúp bạn tiếp thêm năng lượng và cảm thấy sảng khoái trong mọi hoạt động hàng ngày."
   },
   {
     "id": 8,
     "name": "Mì ăn liền",
     "image": "/instant-noodles.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Giải pháp bữa ăn nhanh chóng nhưng vẫn ngon miệng. Mì ăn liền dạng gói và ly với hương vị đa dạng từ truyền thống đến hiện đại như mì cay Hàn Quốc, mì bò hầm, mì tôm chua cay... thích hợp cho sinh viên, dân văn phòng và người bận rộn."
   },
   {
     "id": 9,
     "name": "Thực phẩm khô",
     "image": "/dry-food.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Gồm các loại gạo, đậu, hạt, nấm khô, rong biển, mì khô và các nguyên liệu khô phục vụ cho chế biến món ăn hàng ngày. Với thời gian bảo quản lâu, đây là lựa chọn lý tưởng để tích trữ và nấu ăn tiện lợi mà vẫn đảm bảo dinh dưỡng."
   },
   {
     "id": 10,
     "name": "Thực phẩm đông lạnh",
     "image": "/frozen-food.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Thực phẩm cấp đông như hải sản, thịt, rau củ, và các món chế biến sẵn như pizza, bánh bao, chả giò,... giúp bạn tiết kiệm thời gian nấu nướng mà vẫn đảm bảo bữa ăn đầy đủ dưỡng chất và hương vị thơm ngon như món ăn nhà làm."
   },
   {
     "id": 11,
     "name": "Trứng - Đậu hũ",
     "image": "/eggs-tofu.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Thực phẩm giàu đạm thực vật và động vật như trứng gà ta, trứng vịt, trứng cút, đậu hũ trắng, đậu hũ non,... thường xuyên có mặt trong các bữa ăn gia đình nhờ tính linh hoạt, dễ chế biến và giá trị dinh dưỡng cao."
   },
   {
     "id": 12,
     "name": "Chăm sóc bé",
     "image": "/baby-care.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Cung cấp đầy đủ các sản phẩm chăm sóc em bé như tã giấy, sữa bột, khăn ướt, dầu gội dịu nhẹ, bình sữa, thực phẩm ăn dặm,... đảm bảo an toàn, nhẹ dịu với làn da non nớt và sức khỏe của bé trong những năm tháng đầu đời."
   },
   {
     "id": 13,
     "name": "Đồ dùng gia đình",
     "image": "/home-tools.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Tất cả những vật dụng cần thiết cho gia đình hiện đại từ dụng cụ dọn dẹp, hộp nhựa, dụng cụ nhà bếp, đồ dùng nhà vệ sinh đến đồ dùng tiện ích như móc treo, bao rác,... giúp bạn giữ gìn nhà cửa ngăn nắp, gọn gàng và tiện lợi hơn."
   },
   {
     "id": 14,
     "name": "Gia vị",
     "image": "/spices.png",
-    "imgLarge": ""
+    "imgLarge": "",
+    "description": "Gồm đầy đủ các loại gia vị quen thuộc trong bếp Việt như muối, tiêu, đường, nước mắm, nước tương, bột ngọt, tương ớt, bột canh, ngũ vị hương, cũng như các loại gia vị ướp và nêm nếm khác giúp tạo nên những món ăn đậm đà và thơm ngon."
   },
   {
     "id": 15,
     "name": "Hóa phẩm - Tẩy rửa",
     "image": "/cleaning.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Danh mục hóa phẩm và chất tẩy rửa giúp bạn giữ cho ngôi nhà luôn sạch sẽ và thơm mát. Gồm nước lau sàn, nước rửa chén, nước giặt, bột giặt, nước xịt kính, chất khử mùi,... đến từ các thương hiệu uy tín, an toàn cho sức khỏe và thân thiện với môi trường."
   },
   {
     "id": 16,
     "name": "Thực phẩm chế biến",
     "image": "/processed-food.png",
-    "imgLarge": "/image.png"
+    "imgLarge": "/image.png",
+    "description": "Tổng hợp các món ăn đã qua chế biến sẵn như xúc xích, thịt nguội, chả lụa, đồ hộp, pate, nem chua,... tiện lợi cho bữa ăn nhanh, picnic hay mang theo khi đi làm, đi học. Vừa ngon miệng vừa tiết kiệm thời gian chế biến."
   }
 ]
-
