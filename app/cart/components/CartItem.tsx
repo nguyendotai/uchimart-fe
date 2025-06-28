@@ -15,10 +15,14 @@ import { FaRegTrashCan } from "react-icons/fa6";
 type Props = {
   item: Product & { cartQuantity: number };
   checked: boolean;
-  onToggle: () => void;
+  onItemClick: () => void; // thêm dòng này
 };
 
-export default function CartItem({ item, checked, onToggle }: Props) {
+export default function CartItem({
+  item,
+  checked,
+  onItemClick,
+}: Props) {
   const dispatch = useDispatch();
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -28,7 +32,7 @@ export default function CartItem({ item, checked, onToggle }: Props) {
     ? Math.round(((item.price - item.promotion_price) / item.price) * 100)
     : 0;
 
-    const handleDelete = () => {
+  const handleDelete = () => {
     setShowConfirm(true);
   };
 
@@ -37,7 +41,7 @@ export default function CartItem({ item, checked, onToggle }: Props) {
     setShowConfirm(false);
   };
 
- return (
+  return (
     <>
       {/* Modal xác nhận xoá */}
       <ConfirmModal
@@ -48,14 +52,18 @@ export default function CartItem({ item, checked, onToggle }: Props) {
       />
 
       {/* Thẻ sản phẩm */}
-      <div className="bg-white shadow rounded p-4 mb-4 flex gap-4">
+      <div
+        className="bg-white shadow rounded p-4 mt-4 flex gap-4"
+        onClick={onItemClick}
+      >
         {/* Checkbox + Ảnh */}
         <div className="flex gap-4">
           <input
             type="checkbox"
             className="mt-12"
             checked={checked}
-            onChange={onToggle}
+            onChange={(e) => e.stopPropagation()} // chặn lan sự kiện
+            onClick={(e) => e.stopPropagation()} // chặn click checkbox khỏi trigger chọn
           />
           <div className="relative w-28 h-28">
             <Image
@@ -90,7 +98,10 @@ export default function CartItem({ item, checked, onToggle }: Props) {
           <div className="flex items-center gap-3 mt-2">
             <button
               className="w-7 h-7 border rounded text-lg"
-              onClick={() => dispatch(decreaseQuantity(item.id))}
+              onClick={(e) => {
+                e.stopPropagation(); // chặn lan sự kiện
+                dispatch(decreaseQuantity(item.id));
+              }}
             >
               -
             </button>
@@ -99,16 +110,23 @@ export default function CartItem({ item, checked, onToggle }: Props) {
               value={item.cartQuantity}
               readOnly
               className="w-10 h-7 text-center border rounded"
+              onClick={(e) => e.stopPropagation()} // ngăn click chọn item
             />
             <button
               className="w-7 h-7 border rounded text-lg"
-              onClick={() => dispatch(increaseQuantity(item.id))}
+              onClick={(e) => {
+                e.stopPropagation(); // chặn lan sự kiện
+                dispatch(increaseQuantity(item.id));
+              }}
             >
               +
             </button>
             <button
               className="ml-auto text-lg text-red-400 hover:underline"
-              onClick={handleDelete}
+              onClick={(e) => {
+                e.stopPropagation(); // chặn lan sự kiện
+                handleDelete();
+              }}
             >
               <FaRegTrashCan></FaRegTrashCan>
             </button>

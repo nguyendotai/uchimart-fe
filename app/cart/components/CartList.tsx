@@ -81,7 +81,7 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
           key={item.id}
           item={item}
           checked={selectedIds.includes(item.id)}
-          onToggle={() => toggleSelect(item.id)}
+          onItemClick={() => toggleSelect(item.id)} // dùng click toàn vùng
         />
       ))}
     </>

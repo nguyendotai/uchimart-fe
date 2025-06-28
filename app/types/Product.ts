@@ -27,3 +27,5 @@ export interface Product {
   updated_at: string; // Hoặc Date nếu bạn parse về Date object
   created_at: string;
 }
+
+export type CartItem = Product & { cartQuantity: number };
