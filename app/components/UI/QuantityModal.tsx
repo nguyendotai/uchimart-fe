@@ -27,11 +27,6 @@ export default function QuantityModal({
 }: Props) {
   const [quantity, setQuantity] = useState(1);
 
-  const displayPrice =
-    productPromotionPrice && productPromotionPrice < productPrice!
-      ? productPromotionPrice
-      : productPrice;
-
   const discountPercent =
     productPromotionPrice && productPrice
       ? Math.round(

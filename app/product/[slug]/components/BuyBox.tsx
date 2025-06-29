@@ -1,10 +1,12 @@
 "use client";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Product } from "@/app/types/Product";
 import { Brand } from "@/app/types/Brand";
 import { IoShareSocialSharp } from "react-icons/io5";
 import ProductVariants from "./ProductVariants";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { addToCart } from "@/store/slices/cartSlice"; // Giả định bạn đã có slice giỏ hàng
 
 type Props = {
   product: Product;
@@ -14,6 +16,8 @@ type Props = {
 };
 
 const BuyBox = ({ product, brand, allProducts, onSelect }: Props) => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
 
   const onDecrease = () => {
@@ -23,6 +27,24 @@ const BuyBox = ({ product, brand, allProducts, onSelect }: Props) => {
   const onIncrease = () => {
     setQuantity((prev) => prev + 1);
   };
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({ ...product, cartQuantity: quantity }));
+  };
+
+  const handleBuyNow = () => {
+    const selectedItem = {
+      ...product,
+      cartQuantity: quantity,
+    };
+
+    // ✅ Lưu trực tiếp sản phẩm vào localStorage
+    localStorage.setItem("selectedItems", JSON.stringify([selectedItem]));
+
+    // ✅ Chuyển sang trang thanh toán
+    router.push("/check-out");
+  };
+
   const hasSale =
     product.price !== undefined && product.price > product.promotion_price;
 
@@ -92,17 +114,23 @@ const BuyBox = ({ product, brand, allProducts, onSelect }: Props) => {
       </div>
 
       {/* Provisional */}
-
       <div className="mb-4">
         <p className="font-medium">Tạm tính</p>
         <span className="text-lg font-bold text-[#921573]">
-          {(product.promotion_price * quantity).toLocaleString()}đ{" "}
+          {(product.promotion_price * quantity).toLocaleString()}đ
         </span>
       </div>
-      <button className="bg-[#4DCB44] text-white px-6 py-2 rounded hover:bg-green-600 transition w-full mb-2">
+
+      <button
+        onClick={handleBuyNow}
+        className="bg-[#4DCB44] text-white px-6 py-2 rounded hover:bg-green-600 transition w-full mb-2"
+      >
         Mua ngay
       </button>
-      <button className=" text-[#1C78D9] border px-6 py-2 rounded hover:bg-[#1C78D9] hover:text-white transition w-full">
+      <button
+        onClick={handleAddToCart}
+        className="text-[#1C78D9] border px-6 py-2 rounded hover:bg-[#1C78D9] hover:text-white transition w-full"
+      >
         Thêm vào giỏ hàng
       </button>
     </div>

@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useState, useEffect } from "react";
 import DeliveryMethod from "./components/DeliveryMethod";
 import DeliveryAddress from "./components/DeliveryAddress";
 import DeliveryTime from "./components/DeliveryTime";
@@ -11,11 +10,14 @@ export default function CheckoutPage() {
   const [deliveryMethod, setDeliveryMethod] = useState<"delivery" | "pickup">("delivery");
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedVoucher, setSelectedVoucher] = useState("");
+  const [items, setItems] = useState([]);
 
-  const searchParams = useSearchParams();
-  const idsParam = searchParams.get("ids");
-  const selectedIds = idsParam ? idsParam.split(",").map(Number) : [];
-  const items = JSON.parse(localStorage.getItem("selectedItems") || "[]");
+  useEffect(() => {
+    const stored = localStorage.getItem("selectedItems");
+    if (stored) {
+      setItems(JSON.parse(stored));
+    }
+  }, []);
 
   return (
     <div className="w-[1300px] mx-auto py-6 flex flex-col lg:flex-row gap-6">

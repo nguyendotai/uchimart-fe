@@ -31,16 +31,30 @@ const ProductCard = ({ product }: { product: Product }) => {
     : 0;
 
   const handleConfirm = (quantity: number) => {
-    dispatch(addToCart({ ...product, cartQuantity: quantity }));
+    const selectedItem = {
+      ...product,
+      cartQuantity: quantity,
+    };
+
     if (actionType === "buyNow") {
-      router.push("/checkout"); // hoặc đường dẫn phù hợp với bạn
+      // ✅ Lưu đầy đủ thông tin sản phẩm đã chọn
+      localStorage.setItem("selectedItems", JSON.stringify([selectedItem]));
+
+      // ✅ Điều hướng sang trang thanh toán
+      router.push("/check-out");
+    } else {
+      // Trường hợp addToCart bình thường
+      dispatch(addToCart(selectedItem));
     }
+    setShowModal(false);
+    setActionType(null);
   };
 
   return (
     <div className="relative group">
       {/* Modal */}
       <QuantityModal
+        key={actionType}
         open={showModal}
         onClose={() => setShowModal(false)}
         onConfirm={handleConfirm}
@@ -54,7 +68,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       {/* sale */}
       {hasSale && (
         <div className="absolute top-0 left-[-8px] z-10 overflow-hidden">
-          <div className="w-[80px] h-5 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-tr-md rounded-br-md shadow-md">
+          <div className="w-[80px] h-5 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-tr-md rounded-br-md shadow">
             GIẢM {discount}%
           </div>
         </div>

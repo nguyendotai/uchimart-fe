@@ -38,6 +38,7 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
   const confirmDelete = () => {
     selectedIds.forEach((id) => dispatch(removeFromCart(id)));
     setSelectedIds([]);
+    setShowConfirm(false);
   };
 
   if (cartItems.length === 0)
