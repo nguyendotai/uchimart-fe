@@ -11,6 +11,8 @@ import RelatedProducts from "@/app/product/[slug]/components/RelatedProducts";
 import SliderBanner from "@/app/product/[slug]/components/SliderBanner";
 import ListSaleProduct from "@/app/product/[slug]/components/ListSaleProduct";
 import PageTransitionWrapper from "@/app/components/Animation/PageTransitionWrapper";
+import Notification from "@/app/components/UI/Notification";
+import { AiFillCheckCircle } from "react-icons/ai";
 
 const DetailProduct = () => {
   const params = useParams();
@@ -19,6 +21,7 @@ const DetailProduct = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showNotif, setShowNotif] = useState(false);
 
   useEffect(() => {
     fetch("/data/products.json")
@@ -77,6 +80,10 @@ const DetailProduct = () => {
                     brand={brand}
                     allProducts={allProducts}
                     onSelect={(p) => setProduct(p)}
+                    onNotify={() => {
+                      setShowNotif(true);
+                      setTimeout(() => setShowNotif(false), 2000);
+                    }}
                   />
                 </div>
 
@@ -93,6 +100,7 @@ const DetailProduct = () => {
           </div>
         </div>
       </div>
+      <Notification show={showNotif} message="Đã thêm vào giỏ hàng!" />
     </PageTransitionWrapper>
   );
 };

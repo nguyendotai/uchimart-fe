@@ -6,16 +6,17 @@ import { IoShareSocialSharp } from "react-icons/io5";
 import ProductVariants from "./ProductVariants";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { addToCart } from "@/store/slices/cartSlice"; // Giả định bạn đã có slice giỏ hàng
+import { addToCart } from "@/store/slices/cartSlice";
 
 type Props = {
   product: Product;
   brand?: Brand;
   allProducts: Product[];
   onSelect: (product: Product) => void;
+  onNotify?: () => void;
 };
 
-const BuyBox = ({ product, brand, allProducts, onSelect }: Props) => {
+const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
@@ -30,6 +31,7 @@ const BuyBox = ({ product, brand, allProducts, onSelect }: Props) => {
 
   const handleAddToCart = () => {
     dispatch(addToCart({ ...product, cartQuantity: quantity }));
+    onNotify?.();
   };
 
   const handleBuyNow = () => {

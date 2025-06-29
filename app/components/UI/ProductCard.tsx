@@ -10,8 +10,10 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "@/store/slices/cartSlice";
 import { useRouter } from "next/navigation";
 import QuantityModal from "./QuantityModal";
+import Notification from "./Notification";
 
 const ProductCard = ({ product }: { product: Product }) => {
+  const [showNotif, setShowNotif] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -45,6 +47,8 @@ const ProductCard = ({ product }: { product: Product }) => {
     } else {
       // Trường hợp addToCart bình thường
       dispatch(addToCart(selectedItem));
+      setShowNotif(true); // 🔔 Bật notification
+      setTimeout(() => setShowNotif(false), 2000);
     }
     setShowModal(false);
     setActionType(null);
@@ -167,6 +171,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           </div>
         </div>
       </div>
+      <Notification show={showNotif} message="Đã thêm vào giỏ hàng!" />
     </div>
   );
 };
