@@ -10,6 +10,7 @@ import PageTransitionWrapper from "../components/Animation/PageTransitionWrapper
 import CountProduct from "./components/CountProduct";
 import CategoryProductPreview from "./components/CategoryProductPreview";
 import CategoryInfo from "./components/CategoryInfo";
+import PromotionalBanners from "./components/PromotionalBanners";
 
 const Product = () => {
   const searchParams = useSearchParams();
@@ -86,6 +87,11 @@ const Product = () => {
               {categoryId && !isNaN(Number(categoryId)) && (
                 <CategoryInfo categoryId={Number(categoryId)} />
               )}
+            </div>
+            <hr className="text-gray-400 mb-4" />
+            {/* Promotional Banners */}
+            <div className="w-full mb-4">
+              <PromotionalBanners></PromotionalBanners>
             </div>
             <hr className="text-gray-400 mb-4" />
           </div>

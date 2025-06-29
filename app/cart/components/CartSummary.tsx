@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 
@@ -8,6 +9,7 @@ export default function CartSummary({
   selectedIds: number[];
 }) {
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const router = useRouter();
 
   const selectedItems = cartItems.filter((item) =>
     selectedIds.includes(item.id)
@@ -18,6 +20,16 @@ export default function CartSummary({
       sum + (item.promotion_price ?? item.price) * item.cartQuantity,
     0
   );
+
+  const handleCheckout = () => {
+    if (selectedItems.length === 0) return;
+
+    // ✅ Lưu dữ liệu sản phẩm đã chọn vào localStorage
+    localStorage.setItem("selectedItems", JSON.stringify(selectedItems));
+
+    // ✅ Chuyển sang trang thanh toán
+    router.push("/check-out");
+  };
 
   return (
     <div className="w-full bg-white shadow rounded p-4 h-fit">
@@ -53,8 +65,9 @@ export default function CartSummary({
           selectedItems.length === 0 ? "opacity-50 cursor-not-allowed" : ""
         }`}
         disabled={selectedItems.length === 0}
+        onClick={handleCheckout}
       >
-        Thanh toán
+        Tiến hành thanh toán
       </button>
     </div>
   );

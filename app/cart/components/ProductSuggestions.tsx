@@ -17,7 +17,7 @@ export default function ProductSuggestions() {
   if (products.length === 0) return null;
 
   return (
-    <div className="mt-10">
+    <>
       <h2 className="text-3xl font-bold mb-2 text-[#921573] p-2 bg-white rounded w-[21%] text-center">
         Có thể bạn cũng thích
       </h2>
@@ -31,6 +31,6 @@ export default function ProductSuggestions() {
           </li>
         ))}
       </ul>
-    </div>
+    </>
   );
 }

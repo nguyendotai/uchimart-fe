@@ -45,12 +45,17 @@ const ProductCard = ({ product }: { product: Product }) => {
         onClose={() => setShowModal(false)}
         onConfirm={handleConfirm}
         productName={product.name}
+        productImage={product.image}
+        productPrice={product.price}
+        productPromotionPrice={product.promotion_price}
+        productStock={product.quantity}
       />
+
       {/* sale */}
       {hasSale && (
         <div className="absolute top-0 left-[-8px] z-10 overflow-hidden">
           <div className="w-[80px] h-5 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-tr-md rounded-br-md shadow-md">
-            GIẢM -{discount}%
+            GIẢM {discount}%
           </div>
         </div>
       )}

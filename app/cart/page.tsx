@@ -5,6 +5,7 @@ import CartList from "./components/CartList";
 import CartSummary from "./components/CartSummary";
 import ProductSuggestions from "./components/ProductSuggestions";
 import PageTransitionWrapper from "../components/Animation/PageTransitionWrapper";
+import ListSaleProduct from "./components/ListSaleProduct";
 
 export default function CartPage() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -26,7 +27,12 @@ export default function CartPage() {
             <CartSummary selectedIds={selectedIds} />
           </div>
         </div>
-        <ProductSuggestions></ProductSuggestions>
+        <div className="mt-10">
+          <ProductSuggestions></ProductSuggestions>
+        </div>
+        <div className="mt-10">
+          <ListSaleProduct></ListSaleProduct>
+        </div>
       </div>
     </PageTransitionWrapper>
   );
