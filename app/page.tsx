@@ -1,6 +1,5 @@
-"use client"
-import Image from "next/image";
-import ImageSlider from "./components/UI/ImageSlider";
+"use client";
+import ImageSlider from "./components/UIHome/ImageSlider";
 import ListCategories from "./components/UI/ListCategories";
 import ListCateHome from "./components/UIHome/ListCateHome";
 import TimeFlashSale from "./components/UIHome/TimeFlashSale";
@@ -15,16 +14,20 @@ export default function Home() {
     <PageTransitionWrapper>
       <div className="w-full">
         {/* Slider full width */}
-        <div className="container mx-auto mt-2">
+        {/* <div className="container mx-auto mt-2">
           <ImageSlider />
-        </div>
-        <div className="container mx-auto mt-4 flex justify-between">
+        </div> */}
+        <div className="container mx-auto mt-2 flex justify-between">
           {/* SideBar */}
           <div className="w-[17%] bg-white shadow rounded-xl p-2 sticky top-32 self-start">
             <ListCategories />
           </div>
 
           <div className="w-[82%]">
+            {/* Slider */}
+            <div className="w-full mb-4">
+              <ImageSlider />
+            </div>
             {/* List Categories */}
             <div className="w-full mb-4">
               <ListCateHome></ListCateHome>
@@ -48,15 +51,15 @@ export default function Home() {
             <BrandHome></BrandHome>
           </div>
         </div>
-        <div className="container mx-auto mt-4 flex justify-between">
+        <div className="container mx-auto mt-10">
           <ListProduct></ListProduct>
         </div>
-        <div className="container mx-auto mt-4 flex justify-center">
+        <div className="container mx-auto mt-10 flex justify-center">
           <span className="w-[50%] bg-white shadow rounded-xl py-2 flex justify-center items-center text-3xl font-semibold text-[#FB5D08]">
             Gợi ý hôm nay
           </span>
         </div>
-        <div className="container mx-auto mt-4 space-y-4">
+        <div className="container mx-auto mt-6 space-y-4">
           <ListProductByCate />
         </div>
       </div>

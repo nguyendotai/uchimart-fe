@@ -40,3 +40,8 @@ body {
   animation: fadeIn 0.2s ease-out forwards;
 }
 
+/* Ẩn arrow mặc định của slick */
+.slick-prev::before,
+.slick-next::before {
+  display: none !important;
+}

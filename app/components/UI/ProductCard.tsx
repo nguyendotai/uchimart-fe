@@ -71,8 +71,8 @@ const ProductCard = ({ product }: { product: Product }) => {
 
       {/* sale */}
       {hasSale && (
-        <div className="absolute top-0 left-[-8px] z-10 overflow-hidden">
-          <div className="w-[80px] h-5 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-tr-md rounded-br-md shadow">
+        <div className="absolute top-[-7px] left-[-8px] z-10 overflow-hidden">
+          <div className="w-[80px] h-5 bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center rounded-tl-md rounded-br-md shadow">
             GIẢM {discount}%
           </div>
         </div>
@@ -81,14 +81,14 @@ const ProductCard = ({ product }: { product: Product }) => {
       {/* Ảnh */}
       <Link
         href={`/product/${product.slug}`}
-        className="w-full h-[230px] bg-white flex items-center justify-center overflow-hidden"
+        className="w-full h-[200px] bg-white flex items-center justify-center overflow-hidden"
       >
         <Image
           src={product.image}
           alt={product.name}
           width={230}
           height={230}
-          className="w-full h-full object-contain rounded max-w-[230px] max-h-[230px] transition-transform duration-300 ease-in-out group-hover:scale-105"
+          className="w-full h-full object-contain rounded max-w-[230px] max-h-[200px] transition-transform duration-300 ease-in-out group-hover:scale-105"
         />
       </Link>
 
@@ -99,16 +99,17 @@ const ProductCard = ({ product }: { product: Product }) => {
             setActionType("buyNow");
             setShowModal(true);
           }}
-          className="flex justify-center items-center bg-[#921573] border border-[#921573] text-white rounded-[5px] p-2 w-[79%] transition-all duration-200 ease-in-out hover:bg-white hover:text-[#921573]"
+          className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] rounded-full p-1 w-[79%] transition-all duration-200 ease-in-out hover:bg-[#921573] hover:text-white"
         >
           Mua ngay
         </button>
+
         <button
           onClick={() => {
             setActionType("addToCart");
             setShowModal(true);
           }}
-          className="flex justify-center items-center bg-[#921573] border border-[#921573] text-white rounded-[5px] p-2 w-[20%] transition-all duration-200 ease-in-out hover:bg-white hover:text-[#921573]"
+          className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] rounded-full p-1 w-[20%] transition-all duration-200 ease-in-out hover:bg-[#921573] hover:text-white"
         >
           <FaShoppingCart />
         </button>
@@ -117,10 +118,15 @@ const ProductCard = ({ product }: { product: Product }) => {
       {/* Content */}
       <div className="mt-2">
         {/* Name */}
-        <span className="p-1 font-normal truncate">{product.name}</span>
+        <a
+          href={`/product/${product.slug}`}
+          className="p-1 font-normal truncate"
+        >
+          {product.name}
+        </a>
 
         {/* Price */}
-        <div className="pb-2 mt-2">
+        <div className="">
           {hasSale ? (
             <>
               <span className="p-1 text-[#FB5D08] font-medium">

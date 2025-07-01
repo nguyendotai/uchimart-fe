@@ -19,7 +19,7 @@ const ListSaleProduct = () => {
               p.promotion_price !== undefined &&
               p.promotion_price < p.price
           )
-          .slice(0, 8);
+          .slice(0, 10);
         setSaleProducts(filtered);
       })
       .catch((err) => console.error("Lỗi tải dữ liệu:", err));
@@ -30,7 +30,7 @@ const ListSaleProduct = () => {
       {saleProducts.map((product) => (
         <li
           key={product.id}
-          className="bg-white shadow rounded-xl p-2 relative w-[24%]"
+          className="bg-white shadow rounded-xl p-2 relative w-[18.9%]"
         >
           <ProductCard product={product} />
         </li>

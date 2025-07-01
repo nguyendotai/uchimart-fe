@@ -32,7 +32,7 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
   };
 
   const handleRemoveSelected = () => {
-    setShowConfirm(true); // mở modal xác nhận
+    setShowConfirm(true);
   };
 
   const confirmDelete = () => {
@@ -52,7 +52,8 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
         onConfirm={confirmDelete}
         message={`Bạn có chắc chắn muốn xóa ${selectedIds.length} sản phẩm đã chọn khỏi giỏ hàng?`}
       />
-      <div className="flex items-center justify-between pb-2 mb-4 text-sm text-gray-500 p-2 bg-white shadow rounded">
+
+      <div className="bg-white shadow rounded mb-4 p-2 text-sm text-gray-500 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <input
             id="selectAll"
@@ -74,17 +75,30 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
         )}
       </div>
 
-      <hr className="mb-4 text-gray-300" />
-
-      {/* Danh sách sản phẩm */}
-      {cartItems.map((item) => (
-        <CartItem
-          key={item.id}
-          item={item}
-          checked={selectedIds.includes(item.id)}
-          onItemClick={() => toggleSelect(item.id)} // dùng click toàn vùng
-        />
-      ))}
+      <div className="overflow-x-auto bg-white shadow rounded">
+        <table className="w-full text-sm text-left">
+          <thead className="bg-[#4DCB44] text-gray-700">
+            <tr>
+              <th className="p-3 w-10"></th>
+              <th className="p-3">Sản phẩm</th>
+              <th className="p-3 text-right">Giá</th>
+              <th className="p-3 text-center">Số lượng</th>
+              <th className="p-3 text-right">Thành tiền</th>
+              <th className="p-3 text-center">Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cartItems.map((item) => (
+              <CartItem
+                key={item.id}
+                item={item}
+                checked={selectedIds.includes(item.id)}
+                onItemClick={() => toggleSelect(item.id)}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

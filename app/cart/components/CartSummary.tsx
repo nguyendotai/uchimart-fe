@@ -15,57 +15,61 @@ export default function CartSummary({
     selectedIds.includes(item.id)
   );
 
-  const total = selectedItems.reduce(
+  if (selectedItems.length === 0) return null;
+
+  const subTotal = selectedItems.reduce(
     (sum, item) =>
       sum + (item.promotion_price ?? item.price) * item.cartQuantity,
     0
   );
 
+  const shipping = 0;
+  const taxes = 0;
+  const couponDiscount = 10000; // 10.000đ
+  const total = subTotal + shipping + taxes - couponDiscount;
+
+  const formatVND = (value: number) =>
+    value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
+
   const handleCheckout = () => {
     if (selectedItems.length === 0) return;
-
-    // ✅ Lưu dữ liệu sản phẩm đã chọn vào localStorage
     localStorage.setItem("selectedItems", JSON.stringify(selectedItems));
-
-    // ✅ Chuyển sang trang thanh toán
     router.push("/check-out");
   };
 
   return (
-    <div className="w-full bg-white shadow rounded p-4 h-fit">
-      <p className="text-sm text-gray-600 mb-1">Tạm tính giỏ hàng:</p>
-      <p className="text-right font-medium text-gray-700 mb-1">
-        {total.toLocaleString()} đ
-      </p>
-      <p className="text-sm text-gray-600 mb-1">Thành tiền:</p>
-      <p className="text-right font-medium text-gray-700 mb-2">
-        {total.toLocaleString()} đ
-      </p>
-      <p className="text-sm text-gray-500 mb-2">(Giá đã bao gồm VAT)</p>
-      <p className="text-sm mb-2">Tổng sản phẩm ({selectedItems.length} món)</p>
-      <p className="text-xl font-bold text-green-600 mb-4">
-        Tổng tiền: {total.toLocaleString()} đ
-      </p>
-      {selectedItems.length > 0 && (
-        <div className="mb-4">
-          <p className="text-sm font-medium mb-1 text-gray-600">
-            Sản phẩm đã chọn:
-          </p>
-          <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
-            {selectedItems.map((item) => (
-              <li key={item.id}>
-                {item.name} × {item.cartQuantity}
-              </li>
-            ))}
-          </ul>
+    <div className="bg-white shadow rounded-xl p-5 w-full max-w-sm text-sm text-gray-700">
+      <h2 className="text-lg font-semibold mb-4">Tóm tắt đơn hàng</h2>
+      <hr className="mb-4" />
+      <div className="space-y-3 mb-4">
+        <div className="flex justify-between">
+          <span>Số lượng sản phẩm</span>
+          <span>{selectedItems.length}</span>
         </div>
-      )}
+        <div className="flex justify-between">
+          <span>Tạm tính</span>
+          <span>{formatVND(subTotal)}</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Phí vận chuyển</span>
+          <span>{formatVND(shipping)}</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Thuế</span>
+          <span>{formatVND(taxes)}</span>
+        </div>
+      </div>
+
+      <hr className="my-4" />
+      <div className="flex justify-between text-base font-semibold mb-6">
+        <span>Tổng cộng</span>
+        <span>{formatVND(total)}</span>
+      </div>
+
       <button
-        className={`w-full bg-[#921573] text-white py-2 rounded-full hover:opacity-90 ${
-          selectedItems.length === 0 ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-        disabled={selectedItems.length === 0}
+        className="w-full bg-green-600 text-white py-2 rounded-full text-center font-medium hover:bg-green-700 transition"
         onClick={handleCheckout}
+        disabled={selectedItems.length === 0}
       >
         Tiến hành thanh toán
       </button>

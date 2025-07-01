@@ -12,10 +12,19 @@ export default function CartPage() {
   return (
     <PageTransitionWrapper>
       <div className="container py-4">
+        <h1 className="text-3xl font-bold mb-4 text-[#921573] text-center">
+          GIỎ HÀNG
+        </h1>
+        <div className="text-sm text-gray-500 mb-6 text-center">
+          <a href="/" className="hover:underline cursor-pointer text-[#921573]">
+            Trang chủ
+          </a>
+          <span className="mx-1">/</span>
+          <span>Giỏ hàng</span>
+        </div>
         <div className="w-full flex justify-between lg:flex-row gap-8">
           {/* Left: Danh sách sản phẩm */}
-          <div className="w-[75%]">
-            <h1 className="text-3xl font-bold mb-4 text-[#921573]">GIỎ HÀNG</h1>
+          <div className="w-[70%]">
             <CartList
               selectedIds={selectedIds}
               setSelectedIds={setSelectedIds}
@@ -23,7 +32,7 @@ export default function CartPage() {
           </div>
 
           {/* Right: Tổng thanh toán */}
-          <div className="w-[24%] mt-13 sticky top-32 self-start">
+          <div className="w-[29%] mt-13 sticky top-32 self-start">
             <CartSummary selectedIds={selectedIds} />
           </div>
         </div>

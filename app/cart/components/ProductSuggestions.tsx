@@ -1,7 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Product } from "@/app/types/Product";
 import ProductCard from "@/app/components/UI/ProductCard"; // chỉnh lại nếu đường dẫn khác
+import { productCarouselSettings } from "@/app/utils/carouselSettings";
 
 export default function ProductSuggestions() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -10,7 +14,7 @@ export default function ProductSuggestions() {
     fetch("/data/products.json") // gọi API lấy tất cả sản phẩm (hoặc tùy chỉnh nếu có lọc backend)
       .then((res) => res.json())
       .then((data: Product[]) => {
-        setProducts(data.slice(0, 5)); // lấy 4 sản phẩm bán chạy nhất
+        setProducts(data.slice(0, 12)); // lấy 4 sản phẩm bán chạy nhất
       });
   }, []);
 
@@ -18,19 +22,21 @@ export default function ProductSuggestions() {
 
   return (
     <>
-      <h2 className="text-3xl font-bold mb-2 text-[#921573] p-2 bg-white rounded w-[21%] text-center">
+      <h2 className="text-3xl font-semibold mb-2 text-[#921573] p-2 rounded w-[21%] text-center">
         Có thể bạn cũng thích
       </h2>
-      <ul className="flex justify-between items-center mt-6 w-full">
+      <Slider {...productCarouselSettings}>
         {products.map((product) => (
-          <li
-            className="w-[19%] bg-white shadow rounded-xl p-2"
-            key={product.id}
+          <div key={product.id} className="px-2">
+            <div
+            className="bg-white shadow rounded-xl p-2 h-full"
           >
             <ProductCard product={product} />
-          </li>
+          </div>
+          </div>
+          
         ))}
-      </ul>
+       </Slider>
     </>
   );
 }

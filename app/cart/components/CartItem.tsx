@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import {
@@ -15,14 +14,10 @@ import { FaRegTrashCan } from "react-icons/fa6";
 type Props = {
   item: Product & { cartQuantity: number };
   checked: boolean;
-  onItemClick: () => void; // thêm dòng này
+  onItemClick: () => void;
 };
 
-export default function CartItem({
-  item,
-  checked,
-  onItemClick,
-}: Props) {
+export default function CartItem({ item, checked, onItemClick }: Props) {
   const dispatch = useDispatch();
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -43,7 +38,6 @@ export default function CartItem({
 
   return (
     <>
-      {/* Modal xác nhận xoá */}
       <ConfirmModal
         open={showConfirm}
         onClose={() => setShowConfirm(false)}
@@ -51,21 +45,20 @@ export default function CartItem({
         message={`Bạn có chắc chắn muốn xóa "${item.name}" khỏi giỏ hàng?`}
       />
 
-      {/* Thẻ sản phẩm */}
-      <div
-        className="bg-white shadow rounded p-4 mt-4 flex gap-4"
+      <tr
+        className="border-b border-b-gray-300 hover:bg-gray-50 cursor-pointer"
         onClick={onItemClick}
       >
-        {/* Checkbox + Ảnh */}
-        <div className="flex gap-4">
+        <td className="p-3 text-center">
           <input
             type="checkbox"
-            className="mt-12"
             checked={checked}
-            onChange={(e) => e.stopPropagation()} // chặn lan sự kiện
-            onClick={(e) => e.stopPropagation()} // chặn click checkbox khỏi trigger chọn
+            onChange={(e) => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           />
-          <div className="relative w-28 h-28">
+        </td>
+        <td className="p-3 flex gap-3 items-center">
+          <div className="relative w-16 h-16 flex-shrink-0">
             <Image
               src={item.image}
               alt={item.name}
@@ -73,33 +66,32 @@ export default function CartItem({
               className="object-contain"
             />
             {discount > 0 && (
-              <span className="absolute top-0 left-0 bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
+              <span className="absolute top-0 left-0 bg-red-500 text-white text-xs rounded-full px-1">
                 -{discount}%
               </span>
             )}
           </div>
-        </div>
-
-        {/* Nội dung */}
-        <div className="flex-1">
-          <div className="font-semibold text-sm mb-1">{item.name}</div>
-          <div className="flex items-center gap-4 text-sm font-medium mb-1">
-            <span className="text-[#FB5D08]">{price.toLocaleString()}đ</span>
-            {originalPrice && (
-              <del className="text-gray-400 text-sm">
-                {originalPrice.toLocaleString()}đ
-              </del>
-            )}
+          <div>
+            <div className="font-medium">{item.name}</div>
+            <div className="text-xs text-gray-500">Đã bán {item.quantity}</div>
           </div>
-
-          <div className="text-yellow-400 text-sm">★★★★★</div>
-          <div className="text-xs text-gray-500">Đã bán {item.quantity}</div>
-
-          <div className="flex items-center gap-3 mt-2">
+        </td>
+        <td className="p-3 text-right">
+          <div className="text-[#FB5D08] font-medium">
+            {price.toLocaleString()}đ
+          </div>
+          {originalPrice && (
+            <del className="text-gray-400 text-xs">
+              {originalPrice.toLocaleString()}đ
+            </del>
+          )}
+        </td>
+        <td className="p-3 text-center">
+          <div className="flex items-center justify-center gap-2">
             <button
-              className="w-7 h-7 border rounded text-lg"
+              className="w-6 h-6 border rounded"
               onClick={(e) => {
-                e.stopPropagation(); // chặn lan sự kiện
+                e.stopPropagation();
                 dispatch(decreaseQuantity(item.id));
               }}
             >
@@ -109,30 +101,35 @@ export default function CartItem({
               type="text"
               value={item.cartQuantity}
               readOnly
-              className="w-10 h-7 text-center border rounded"
-              onClick={(e) => e.stopPropagation()} // ngăn click chọn item
+              className="w-10 text-center border rounded"
+              onClick={(e) => e.stopPropagation()}
             />
             <button
-              className="w-7 h-7 border rounded text-lg"
+              className="w-6 h-6 border rounded"
               onClick={(e) => {
-                e.stopPropagation(); // chặn lan sự kiện
+                e.stopPropagation();
                 dispatch(increaseQuantity(item.id));
               }}
             >
               +
             </button>
-            <button
-              className="ml-auto text-lg text-red-400 hover:underline"
-              onClick={(e) => {
-                e.stopPropagation(); // chặn lan sự kiện
-                handleDelete();
-              }}
-            >
-              <FaRegTrashCan></FaRegTrashCan>
-            </button>
           </div>
-        </div>
-      </div>
+        </td>
+        <td className="p-3 text-right font-medium">
+          {(price * item.cartQuantity).toLocaleString()}đ
+        </td>
+        <td className="p-3 text-center">
+          <button
+            className="text-red-400 hover:underline text-lg"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDelete();
+            }}
+          >
+            <FaRegTrashCan />
+          </button>
+        </td>
+      </tr>
     </>
   );
 }
