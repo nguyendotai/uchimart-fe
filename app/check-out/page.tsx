@@ -20,7 +20,7 @@ export default function CheckoutPage() {
   }, []);
 
   return (
-    <div className="w-[1300px] mx-auto py-6 flex flex-col lg:flex-row gap-6">
+    <div className="w-[1200px] mx-auto py-6 flex flex-col lg:flex-row gap-6">
       {/* CỘT TRÁI - THÔNG TIN GIAO HÀNG */}
       <div className="lg:w-[65%] w-full space-y-6">
         <h2 className="font-bold text-3xl">Thanh toán</h2>

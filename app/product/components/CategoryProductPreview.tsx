@@ -12,7 +12,7 @@ type Props = {
 const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 8;
+  const productsPerPage = 10;
 
   useEffect(() => {
     fetch("/data/products.json")
@@ -66,7 +66,7 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
         {visibleProducts.map((product) => (
           <li
             key={product.id}
-            className="bg-white shadow rounded-xl p-2 relative w-[23.5%]"
+            className="bg-white shadow rounded-xl p-2 relative w-[18.4%]"
           >
             <ProductCard product={product} />
           </li>

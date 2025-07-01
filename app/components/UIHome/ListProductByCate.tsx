@@ -39,18 +39,18 @@ const ListProductByCate = () => {
         );
         if (filteredProducts.length === 0) return null;
 
-        const productsToShow = filteredProducts.slice(0, 8);
-        const firstRowProducts = productsToShow.slice(0, 3);
+        const productsToShow = filteredProducts.slice(0, 12);
+        const firstRowProducts = productsToShow.slice(0, 4);
         const secondRowProducts = productsToShow.slice(3, 8);
 
         return (
-          <div key={category.id} className="w-full rounded-md space-y-4">
+          <div key={category.id} className="w-full rounded-md space-y-4 ">
             <div className="grid grid-rows-2 grid-cols-5 gap-4">
               <div className="row-start-1 col-span-2 bg-amber-200 rounded overflow-hidden relative flex items-center justify-center">
                 <img
                   src={category.imgLarge}
                   alt={category.name}
-                  className="w-full max-h-[400px] object-contain rounded"
+                  className="w-full max-h-[360px] object-contain rounded"
                 />
               </div>
 
@@ -79,6 +79,7 @@ const ListProductByCate = () => {
                 <span><FaAnglesRight></FaAnglesRight></span>
               </a>
             </div>
+            <hr className="text-gray-400 mb-4" />
           </div>
         );
       })}

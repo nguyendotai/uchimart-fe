@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { FaShoppingCart, FaStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
+import { MdOutlineAddShoppingCart } from "react-icons/md";
 import { MdEventAvailable } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
 import { Product, CartItem } from "@/app/types/Product";
@@ -111,7 +112,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           }}
           className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] rounded-full p-1 w-[20%] transition-all duration-200 ease-in-out hover:bg-[#921573] hover:text-white"
         >
-          <FaShoppingCart />
+          <MdOutlineAddShoppingCart></MdOutlineAddShoppingCart>
         </button>
       </div>
 

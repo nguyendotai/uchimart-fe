@@ -1,21 +1,59 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
+import { motion, AnimatePresence } from "framer-motion";
+
+const placeholderTexts = [
+  "Giá siêu rẻ...",
+  "Sữa tươi nguyên chất...",
+  "Thực phẩm tươi sống...",
+  "Giảm giá hôm nay...",
+];
 
 const Search = () => {
+  const [index, setIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsVisible(false); // ẩn placeholder
+      setTimeout(() => {
+        setIndex((prev) => (prev + 1) % placeholderTexts.length);
+        setIsVisible(true); // hiện lại sau 300ms
+      }, 300);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="w-full flex ">
+    <div className="w-full flex">
       <div className="w-[80%] flex gap-2 justify-between">
-        {/* Input + icon nằm chung 1 div có 80% */}
         <div className="relative w-[91%]">
           <CiSearch className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400 text-xl" />
+          {/* Animated placeholder text */}
+          <div className="absolute left-10 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 text-sm whitespace-nowrap">
+            <AnimatePresence mode="wait">
+              {isVisible && (
+                <motion.span
+                  key={placeholderTexts[index]}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {placeholderTexts[index]}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Actual input */}
           <input
             type="text"
-            placeholder="Giá siêu rẻ"
-            className="w-full pl-10 text-black pr-3 h-10 placeholder-gray-400 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#00bf63]"
+            className="w-full pl-10 text-black pr-3 h-10 placeholder-transparent border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#00bf63]"
           />
         </div>
 
-        {/* Nút chiếm 20% */}
         <button
           className="w-[19%] h-10 text-white rounded hover:bg-blue-600 flex items-center justify-center"
           style={{ backgroundColor: "#921573" }}
@@ -27,4 +65,4 @@ const Search = () => {
   );
 };
 
-export default Search; 
+export default Search;

@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 
@@ -25,8 +26,7 @@ export default function CartSummary({
 
   const shipping = 0;
   const taxes = 0;
-  const couponDiscount = 10000; // 10.000đ
-  const total = subTotal + shipping + taxes - couponDiscount;
+  const total = subTotal + shipping + taxes ;
 
   const formatVND = (value: number) =>
     value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
@@ -40,11 +40,46 @@ export default function CartSummary({
   return (
     <div className="bg-white shadow rounded-xl p-5 w-full max-w-sm text-sm text-gray-700">
       <h2 className="text-lg font-semibold mb-4">Tóm tắt đơn hàng</h2>
+      <div className="mb-4">
+        <h3 className="font-medium mb-2">Sản phẩm đã chọn</h3>
+        <ul className="space-y-2 max-h-40 overflow-y-auto pr-1">
+          {selectedItems.map((item) => (
+            <li key={item.id} className="flex gap-3 items-center">
+              <div className="relative w-14 h-14 flex-shrink-0">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  className="object-contain rounded"
+                />
+              </div>
+              <div className="flex-1">
+                <div className="font-medium">{item.name}</div>
+                <div className="text-xs text-gray-500">
+                  Đơn giá:{" "}
+                  {(item.promotion_price ?? item.price).toLocaleString()}đ
+                </div>
+                <div className="text-xs text-gray-500">
+                  Số lượng: {item.cartQuantity}
+                </div>
+              </div>
+              <div className="font-medium whitespace-nowrap">
+                {(
+                  item.cartQuantity * (item.promotion_price ?? item.price)
+                ).toLocaleString()}
+                đ
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
       <hr className="mb-4" />
       <div className="space-y-3 mb-4">
         <div className="flex justify-between">
           <span>Số lượng sản phẩm</span>
-          <span>{selectedItems.length}</span>
+          <span>
+            {selectedItems.reduce((sum, item) => sum + item.cartQuantity, 0)}
+          </span>
         </div>
         <div className="flex justify-between">
           <span>Tạm tính</span>
