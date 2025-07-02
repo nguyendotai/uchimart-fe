@@ -20,22 +20,19 @@ export default function CheckoutPage() {
   }, []);
 
   return (
-    <div className="w-[1200px] mx-auto py-6 flex flex-col lg:flex-row gap-6">
+    <div className="w-[1000px] mx-auto py-6 flex flex-col lg:flex-row gap-6">
       {/* CỘT TRÁI - THÔNG TIN GIAO HÀNG */}
       <div className="lg:w-[65%] w-full space-y-6">
         <h2 className="font-bold text-3xl">Thanh toán</h2>
         <DeliveryMethod value={deliveryMethod} onChange={setDeliveryMethod} />
         <DeliveryAddress />
-        <DeliveryTime selectedTime={selectedTime} onChange={setSelectedTime} />
+        <DeliveryTime selectedTime={selectedTime} onChange={setSelectedTime} items={items} />
+        <VoucherSelect selectedVoucher={selectedVoucher} onChange={setSelectedVoucher} />
       </div>
 
       {/* CỘT PHẢI - SẢN PHẨM, VOUCHER, ĐẶT HÀNG */}
       <div className="lg:w-[35%] w-full space-y-4 mt-15">
         <OrderItems items={items} />
-        <VoucherSelect selectedVoucher={selectedVoucher} onChange={setSelectedVoucher} />
-        <button className="w-full bg-[#921573] text-white py-3 rounded-full text-lg font-semibold hover:opacity-90">
-          Đặt hàng
-        </button>
       </div>
     </div>
   );

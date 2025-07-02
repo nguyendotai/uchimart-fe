@@ -1,4 +1,3 @@
-// components/VoucherSelect.tsx
 "use client";
 import React, { useState } from "react";
 import VoucherModal from "./VoucherModal";
@@ -10,28 +9,60 @@ type Props = {
 
 export default function VoucherSelect({ selectedVoucher, onChange }: Props) {
   const [open, setOpen] = useState(false);
+  const [input, setInput] = useState("");
+
+  const handleApply = () => {
+    if (input.trim()) {
+      onChange(input.trim());
+      setInput("");
+    }
+  };
 
   return (
     <>
-      <div className="bg-white p-4 rounded shadow">
-        <h2 className="font-medium mb-2">Mã giảm giá</h2>
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-700">
-            {selectedVoucher || "Chưa chọn"}
-          </span>
+      <div className="bg-[#f5f9ff] p-4 rounded-md shadow-sm">
+        {/* Tiêu đề */}
+        <div className="flex justify-between items-center mb-3">
+          <div className="flex items-center gap-2">
+            <span className="w-6 h-6 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
+              4
+            </span>
+            <h2 className="text-sm font-semibold text-gray-800">Chọn khuyến mãi</h2>
+          </div>
           <button
             onClick={() => setOpen(true)}
-            className="text-sm text-blue-600 font-medium"
+            className="text-blue-600 text-sm font-medium"
           >
-            Chọn mã
+            Xem tất cả
+          </button>
+        </div>
+
+        {/* Input mã */}
+        <div className="flex bg-gray-200 rounded overflow-hidden">
+          <input
+            type="text"
+            placeholder="Nhập mã khuyến mãi của bạn tại đây"
+            className="flex-1 px-3 py-2 text-sm bg-gray-50 text-gray-800 outline-none"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <button
+            className="px-4 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition"
+            onClick={handleApply}
+          >
+            Áp dụng
           </button>
         </div>
       </div>
 
+      {/* Modal chọn mã */}
       <VoucherModal
         open={open}
         onClose={() => setOpen(false)}
-        onSelect={(code) => onChange(code)}
+        onSelect={(code) => {
+          onChange(code);
+          setOpen(false);
+        }}
       />
     </>
   );
