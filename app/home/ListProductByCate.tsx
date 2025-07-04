@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import ProductCard from "../UI/ProductCard";
+import ProductCard from "../components/ui/ProductCard";
 import { Category } from "@/app/types/Category";
 import { Product } from "@/app/types/Product";
 import { FaAnglesRight } from "react-icons/fa6";
@@ -74,9 +74,14 @@ const ListProductByCate = () => {
             </div>
 
             <div className="mt-4 flex justify-center">
-              <a href="" className="flex justify-center items-center gap-2 w-[12%] border border-[#921573] bg-white text-[#921573] shadow rounded-2xl p-2 transition-all duration-200 ease-in-out hover:bg-[#921573] hover:text-white">
+              <a
+                href=""
+                className="flex justify-center items-center gap-2 w-[12%] border border-[#921573] bg-white text-[#921573] shadow rounded-2xl p-2 transition-all duration-200 ease-in-out hover:bg-[#921573] hover:text-white"
+              >
                 <span>Xem Thêm</span>
-                <span><FaAnglesRight></FaAnglesRight></span>
+                <span>
+                  <FaAnglesRight></FaAnglesRight>
+                </span>
               </a>
             </div>
             <hr className="text-gray-400 mb-4" />

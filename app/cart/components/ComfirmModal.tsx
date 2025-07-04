@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import ModalPortal from "@/app/components/UI/ModalPortal";
+import ModalPortal from "@/app/components/ui/ModalPortal";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Props = {

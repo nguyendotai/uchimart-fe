@@ -1,8 +1,8 @@
 "use client"
 import "./globals.css";
-import Header from "./components/Header";
-import NavService from "./components/NavService";
-import { ReduxProvider } from "./components/ReduxProvider";
+import Header from "./components/layout/Header";
+import NavService from "./components/layout/NavService";
+import { ReduxProvider } from "./components/layout/ReduxProvider";
 
 export default function RootLayout({
   children,

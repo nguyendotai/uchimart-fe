@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { Product } from "@/app/types/Product";
 import { Brand } from "@/app/types/Brand";
-import ListCategories from "@/app/components/UI/ListCategories";
+import ListCategories from "@/app/components/ui/ListCategories";
 import ProductImages from "@/app/product/[slug]/components/ProductImages";
 import BuyBox from "@/app/product/[slug]/components/BuyBox";
 import ProductInfo from "@/app/product/[slug]/components/ProductInfo";
@@ -11,7 +11,7 @@ import RelatedProducts from "@/app/product/[slug]/components/RelatedProducts";
 import SliderBanner from "@/app/product/[slug]/components/SliderBanner";
 import ListSaleProduct from "@/app/product/[slug]/components/ListSaleProduct";
 import PageTransitionWrapper from "@/app/components/Animation/PageTransitionWrapper";
-import Notification from "@/app/components/UI/Notification";
+import Notification from "@/app/components/ui/Notification";
 import { AiFillCheckCircle } from "react-icons/ai";
 
 const DetailProduct = () => {

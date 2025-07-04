@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
-import Search from "./UI/Search";
+import Search from "../ui/Search";
 import Image from "next/image";
-import UserAccount from "./UI/UserAccount";
-import Cart from "./UI/Cart";
+import UserAccount from "../ui/UserAccount";
+import Cart from "../ui/Cart";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import MainNav from "./UI/MainNav";
-import { mainNavItems } from "../../public/Data/nav";
+import MainNav from "../ui/MainNav";
+import { mainNavItems } from "@/public/Data/nav";
 
 const Header = () => {
   return (

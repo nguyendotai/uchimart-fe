@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import React, { useState, useEffect } from "react";
-import ProductCard from "../UI/ProductCard";
+import ProductCard from "../components/ui/ProductCard";
 import { Product } from "@/app/types/Product";
 import { productCarouselSettings } from "@/app/utils/carouselSettings"; // đường dẫn phù hợp
 

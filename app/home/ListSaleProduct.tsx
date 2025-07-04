@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import ProductCard from "../UI/ProductCard";
+import ProductCard from "../components/ui/ProductCard";
 import { Product } from "@/app/types/Product";
 
 const ListSaleProduct = () => {
@@ -16,8 +16,7 @@ const ListSaleProduct = () => {
         const filtered = products
           .filter(
             (p) =>
-              p.promotion_price !== undefined &&
-              p.promotion_price < p.price
+              p.promotion_price !== undefined && p.promotion_price < p.price
           )
           .slice(0, 10);
         setSaleProducts(filtered);

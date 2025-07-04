@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import ProductCard from "../../components/UI/ProductCard";
+import ProductCard from "../../components/ui/ProductCard";
 import { Product } from "@/app/types/Product";
 
 type Props = {
@@ -39,7 +39,8 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
           case "newest":
             sorted.sort(
               (a, b) =>
-                new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+                new Date(b.created_at).getTime() -
+                new Date(a.created_at).getTime()
             );
             break;
         }
@@ -54,7 +55,10 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
   // Pagination logic
   const totalPages = Math.ceil(allProducts.length / productsPerPage);
   const startIndex = (currentPage - 1) * productsPerPage;
-  const visibleProducts = allProducts.slice(startIndex, startIndex + productsPerPage);
+  const visibleProducts = allProducts.slice(
+    startIndex,
+    startIndex + productsPerPage
+  );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -96,7 +100,6 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
 };
 
 export default CategoryProductPreview;
-
 
 // "use client";
 // import React, { useEffect, useState } from "react";

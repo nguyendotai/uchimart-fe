@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Product } from "@/app/types/Product";
-import ProductCard from "@/app/components/UI/ProductCard"; // chỉnh lại nếu đường dẫn khác
+import ProductCard from "@/app/components/ui/ProductCard"; // chỉnh lại nếu đường dẫn khác
 import { productCarouselSettings } from "@/app/utils/carouselSettings";
 
 export default function ProductSuggestions() {
@@ -28,15 +28,12 @@ export default function ProductSuggestions() {
       <Slider {...productCarouselSettings}>
         {products.map((product) => (
           <div key={product.id} className="px-2">
-            <div
-            className="bg-white shadow rounded-xl p-2 h-full"
-          >
-            <ProductCard product={product} />
+            <div className="bg-white shadow rounded-xl p-2 h-full">
+              <ProductCard product={product} />
+            </div>
           </div>
-          </div>
-          
         ))}
-       </Slider>
+      </Slider>
     </>
   );
 }

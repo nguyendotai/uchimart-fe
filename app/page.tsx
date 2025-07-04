@@ -1,12 +1,12 @@
 "use client";
-import ImageSlider from "./components/UIHome/ImageSlider";
-import ListCategories from "./components/UI/ListCategories";
-import ListCateHome from "./components/UIHome/ListCateHome";
-import TimeFlashSale from "./components/UIHome/TimeFlashSale";
-import ListSaleProduct from "./components/UIHome/ListSaleProduct";
-import BrandHome from "./components/UIHome/BrandHome";
-import ListProduct from "./components/UIHome/ListProduct";
-import ListProductByCate from "./components/UIHome/ListProductByCate";
+import ImageSlider from "./home/ImageSlider";
+import ListCategories from "./components/ui/ListCategories";
+import ListCateHome from "./home/ListCateHome";
+import TimeFlashSale from "./home/TimeFlashSale";
+import ListSaleProduct from "./home/ListSaleProduct";
+import BrandHome from "./home/BrandHome";
+import ListProduct from "./home/ListProduct";
+import ListProductByCate from "./home/ListProductByCate";
 import PageTransitionWrapper from "./components/Animation/PageTransitionWrapper";
 
 export default function Home() {

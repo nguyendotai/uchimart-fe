@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import ListCategories from "../components/UI/ListCategories";
+import ListCategories from "../components/ui/ListCategories";
 import ListSaleProduct from "./components/ListSaleProduct";
 import { Category } from "../types/Category";
 import ListSubCategory from "./components/ListSubCategory";
