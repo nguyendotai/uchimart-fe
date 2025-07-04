@@ -82,14 +82,14 @@ const ProductCard = ({ product }: { product: Product }) => {
       {/* Ảnh */}
       <Link
         href={`/product/${product.slug}`}
-        className="w-full h-[200px] bg-white flex items-center justify-center overflow-hidden"
+        className="w-full h-[150px] bg-white flex items-center justify-center overflow-hidden"
       >
         <Image
           src={product.image}
           alt={product.name}
           width={230}
           height={230}
-          className="w-full h-full object-contain rounded max-w-[230px] max-h-[200px] transition-transform duration-300 ease-in-out group-hover:scale-105"
+          className="w-full h-full object-contain rounded max-w-[200px] max-h-[200px] transition-transform duration-300 ease-in-out group-hover:scale-105"
         />
       </Link>
 

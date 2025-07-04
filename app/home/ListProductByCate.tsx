@@ -50,7 +50,7 @@ const ListProductByCate = () => {
                 <img
                   src={category.imgLarge}
                   alt={category.name}
-                  className="w-full max-h-[360px] object-contain rounded"
+                  className="w-full max-h-[310px] object-contain rounded"
                 />
               </div>
 

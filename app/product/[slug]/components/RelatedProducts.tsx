@@ -15,7 +15,7 @@ const RelatedProducts = ({ currentProduct, allProducts }: Props) => {
         p.category_id === currentProduct.category_id &&
         p.id !== currentProduct.id
     )
-    .slice(0, 4); // Lấy tối đa 4 sản phẩm liên quan
+    .slice(0, 5); // Lấy tối đa 4 sản phẩm liên quan
 
   if (related.length === 0) return null;
 
@@ -28,7 +28,7 @@ const RelatedProducts = ({ currentProduct, allProducts }: Props) => {
         {related.map((product) => (
           <li
             key={product.id}
-            className="bg-white shadow rounded-xl p-2 relative w-[24%]"
+            className="bg-white shadow rounded-xl p-2 relative w-[18.9%]"
           >
             <ProductCard product={product} />
           </li>

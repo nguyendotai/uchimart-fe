@@ -17,7 +17,7 @@ const ListSaleProduct = ({ currentProduct, allProducts }: Props) => {
         p.promotion_price &&
         p.promotion_price < p.price
     )
-    .slice(0, 4);
+    .slice(0, 5);
 
   if (related.length === 0) return null;
 
@@ -30,7 +30,7 @@ const ListSaleProduct = ({ currentProduct, allProducts }: Props) => {
         {related.map((product) => (
           <li
             key={product.id}
-            className="bg-white shadow rounded-xl p-2 relative w-[24%]"
+            className="bg-white shadow rounded-xl p-2 relative w-[18.9%]"
           >
             <ProductCard product={product} />
           </li>
