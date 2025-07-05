@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import ProductCard from "../components/ui_temp/ProductCard";
+import ProductCard from "../components/ui/ProductCard";
 import { Category } from "@/app/types/Category";
 import { Product } from "@/app/types/Product";
 import { FaAnglesRight } from "react-icons/fa6";

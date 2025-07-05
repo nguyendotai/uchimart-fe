@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Product } from "@/app/types/Product";
-import ProductCard from "../../../components/ui_temp/ProductCard";
+import ProductCard from "../../../components/ui/ProductCard";
 
 type Props = {
   currentProduct: Product;

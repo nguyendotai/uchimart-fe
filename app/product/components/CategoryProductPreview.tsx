@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import ProductCard from "../../components/ui_temp/ProductCard";
+import ProductCard from "../../components/ui/ProductCard";
 import { Product } from "@/app/types/Product";
 
 type Props = {

@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Product } from "@/app/types/Product";
-import ProductCard from "@/app/components/ui_temp/ProductCard"; // chỉnh lại nếu đường dẫn khác
+import ProductCard from "@/app/components/ui/ProductCard"; // chỉnh lại nếu đường dẫn khác
 import { productCarouselSettings } from "@/app/utils/carouselSettings";
 
 export default function ProductSuggestions() {

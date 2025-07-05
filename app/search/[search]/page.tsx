@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Product } from "@/app/types/Product";
 import { Category } from "@/app/types/Category";
-import ProductCard from "@/app/components/ui_temp/ProductCard";
+import ProductCard from "@/app/components/ui/ProductCard";
 
 const SearchPage = () => {
   const { search } = useParams();

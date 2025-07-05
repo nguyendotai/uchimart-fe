@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import ModalPortal from "@/app/components/ui_temp/ModalPortal";
+import ModalPortal from "@/app/components/ui/ModalPortal";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Voucher = {

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ProductCard from "@/app/components/ui_temp/ProductCard";
+import ProductCard from "@/app/components/ui/ProductCard";
 import { Product } from "@/app/types/Product";
 import { productCarouselSettings } from "@/app/utils/carouselSettings";
 
