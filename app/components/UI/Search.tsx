@@ -24,7 +24,7 @@ const Search = () => {
         setIndex((prev) => (prev + 1) % placeholderTexts.length);
         setIsVisible(true);
       }, 300);
-    }, 6000);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 

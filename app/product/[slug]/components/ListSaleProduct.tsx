@@ -13,7 +13,6 @@ const ListSaleProduct = ({ currentProduct, allProducts }: Props) => {
     .filter(
       (p) =>
         p.id !== currentProduct.id &&
-        p.category_id === currentProduct.category_id &&
         p.promotion_price &&
         p.promotion_price < p.price
     )
