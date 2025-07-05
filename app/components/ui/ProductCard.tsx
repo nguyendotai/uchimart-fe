@@ -158,7 +158,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <div className="flex gap-2">
           <div className="flex items-center gap-2">
             <span
-              className={`text-xl ${
+              className={`text-[14px] ${
                 product.status === "inStock" ? "text-[#26AA99]" : "text-red-500"
               }`}
             >

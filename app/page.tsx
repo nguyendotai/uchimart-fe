@@ -40,27 +40,29 @@ export default function Home() {
             <div className="w-full">
               <ListSaleProduct></ListSaleProduct>
             </div>
+            <div className="w-full">
+              {/* Brand */}
+              <div className="container mx-auto mt-6 flex justify-between">
+                <span className="w-[35%] bg-white shadow rounded-xl px-4 flex justify-start items-center text-2xl font-semibold">
+                  Duy nhất hôm nay{" "}
+                </span>
+                <div className="w-[59%]">
+                  <BrandHome></BrandHome>
+                </div>
+              </div>
+              <div className="container mx-auto mt-10">
+                <ListProduct></ListProduct>
+              </div>
+              <div className="container mx-auto mt-10 flex justify-center">
+                <span className="w-[50%] bg-white shadow rounded-xl py-2 flex justify-center items-center text-3xl font-semibold text-[#FB5D08]">
+                  Gợi ý hôm nay
+                </span>
+              </div>
+              <div className="container mx-auto mt-6 space-y-4">
+                <ListProductByCate />
+              </div>
+            </div>
           </div>
-        </div>
-        {/* Brand */}
-        <div className="container mx-auto mt-6 flex justify-between">
-          <span className="w-[35%] bg-white shadow rounded-xl px-4 flex justify-start items-center text-2xl font-semibold">
-            Duy nhất hôm nay{" "}
-          </span>
-          <div className="w-[59%]">
-            <BrandHome></BrandHome>
-          </div>
-        </div>
-        <div className="container mx-auto mt-10">
-          <ListProduct></ListProduct>
-        </div>
-        <div className="container mx-auto mt-10 flex justify-center">
-          <span className="w-[50%] bg-white shadow rounded-xl py-2 flex justify-center items-center text-3xl font-semibold text-[#FB5D08]">
-            Gợi ý hôm nay
-          </span>
-        </div>
-        <div className="container mx-auto mt-6 space-y-4">
-          <ListProductByCate />
         </div>
       </div>
     </PageTransitionWrapper>
