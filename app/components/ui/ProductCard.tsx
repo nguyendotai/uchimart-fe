@@ -172,9 +172,9 @@ const ProductCard = ({ product }: { product: Product }) => {
               {product.status === "inStock" ? "Còn hàng" : "Hết hàng"}
             </span>
           </div>
-          <div className="flex justify-center items-center text-[#999999]">
+          <div className="flex justify-center items-center text-[#999999] text-[10px]">
             <GoDotFill />
-            <span className="text-[12px]">{product.deliveryTime}</span>
+            <span className="text-[10px]">{product.deliveryTime}</span>
           </div>
         </div>
       </div>

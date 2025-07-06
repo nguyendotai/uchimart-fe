@@ -1,13 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import ProductCard from "../components/ui/ProductCard";
 import { Category } from "@/app/types/Category";
 import { Product } from "@/app/types/Product";
-import { FaAnglesRight } from "react-icons/fa6";
+import { productCarouselSettings } from "@/app/utils/carouselSettings"; // đường dẫn phù hợp
 
 const ListProductByCate = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [pageMap, setPageMap] = useState<{ [key: number]: number }>({});
 
   useEffect(() => {
     fetch("/data/categories.json")
@@ -39,52 +43,49 @@ const ListProductByCate = () => {
         );
         if (filteredProducts.length === 0) return null;
 
-        const productsToShow = filteredProducts.slice(0, 12);
-        const firstRowProducts = productsToShow.slice(0, 4);
-        const secondRowProducts = productsToShow.slice(3, 8);
+        const currentPage = pageMap[category.id] || 0;
+        const startIndex = currentPage * 6;
+        const visibleProducts = filteredProducts.slice(
+          startIndex,
+          startIndex + 6
+        );
 
         return (
-          <div key={category.id} className="w-full rounded-md space-y-4 ">
-            <div className="grid grid-rows-2 grid-cols-5 gap-4">
-              <div className="row-start-1 col-span-2 bg-amber-200 rounded overflow-hidden relative flex items-center justify-center">
+          <div key={category.id} className="w-full space-y-4">
+            {/* Banner nằm trên */}
+            <div className="w-full h-[120px] rounded-lg overflow-hidden relative bg-[#DFF1FB]">
+              {/* Trái: ảnh danh mục */}
+              <div className="w-[40%]">
                 <img
                   src={category.imgLarge}
                   alt={category.name}
-                  className="w-full max-h-[310px] object-contain rounded"
+                  className="w-full h-[120px] object-cover rounded"
                 />
               </div>
-
-              {firstRowProducts.map((product) => (
-                <div
-                  key={product.id}
-                  className="row-start-1 bg-white shadow rounded-xl p-2"
-                >
-                  <ProductCard product={product} />
-                </div>
-              ))}
-
-              {secondRowProducts.map((product) => (
-                <div
-                  key={product.id}
-                  className="row-start-2 bg-white shadow rounded-xl p-2"
-                >
-                  <ProductCard product={product} />
-                </div>
-              ))}
+              <div className="w-[60%]"></div>
             </div>
 
-            <div className="mt-4 flex justify-center">
-              <a
-                href=""
-                className="flex justify-center items-center gap-2 w-[12%] border border-[#921573] bg-white text-[#921573] shadow rounded-2xl p-2 transition-all duration-200 ease-in-out hover:bg-[#921573] hover:text-white"
-              >
-                <span>Xem Thêm</span>
-                <span>
-                  <FaAnglesRight></FaAnglesRight>
-                </span>
+            {/* Danh sách sản phẩm */}
+            <Slider {...productCarouselSettings}>
+              {visibleProducts.map((product) => (
+                <div key={product.id} className="px-2">
+                  <div
+                    className="bg-white shadow rounded-xl p-2 h-full"
+                  >
+                    <ProductCard product={product} />
+                  </div>
+                </div>
+              ))}
+            </Slider>
+
+            {/* Nút Xem tất cả */}
+            <div className="flex justify-center mt-2">
+              <a href="#" className="text-blue-600 hover:underline font-medium">
+                Xem tất cả
               </a>
             </div>
-            <hr className="text-gray-400 mb-4" />
+
+            <hr className="border-gray-300 mt-4" />
           </div>
         );
       })}
