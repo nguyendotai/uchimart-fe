@@ -72,7 +72,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
       {/* sale */}
       {hasSale && (
-        <div className="absolute top-[-7px] left-[-8px] z-10 overflow-hidden">
+        <div className="absolute top-[-8xpx] left-[-8px] z-10 overflow-hidden">
           <div className="w-[80px] h-5 bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center rounded-tl-md rounded-br-md shadow">
             GIẢM {discount}%
           </div>
@@ -144,37 +144,25 @@ const ProductCard = ({ product }: { product: Product }) => {
           )}
         </div>
 
-        <div className="flex justify-between items-center">
-          <div className="flex justify-between w-[35%] p-1 text-amber-300">
-            {[...Array(5)].map((_, i) => (
-              <FaStar key={i} />
-            ))}
-          </div>
-          <div className="p-1 w-[49%] text-[14px] font-normal flex justify-end">
-            Đã bán {product.quantity}
-          </div>
-        </div>
-
-        <div className="flex gap-2">
-          <div className="flex items-center gap-2">
+        <div className="flex gap-2 items-center text-[14px]">
+          {/* Trạng thái còn hàng / hết hàng */}
+          <div className="flex items-center gap-1 text-[#26AA99]">
             <span
-              className={`text-[14px] ${
-                product.status === "inStock" ? "text-[#26AA99]" : "text-red-500"
-              }`}
+              className={`${product.status !== "inStock" && "text-red-500"}`}
             >
               <MdEventAvailable />
             </span>
             <span
-              className={`text-[14px] ${
-                product.status === "inStock" ? "text-[#26AA99]" : "text-red-500"
-              }`}
+              className={`${product.status !== "inStock" && "text-red-500"}`}
             >
               {product.status === "inStock" ? "Còn hàng" : "Hết hàng"}
             </span>
           </div>
-          <div className="flex justify-center items-center text-[#999999] text-[10px]">
-            <GoDotFill />
-            <span className="text-[10px]">{product.deliveryTime}</span>
+
+          {/* Đã bán */}
+          <div className="flex items-center gap-1 text-gray-500">
+            <GoDotFill className="text-[8px]" />
+            <span className="text-[12px]">Đã bán {product.sold}</span>
           </div>
         </div>
       </div>
