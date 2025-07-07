@@ -58,7 +58,7 @@ const DetailProduct = () => {
       <div className="w-full">
         <div className="container mx-auto mt-2 flex justify-between">
           {/* Sidebar */}
-          <div className="w-[17%] bg-white shadow rounded-xl p-2 sticky top-32 self-start">
+          <div className="w-[17%] bg-white shadow rounded-xl p-2 sticky top-45 self-start">
             <ListCategories />
           </div>
 
