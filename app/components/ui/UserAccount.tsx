@@ -27,7 +27,7 @@ export default function UserAccount() {
             <FaUser className="text-2xl shrink-0 text-[#921573]" />
           </div>
 
-          <span className="text-sm font-medium truncate">Đăng nhập</span>
+          <a href="./login"><span className="text-sm font-medium truncate">Đăng nhập</span></a>
         </div>
       ) : (
         <div className="flex items-center gap-3 w-full min-w-0">
