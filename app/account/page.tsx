@@ -1,4 +1,5 @@
 "use client";
+import Link from 'next/link';
 import React from 'react';
 import { FaChevronRight, FaClipboardList, FaTicketAlt } from "react-icons/fa";
 import { FaBookBookmark } from 'react-icons/fa6';
@@ -81,17 +82,17 @@ const Account = () => {
 
                         {/* <!-- row3 --> */}
                         <div className="w-full flex justify-between mb-7">
-                            <div className="w-[48%] px-5 py-2 bg-white rounded-[5px] cursor-pointer">
+                            <Link href="/addressBook" className="w-[48%] px-5 py-2 bg-white rounded-[5px] cursor-pointer">
                                 <div className="flex items-center justify-between">
-                                    <div className="flex items-center justify-center">
-                                        <FaBookBookmark className=' text-xl' />
+                                        <div className="flex items-center justify-center">
+                                            <FaBookBookmark className=' text-xl' />
+                                            <p className="p-2 text-[rgb(45,55,72)]">Sổ địa chỉ</p>
+                                        </div>
 
-                                        <p className="p-2 text-[rgb(45,55,72)]">Sổ địa chỉ</p>
-                                    </div>
                                     <FaChevronRight className=' text-xl' />
 
                                 </div>
-                            </div>
+                            </Link>
 
 
                             <div className="w-[48%] px-5 py-2 bg-white rounded-[5px] cursor-pointer">
