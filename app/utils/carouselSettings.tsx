@@ -49,5 +49,5 @@ export const productCarouselSettings = {
   prevArrow: <PrevArrow />,
   nextArrow: <NextArrow />,
   autoplay: true,
-  autoplaySpeed: 3000,
+  autoplaySpeed: 6000,
 };
