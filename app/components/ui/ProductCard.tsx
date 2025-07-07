@@ -72,7 +72,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
       {/* sale */}
       {hasSale && (
-        <div className="absolute top-[-8xpx] left-[-8px] z-10 overflow-hidden">
+        <div className="absolute top-[-9px] left-[-8px] z-10 overflow-hidden">
           <div className="w-[80px] h-5 bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center rounded-tl-md rounded-br-md shadow">
             GIẢM {discount}%
           </div>

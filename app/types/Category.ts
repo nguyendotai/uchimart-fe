@@ -6,9 +6,9 @@ export interface Category {
   description: string;
 }
 
-export interface CategoryChild{
+export interface CategoryChild {
   id: number;
   name: string;
-  image: string;
-  categoryId: string;
+  category_id: number;
 }
+

@@ -17,10 +17,12 @@ export default function Home() {
         {/* <div className="container mx-auto mt-2">
           <ImageSlider />
         </div> */}
-        <div className="container mx-auto mt-2 flex justify-between">
+        <div className="container mx-auto mt-2 flex justify-between relative overflow-visible">
           {/* SideBar */}
-          <div className="w-[17%] bg-white shadow rounded-xl p-2 sticky top-45 self-start">
-            <ListCategories />
+          <div className="w-[17%] relative z-10 overflow-visible">
+            <div className="bg-white shadow rounded-xl p-2 sticky top-45 self-start">
+              <ListCategories />
+            </div>
           </div>
 
           <div className="w-[82%]">

@@ -1,98 +1,182 @@
 [
   {
-    "id": 1,
-    "name": "Sữa, bơ, phô mai",
-    "image": "/images/milk.png",
-    "imgLarge": "/image.png"
+    "id": 101,
+    "name": "Sữa tươi",
+    "category_id": 1
   },
   {
-    "id": 2,
-    "name": "Rau - Củ - Trái cây",
-    "image": "/images/vegetables.png",
-    "imgLarge": "/image.png"
+    "id": 102,
+    "name": "Sữa đặc",
+    "category_id": 1
   },
   {
-    "id": 3,
-    "name": "Chăm sóc cá nhân",
-    "image": "/images/personal-care.png",
-    "imgLarge": "/image.png"
+    "id": 103,
+    "name": "Phô mai",
+    "category_id": 1
   },
   {
-    "id": 4,
-    "name": "Thịt, cá, trứng, hải sản",
-    "image": "/images/meat.png",
-    "imgLarge": "/image.png"
+    "id": 201,
+    "name": "Rau xanh",
+    "category_id": 2
   },
   {
-    "id": 5,
-    "name": "Bánh kẹo",
-    "image": "/images/snacks.png",
-    "imgLarge": "/image.png"
+    "id": 202,
+    "name": "Củ quả",
+    "category_id": 2
   },
   {
-    "id": 6,
-    "name": "Đồ uống có cồn",
-    "image": "/images/alcohol.png",
-    "imgLarge": "/image.png"
+    "id": 203,
+    "name": "Trái cây nhập khẩu",
+    "category_id": 2
   },
   {
-    "id": 7,
-    "name": "Đồ uống giải khát",
-    "image": "/images/soft-drinks.png",
-    "imgLarge": "/image.png"
+    "id": 301,
+    "name": "Dầu gội",
+    "category_id": 3
   },
   {
-    "id": 8,
-    "name": "Mì ăn liền",
-    "image": "/images/instant-noodles.png",
-    "imgLarge": "/image.png"
+    "id": 302,
+    "name": "Sữa tắm",
+    "category_id": 3
   },
   {
-    "id": 9,
-    "name": "Thực phẩm khô",
-    "image": "/images/dry-food.png",
-    "imgLarge": "/image.png"
+    "id": 401,
+    "name": "Thịt bò",
+    "category_id": 4
   },
   {
-    "id": 10,
-    "name": "Thực phẩm đông lạnh",
-    "image": "/images/frozen-food.png",
-    "imgLarge": "/image.png"
+    "id": 402,
+    "name": "Cá biển",
+    "category_id": 4
   },
   {
-    "id": 11,
-    "name": "Trứng - Đậu hũ",
-    "image": "/images/eggs-tofu.png",
-    "imgLarge": "/image.png"
+    "id": 403,
+    "name": "Trứng gà",
+    "category_id": 4
   },
   {
-    "id": 12,
-    "name": "Chăm sóc bé",
-    "image": "/images/baby-care.png",
-    "imgLarge": "/image.png"
+    "id": 501,
+    "name": "Bánh quy",
+    "category_id": 5
   },
   {
-    "id": 13,
-    "name": "Đồ dùng gia đình",
-    "image": "/images/home-tools.png",
-    "imgLarge": "/image.png"
+    "id": 502,
+    "name": "Kẹo dẻo",
+    "category_id": 5
   },
   {
-    "id": 14,
-    "name": "Gia vị",
-    "image": "/images/spices.png",
-    "imgLarge": ""
+    "id": 503,
+    "name": "Socola",
+    "category_id": 5
   },
   {
-    "id": 15,
-    "name": "Hóa phẩm - Tẩy rửa",
-    "image": "/images/cleaning.png",
-    "imgLarge": "/image.png"
+    "id": 601,
+    "name": "Bia",
+    "category_id": 6
   },
   {
-    "id": 16,
-    "name": "Thực phẩm chế biến",
-    "image": "/images/processed-food.png",
-    "imgLarge": "/image.png"
+    "id": 602,
+    "name": "Rượu vang",
+    "category_id": 6
+  },
+  {
+    "id": 701,
+    "name": "Nước ép",
+    "category_id": 7
+  },
+  {
+    "id": 702,
+    "name": "Nước ngọt có gas",
+    "category_id": 7
+  },
+  {
+    "id": 801,
+    "name": "Mì cay Hàn Quốc",
+    "category_id": 8
+  },
+  {
+    "id": 802,
+    "name": "Mì ly",
+    "category_id": 8
+  },
+  {
+    "id": 901,
+    "name": "Gạo",
+    "category_id": 9
+  },
+  {
+    "id": 902,
+    "name": "Rong biển",
+    "category_id": 9
+  },
+  {
+    "id": 1001,
+    "name": "Hải sản đông lạnh",
+    "category_id": 10
+  },
+  {
+    "id": 1002,
+    "name": "Pizza đông lạnh",
+    "category_id": 10
+  },
+  {
+    "id": 1101,
+    "name": "Trứng gà ta",
+    "category_id": 11
+  },
+  {
+    "id": 1102,
+    "name": "Đậu hũ non",
+    "category_id": 11
+  },
+  {
+    "id": 1201,
+    "name": "Tã giấy",
+    "category_id": 12
+  },
+  {
+    "id": 1202,
+    "name": "Sữa bột",
+    "category_id": 12
+  },
+  {
+    "id": 1301,
+    "name": "Dụng cụ nhà bếp",
+    "category_id": 13
+  },
+  {
+    "id": 1302,
+    "name": "Đồ dọn dẹp",
+    "category_id": 13
+  },
+  {
+    "id": 1401,
+    "name": "Nước mắm",
+    "category_id": 14
+  },
+  {
+    "id": 1402,
+    "name": "Bột canh",
+    "category_id": 14
+  },
+  {
+    "id": 1501,
+    "name": "Nước lau sàn",
+    "category_id": 15
+  },
+  {
+    "id": 1502,
+    "name": "Nước giặt",
+    "category_id": 15
+  },
+  {
+    "id": 1601,
+    "name": "Xúc xích",
+    "category_id": 16
+  },
+  {
+    "id": 1602,
+    "name": "Thịt nguội",
+    "category_id": 16
   }
 ]

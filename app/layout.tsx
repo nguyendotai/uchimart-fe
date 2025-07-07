@@ -14,7 +14,7 @@ export default function RootLayout({
       <body className="flex flex-col min-h-screen font-sans bg-gray-100 text-gray-800">
         <ReduxProvider>
           {/* Header */}
-          <header className="fixed top-0 left-0 right-0 px-4 bg-[efefefef] z-100">
+          <header className="fixed top-0 left-0 right-0 px-4 bg-[efefefef] z-40">
             <Header></Header>
           </header>
 
@@ -23,7 +23,7 @@ export default function RootLayout({
           </nav>
 
           {/* Main */}
-          <main className="flex-1 container mx-auto pt-[185px] py-2 bg-[#efefefef]">
+          <main className="flex-1 container mx-auto pt-[180px] py-2 bg-[#efefefef]">
             {children}
           </main>
 
