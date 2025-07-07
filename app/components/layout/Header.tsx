@@ -7,6 +7,7 @@ import Cart from "../ui/Cart";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import MainNav from "../ui/MainNav";
 import { mainNavItems } from "@/public/Data/nav";
+import Link from "next/link";
 
 const Header = () => {
   return (
@@ -14,9 +15,9 @@ const Header = () => {
       {/* --- Mobile layout (<768px) --- */}
       <div className="flex sm:hidden items-center justify-between py-3">
         {/* Logo */}
-        <a href="/" className="relative w-[100px] h-[40px]">
+        <Link href="/" className="relative w-[100px] h-[40px]">
           <Image src="/logo.png" alt="Logo" fill className="object-contain" />
-        </a>
+        </Link>
 
         {/* User + Cart */}
         <div className="flex gap-4 items-center">
@@ -28,9 +29,9 @@ const Header = () => {
       {/* --- Tablet & Desktop layout (≥768px) --- */}
       <div className="hidden sm:flex justify-between items-center pt-4 pb-2 gap-4">
         {/* Logo */}
-        <a className="relative w-full h-[60px] flex-[2]" href="/">
+        <Link className="relative w-full h-[60px] flex-[2]" href="/">
           <Image src="/logo.png" alt="Ảnh" fill className="object-contain" />
-        </a>
+        </Link>
 
         {/* Search + Nav */}
         <div className="flex-[5] flex flex-col gap-6">

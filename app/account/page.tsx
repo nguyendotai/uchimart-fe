@@ -95,7 +95,7 @@ const Account = () => {
                             </Link>
 
 
-                            <div className="w-[48%] px-5 py-2 bg-white rounded-[5px] cursor-pointer">
+                            <Link href="/clause" className="w-[48%] px-5 py-2 bg-white rounded-[5px] cursor-pointer">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center justify-center">
                                         <IoDocument className=' text-xl' />
@@ -105,7 +105,7 @@ const Account = () => {
                                     <FaChevronRight className=' text-xl' />
 
                                 </div>
-                            </div>
+                            </Link>
                         </div>
 
 
