@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React, { useRef } from "react";
 import { FaHome } from "react-icons/fa";
 
@@ -41,7 +42,7 @@ const LoginOTP = () => {
                 <div className="w-full rounded-[10px] max-w-[45%] bg-white">
                     <div className="p-4 mb-10">
                         <div className="w-[8%] border-2 border-[#921573] rounded-full flex items-center justify-center cursor-pointer p-3">
-                            <a href="/"><FaHome className="  text-2xl text-[#C7C7C7] " /></a>
+                            <Link href="/"><FaHome className="  text-2xl text-[#C7C7C7] " /></Link>
                         </div>
 
                         <div className="flex flex-col items-center space-y-4 mb-10">
@@ -49,9 +50,9 @@ const LoginOTP = () => {
                             <p className="text-center">
                                 Nhập mã gồm 6 chữ số đã gửi đến số điện thoại <br />
                                 <span className="font-bold">0338047406</span>{" "}
-                                <a href="/login" className="text-blue-600 underline">
+                                <Link href="/login" className="text-blue-600 underline">
                                     đổi số điện thoại
-                                </a>
+                                </Link>
                             </p>
 
                             {/* Các ô nhập mã */}
@@ -81,15 +82,15 @@ const LoginOTP = () => {
 
                         <p className="text-center mb-5">
                             Bạn chưa nhận được?{" "}
-                            <a href="#" className="text-blue-600">
+                            <Link href="#" className="text-blue-600">
                                 Gửi lại
-                            </a>
+                            </Link>
                         </p>
                         <p className="text-center">
                             Hoặc chọn{" "}
-                            <a href="#" className="text-blue-600">
+                            <Link href="#" className="text-blue-600">
                                 Nhận qua Zalo
-                            </a>
+                            </Link>
                         </p>
                     </div>
                 </div>

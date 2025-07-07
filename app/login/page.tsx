@@ -1,4 +1,5 @@
 "use client";
+import Link from 'next/link';
 import React, { useState } from 'react';
 import { FaHome } from "react-icons/fa";
 
@@ -12,7 +13,7 @@ const Login = () => {
         <div className="w-full rounded-[10px] max-w-[50%] bg-white">
           <div className="p-4">
             <div className="w-[8%] border-2 border-[#921573] rounded-full flex items-center justify-center cursor-pointer p-3">
-                <a href="/"><FaHome className="  text-2xl text-[#C7C7C7] " /></a>
+                <Link href="/"><FaHome className="  text-2xl text-[#C7C7C7] " /></Link>
             </div>
 
             <div className="w-full mb-10">
@@ -38,7 +39,7 @@ const Login = () => {
               type="button"
               className="mx-auto w-[50%] flex items-center justify-center bg-[#EDF2F6] rounded-[10px] cursor-pointer mb-4"
             >
-              <a href="/login-otp" className='w-full p-4 text-center'><span className="">Tiếp tục</span></a>
+              <Link href="/login-otp" className='w-full p-4 text-center'><span className="">Tiếp tục</span></Link>
             </button>
 
             <div className="w-[95%] mx-auto flex items-center">

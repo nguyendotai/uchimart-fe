@@ -3,6 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { FaUser } from "react-icons/fa";
 import { User } from "@/app/types/User";
+import Link from "next/link";
 
 export default function UserAccount() {
   const [user, setUser] = useState<User | null>(null);
@@ -27,21 +28,25 @@ export default function UserAccount() {
             <FaUser className="text-2xl shrink-0 text-[#921573]" />
           </div>
 
-          <a href="./login"><span className="text-sm font-medium truncate">Đăng nhập</span></a>
+          <Link href="/login"><span className="text-sm font-medium truncate">Đăng nhập</span></Link>
         </div>
       ) : (
         <div className="flex items-center gap-3 w-full min-w-0">
           <div className="w-10 h-10 relative rounded-full overflow-hidden border border-gray-300 shrink-0">
+            <Link href="/account">
             <Image
               src={user.avatar}
               alt="User avatar"
               fill
               className="object-cover"
             />
+            </Link>
           </div>
           <div className="flex flex-col overflow-hidden">
+            <Link href="/account" className="flex flex-col overflow-hidden">
             <span className="text-sm font-semibold truncate">{user.name}</span>
             <span className="text-xs text-gray-500 truncate">{user.email}</span>
+            </Link>
           </div>
         </div>
       )}
