@@ -24,7 +24,7 @@ const ListSaleProduct = ({ categoryId }: Props) => {
               p.price > p.promotion_price &&
               p.category_id === categoryId
           )
-          .slice(0, 5);
+          .slice(0, 6);
         setSaleProducts(filtered);
       })
       .catch((err) => console.error("Lỗi tải dữ liệu:", err));
@@ -39,7 +39,7 @@ const ListSaleProduct = ({ categoryId }: Props) => {
         {saleProducts.map((product) => (
           <div
             key={product.id}
-            className="w-[18.7%] bg-white shadow rounded-xl p-2"
+            className="w-[15.5%] bg-white shadow rounded-xl p-2"
           >
             <ProductCard product={product} />
           </div>

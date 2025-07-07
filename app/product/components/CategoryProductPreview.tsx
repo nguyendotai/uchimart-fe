@@ -66,14 +66,11 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
 
   return (
     <div className="mb-6">
-      <ul className="flex flex-wrap gap-4">
+      <ul className="grid grid-cols-6 gap-4">
         {visibleProducts.map((product) => (
           <li
             key={product.id}
-            className="bg-white shadow rounded-xl p-2 relative 
-                       flex-[1_1_calc(16.66%-1rem)] 
-                       max-w-[calc(16.66%-1rem)] 
-                       min-h-[320px] flex flex-col"
+            className="bg-white shadow rounded-xl p-2 flex flex-col"
           >
             <ProductCard product={product} />
           </li>
