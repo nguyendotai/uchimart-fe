@@ -59,14 +59,14 @@ const Account = () => {
                             </Link>
 
                             {/* <!-- Voucher --> */}
-                            <div className="w-[30%] p-5 bg-white rounded-[5px] cursor-pointer">
+                            <Link href="/voucher" className="w-[30%] p-5 bg-white rounded-[5px] cursor-pointer">
                                 <div className="flex items-center">
 
                                     <FaTicketAlt className=' text-2xl text-[#921573c2]' />
 
                                     <p className="p-2 font-medium text-[rgb(45,55,72)]">Voucher</p>
                                 </div>
-                            </div>
+                            </Link>
 
                             {/* <!-- Gopoint --> */}
                             <div className="w-[30%] p-5 bg-white rounded-[5px] cursor-pointer">
