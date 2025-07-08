@@ -1,6 +1,7 @@
 "use client";
 import Link from 'next/link';
 import React from 'react';
+import Image from 'next/image';
 import { FaChevronRight, FaClipboardList, FaTicketAlt } from "react-icons/fa";
 import { FaBookBookmark } from 'react-icons/fa6';
 import { IoCard, IoDocument } from 'react-icons/io5';
@@ -8,7 +9,7 @@ import { MdOutlineSecurity } from 'react-icons/md';
 const Account = () => {
     return (
         <div>
-            <main className="my-[100px]">
+            <main className="my-[50px]">
                 <div className="w-[80%] mx-auto flex justify-between ">
                     {/* <!-- info right --> */}
                     <div className="w-[70%]">
@@ -16,8 +17,8 @@ const Account = () => {
                         <div className="w-full flex justify-between mb-7">
                             <div className="w-[48%] flex bg-white rounded-[5px] items-center ">
                                 <div className=" w-[48%] ml-5  flex  items-center justify-between ">
-                                    <img className="w-[80px] h-[80px] rounded-full object-cover cursor-pointer"
-                                        src="/img/avt1.jpg" alt="" />
+                                    <Image className="w-[80px] h-[80px] rounded-full object-cover cursor-pointer"
+                                        src="/img/avt1.jpg" alt="" width={80} height={80} />
                                     <p className=" text-3xl font-bold cursor-pointer">Tuaneli</p>
                                 </div>
                             </div>
@@ -49,14 +50,13 @@ const Account = () => {
                         {/* <!-- row2 --> */}
                         <div className="w-full flex justify-between mb-7">
                             {/* <!-- Đơn hàng --> */}
-                            <div className="w-[30%] p-5 bg-white rounded-[5px] cursor-pointer">
+                            <Link href="/order" className="w-[30%] p-5 bg-white rounded-[5px] cursor-pointer">
                                 <div className="flex items-center">
 
-                                    {/* <i className="fa-regular fa-file-lines p-1 text-xl text-[#327FF6]"></i> */}
                                     <FaClipboardList className=' text-2xl text-[#327FF6]' />
                                     <p className="p-2 font-medium text-[rgb(45,55,72)]">Đơn hàng</p>
                                 </div>
-                            </div>
+                            </Link>
 
                             {/* <!-- Voucher --> */}
                             <div className="w-[30%] p-5 bg-white rounded-[5px] cursor-pointer">
