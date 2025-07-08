@@ -60,15 +60,11 @@ const SearchPage = () => {
             ))}
           </div>
 
-          <div className="flex flex-wrap gap-4">
+          <div className="grid grid-cols-6 gap-4">
             {matchedProducts.map((product) => (
               <div
                 key={product.id}
-                className="bg-white p-2 rounded shadow 
-        flex-[1_1_calc(16%-1rem)] 
-        max-w-[calc(17%-1rem)] 
-        min-h-[320px] 
-        flex flex-col"
+                className="bg-white shadow rounded-xl p-2 flex flex-col"
               >
                 <ProductCard product={product} />
               </div>
