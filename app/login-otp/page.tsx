@@ -1,12 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaHome } from "react-icons/fa";
+import { useRouter } from 'next/navigation';
+
 
 const LoginOTP = () => {
+    const router = useRouter(); // ✅ đây là hook
+
     // Mảng ref cho 6 ô input
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+    const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
+
 
     // Khi người dùng nhập vào 1 ô
     const handleChange = (
@@ -15,8 +22,11 @@ const LoginOTP = () => {
     ) => {
         const value = e.target.value;
 
-        // Chỉ nhận số
         if (/^[0-9]$/.test(value)) {
+            const newOtp = [...otp];
+            newOtp[index] = value;
+            setOtp(newOtp);
+
             if (inputRefs.current[index + 1]) {
                 inputRefs.current[index + 1]?.focus();
             }
@@ -24,6 +34,28 @@ const LoginOTP = () => {
             e.target.value = "";
         }
     };
+
+
+    const handleVerifyOTP = async () => {
+        const fullOTP = otp.join('');
+
+        if (!window.confirmationResult) {
+            alert("⚠️ Vui lòng nhập số điện thoại trước.");
+            router.push("/login");
+            return;
+        }
+
+        try {
+            await window.confirmationResult.confirm(fullOTP);
+            router.push('/'); // 👉 chuyển đến trang sau khi đăng nhập
+        } catch (error) {
+            console.error('❌ Lỗi xác thực OTP:', error);
+            alert('❌ Mã OTP không đúng!');
+        }
+    };
+
+
+
 
     // Khi nhấn phím (xử lý backspace)
     const handleKeyDown = (
@@ -36,6 +68,11 @@ const LoginOTP = () => {
             }
         }
     };
+
+
+    useEffect(() => {
+        inputRefs.current[0]?.focus();
+    }, []);
     return (
         <main className="flex flex-1 flex-col">
             <div className="flex min-h-screen items-center justify-center bg-[#F5F5FA]">
@@ -75,7 +112,7 @@ const LoginOTP = () => {
 
                         <button
                             type="button"
-                            className="mx-auto w-[30%] flex items-center justify-center text-[#F5F5FA] bg-[#327FF6] rounded-[10px] cursor-pointer mb-4"
+                            className="mx-auto w-[30%] flex items-center justify-center text-[#F5F5FA] bg-[#327FF6] rounded-[10px] cursor-pointer mb-4" onClick={handleVerifyOTP}
                         >
                             <span className="w-full p-4 text-center">Xác nhận</span>
                         </button>

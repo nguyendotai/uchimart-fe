@@ -54,7 +54,6 @@ const Login = () => {
         appVerifier
       );
       window.confirmationResult = confirmationResult;
-      alert('✅ Đã gửi OTP thành công!');
        router.push('/login-otp');
     } catch (error) {
       console.error("Lỗi gửi OTP:", error);
