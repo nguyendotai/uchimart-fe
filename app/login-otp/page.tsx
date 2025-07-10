@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import { FaHome } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
 
 
@@ -78,11 +77,9 @@ const LoginOTP = () => {
             <div className="flex min-h-screen items-center justify-center bg-[#F5F5FA]">
                 <div className="w-full rounded-[10px] max-w-[45%] bg-white">
                     <div className="p-4 mb-10">
-                        <div className="w-[8%] border-2 border-[#921573] rounded-full flex items-center justify-center cursor-pointer p-3">
-                            <Link href="/"><FaHome className="  text-2xl text-[#C7C7C7] " /></Link>
-                        </div>
+                        
 
-                        <div className="flex flex-col items-center space-y-4 mb-10">
+                        <div className="flex flex-col items-center space-y-4 mb-10 pt-10">
                             <h2 className="text-2xl font-bold">Nhập mã OTP</h2>
                             <p className="text-center">
                                 Nhập mã gồm 6 chữ số đã gửi đến số điện thoại <br />
@@ -123,12 +120,7 @@ const LoginOTP = () => {
                                 Gửi lại
                             </Link>
                         </p>
-                        <p className="text-center">
-                            Hoặc chọn{" "}
-                            <Link href="#" className="text-blue-600">
-                                Nhận qua Zalo
-                            </Link>
-                        </p>
+                        
                     </div>
                 </div>
             </div>

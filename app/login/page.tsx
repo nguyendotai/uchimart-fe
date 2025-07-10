@@ -3,7 +3,8 @@ import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { FaHome } from "react-icons/fa";
 import firebase from "../firebase/firebase";
-import {useRouter}  from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { FcGoogle } from 'react-icons/fc';
 
 
 // 👇 Gắn kiểu rõ ràng cho window
@@ -17,21 +18,21 @@ declare global {
 const Login = () => {
   const router = useRouter(); // ✅ đây là hook
   // const [phone, setPhone] = useState('');
-  // const [agree, setAgree] = useState(false);
+  const [agree, setAgree] = useState(false);
 
   const [phoneNumber, setPhoneNumber] = useState<string>('');
 
   const setupRecaptcha = (): void => {
-  if (typeof window !== "undefined" && !window.recaptchaVerifier) {
-    const recaptchaElement = document.getElementById("sign-in-button");
-    if (recaptchaElement) {
-      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', {
-        size: 'invisible',
-        defaultCountry: "VN",
-      });
+    if (typeof window !== "undefined" && !window.recaptchaVerifier) {
+      const recaptchaElement = document.getElementById("sign-in-button");
+      if (recaptchaElement) {
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', {
+          size: 'invisible',
+          defaultCountry: "VN",
+        });
+      }
     }
-  }
-};
+  };
 
 
   const formatPhoneNumber = (number: string): string => {
@@ -54,7 +55,7 @@ const Login = () => {
         appVerifier
       );
       window.confirmationResult = confirmationResult;
-       router.push('/login-otp');
+      router.push('/login-otp');
     } catch (error) {
       console.error("Lỗi gửi OTP:", error);
       alert("❌ Gửi OTP thất bại!");
@@ -69,62 +70,87 @@ const Login = () => {
 
   return (
     <div>
-      <main className="flex flex-1 flex-col">
+      <main className="flex flex-1 flex-col ">
+
         <div className="flex min-h-screen items-center justify-center bg-[#F5F5FA]">
-          <div className="w-full rounded-[10px] max-w-[50%] bg-white">
-            <div className="p-4">
-              <div className="w-[8%] border-2 border-[#921573] rounded-full flex items-center justify-center cursor-pointer p-3">
-                <Link href="/"><FaHome className="  text-2xl text-[#C7C7C7] " /></Link>
+          <div className="w-full rounded-[10px] max-w-[75%] bg-white flex justify-between overflow-hidden">
+            <div className="w-[50%]">
+              <div className='p-4'>
+                <div className="w-[8%] border-2 border-[#921573] rounded-full flex items-center justify-center cursor-pointer px-3 py-2  mb-20">
+                  <Link href="/"><FaHome className="fa-solid fa-house  text-2xl text-[#921573] rounded-full"></FaHome></Link>
+                </div>
               </div>
 
-              <div className="w-full mb-10">
-                <img className="mx-auto w-[50%]" src="/logo.png" alt="Logo" />
-              </div>
+              <div className="flex items-center ">
+                <div className="w-[70%] mx-auto text-center">
+                  <div className=" w-[80%] mx-auto mb-4">
+                    <img src="./img/logo2.png" alt="" className="mx-auto" />
+                  </div>
 
-              <div className="text-center mb-4">Mời bạn nhập số điện thoại</div>
+                  <div className="mb-5">Mời bạn nhập số điện thoại</div>
 
-              <div className="text-center mb-4">
-                <input
-                  type="tel"
-                  placeholder="Nhập số điện thoại"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  // onChange={(e) =>
-                  //   setPhone(e.target.value.replace(/[^0-9]/g, ''))
-                  // }
-                  className="border border-[#DCDCDC] rounded-[10px] outline-none w-[95%] ant-input transition-none p-4"
-                />
-              </div>
 
-              <button
-                id="sign-in-button"
-                type="button"
-                className="mx-auto w-[50%] flex items-center justify-center bg-[#EDF2F6] rounded-[10px] cursor-pointer mb-4" onClick={handleSendOTP}
-              >
-                {/* <Link href="#" className='w-full p-4 text-center'></Link> */}
-                <span className="w-full p-4 text-center">Tiếp tục</span>
-              </button>
+                  <div className="mb-5">
+                    <input
+                      type="tel"
+                      maxLength={10}
+                      placeholder="Nhập số điện thoại"
+                      value={phoneNumber}
+                      onChange={(e) => {
+                        const onlyNums = e.target.value.replace(/\D/g, '');
+                        setPhoneNumber(onlyNums);
+                      }}
+                      className="border border-[#DCDCDC] rounded-[10px] outline-none w-[95%] ant-input transition-none p-2" />
+                  </div>
 
-              <div className="w-[95%] mx-auto flex items-center">
-                <input
-                  type="checkbox"
-                  // checked={agree}
-                  // onChange={(e) => setAgree(e.target.checked)}
-                  className="w-4 h-4 rounded cursor-pointer transition-all duration-200 ease-in-out transform hover:scale-110"
-                />
-                <p className="mx-2">
-                  Tôi đồng ý với các{' '}
-                  <span className="text-[#0075FF]">điều khoản</span> của UchiMart
-                </p>
+
+                  <div className="w-[95%] mx-auto flex items-center mb-5">
+                    <input type="checkbox"
+                      checked={agree}
+                      onChange={(e) => setAgree(e.target.checked)}
+                      className="w-4 h-4 rounded cursor-pointer transition-all duration-200 ease-in-out transform hover:scale-110" />
+                    <p className="mx-2 text-sm">
+                      Tôi đồng ý với các <span className="text-[#0075FF]">điều khoản</span> của UchiMart
+                    </p>
+                  </div>
+
+
+                  <button
+                    id="sign-in-button"
+
+                    disabled={!phoneNumber || !agree} // ❗ chỉ cho nhấn khi đủ điều kiện
+                    className={`mx-auto w-[95%] flex items-center justify-center rounded-[10px] cursor-pointer mb-3 p-2.5 
+                    ${!phoneNumber || !agree ? 'bg-gray-300 cursor-not-allowed' : 'bg-[#921573] text-white'}`} 
+                    onClick={handleSendOTP}>
+                    <span className="w-full text-center">Tiếp tục</span>
+                  </button>
+
+
+                  <div className="mb-5">Hoặc</div>
+
+                  <div
+                    className="mx-auto w-[45%] flex items-center justify-center border-1 bo rounded-[10px] cursor-pointer mb-3 p-2.5">
+                    <FcGoogle className="fa-brands fa-google mr-2 text-2xl"></FcGoogle>
+                    <span className="text-center ">Google</span>
+                  </div>
+
+                </div>
               </div>
             </div>
+
+
+
+
+            <div className="w-[50%]">
+              <img src="./img/login.jpg" alt="" />
+            </div>
+
           </div>
         </div>
-
       </main>
 
-        {/* Phần tử Recaptcha (ẩn đi cũng được) */}
-        <div id="sign-in-button" className="hidden"></div>
+      {/* Phần tử Recaptcha (ẩn đi cũng được) */}
+      <div id="sign-in-button" className="hidden"></div>
     </div>
   );
 };
