@@ -17,32 +17,34 @@ const Header = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    let lastScrollY = window.scrollY;
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const diff = currentScrollY - lastScrollY;
 
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        timeoutId = setTimeout(() => setShowHeader(false), 100);
-      } else {
-        clearTimeout(timeoutId);
+      if (diff > 10) {
+        // Cuộn xuống: ẩn header
+        setShowHeader(false);
+      } else if (diff < -5 || currentScrollY < 10) {
+        // Cuộn lên nhẹ hoặc đang ở đầu trang: hiện header
         setShowHeader(true);
       }
 
-      setLastScrollY(currentScrollY);
+      lastScrollY = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   return (
     <div
       className={clsx(
-        " mx-auto rounded-t-md bg-white transition-transform duration-300 px-2",
+        "fixed top-0 w-full z-50 bg-white transition-transform duration-300 ease-in-out shadow-md",
         {
-          "transform -translate-y-full": !showHeader,
-          "transform translate-y-0": showHeader,
+          "-translate-y-full": !showHeader,
+          "translate-y-0": showHeader,
         }
       )}
     >
@@ -58,7 +60,7 @@ const Header = () => {
         </div>
       </div>
       {/* --- Tablet & Desktop layout (≥768px) --- */}
-      <div className="hidden sm:flex items-center justify-between gap-6 py-4">
+      <div className="hidden sm:flex items-center justify-between gap-6 py-2">
         {/* Logo - 20% */}
         <Link href="/" className="relative h-[60px] basis-[20%]">
           <Image src="/logo.png" alt="Logo" fill className="object-contain" />
