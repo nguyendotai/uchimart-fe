@@ -18,12 +18,12 @@ export default function RootLayout({
       <body className="flex flex-col min-h-screen font-sans bg-gray-100 text-gray-800">
         <ReduxProvider>
           {/* Header */}
-          <header className=" px-4 bg-[efefefef] z-50">
+          <header className="bg-[efefefef] z-50">
             <Header />
           </header>
 
           {/* Main content */}
-          <main className="flex-1 container mx-auto py-2 bg-[#efefefef] overflow-visible">
+          <main className="flex-1 container mx-auto py-2  overflow-visible">
             {children}
           </main>
 
