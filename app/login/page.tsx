@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { FaHome } from "react-icons/fa";
-import firebase from "../firebase/firebase";
+import firebase from "../types/firebase";
 import { useRouter } from 'next/navigation';
 import { FcGoogle } from 'react-icons/fc';
 
@@ -117,13 +117,17 @@ const Login = () => {
 
                   <button
                     id="sign-in-button"
-
-                    disabled={!phoneNumber || !agree} // ❗ chỉ cho nhấn khi đủ điều kiện
-                    className={`mx-auto w-[95%] flex items-center justify-center rounded-[10px] cursor-pointer mb-3 p-2.5 
-                    ${!phoneNumber || !agree ? 'bg-gray-300 cursor-not-allowed' : 'bg-[#921573] text-white'}`} 
-                    onClick={handleSendOTP}>
+                    disabled={!phoneNumber || !agree}
+                    className={`mx-auto w-[95%] flex items-center justify-center rounded-[10px] mb-3 p-2.5
+                        transition-all duration-300 ease-in-out transform
+                        ${!phoneNumber || !agree
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-70 scale-95'
+                        : 'bg-[#921573] text-white cursor-pointer hover:scale-105'}`}
+                    onClick={handleSendOTP}
+                  >
                     <span className="w-full text-center">Tiếp tục</span>
                   </button>
+
 
 
                   <div className="mb-5">Hoặc</div>
