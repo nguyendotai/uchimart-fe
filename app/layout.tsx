@@ -2,7 +2,6 @@
 import "./globals.css";
 import Header from "./components/layout/Header";
 import NavService from "./components/layout/NavService";
-import { createPortal } from "react-dom";
 import { ReduxProvider } from "./components/layout/ReduxProvider";
 import Footer from "./components/layout/Footer";
 
@@ -11,10 +10,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const dropdownRoot =
-    typeof window !== "undefined"
-      ? document.getElementById("dropdown-root")
-      : null;
+  // const dropdownRoot =
+  //   typeof window !== "undefined"
+  //     ? document.getElementById("dropdown-root")
+  //     : null;
 
   return (
     <html lang="en">
