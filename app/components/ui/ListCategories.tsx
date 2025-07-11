@@ -9,8 +9,12 @@ const ListCategories = () => {
   const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryChildren, setCategoryChildren] = useState<CategoryChild[]>([]);
-  const [hoveredCategoryId, setHoveredCategoryId] = useState<number | null>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null); // Thêm ref để lưu timeout
+  const [hoveredCategoryId, setHoveredCategoryId] = useState<number | null>(
+    null
+  );
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const categoryRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
   useEffect(() => {
     fetch("/data/categories.json")
@@ -25,12 +29,22 @@ const ListCategories = () => {
   const handleMouseEnterCategory = (categoryId: number) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setHoveredCategoryId(categoryId);
+
+    // Lấy vị trí phần tử danh mục cha
+    const ref = categoryRefs.current[categoryId];
+    if (ref) {
+      const rect = ref.getBoundingClientRect();
+      setDropdownPosition({
+        top: rect.top,
+        left: rect.right + 10,
+      });
+    }
   };
 
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setHoveredCategoryId(null);
-    }, 200); // Delay ẩn 200ms
+    }, 200);
   };
 
   const handleCategoryClick = (categoryId: number) => {
@@ -42,7 +56,9 @@ const ListCategories = () => {
   };
 
   const filteredChildren = hoveredCategoryId
-    ? categoryChildren.filter((child) => child.category_id === hoveredCategoryId)
+    ? categoryChildren.filter(
+        (child) => child.category_id === hoveredCategoryId
+      )
     : [];
 
   return (
@@ -67,6 +83,9 @@ const ListCategories = () => {
         {categories.map((category) => (
           <div
             key={category.id}
+            ref={(el: HTMLDivElement | null) => {
+              categoryRefs.current[category.id] = el;
+            }}
             className="group flex items-center py-2 px-2 hover:bg-purple-100 cursor-pointer rounded"
             onMouseEnter={() => handleMouseEnterCategory(category.id)}
             onClick={() => handleCategoryClick(category.id)}
@@ -81,13 +100,18 @@ const ListCategories = () => {
         ))}
       </div>
 
-      {/* Cột phải: Danh mục con */}
+      {/* Danh mục con hiển thị bằng Portal */}
       {hoveredCategoryId !== null &&
         typeof window !== "undefined" &&
         document.getElementById("dropdown-root") &&
         createPortal(
           <div
-            className="fixed top-[189px] left-[340px] w-[240px] min-h-[613px] bg-white shadow-lg rounded-lg p-4 z-[9999]"
+            className="absolute bg-white shadow-lg rounded-lg p-4 z-[9999] min-w-[240px]"
+            style={{
+              position: "fixed",
+              top: `${dropdownPosition.top}px`,
+              left: `${dropdownPosition.left}px`,
+            }}
             onMouseEnter={() => {
               if (timeoutRef.current) clearTimeout(timeoutRef.current);
             }}

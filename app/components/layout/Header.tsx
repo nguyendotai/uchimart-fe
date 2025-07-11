@@ -18,14 +18,17 @@ const Header = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        // Kéo xuống
-        setShowHeader(false);
+        // Kéo xuống — trì hoãn một chút
+        timeoutId = setTimeout(() => setShowHeader(false), 100);
       } else {
-        // Kéo lên
+        // Kéo lên — hiện ngay
+        clearTimeout(timeoutId);
         setShowHeader(true);
       }
 
@@ -33,7 +36,6 @@ const Header = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
