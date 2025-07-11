@@ -1,8 +1,6 @@
 "use client";
 import "./globals.css";
 import Header from "./components/layout/Header";
-import NavService from "./components/layout/NavService";
-import { createPortal } from "react-dom";
 import { ReduxProvider } from "./components/layout/ReduxProvider";
 
 export default function RootLayout({
@@ -24,10 +22,6 @@ export default function RootLayout({
             <Header />
           </header>
 
-          <nav className="fixed top-[120px] left-0 right-0 px-2 bg-[#efefefef] z-90">
-            <NavService />
-          </nav>
-
           {/* Main content */}
           <main className="flex-1 container mx-auto pt-[180px] py-2 bg-[#efefefef] overflow-visible">
             {children}
@@ -37,7 +31,7 @@ export default function RootLayout({
           <footer className="bg-white shadow p-4"></footer>
         </ReduxProvider>
         {/* Dropdown portal */}
-          <div id="dropdown-root"></div>
+        <div id="dropdown-root"></div>
       </body>
     </html>
   );

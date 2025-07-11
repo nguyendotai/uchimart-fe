@@ -49,7 +49,7 @@ const ListCategories = () => {
     <div className="relative flex">
       {/* Cột trái: Danh mục chính */}
       <div
-        className="w-[240px] h-[600px] overflow-y-auto pr-1 scrollbar-custom bg-white z-10 sticky top-[180px]"
+        className="w-[240px] h-[600px] overflow-y-auto pr-1 scrollbar-custom bg-white z-10 sticky"
         onMouseLeave={handleMouseLeave}
         onMouseEnter={() => {
           if (timeoutRef.current) clearTimeout(timeoutRef.current);
