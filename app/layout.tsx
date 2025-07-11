@@ -4,6 +4,7 @@ import Header from "./components/layout/Header";
 import NavService from "./components/layout/NavService";
 import { createPortal } from "react-dom";
 import { ReduxProvider } from "./components/layout/ReduxProvider";
+import Footer from "./components/layout/Footer";
 
 export default function RootLayout({
   children,
@@ -37,7 +38,9 @@ export default function RootLayout({
           <div id="dropdown-root" className="absolute z-30"></div>
 
           {/* Footer */}
-          <footer className="bg-white shadow p-4"></footer>
+          <footer className="bg-white shadow p-4">
+            <Footer />
+          </footer>
         </ReduxProvider>
       </body>
     </html>
