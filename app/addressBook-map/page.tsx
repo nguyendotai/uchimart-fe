@@ -4,7 +4,7 @@ import React from 'react';
 const AddressBookMap = () => {
   return (
     <main className="my-[50px]">
-      <div className="max-w-6xl mx-auto bg-white p-6 rounded-xl shadow-md grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-md grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Cột trái: Bản đồ */}
         <div className="relative">
           <input
