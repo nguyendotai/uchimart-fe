@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className="flex flex-col min-h-screen font-sans bg-gray-100 text-gray-800">
         <ReduxProvider>
           {/* Header */}
-          <header className="fixed top-0 left-0 right-0 px-4 bg-[efefefef] z-40">
+          <header className="fixed top-0 left-0 right-0 px-4 bg-[efefefef] z-50">
             <Header />
           </header>
 
@@ -33,12 +33,11 @@ export default function RootLayout({
             {children}
           </main>
 
-          {/* Dropdown portal */}
-          <div id="dropdown-root" className="absolute z-30"></div>
-
           {/* Footer */}
           <footer className="bg-white shadow p-4"></footer>
         </ReduxProvider>
+        {/* Dropdown portal */}
+          <div id="dropdown-root"></div>
       </body>
     </html>
   );
