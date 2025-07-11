@@ -12,6 +12,10 @@ const LoginOTP = () => {
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
     const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+
 
 
     // Khi người dùng nhập vào 1 ô
@@ -46,12 +50,19 @@ const LoginOTP = () => {
 
         try {
             await window.confirmationResult.confirm(fullOTP);
-            router.push('/'); // 👉 chuyển đến trang sau khi đăng nhập
+            router.push('/');
         } catch (error) {
             console.error('❌ Lỗi xác thực OTP:', error);
-            alert('❌ Mã OTP không đúng!');
+            setError(true);
+            setErrorMessage('❌ Mã OTP không chính xác. Vui lòng thử lại!');
+            setTimeout(() => {
+                setError(false);
+                setErrorMessage('');
+            }, 3000);
         }
+
     };
+
 
 
 
@@ -77,7 +88,7 @@ const LoginOTP = () => {
             <div className="flex min-h-screen items-center justify-center bg-[#F5F5FA]">
                 <div className="w-full rounded-[10px] max-w-[45%] bg-white">
                     <div className="p-4 mb-10">
-                        
+
 
                         <div className="flex flex-col items-center space-y-4 mb-10 pt-10">
                             <h2 className="text-2xl font-bold">Nhập mã OTP</h2>
@@ -101,10 +112,19 @@ const LoginOTP = () => {
                                         }}
                                         onChange={(e) => handleChange(i, e)}
                                         onKeyDown={(e) => handleKeyDown(i, e)}
-                                        className="otp-input w-12 h-12 text-center border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className={`otp-input w-12 h-12 text-center border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500
+                                            ${error ? 'border-2 border-red-500 animate-shake' : 'border-gray-400'}
+                                        `}
                                     />
                                 ))}
                             </div>
+
+                            
+                                {errorMessage && (
+                                    <div className="text-red-600 text-sm mt-2 animate-pulse">
+                                        {errorMessage}
+                                    </div>
+                                )}
                         </div>
 
                         <button
@@ -120,7 +140,7 @@ const LoginOTP = () => {
                                 Gửi lại
                             </Link>
                         </p>
-                        
+
                     </div>
                 </div>
             </div>
