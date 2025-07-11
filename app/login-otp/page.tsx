@@ -13,8 +13,6 @@ const LoginOTP = () => {
 
     const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
     const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-
 
 
 
@@ -50,14 +48,12 @@ const LoginOTP = () => {
 
         try {
             await window.confirmationResult.confirm(fullOTP);
-            router.push('/');
+            router.push('/register-info');
         } catch (error) {
             console.error('❌ Lỗi xác thực OTP:', error);
             setError(true);
-            setErrorMessage('❌ Mã OTP không chính xác. Vui lòng thử lại!');
             setTimeout(() => {
                 setError(false);
-                setErrorMessage('');
             }, 3000);
         }
 
@@ -118,13 +114,6 @@ const LoginOTP = () => {
                                     />
                                 ))}
                             </div>
-
-                            
-                                {errorMessage && (
-                                    <div className="text-red-600 text-sm mt-2 animate-pulse">
-                                        {errorMessage}
-                                    </div>
-                                )}
                         </div>
 
                         <button

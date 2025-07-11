@@ -100,7 +100,7 @@ const Login = () => {
                         const onlyNums = e.target.value.replace(/\D/g, '');
                         setPhoneNumber(onlyNums);
                       }}
-                      className="border border-[#DCDCDC] rounded-[10px] outline-none w-[95%] ant-input transition-none p-2" />
+                      className="border border-[#DCDCDC] rounded-[10px] outline-none w-[95%] ant-input  p-2 focus:ring-2 focus:ring-[#327FF6] focus:border-[#327FF6] transition-all duration-500 ease-in-out" />
                   </div>
 
 
