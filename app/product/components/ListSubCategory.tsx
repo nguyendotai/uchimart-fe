@@ -38,7 +38,7 @@ const ListSubCategory = ({ sortBy, setSortBy }: Props) => {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="sticky top-0 z-30shadow">
       {/* Danh mục con */}
       <div className="flex gap-2 p-4 bg-white shadow rounded-tl-2xl rounded-tr-2xl">
         {categories.map((category, index) => (
@@ -78,5 +78,6 @@ const ListSubCategory = ({ sortBy, setSortBy }: Props) => {
     </div>
   );
 };
+
 
 export default ListSubCategory;

@@ -54,12 +54,10 @@ const Product = () => {
               )}
             </div>
             {/* Category Child */}
-            <div className="w-full mb-4 ">
-              <ListSubCategory
-                sortBy={sortBy}
-                setSortBy={setSortBy}
-              ></ListSubCategory>
+            <div className="z-30 sticky top-0 mb-4">
+              <ListSubCategory sortBy={sortBy} setSortBy={setSortBy} />
             </div>
+
             {/* Count Product */}
             <div className="w-full mb-4">
               <CountProduct

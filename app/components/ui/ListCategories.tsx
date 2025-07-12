@@ -122,6 +122,7 @@ const ListCategories = () => {
             <div
               className="absolute bg-white shadow rounded-lg p-2 z-[9999] min-w-[300px] max-w-[800px] transition-all ease-in-out"
               style={{
+                position: "fixed",
                 top: `${dropdownPosition.top}px`,
                 left: `${dropdownPosition.left}px`,
               }}
