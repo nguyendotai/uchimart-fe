@@ -85,7 +85,7 @@ const ListCategories = () => {
 
           {/* Danh sách danh mục - cuộn được */}
           <div
-            className="h-[580px] overflow-y-auto pr-1 scrollbar-custom"
+            className="h-[580px] overflow-y-auto pr-1 scrollbar-hide"
             onMouseLeave={handleMouseLeave}
             onMouseEnter={() => {
               if (timeoutRef.current) clearTimeout(timeoutRef.current);

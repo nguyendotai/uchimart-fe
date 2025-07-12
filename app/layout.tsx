@@ -16,8 +16,9 @@ export default function RootLayout({
   const hasSidebar =
     pathname === "/" ||
     pathname === "/product" ||
-    pathname === "/search/[search]" ||
-    pathname.startsWith("/product/");
+    pathname === "/search" ||
+    pathname.startsWith("/product/") ||
+    pathname.startsWith("/search");;
 
   return (
     <html lang="en">
@@ -42,7 +43,7 @@ export default function RootLayout({
             >
               <div
                 className={`mx-auto ${
-                  hasSidebar ? "max-w-[1150px]" : "max-w-[1600px]"
+                  hasSidebar ? "max-w-[1300px]" : "max-w-[1600px]"
                 }`}
               >
                 {children}

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const placeholderTexts = [
   "Giá siêu rẻ...",
@@ -16,6 +16,11 @@ const Search = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [keyword, setKeyword] = useState("");
   const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setKeyword("");
+  }, [pathname]);
 
   useEffect(() => {
     const interval = setInterval(() => {

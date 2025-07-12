@@ -9,7 +9,8 @@ const ShowSidebar = () => {
     pathname === "/" ||
     pathname === "/product" ||
     pathname === "/search/[search]" ||
-    pathname.startsWith("/product/");
+    pathname.startsWith("/product/") ||
+    pathname.startsWith("/search");;
 
   return shouldShowSidebar ? (
     <div className="hidden lg:block fixed top-0 left-2 z-40">

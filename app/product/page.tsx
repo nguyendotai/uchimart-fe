@@ -37,12 +37,8 @@ const Product = () => {
     <PageTransitionWrapper>
       <div className="w-full">
         <div className="container mx-auto mt-2 flex justify-between">
-          {/* SideBar */}
-          <div className="w-[17%] bg-white shadow rounded-xl p-2 sticky top-2 self-start">
-            <ListCategories></ListCategories>
-          </div>
           {/*  */}
-          <div className="w-[82%]">
+          <div className="w-full">
             {/* Sale Hot */}
             <div className="w-full mb-4 font-medium">
               <span>Trang chủ</span> /

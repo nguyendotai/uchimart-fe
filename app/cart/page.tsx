@@ -11,7 +11,7 @@ export default function CartPage() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   return (
     <PageTransitionWrapper>
-      <div className="container py-4">
+      <div className="w-full py-4">
         <h1 className="text-3xl font-bold mb-4 text-[#921573] text-center">
           GIỎ HÀNG
         </h1>
@@ -22,9 +22,9 @@ export default function CartPage() {
           <span className="mx-1">/</span>
           <span>Giỏ hàng</span>
         </div>
-        <div className="w-full flex justify-between lg:flex-row gap-8">
+        <div className="w-full flex lg:gap-8 flex-col lg:flex-row">
           {/* Left: Danh sách sản phẩm */}
-          <div className="w-[70%]">
+          <div className="flex-1">
             <CartList
               selectedIds={selectedIds}
               setSelectedIds={setSelectedIds}
@@ -32,10 +32,11 @@ export default function CartPage() {
           </div>
 
           {/* Right: Tổng thanh toán */}
-          <div className="w-[29%] mt-13 sticky top-32 self-start">
+          <div className="w-full lg:w-[320px] self-end lg:self-start sticky top-32">
             <CartSummary selectedIds={selectedIds} />
           </div>
         </div>
+
         <div className="mt-10">
           <ProductSuggestions></ProductSuggestions>
         </div>
