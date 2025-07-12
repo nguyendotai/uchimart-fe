@@ -6,6 +6,7 @@ import CartSummary from "./components/CartSummary";
 import ProductSuggestions from "./components/ProductSuggestions";
 import PageTransitionWrapper from "../components/Animation/PageTransitionWrapper";
 import ListSaleProduct from "./components/ListSaleProduct";
+import Link from "next/link";
 
 export default function CartPage() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -16,9 +17,9 @@ export default function CartPage() {
           GIỎ HÀNG
         </h1>
         <div className="text-sm text-gray-500 mb-6 text-center">
-          <a href="/" className="hover:underline cursor-pointer text-[#921573]">
+          <Link href="/" className="hover:underline cursor-pointer text-[#921573]">
             Trang chủ
-          </a>
+          </Link>
           <span className="mx-1">/</span>
           <span>Giỏ hàng</span>
         </div>
