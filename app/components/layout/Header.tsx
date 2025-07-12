@@ -41,10 +41,10 @@ const Header = () => {
   return (
     <div
       className={clsx(
-        "fixed top-0 w-full z-50 bg-white transition-transform duration-300 ease-in-out shadow",
+        "fixed top-0 w-full z-50 bg-white shadow transition-all duration-300 ease-in-out",
         {
-          "-translate-y-full ": !showHeader,
-          "translate-y-0": showHeader,
+          "-translate-y-full opacity-0 pointer-events-none": !showHeader,
+          "translate-y-0 opacity-100": showHeader,
         }
       )}
     >
