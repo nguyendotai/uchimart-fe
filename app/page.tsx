@@ -15,15 +15,7 @@ export default function Home() {
       <div className="">
         <div className="w-full mx-auto mt-2 flex justify-between relative ">
           {/* SideBar */}
-          <div className="w-[17%] relative z-10">
-            <div className="sticky top-2">
-              <div className="bg-white shadow rounded-xl p-2">
-                <ListCategories />
-              </div>
-            </div>
-          </div>
-
-          <div className="w-[82%]">
+          <div className="w-full">
             {/* Slider */}
             <div className="w-full mb-4">
               <ImageSlider />

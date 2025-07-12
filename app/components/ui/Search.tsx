@@ -44,7 +44,7 @@ const Search = () => {
 
   return (
     <div className="w-full flex">
-      <div className="w-[80%] flex gap-2 justify-between">
+      <div className="w-full flex gap-2 justify-between">
         <div className="relative w-[91%]">
           <CiSearch className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400 text-xl" />
           {/* Animated placeholder text */}

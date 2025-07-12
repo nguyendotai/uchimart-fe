@@ -41,9 +41,9 @@ const Header = () => {
   return (
     <div
       className={clsx(
-        "fixed top-0 w-full z-50 bg-white transition-transform duration-300 ease-in-out shadow-md",
+        "fixed top-0 w-full z-50 bg-white transition-transform duration-300 ease-in-out shadow",
         {
-          "-translate-y-full": !showHeader,
+          "-translate-y-full ": !showHeader,
           "translate-y-0": showHeader,
         }
       )}
@@ -60,7 +60,7 @@ const Header = () => {
         </div>
       </div>
       {/* --- Tablet & Desktop layout (≥768px) --- */}
-      <div className="hidden sm:flex items-center justify-between gap-6 py-2">
+      <div className="hidden sm:flex items-center justify-around gap-6 p-2">
         {/* Logo - 20% */}
         <Link href="/" className="relative h-[60px] basis-[20%]">
           <Image src="/logo.png" alt="Logo" fill className="object-contain" />
