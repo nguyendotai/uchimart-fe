@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { FaStar } from "react-icons/fa";
 import { MdOutlineAddShoppingCart } from "react-icons/md";
 import { MdEventAvailable } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
@@ -125,6 +124,11 @@ const ProductCard = ({ product }: { product: Product }) => {
         >
           {product.name}
         </a>
+
+        {/* Description */}
+        <p className="px-1 text-gray-600 text-xs line-clamp-2">
+          {product.description}
+        </p>
 
         {/* Price */}
         <div className="">
