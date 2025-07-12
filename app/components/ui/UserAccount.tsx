@@ -9,7 +9,7 @@ export default function UserAccount() {
   const [user, setUser] = useState<User | null>(null); // Sau này bạn thay bằng dữ liệu thực
 
   return (
-    <div className="flex items-center gap-3 cursor-pointer w-[160px] overflow-hidden">
+    <div className="flex items-center gap-3 cursor-pointer overflow-hidden">
       {!user ? (
         <Link
           href="/login"

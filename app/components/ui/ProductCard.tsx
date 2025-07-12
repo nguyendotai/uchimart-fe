@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { FaStar } from "react-icons/fa";
 import { MdOutlineAddShoppingCart } from "react-icons/md";
 import { MdEventAvailable } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
@@ -72,7 +71,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
       {/* sale */}
       {hasSale && (
-        <div className="absolute top-[-8xpx] left-[-8px] z-10 overflow-hidden">
+        <div className="absolute top-[-9px] left-[-8px] z-10 overflow-hidden">
           <div className="w-[80px] h-5 bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center rounded-tl-md rounded-br-md shadow">
             GIẢM {discount}%
           </div>
@@ -125,6 +124,11 @@ const ProductCard = ({ product }: { product: Product }) => {
         >
           {product.name}
         </a>
+
+        {/* Description */}
+        <p className="px-1 text-gray-600 text-xs line-clamp-2">
+          {product.description}
+        </p>
 
         {/* Price */}
         <div className="">

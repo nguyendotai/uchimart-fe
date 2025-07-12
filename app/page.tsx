@@ -12,18 +12,10 @@ import PageTransitionWrapper from "./components/Animation/PageTransitionWrapper"
 export default function Home() {
   return (
     <PageTransitionWrapper>
-      <div className="w-full">
-        {/* Slider full width */}
-        {/* <div className="container mx-auto mt-2">
-          <ImageSlider />
-        </div> */}
-        <div className="container mx-auto mt-2 flex justify-between">
+      <div className="">
+        <div className="w-full mx-auto mt-2 flex justify-between relative ">
           {/* SideBar */}
-          <div className="w-[17%] bg-white shadow rounded-xl p-2 sticky top-45 self-start">
-            <ListCategories />
-          </div>
-
-          <div className="w-[82%]">
+          <div className="w-full">
             {/* Slider */}
             <div className="w-full mb-4">
               <ImageSlider />
@@ -42,7 +34,7 @@ export default function Home() {
             </div>
             <div className="w-full">
               {/* Brand */}
-              <div className="container mx-auto mt-6 flex justify-between">
+              <div className="w-full mx-auto mt-6 flex justify-between">
                 <span className="w-[35%] bg-white shadow rounded-xl px-4 flex justify-start items-center text-2xl font-semibold">
                   Duy nhất hôm nay{" "}
                 </span>
@@ -50,15 +42,15 @@ export default function Home() {
                   <BrandHome></BrandHome>
                 </div>
               </div>
-              <div className="container mx-auto mt-10">
+              <div className="w-full mx-auto mt-10">
                 <ListProduct></ListProduct>
               </div>
-              <div className="container mx-auto mt-10 flex justify-center">
+              <div className="w-full mx-auto mt-10 flex justify-center">
                 <span className="w-[50%] bg-white shadow rounded-xl py-2 flex justify-center items-center text-3xl font-semibold text-[#FB5D08]">
                   Gợi ý hôm nay
                 </span>
               </div>
-              <div className="container mx-auto mt-6 space-y-4">
+              <div className="w-full mx-auto mt-6 space-y-4">
                 <ListProductByCate />
               </div>
             </div>

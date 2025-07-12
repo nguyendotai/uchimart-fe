@@ -65,7 +65,7 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
   };
 
   return (
-    <div className="mb-6">
+    <div className="mb-6 p-2">
       <ul className="grid grid-cols-6 gap-4">
         {visibleProducts.map((product) => (
           <li
