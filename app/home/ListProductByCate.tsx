@@ -53,7 +53,7 @@ const ListProductByCate = () => {
         return (
           <div key={category.id} className="w-full space-y-4">
             {/* Banner nằm trên */}
-            <div className="w-full h-[120px] rounded-lg overflow-hidden relative bg-[#f3e5f5]">
+            <div className="w-full h-[120px] rounded-lg overflow-hidden relative bg-gray-200">
               {/* Trái: ảnh danh mục */}
               <div className="w-[40%]">
                 <img

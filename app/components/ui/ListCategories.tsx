@@ -35,7 +35,7 @@ const ListCategories = () => {
       const rect = ref.getBoundingClientRect();
       setDropdownPosition({
         top: rect.top,
-        left: rect.right + 10,
+        left: rect.right + 6,
       });
     }
   };
@@ -120,9 +120,8 @@ const ListCategories = () => {
           document.getElementById("dropdown-root") &&
           createPortal(
             <div
-              className="absolute bg-white shadow-xl rounded-lg p-2 z-[9999] min-w-[300px] max-w-[800px] transition-all ease-in-out"
+              className="absolute bg-white shadow rounded-lg p-2 z-[9999] min-w-[300px] max-w-[800px] transition-all ease-in-out"
               style={{
-                position: "fixed",
                 top: `${dropdownPosition.top}px`,
                 left: `${dropdownPosition.left}px`,
               }}

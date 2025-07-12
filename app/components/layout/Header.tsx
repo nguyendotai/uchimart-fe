@@ -94,7 +94,7 @@ const Header = () => {
           </div>
 
           {/* Location - không cần border phải */}
-          <div className="flex items-center bg-[#f3e5f5] rounded-full px-2 py-1 gap-2">
+          <div className="flex items-center bg-[#f3e5f5] rounded-full px-3 py-1 gap-2">
             <FaMapMarkerAlt className="text-[#921573] text-xl" />
             <div className="flex flex-col text-xs">
               <span className="text-[#921573] font-semibold">Giao hàng</span>
