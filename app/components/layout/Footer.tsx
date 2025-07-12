@@ -7,7 +7,7 @@ import { FaTiktok, FaYoutube } from 'react-icons/fa';
 const Footer = () => {
     return (
         <div>
-            <div className=''>
+            <div className='bg-white'>
                 <div className='p-5'>
                     <div className='flex gap-7 border-b-2 border-[#DDDDE3]'>
                         <div className='w-[30%]'>
