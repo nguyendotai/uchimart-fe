@@ -54,6 +54,7 @@ export default function RootLayout({
 
           {/* Portal cho dropdown */}
           <div id="dropdown-root"></div>
+          <div id="sidebar-hover-root" />
         </ReduxProvider>
       </body>
     </html>
