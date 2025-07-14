@@ -84,7 +84,7 @@ const Footer = () => {
 
 
                     <div className='text-center mt-5'>
-                        <p className='w-[90%] mx-auto text-[12px] text-[#A29E9E]'>© 2025. Công Ty TNHH Uchi Martket. GPDKKD: 0310471746 do sở KH & ĐT TP.HCM cấp ngày 23/11/2010. Giấy phép thiết lập mạng xã hội trên mạng (Số 20/GP-BTTTT) do Bộ Thông Tin Và Truyền Thông cấp ngày 11/01/2021, tạm ngưng từ ngày 18/10/2024 - 03/03/2025. Trụ sở chính: 128 Thạnh Xuấn 14, P.Thạnh Xuân, Quận.12, TP.HCM. Địa chỉ liên hệ: Toà nhà MWG, Lô T2-1.2, Đường D1, Khu Công Nghệ Cao, P. Tân Phú, TP.Thủ Đức, TP.HCM. Email:lienhe@uchimart.com SĐT: 0332493487 Chịu trách nhiệm nội dung: TuanXji.</p>
+                        <p className='w-[9git0%] mx-auto text-[12px] text-[#A29E9E]'>© 2025. Công Ty TNHH Uchi Martket. GPDKKD: 0310471746 do sở KH & ĐT TP.HCM cấp ngày 23/11/2010. Giấy phép thiết lập mạng xã hội trên mạng (Số 20/GP-BTTTT) do Bộ Thông Tin Và Truyền Thông cấp ngày 11/01/2021, tạm ngưng từ ngày 18/10/2024 - 03/03/2025. Trụ sở chính: 128 Thạnh Xuấn 14, P.Thạnh Xuân, Quận.12, TP.HCM. Địa chỉ liên hệ: Toà nhà MWG, Lô T2-1.2, Đường D1, Khu Công Nghệ Cao, P. Tân Phú, TP.Thủ Đức, TP.HCM. Email:lienhe@uchimart.com SĐT: 0332493487 Chịu trách nhiệm nội dung: TuanXji.</p>
                     </div>
                 </div>
             </div>
