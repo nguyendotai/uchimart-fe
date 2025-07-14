@@ -37,12 +37,8 @@ const Product = () => {
     <PageTransitionWrapper>
       <div className="w-full">
         <div className="container mx-auto mt-2 flex justify-between">
-          {/* SideBar */}
-          <div className="w-[17%] bg-white shadow rounded-xl p-2 sticky top-45 self-start">
-            <ListCategories></ListCategories>
-          </div>
           {/*  */}
-          <div className="w-[82%]">
+          <div className="w-full">
             {/* Sale Hot */}
             <div className="w-full mb-4 font-medium">
               <span>Trang chủ</span> /
@@ -58,12 +54,10 @@ const Product = () => {
               )}
             </div>
             {/* Category Child */}
-            <div className="w-full mb-4 ">
-              <ListSubCategory
-                sortBy={sortBy}
-                setSortBy={setSortBy}
-              ></ListSubCategory>
+            <div className="z-30 sticky top-0 mb-4">
+              <ListSubCategory sortBy={sortBy} setSortBy={setSortBy} />
             </div>
+
             {/* Count Product */}
             <div className="w-full mb-4">
               <CountProduct

@@ -1,70 +1,139 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Search from "../ui/Search";
 import Image from "next/image";
 import UserAccount from "../ui/UserAccount";
 import Cart from "../ui/Cart";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import MainNav from "../ui/MainNav";
-import { mainNavItems } from "@/public/Data/nav";
+import { HiBadgeCheck } from "react-icons/hi";
+import { RiBankCardFill } from "react-icons/ri";
+import { HiMiniPercentBadge } from "react-icons/hi2";
 import Link from "next/link";
+import clsx from "clsx";
+import { MdArticle } from "react-icons/md";
 
 const Header = () => {
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const diff = currentScrollY - lastScrollY;
+
+      if (diff > 10) {
+        // Cuộn xuống: ẩn header
+        setShowHeader(false);
+      } else if (diff < -5 || currentScrollY < 10) {
+        // Cuộn lên nhẹ hoặc đang ở đầu trang: hiện header
+        setShowHeader(true);
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div className="container mx-auto rounded-t-md bg-white">
+    <div
+      className={clsx(
+        "fixed top-0 w-full z-50 bg-white shadow transition-all duration-300 ease-in-out",
+        {
+          "-translate-y-full opacity-0 pointer-events-none": !showHeader,
+          "translate-y-0 opacity-100": showHeader,
+        }
+      )}
+    >
       {/* --- Mobile layout (<768px) --- */}
       <div className="flex sm:hidden items-center justify-between py-3">
-        {/* Logo */}
         <Link href="/" className="relative w-[100px] h-[40px]">
           <Image src="/logo.png" alt="Logo" fill className="object-contain" />
         </Link>
 
-        {/* User + Cart */}
         <div className="flex gap-4 items-center">
           <UserAccount />
           <Cart />
         </div>
       </div>
-
       {/* --- Tablet & Desktop layout (≥768px) --- */}
-      <div className="hidden sm:flex justify-between items-center pt-4 pb-2 gap-4">
-        {/* Logo */}
-        <Link className="relative w-full h-[60px] flex-[2]" href="/">
-          <Image src="/logo.png" alt="Ảnh" fill className="object-contain" />
+      <div className="hidden sm:flex items-center justify-around gap-6 p-2">
+        {/* Logo - 20% */}
+        <Link href="/" className="relative h-[60px] basis-[20%]">
+          <Image src="/logo.png" alt="Logo" fill className="object-contain" />
         </Link>
 
-        {/* Search + Nav */}
-        <div className="flex-[5] flex flex-col gap-6">
+        {/* Search - 40% */}
+        <div className="basis-[40%]">
           <Search />
-          <MainNav items={mainNavItems} />
         </div>
-
-        {/* Account + Cart + Follow Info */}
-        <div className="flex-[2] flex flex-col gap-2 px-2">
-          <div className="flex justify-around items-center pr-4">
-            <div className="flex-[6]">
-              <UserAccount />
+        {/* Bài viết + User + Cart + Location - 40% */}
+        <div className="flex items-center gap-4 basis-[40%] justify-between">
+          {/* Bài viết */}
+          <Link
+            href="/posts"
+            className="flex items-center gap-2 text-gray-700 h-10 border-r border-gray-300 pr-4"
+          >
+            <div className="bg-[#f3e5f5] rounded-full p-2">
+              <MdArticle className="text-2xl shrink-0 text-[#921573]" />
             </div>
+            <span className="text-sm font-medium truncate">Bài viết</span>
+          </Link>
 
-            <div className="w-px h-6 bg-gray-300" />
-
-            <div className="flex-[2]">
-              <Cart />
-            </div>
+          {/* UserAccount */}
+          <div className="border-r border-gray-300 pr-4">
+            <UserAccount />
           </div>
 
-          <div className="w-[97%] h-px bg-gray-300 mx-auto" />
+          {/* Cart */}
+          <div className="border-r border-gray-300 pr-4">
+            <Cart />
+          </div>
 
-          <div className="flex items-center bg-[#f3e5f5] rounded-full px-2 py-1 gap-2 max-w-[250px]">
-            <FaMapMarkerAlt className="text-[#921573] text-2xl" />
+          {/* Location - không cần border phải */}
+          <div className="flex items-center bg-[#f3e5f5] rounded-full px-3 py-1 gap-2">
+            <FaMapMarkerAlt className="text-[#921573] text-xl" />
             <div className="flex flex-col text-xs">
               <span className="text-[#921573] font-semibold">Giao hàng</span>
-              <span className="text-gray-800 font-medium">
+              <span className="text-gray-800 font-medium whitespace-nowrap">
                 P.Thạnh Xuân, Q.12, TP.Hồ Chí Minh
               </span>
             </div>
           </div>
         </div>
+      </div>
+      <div className="text-sm flex justify-between items-center rounded-b-lg bg-white border-t-2 border-gray-200 px-4 py-2">
+        <nav className="flex justify-start items-center gap-4">
+          <a href="/account" className="flex items-center font-medium">
+            <span style={{ color: "#FFA629" }}>Cam kết</span>
+          </a>
+          <a href="/history" className="flex items-center font-medium">
+            <HiBadgeCheck
+              className="mr-1 text-xl"
+              style={{ color: "#FFA629" }}
+            />
+            <span>Chính sách</span>
+          </a>
+          <span className="text-gray-400">|</span>
+          <a href="/settings" className="flex items-center font-medium">
+            <RiBankCardFill
+              className="mr-1 text-xl"
+              style={{ color: "#FFA629" }}
+            />
+            <span>30 ngày đổi trả</span>
+          </a>
+          <span className="text-gray-400">|</span>
+          <a href="/settings" className="flex items-center font-medium">
+            <HiMiniPercentBadge
+              className="mr-1 text-xl"
+              style={{ color: "#FFA629" }}
+            />
+            <span>Giá siêu rẻ</span>
+          </a>
+        </nav>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import React from "react";
 export function PrevArrow({ style, onClick }: any) {
   return (
     <div
-      className="z-50 !left-[-10px] absolute top-1/2 transform -translate-y-1/2 group"
+      className="z-40 !left-[-10px] absolute top-1/2 transform -translate-y-1/2 group"
       style={{ ...style, display: "block" }}
       onClick={onClick}
     >

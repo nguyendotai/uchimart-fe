@@ -53,7 +53,7 @@ const ListProductByCate = () => {
         return (
           <div key={category.id} className="w-full space-y-4">
             {/* Banner nằm trên */}
-            <div className="w-full h-[120px] rounded-lg overflow-hidden relative bg-[#DFF1FB]">
+            <div className="w-full h-[120px] rounded-lg overflow-hidden relative bg-gray-200">
               {/* Trái: ảnh danh mục */}
               <div className="w-[40%]">
                 <img
@@ -80,7 +80,7 @@ const ListProductByCate = () => {
 
             {/* Nút Xem tất cả */}
             <div className="flex justify-center mt-2">
-              <a href="#" className="text-blue-600 hover:underline font-medium">
+              <a href="#" className="text-[#921573] hover:underline font-medium">
                 Xem tất cả
               </a>
             </div>

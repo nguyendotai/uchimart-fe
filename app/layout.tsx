@@ -1,34 +1,60 @@
 "use client";
 import "./globals.css";
 import Header from "./components/layout/Header";
-import NavService from "./components/layout/NavService";
 import { ReduxProvider } from "./components/layout/ReduxProvider";
+import Footer from "./components/layout/Footer";
+import ShowSidebar from "./components/layout/ShowSidebar";
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+
+  const hasSidebar =
+    pathname === "/" ||
+    pathname === "/product" ||
+    pathname === "/search" ||
+    pathname.startsWith("/product/") ||
+    pathname.startsWith("/search");;
+
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen font-sans bg-gray-100 text-gray-800">
+      <body className="font-sans bg-gray-100 text-gray-800 overflow-x-hidden">
         <ReduxProvider>
           {/* Header */}
-          <header className="fixed top-0 left-0 right-0 px-4 bg-[efefefef] z-40">
-            <Header></Header>
-          </header>
+          <Header />
 
-          <nav className="fixed top-[120px] left-0 right-0 px-2 bg-[#efefefef] z-90">
-            <NavService />
-          </nav>
+          <div className="flex">
+            {/* Sidebar cố định bên trái */}
+            {hasSidebar && (
+              <aside className="hidden lg:block w-[250px] fixed top-0 left-0 bottom-0 z-40 overflow-y-auto bg-white shadow">
+                <ShowSidebar />
+              </aside>
+            )}
 
-          {/* Main */}
-          <main className="flex-1 container mx-auto pt-[180px] py-2 bg-[#efefefef]">
-            {children}
-          </main>
+            {/* Nội dung chính dịch sang phải nếu có sidebar */}
+            <main
+              className={`flex-1 min-h-screen pt-[120px] px-4 ${
+                hasSidebar ? "ml-[250px]" : ""
+              }`}
+            >
+              <div
+                className={`mx-auto ${
+                  hasSidebar ? "max-w-[1300px]" : "max-w-[1600px]"
+                }`}
+              >
+                {children}
+                <Footer />
+              </div>
+            </main>
+          </div>
 
-          {/* Footer */}
-          <footer className="bg-white shadow p-4"></footer>
+          {/* Portal cho dropdown */}
+          <div id="dropdown-root"></div>
+          <div id="sidebar-hover-root" />
         </ReduxProvider>
       </body>
     </html>
