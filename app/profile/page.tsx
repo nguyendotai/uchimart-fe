@@ -6,7 +6,7 @@ const Profile = () => {
     
     return (
         <div>
-            <div className="max-w-4xl mx-auto my-20 bg-white p-8 rounded-2xl shadow-xl">
+            <div className="max-w-3xl mx-auto my-10 bg-white p-6 rounded-2xl shadow-xl">
                 {/* Banner + Avatar */}
                 <div className="relative mb-20">
                     <div className="h-40 bg-gradient-to-r from-green-300 via-teal-400 to-blue-400 rounded-t-2xl"></div>
@@ -17,10 +17,10 @@ const Profile = () => {
                 </div>
 
                 {/* Form */}
-                <form className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <form className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     {/* Họ và tên đệm */}
                     <div>
-                        <label className="block mb-1 text-sm font-semibold text-gray-700">Họ và tên đệm</label>
+                        <label className="block mb-1 text-sm font-semibold text-gray-700">Họ</label>
                         <input
                             type="text"
                             defaultValue="Trần Tuấn"
