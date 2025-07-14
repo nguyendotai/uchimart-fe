@@ -2,56 +2,59 @@
 import React, { useEffect, useState, useRef } from "react";
 import { TbCategory2 } from "react-icons/tb";
 import { useRouter } from "next/navigation";
-import { Category, CategoryChild } from "@/app/types/Category";
+import { CategoryGroup, Category } from "@/app/types/Category";
 import { createPortal } from "react-dom";
 
-const SIDEBAR_WIDTH = 240; // px
-const CHILD_WIDTH = 0.4; // 40% viewport
+const SIDEBAR_WIDTH = 240;
+const CHILD_WIDTH = 0.4;
+
+interface GroupWithChildren extends CategoryGroup {
+  categories: Category[];
+}
 
 const ListCategories = () => {
   const router = useRouter();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [categoryChildren, setCategoryChildren] = useState<CategoryChild[]>([]);
-  const [hoveredCategoryId, setHoveredCategoryId] = useState<number | null>(
-    null
-  );
+  const [groupedCategories, setGroupedCategories] = useState<GroupWithChildren[]>([]);
+  const [hoveredGroupId, setHoveredGroupId] = useState<number | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  const fetchData = async () => {
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/category-groups");
+      const json = await res.json();
+
+      const groups: GroupWithChildren[] = json.data ?? [];
+      setGroupedCategories(groups);
+    } catch (err) {
+      console.error("Lỗi fetch dữ liệu:", err);
+    }
+  };
 
   useEffect(() => {
-    fetch("/data/categories.json")
-      .then((res) => res.json())
-      .then((data: Category[]) => setCategories(data));
-
-    fetch("/data/categoryChild.json")
-      .then((res) => res.json())
-      .then((data: CategoryChild[]) => setCategoryChildren(data));
+    fetchData();
   }, []);
 
-  const handleMouseEnterCategory = (categoryId: number) => {
+  const handleMouseEnterCategory = (groupId: number) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setHoveredCategoryId(categoryId);
+    setHoveredGroupId(groupId);
   };
 
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
-      setHoveredCategoryId(null);
+      setHoveredGroupId(null);
     }, 200);
   };
 
-  const handleCategoryClick = (categoryId: number) => {
-    router.push(`/product?category=${categoryId}`);
+  const handleCategoryClick = (groupId: number) => {
+    router.push(`/product?category=${groupId}`);
   };
 
-  const handleChildCategoryClick = (child: CategoryChild) => {
-    router.push(`/product?category=${child.category_id}&child=${child.id}`);
+  const handleChildCategoryClick = (child: Category, groupId: number) => {
+    router.push(`/product?category=${groupId}&child=${child.id}`);
   };
 
-  const filteredChildren = hoveredCategoryId
-    ? categoryChildren.filter(
-        (child) => child.category_id === hoveredCategoryId
-      )
-    : [];
+  const hoveredGroup = groupedCategories.find((g) => g.id === hoveredGroupId);
+  const filteredChildren = hoveredGroup?.categories || [];
 
   return (
     <>
@@ -83,20 +86,20 @@ const ListCategories = () => {
               if (timeoutRef.current) clearTimeout(timeoutRef.current);
             }}
           >
-            {categories.map((category) => (
+            {groupedCategories.map((group) => (
               <div
-                key={category.id}
+                key={group.id}
                 className="group flex items-center py-2 px-2 hover:bg-purple-100 cursor-pointer rounded"
-                onMouseEnter={() => handleMouseEnterCategory(category.id)}
-                onClick={() => handleCategoryClick(category.id)}
+                onMouseEnter={() => handleMouseEnterCategory(group.id)}
+                onClick={() => handleCategoryClick(group.id)}
               >
                 <img
-                  src={category.image}
-                  alt={category.name}
+                  src={group.image || "/default.png"}
+                  alt={group.name || "Không tên"}
                   className="w-8 h-8 object-cover rounded-full"
                 />
                 <span className="text-sm text-gray-800 ml-2">
-                  {category.name}
+                  {group.name || "Không tên"}
                 </span>
               </div>
             ))}
@@ -104,7 +107,7 @@ const ListCategories = () => {
         </div>
 
         {/* Danh mục con + overlay */}
-        {hoveredCategoryId !== null &&
+        {hoveredGroupId !== null &&
           typeof window !== "undefined" &&
           document.getElementById("dropdown-root") &&
           createPortal(
@@ -123,7 +126,7 @@ const ListCategories = () => {
                     {filteredChildren.map((child) => (
                       <div
                         key={child.id}
-                        onClick={() => handleChildCategoryClick(child)}
+                        onClick={() => handleChildCategoryClick(child, hoveredGroupId)}
                         className="px-4 py-2 rounded hover:bg-purple-100 cursor-pointer text-sm text-gray-700 transition"
                       >
                         {child.name}
@@ -137,13 +140,13 @@ const ListCategories = () => {
                 )}
               </div>
 
-              {/* Overlay phần còn lại (bên phải danh mục con) */}
+              {/* Overlay phần còn lại */}
               <div
                 className="fixed top-0 right-0 h-screen bg-black/30 z-[9996]"
                 style={{
                   left: `calc(${SIDEBAR_WIDTH}px + ${CHILD_WIDTH * 100}vw)`,
                 }}
-                onClick={() => setHoveredCategoryId(null)}
+                onClick={() => setHoveredGroupId(null)}
               />
             </>,
             document.getElementById("dropdown-root")!

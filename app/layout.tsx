@@ -30,7 +30,7 @@ export default function RootLayout({
           <div className="flex">
             {/* Sidebar cố định bên trái */}
             {hasSidebar && (
-              <aside className="hidden lg:block w-[250px] fixed top-0 left-0 bottom-0 z-40 overflow-y-auto bg-white shadow">
+              <aside className="hidden lg:block w-[250px] fixed top-0 left-0 bottom-0 h-screen z-40 overflow-y-auto bg-white shadow">
                 <ShowSidebar />
               </aside>
             )}
