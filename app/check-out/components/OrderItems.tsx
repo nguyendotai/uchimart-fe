@@ -19,7 +19,7 @@ export default function OrderSummary({ items }: Props) {
   const finalTotal = subTotal + shippingFee - totalDiscount;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm text-sm p-4 space-y-4">
+    <div className="bg-[#f5f9ff] rounded-lg shadow-sm text-sm p-4 space-y-4">
       {/* VAT */}
       <label className="flex items-center gap-2 cursor-pointer">
         <input
@@ -32,7 +32,7 @@ export default function OrderSummary({ items }: Props) {
       </label>
 
       {/* Tóm tắt đơn hàng */}
-      <div className="bg-gray-50 p-4 rounded-md space-y-3 border">
+      <div className="bg-gray-50 p-4 rounded-md space-y-3 border border-gray-300">
         <p className="font-semibold text-gray-800">Tóm tắt đơn hàng</p>
 
         <div className="flex justify-between">
