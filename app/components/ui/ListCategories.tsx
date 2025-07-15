@@ -14,7 +14,9 @@ interface GroupWithChildren extends CategoryGroup {
 
 const ListCategories = () => {
   const router = useRouter();
-  const [groupedCategories, setGroupedCategories] = useState<GroupWithChildren[]>([]);
+  const [groupedCategories, setGroupedCategories] = useState<
+    GroupWithChildren[]
+  >([]);
   const [hoveredGroupId, setHoveredGroupId] = useState<number | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -59,18 +61,21 @@ const ListCategories = () => {
   return (
     <>
       {/* Logo */}
-      <div className="flex justify-center pt-4 pb-4 mt-2 mb-7">
-        <img
-          src="/logo.png"
-          alt="Logo"
-          className="w-[240px] h-auto object-contain transition-opacity duration-300"
-        />
-      </div>
 
       <div className="relative flex group">
         {/* Sidebar */}
-        <div className="w-[240px] h-[700px] bg-white sticky top-2 rounded-xl z-10 group-hover:z-60 transition-all duration-300">
-          <div className="flex items-center gap-2 p-2 bg-white sticky top-0 z-20">
+        <div className="w-[240px]  bg-white sticky top-2 rounded-xl z-10 group-hover:z-60 transition-all duration-300 overflow-hidden">
+          {/* Logo */}
+          <div className="flex justify-center pt-4 pb-4 mt-2 mb-4 bg-white sticky top-0 z-30">
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="w-[240px] h-auto object-contain transition-opacity duration-300"
+            />
+          </div>
+
+          {/* "Danh mục" tiêu đề */}
+          <div className="flex items-center gap-2 p-2 bg-white sticky top-[100px] z-20">
             <div className="flex justify-center bg-[#921573] text-white p-2.5 rounded w-[20%]">
               <TbCategory2 size={20} />
             </div>
@@ -79,8 +84,9 @@ const ListCategories = () => {
             </span>
           </div>
 
+          {/* List danh mục */}
           <div
-            className="h-[580px] overflow-y-auto pr-1 scrollbar-hide"
+            className="h-[calc(800px-160px)] overflow-y-auto pr-1 scrollbar-hide"
             onMouseLeave={handleMouseLeave}
             onMouseEnter={() => {
               if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -89,7 +95,7 @@ const ListCategories = () => {
             {groupedCategories.map((group) => (
               <div
                 key={group.id}
-                className="group flex items-center py-2 px-2 hover:bg-purple-100 cursor-pointer rounded"
+                className="group flex items-center py-4 px-2 hover:bg-purple-100 cursor-pointer rounded"
                 onMouseEnter={() => handleMouseEnterCategory(group.id)}
                 onClick={() => handleCategoryClick(group.id)}
               >
@@ -126,7 +132,9 @@ const ListCategories = () => {
                     {filteredChildren.map((child) => (
                       <div
                         key={child.id}
-                        onClick={() => handleChildCategoryClick(child, hoveredGroupId)}
+                        onClick={() =>
+                          handleChildCategoryClick(child, hoveredGroupId)
+                        }
                         className="px-4 py-2 rounded hover:bg-purple-100 cursor-pointer text-sm text-gray-700 transition"
                       >
                         {child.name}
