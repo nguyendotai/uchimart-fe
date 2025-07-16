@@ -5,6 +5,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    unoptimized: true, // 🔴 Thêm dòng này để tránh lỗi khi export tĩnh
     remotePatterns: [
       {
         protocol: 'http',

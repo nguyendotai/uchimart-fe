@@ -43,11 +43,14 @@ export default function RootLayout({
             >
               <div
                 className={`mx-auto ${
-                  hasSidebar ? "max-w-[1300px]" : "max-w-[1600px]"
+                  hasSidebar ? "max-w-[1300px]" : "max-w-[1800px]"
                 }`}
               >
                 {children}
+                <div className="w-full">
                 <Footer />
+                </div>
+                
               </div>
             </main>
           </div>

@@ -126,9 +126,9 @@ const ProductCard = ({ product }: { product: Product }) => {
         </a>
 
         {/* Description */}
-        <p className="px-1 text-gray-600 text-xs line-clamp-2">
+        {/* <p className="px-1 text-gray-600 text-xs line-clamp-2">
           {product.description}
-        </p>
+        </p> */}
 
         {/* Price */}
         <div className="">
