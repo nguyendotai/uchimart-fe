@@ -1,7 +1,8 @@
 // components/animations/StaggerFadeIn.tsx
 'use client';
-import { motion } from 'framer-motion';
-import { Variants } from "framer-motion";
+import { motion,Variants } from 'framer-motion';
+
+
 const container = {
   hidden: { opacity: 0 },
   show: {
@@ -20,7 +21,7 @@ const item: Variants = {
     y: 0,
     transition: {
       duration: 0.4,
-      ease: [0.25, 0.8, 0.25, 1], // cubic-bezier mượt hơn
+      ease: [0.25, 0.8, 0.25, 1] as [number, number, number, number], // cubic-bezier mượt hơn
       type: "spring",
     },
   },
