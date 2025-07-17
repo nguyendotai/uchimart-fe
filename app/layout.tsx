@@ -43,7 +43,7 @@ export default function RootLayout({
             >
               <div
                 className={`mx-auto ${
-                  hasSidebar ? "max-w-[1300px]" : "max-w-[1800px]"
+                  hasSidebar ? "max-w-[1300px]" : "max-w-[1600px]"
                 }`}
               >
                 {children}

@@ -50,7 +50,7 @@ export default function ImageSlider() {
   return (
     <div className="relative w-full h-[450px] rounded-xl bg-[#fff] flex justify-center items-center">
       {/* Vùng chứa slider */}
-      <div className="relative w-[93%] h-[80%] rounded-xl overflow-hidden ">
+      <div className="relative w-[98%] h-[94%] rounded-xl overflow-hidden ">
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
@@ -71,7 +71,6 @@ export default function ImageSlider() {
                   src={img1.desktop_image}
                   alt="banner 1"
                   fill
-                  className="object-cover"
                 />
               </a>
             )}
@@ -85,7 +84,6 @@ export default function ImageSlider() {
                   src={img2.desktop_image}
                   alt="banner 2"
                   fill
-                  className="object-cover"
                 />
               </a>
             )}
@@ -93,7 +91,7 @@ export default function ImageSlider() {
         </AnimatePresence>
       </div>
 
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 flex gap-2">
+      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-10 flex gap-2">
         {Array.from({ length: Math.ceil(banners.length / 2) }).map((_, i) => (
           <div
             key={i}
