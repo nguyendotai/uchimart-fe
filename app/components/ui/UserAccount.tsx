@@ -6,7 +6,7 @@ import { User } from "@/app/types/User";
 import Link from "next/link";
 
 export default function UserAccount() {
-  const [user, setUser] = useState<User | null>(null); // Sau này bạn thay bằng dữ liệu thực
+  const [user] = useState<User | null>(null); // Sau này bạn thay bằng dữ liệu thực
 
   return (
     <div className="flex items-center gap-3 cursor-pointer overflow-hidden">
