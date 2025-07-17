@@ -130,7 +130,15 @@ const ListCategories = () => {
                 {filteredChildren.length > 0 ? (
                   <div className="grid grid-cols-2 gap-6">
                     {filteredChildren.map((category) => (
-                      <div key={category.id} className="flex flex-col gap-2">
+                      <div
+                        key={category.id}
+                        className="flex flex-col gap-2 cursor-pointer p-2 rounded transition"
+                        onClick={() =>
+                          router.push(
+                            `/product?category=${hoveredGroupId}&child=${category.id}`
+                          )
+                        }
+                      >
                         {/* Hình ảnh và tên danh mục cấp 2 */}
                         <div className="flex items-center gap-3">
                           <img
@@ -148,34 +156,7 @@ const ListCategories = () => {
                           {category.subcategories.map(
                             (sub: {
                               id: React.Key | null | undefined;
-                              name:
-                                | string
-                                | number
-                                | bigint
-                                | boolean
-                                | React.ReactElement<
-                                    unknown,
-                                    string | React.JSXElementConstructor<any>
-                                  >
-                                | Iterable<React.ReactNode>
-                                | React.ReactPortal
-                                | Promise<
-                                    | string
-                                    | number
-                                    | bigint
-                                    | boolean
-                                    | React.ReactPortal
-                                    | React.ReactElement<
-                                        unknown,
-                                        | string
-                                        | React.JSXElementConstructor<any>
-                                      >
-                                    | Iterable<React.ReactNode>
-                                    | null
-                                    | undefined
-                                  >
-                                | null
-                                | undefined;
+                              name: string;
                             }) => (
                               <div
                                 key={sub.id}
