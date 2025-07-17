@@ -14,6 +14,7 @@ export interface CategoryGroup {
 
 
 export interface Category {
+  subcategories: any;
   id: number;
   name: string;
   slug: string;

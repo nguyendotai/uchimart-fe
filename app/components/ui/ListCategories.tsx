@@ -128,16 +128,70 @@ const ListCategories = () => {
                 onMouseLeave={handleMouseLeave}
               >
                 {filteredChildren.length > 0 ? (
-                  <div className="grid grid-cols-4 gap-4">
-                    {filteredChildren.map((child) => (
-                      <div
-                        key={child.id}
-                        onClick={() =>
-                          handleChildCategoryClick(child, hoveredGroupId)
-                        }
-                        className="px-4 py-2 rounded hover:bg-purple-100 cursor-pointer text-sm text-gray-700 transition"
-                      >
-                        {child.name}
+                  <div className="grid grid-cols-2 gap-6">
+                    {filteredChildren.map((category) => (
+                      <div key={category.id} className="flex flex-col gap-2">
+                        {/* Hình ảnh và tên danh mục cấp 2 */}
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={category.image || "/default.png"}
+                            alt={category.name}
+                            className="w-12 h-12 object-cover rounded-full"
+                          />
+                          <span className="font-semibold text-gray-800">
+                            {category.name}
+                          </span>
+                        </div>
+
+                        {/* Danh mục cấp 3 */}
+                        <div className="grid grid-cols-2 gap-2 ml-2 mt-2">
+                          {category.subcategories.map(
+                            (sub: {
+                              id: React.Key | null | undefined;
+                              name:
+                                | string
+                                | number
+                                | bigint
+                                | boolean
+                                | React.ReactElement<
+                                    unknown,
+                                    string | React.JSXElementConstructor<any>
+                                  >
+                                | Iterable<React.ReactNode>
+                                | React.ReactPortal
+                                | Promise<
+                                    | string
+                                    | number
+                                    | bigint
+                                    | boolean
+                                    | React.ReactPortal
+                                    | React.ReactElement<
+                                        unknown,
+                                        | string
+                                        | React.JSXElementConstructor<any>
+                                      >
+                                    | Iterable<React.ReactNode>
+                                    | null
+                                    | undefined
+                                  >
+                                | null
+                                | undefined;
+                            }) => (
+                              <div
+                                key={sub.id}
+                                onClick={() =>
+                                  router.push(
+                                    `/product?category=${hoveredGroupId}&child=${category.id}&sub=${sub.id}`
+                                  )
+                                }
+                                className="text-sm text-gray-600 hover:text-purple-700 cursor-pointer transition flex items-start gap-1"
+                              >
+                                <span className="text-lg leading-[1]">•</span>
+                                <span>{sub.name}</span>
+                              </div>
+                            )
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
