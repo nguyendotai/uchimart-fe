@@ -14,7 +14,7 @@ import { MdArticle } from "react-icons/md";
 
 const Header = () => {
   const [showHeader, setShowHeader] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  // const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;

@@ -8,16 +8,14 @@ const LoginGGSuccess = () => {
 
   const email = searchParams.get("email");
   const name = searchParams.get("name");
+  const avatar = searchParams.get("avatar");
 
   useEffect(() => {
     if (email && name) {
-      // Lưu vào localStorage hoặc context
-      localStorage.setItem("user", JSON.stringify({ email, name }));
-
-      // Chuyển hướng đến trang chính
-      router.push("/");
+      localStorage.setItem("user", JSON.stringify({ email, name, avatar }));
+      router.push("/"); // chuyển về trang chính
     }
-  }, [email, name]);
+  }, [email, name, avatar]);
 
   return <div className="text-center mt-10 text-xl">Đang đăng nhập bằng Google...</div>;
 };

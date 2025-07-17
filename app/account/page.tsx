@@ -6,6 +6,17 @@ import { FaBookBookmark } from 'react-icons/fa6';
 import { IoCard, IoDocument } from 'react-icons/io5';
 import { MdOutlineSecurity } from 'react-icons/md';
 const Account = () => {
+
+    const handleLogout = () => {
+        // Xóa dữ liệu user khỏi localStorage
+        localStorage.removeItem("user");
+
+        // console.log("Đã đăng xuất thành công!");
+
+        // Optionally: chuyển hướng về trang chủ hoặc trang đăng nhập
+        window.location.href = "/";
+    };
+
     return (
         <div>
             <main className="my-[100px]">
@@ -84,10 +95,10 @@ const Account = () => {
                         <div className="w-full flex justify-between mb-7">
                             <Link href="/addressBook" className="w-[48%] px-5 py-2 bg-white rounded-[5px] cursor-pointer">
                                 <div className="flex items-center justify-between">
-                                        <div className="flex items-center justify-center">
-                                            <FaBookBookmark className=' text-xl' />
-                                            <p className="p-2 text-[rgb(45,55,72)]">Sổ địa chỉ</p>
-                                        </div>
+                                    <div className="flex items-center justify-center">
+                                        <FaBookBookmark className=' text-xl' />
+                                        <p className="p-2 text-[rgb(45,55,72)]">Sổ địa chỉ</p>
+                                    </div>
 
                                     <FaChevronRight className=' text-xl' />
 
@@ -126,8 +137,8 @@ const Account = () => {
 
 
                             <div
-                                className="w-[48%] flex items-center justify-center px-5 py-2 bg-[#921573] rounded-[5px] cursor-pointer">
-                                <button className="text-[#F5F5FA] text-lg">
+                                className="w-[48%] flex items-center justify-center px-5 py-2 bg-[#921573] rounded-[5px] cursor-pointer" onClick={handleLogout}>
+                                <button className="text-[#F5F5FA] text-lg cursor-pointer">
                                     Đăng xuất
                                 </button>
                             </div>
