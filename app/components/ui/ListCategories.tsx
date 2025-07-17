@@ -120,7 +120,7 @@ const ListCategories = () => {
             <>
               {/* Danh mục con */}
               <div
-                className="fixed top-0 left-[251px] h-screen bg-white shadow-lg p-6 z-[9998] overflow-y-auto"
+                className="fixed top-0 left-[251px] h-screen bg-white shadow-lg p-6 z-[9998] overflow-y-auto scrollbar-custom"
                 style={{ width: `${CHILD_WIDTH * 100}vw` }}
                 onMouseEnter={() => {
                   if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -128,16 +128,51 @@ const ListCategories = () => {
                 onMouseLeave={handleMouseLeave}
               >
                 {filteredChildren.length > 0 ? (
-                  <div className="grid grid-cols-4 gap-4">
-                    {filteredChildren.map((child) => (
+                  <div className="grid grid-cols-2 gap-6">
+                    {filteredChildren.map((category) => (
                       <div
-                        key={child.id}
+                        key={category.id}
+                        className="flex flex-col gap-2 cursor-pointer p-2 rounded transition"
                         onClick={() =>
-                          handleChildCategoryClick(child, hoveredGroupId)
+                          router.push(
+                            `/product?category=${hoveredGroupId}&child=${category.id}`
+                          )
                         }
-                        className="px-4 py-2 rounded hover:bg-purple-100 cursor-pointer text-sm text-gray-700 transition"
                       >
-                        {child.name}
+                        {/* Hình ảnh và tên danh mục cấp 2 */}
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={category.image || "/default.png"}
+                            alt={category.name}
+                            className="w-12 h-12 object-cover rounded-full"
+                          />
+                          <span className="font-semibold text-gray-800">
+                            {category.name}
+                          </span>
+                        </div>
+
+                        {/* Danh mục cấp 3 */}
+                        <div className="grid grid-cols-2 gap-2 ml-2 mt-2">
+                          {category.subcategories.map(
+                            (sub: {
+                              id: React.Key | null | undefined;
+                              name: string;
+                            }) => (
+                              <div
+                                key={sub.id}
+                                onClick={() =>
+                                  router.push(
+                                    `/product?category=${hoveredGroupId}&child=${category.id}&sub=${sub.id}`
+                                  )
+                                }
+                                className="text-sm text-gray-600 hover:text-purple-700 cursor-pointer transition flex items-start gap-1"
+                              >
+                                <span className="text-lg leading-[1]">•</span>
+                                <span>{sub.name}</span>
+                              </div>
+                            )
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
