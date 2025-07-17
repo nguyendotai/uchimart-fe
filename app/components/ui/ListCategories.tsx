@@ -120,7 +120,7 @@ const ListCategories = () => {
             <>
               {/* Danh mục con */}
               <div
-                className="fixed top-0 left-[251px] h-screen bg-white shadow-lg p-6 z-[9998] overflow-y-auto"
+                className="fixed top-0 left-[251px] h-screen bg-white shadow-lg p-6 z-[9998] overflow-y-auto scrollbar-custom"
                 style={{ width: `${CHILD_WIDTH * 100}vw` }}
                 onMouseEnter={() => {
                   if (timeoutRef.current) clearTimeout(timeoutRef.current);
