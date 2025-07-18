@@ -1,11 +1,15 @@
 "use client";
+import { User } from "@/app/types/User";
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaChevronRight, FaClipboardList, FaTicketAlt } from "react-icons/fa";
 import { FaBookBookmark } from 'react-icons/fa6';
 import { IoCard, IoDocument } from 'react-icons/io5';
 import { MdOutlineSecurity } from 'react-icons/md';
 const Account = () => {
+
+    const [user, setUser] = useState<User | null>(null);
+
 
     const handleLogout = () => {
         // Xóa dữ liệu user khỏi localStorage
@@ -17,6 +21,13 @@ const Account = () => {
         window.location.href = "/";
     };
 
+    useEffect(() => {
+        const userData = localStorage.getItem("user");
+        if (userData) {
+            setUser(JSON.parse(userData));
+        }
+    }, []);
+
     return (
         <div>
             <main className="my-[100px]">
@@ -26,10 +37,10 @@ const Account = () => {
                         {/* <!-- row1 --> */}
                         <div className="w-full flex justify-between mb-7">
                             <div className="w-[48%] flex bg-white rounded-[5px] items-center ">
-                                <div className=" w-[48%] ml-5  flex  items-center justify-between ">
+                                <div className=" w-full ml-5  flex  items-center ">
                                     <img className="w-[80px] h-[80px] rounded-full object-cover cursor-pointer"
-                                        src="/img/avt1.jpg" alt="" />
-                                    <p className=" text-3xl font-bold cursor-pointer">Tuaneli</p>
+                                        src={user?.avatar || "/img/default-avatar.jpg"} alt="" />
+                                    <p className=" text-3xl font-bold cursor-pointer ml-4">{user?.name || "User"}</p>
                                 </div>
                             </div>
 
