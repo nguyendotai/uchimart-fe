@@ -5,8 +5,8 @@ import Image from "next/image";
 
 type Banner = {
   id: number;
-  desktop_image: string; // URL ảnh hiển thị
-  redirect_url: string; // URL để chuyển hướng khi click
+  desktop_image: string;
+  redirect_url: string;
 };
 
 const sliceVariants = {
@@ -37,20 +37,18 @@ export default function ImageSlider() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prev) => (prev + 2) % banners.length);
+      setIndex((prev) => (prev + 1) % banners.length);
     }, 6000);
     return () => clearInterval(interval);
   }, [banners]);
 
   if (banners.length === 0) return null;
 
-  const img1 = banners[index % banners.length];
-  const img2 = banners[(index + 1) % banners.length];
+  const currentBanner = banners[index % banners.length];
 
   return (
     <div className="relative w-full h-[450px] rounded-xl bg-[#fff] flex justify-center items-center">
-      {/* Vùng chứa slider */}
-      <div className="relative w-[98%] h-[94%] rounded-xl overflow-hidden ">
+      <div className="relative w-[93%] h-[82%] rounded-xl overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
@@ -59,46 +57,29 @@ export default function ImageSlider() {
             animate="center"
             exit="exit"
             transition={{ duration: 0.3 }}
-            className="absolute inset-0 flex gap-x-4 w-full h-full p-2"
+            className="absolute inset-0 w-full h-full"
           >
-            {img1 && (
-              <a
-                href={img1.redirect_url}
-                className="w-1/2 h-full relative rounded-lg overflow-hidden"
-                target="_blank"
-              >
-                <Image
-                  src={img1.desktop_image}
-                  alt="banner 1"
-                  fill
-                />
-              </a>
-            )}
-            {img2 && (
-              <a
-                href={img2.redirect_url}
-                className="w-1/2 h-full relative rounded-lg overflow-hidden"
-                target="_blank"
-              >
-                <Image
-                  src={img2.desktop_image}
-                  alt="banner 2"
-                  fill
-                />
-              </a>
-            )}
+            <a
+              href={currentBanner.redirect_url}
+              className="block w-full h-full relative rounded-lg overflow-hidden"
+              target="_blank"
+            >
+              <Image
+                src={currentBanner.desktop_image}
+                alt={`banner ${index + 1}`}
+                fill
+              />
+            </a>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-10 flex gap-2">
-        {Array.from({ length: Math.ceil(banners.length / 2) }).map((_, i) => (
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 flex gap-2">
+        {banners.map((_, i) => (
           <div
             key={i}
             className={`w-10 h-1 rounded-full transition-all duration-300 ${
-              i === Math.floor(index / 2)
-                ? "bg-blue-600 scale-110"
-                : "bg-gray-400"
+              i === index ? "bg-blue-600 scale-110" : "bg-gray-400"
             }`}
           />
         ))}

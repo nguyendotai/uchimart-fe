@@ -120,7 +120,7 @@ const ListCategories = () => {
             <>
               {/* Danh mục con */}
               <div
-                className="fixed top-0 left-[251px] h-screen bg-white shadow-lg p-6 z-[9998] overflow-y-auto scrollbar-custom"
+                className="fixed top-0 left-[251px] h-screen bg-white shadow-lg p-6 z-[9998] overflow-y-auto scrollbar-hide"
                 style={{ width: `${CHILD_WIDTH * 100}vw` }}
                 onMouseEnter={() => {
                   if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -167,8 +167,7 @@ const ListCategories = () => {
                                 }
                                 className="text-sm text-gray-600 hover:text-purple-700 cursor-pointer transition flex items-start gap-1"
                               >
-                                <span className="text-lg leading-[1]">•</span>
-                                <span>{sub.name}</span>
+                                <span className="underline">{sub.name}</span>
                               </div>
                             )
                           )}
