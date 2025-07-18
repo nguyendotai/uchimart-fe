@@ -9,7 +9,7 @@ import { MdOutlineSecurity } from 'react-icons/md';
 const Account = () => {
 
     const [user, setUser] = useState<User | null>(null);
-
+    const [completion, setCompletion] = useState(0);
 
     const handleLogout = () => {
         // Xóa dữ liệu user khỏi localStorage
@@ -22,9 +22,21 @@ const Account = () => {
     };
 
     useEffect(() => {
-        const userData = localStorage.getItem("user");
-        if (userData) {
-            setUser(JSON.parse(userData));
+        const data = localStorage.getItem("user");
+        if (data) {
+            const userData: User = JSON.parse(data);
+            setUser(userData);
+
+            // Tính % hoàn thiện
+            const total = 5;
+            let done = 0;
+            if (userData.name) done++;
+            if (userData.email) done++;
+            if (userData.phone_number) done++;
+            if (userData.birthday) done++;
+            if (userData.avatar) done++;
+
+            setCompletion(Math.floor((done / total) * 100));
         }
     }, []);
 
@@ -48,19 +60,19 @@ const Account = () => {
                                 <div className="p-5">
                                     <div className=" flex justify-between mb-3">
                                         <strong>Hoàn thiện hồ sơ của bạn</strong>
-                                        <p className="text-green-500 font-bold">70%</p>
+                                        <p className="text-green-500 font-bold">{completion}%</p>
                                     </div>
 
                                     <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
-                                        <div className="bg-green-500 h-2 rounded-full w-[70%]"></div>
+                                        <div className="bg-green-500 h-2 rounded-full" style={{ width: `${completion ?? 0}%` }}></div>
                                     </div>
 
                                     <div className="flex justify-between">
                                         <p className="w-[70%] text-sm">Bổ sung các thông tin giúp bạn thanh toán nhanh chóng và an
                                             toàn hơn</p>
-                                        <button
-                                            className=" px-6 bg-[#327FF6] text-[#F5F5FA] rounded-full cursor-pointer">Tiếp
-                                            tục</button>
+                                        <Link href="/profile"
+                                            className=" px-5 py-2 bg-[#327FF6] text-[#F5F5FA] rounded-full cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out">Tiếp
+                                            tục</Link>
                                     </div>
                                 </div>
                             </div>

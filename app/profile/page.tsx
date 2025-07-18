@@ -5,19 +5,15 @@ import Image from 'next/image';
 const Profile = () => {
     const [gender, setGender] = useState('Nam');
     const [user, setUser] = useState<User | null>(null);
-    const [name, setName] = useState('');
 
     useEffect(() => {
         const userData = localStorage.getItem("user");
         if (userData) {
-            const parsedUser = JSON.parse(userData);
-            setUser(parsedUser);
-            if (parsedUser.name) {
-                setName(parsedUser.name);
-            }
+            setUser(JSON.parse(userData));
         }
     }, []);
 
+    
     return (
         <div>
             <div className="max-w-3xl mx-auto my-10 bg-white p-6 rounded-2xl shadow-xl">
@@ -36,32 +32,15 @@ const Profile = () => {
                 </div>
 
                 {/* Form */}
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-
-                        if (user) {
-                            const updatedUser = {
-                                ...user,
-                                name: name,
-                            };
-                            localStorage.setItem("user", JSON.stringify(updatedUser));
-                            setUser(updatedUser);
-                            alert("Đã cập nhật tên thành công!");
-                        }
-                    }}
-                    
-                    className="grid grid-cols-1 gap-4 mt-4">
+                <form className="grid grid-cols-1 gap-4 mt-4">
                     {/* Tên đầy đủ */}
                     <div>
                         <label className="block mb-1 text-sm font-semibold text-gray-700">Tên</label>
                         <input
                             type="text"
-                            value={user?.name}
-                            onChange={(e) => setName(e.target.value)}
+                            defaultValue={user?.name || ""}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
-
                     </div>
 
                     {/* Số điện thoại */}
@@ -116,7 +95,7 @@ const Profile = () => {
                         <label className="block mb-1 text-sm font-semibold text-gray-700">Ngày sinh</label>
                         <input
                             type="date"
-                            defaultValue="2025-07-14"
+                            defaultValue=""
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
                     </div>
@@ -125,7 +104,7 @@ const Profile = () => {
                     <div>
                         <button
                             type="submit"
-                            className="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full text-lg font-semibold shadow-md hover:opacity-90 transition"
+                            className="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full text-lg font-semibold shadow-md hover:opacity-90 transition cursor-pointer"
                         >
                             Cập nhật
                         </button>
