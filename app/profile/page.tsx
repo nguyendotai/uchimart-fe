@@ -24,8 +24,8 @@ const Profile = () => {
                         <Image
                             src={user?.avatar || '/img/default-avatar.jpg'}
                             alt="User avatar"
-                            width={112} // tương đương w-28
-                            height={112} // tương đương h-28
+                            width={112} // w-28
+                            height={112} // h-28
                             className="rounded-full flex items-center justify-center shadow-lg border-4 border-white object-cover"
                         />
                     </div>

@@ -64,8 +64,8 @@ const Login = () => {
 
 
   const handleLoginWithGoogle = () => {
-  window.location.href = "http://127.0.0.1:8000/auth/google"; // URL BE Laravel
-};
+    window.location.href = "http://127.0.0.1:8000/auth/google"; // URL BE Laravel
+  };
 
 
   useEffect(() => {
@@ -139,11 +139,14 @@ const Login = () => {
                   <div className="mb-5">Hoặc</div>
 
                   <div
-                    className="mx-auto w-[45%] flex items-center justify-center border-1 bo rounded-[10px] cursor-pointer mb-3 p-2.5"
-                    onClick={handleLoginWithGoogle}>
-                    <FcGoogle className="fa-brands fa-google mr-2 text-2xl"></FcGoogle>
-                    <span className="text-center ">Google</span>
+                    className="mx-auto w-[45%] flex items-center justify-center border border-gray-300 rounded-[10px] cursor-pointer mb-3 p-2.5
+             hover:bg-blue-50 hover:shadow-lg transition duration-300 ease-in-out"
+                    onClick={handleLoginWithGoogle}
+                  >
+                    <FcGoogle className="mr-2 text-2xl" />
+                    <span className="text-center font-medium text-gray-700">Google</span>
                   </div>
+
 
                 </div>
               </div>
