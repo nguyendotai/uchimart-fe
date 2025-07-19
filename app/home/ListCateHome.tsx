@@ -1,46 +1,54 @@
 "use client";
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Category } from "@/app/types/Category";
+import Slider from "react-slick";
+import { CategoryGroup } from "@/app/types/Category";
+import { productCarouselSettings_Cate } from "../utils/carouselSettings_Cate"; // hoặc "@/utils/carouselSettings"
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const ListCateHome = () => {
   const router = useRouter();
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [groups, setGroups] = useState<CategoryGroup[]>([]);
+
   useEffect(() => {
-    function fetchCategories() {
-      fetch("/data/categories.json")
-        .then((response) => response.json())
-        .then((data) => {
-          setCategories(data);
-        })
-        .catch((error) => {
-          console.error("Lỗi khi fetch categories:", error);
-        });
+    async function fetchGroups() {
+      try {
+        const res = await fetch("http://127.0.0.1:8000/api/category-groups");
+        const json = await res.json();
+        setGroups(json.data ?? []);
+      } catch (error) {
+        console.error("Lỗi khi fetch category groups:", error);
+      }
     }
 
-    fetchCategories();
+    fetchGroups();
   }, []);
-  const handleCategoryClick = (categoryId: number) => {
-    router.push(`/product?category=${categoryId}`);
+
+  const handleGroupClick = (groupId: number) => {
+    router.push(`/product?category=${groupId}`);
   };
+
   return (
-    <div className="bg-white shadow rounded-xl p-2 ">
-      <ul className="flex flex-wrap gap-2 justify-between">
-        {categories.map((category, index) => (
-          <li
-            key={index}
-            onClick={() => handleCategoryClick(category.id)}
-            className="w-[11%] min-w-[80px] bg-white text-center p-2 font-medium"
+    <div className="bg-white shadow rounded-xl p-4 relative">
+      <Slider {...productCarouselSettings_Cate}>
+        {groups.map((group) => (
+          <div
+            key={group.id}
+            onClick={() => handleGroupClick(group.id)}
+            className="px-2 cursor-pointer"
           >
-            <img
-              src={category.image}
-              className="mx-auto mb-1 h-12 object-contain"
-            />
-            <span className="text-xs">{category.name}</span>
-          </li>
+            <div className="bg-white text-center p-2 font-medium rounded">
+              <img
+                src={group.image || "/default.png"}
+                className="mx-auto mb-1 h-12 object-contain rounded-full"
+                alt={group.name}
+              />
+              <span className="text-xs">{group.name}</span>
+            </div>
+          </div>
         ))}
-      </ul>
+      </Slider>
     </div>
   );
 };
