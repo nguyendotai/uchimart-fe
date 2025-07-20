@@ -1,15 +1,23 @@
+'use client';
 import React from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdDiscount } from 'react-icons/md';
+
+
+import { Canvas } from '@react-three/fiber';
+import { Environment, OrbitControls } from '@react-three/drei';
+import PhoenixModel from '../phoenix/components/phoenix';
 
 const Voucher = () => {
     return (
         <div>
             <main className="my-[30px]">
+
                 <div className="w-[80%] mx-auto">
+                
 
 
-                    <div className='bg-white rounded-2xl mb-3'>
+                    <div className='bg-white rounded-2xl mb-6'>
                         <div className='p-4'>
 
                             <div className='flex items-center gap-2 mb-4'>
@@ -43,6 +51,14 @@ const Voucher = () => {
 
                     </div>
 
+
+                        <Canvas>
+                        <ambientLight intensity={0.5} />
+                        <directionalLight position={[10, 10, 10]} />
+                        <PhoenixModel scale={0.01} />
+                        <OrbitControls />
+                        <Environment preset="sunset" />
+                      </Canvas>
 
 
 

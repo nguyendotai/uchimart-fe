@@ -6,6 +6,10 @@ import { FaChevronRight, FaClipboardList, FaTicketAlt } from "react-icons/fa";
 import { FaBookBookmark } from 'react-icons/fa6';
 import { IoCard, IoDocument } from 'react-icons/io5';
 import { MdOutlineSecurity } from 'react-icons/md';
+
+
+
+
 const Account = () => {
 
     const [user, setUser] = useState<User | null>(null);
@@ -98,7 +102,7 @@ const Account = () => {
 
                                     <FaTicketAlt className=' text-2xl text-[#921573c2]' />
 
-                                    <p className="p-2 font-medium text-[rgb(45,55,72)]">Voucher</p>
+                                    <Link href="/voucher" className="p-2 font-medium text-[rgb(45,55,72)]">Voucher</Link>
                                 </div>
                             </div>
 
