@@ -11,6 +11,7 @@ type Option = {
 type Props = {
   sortBy: string;
   setSortBy: React.Dispatch<React.SetStateAction<string>>;
+  categoryGroupId: number; // 🆕 Nhận id danh mục cha
 };
 
 const options: Option[] = [
@@ -20,29 +21,32 @@ const options: Option[] = [
   { label: "Bán chạy", value: "best-seller" },
 ];
 
-const ListSubCategory = ({ sortBy, setSortBy }: Props) => {
+const ListSubCategory = ({ sortBy, setSortBy, categoryGroupId }: Props) => {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    fetch("/data/categories.json")
+    if (!categoryGroupId) return;
+
+    fetch(`http://127.0.0.1:8000/api/category-groups/${categoryGroupId}`)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
       })
-      .then((data: Category[]) => {
-        setCategories(data.slice(0, 8)); // giới hạn 8 danh mục
+      .then((data) => {
+        const children: Category[] = data.data?.categories ?? [];
+        setCategories(children.slice(0, 8)); // giới hạn hiển thị 8 danh mục con
       })
       .catch((err) => {
-        console.error("Failed to fetch categories:", err);
+        console.error("Failed to fetch subcategories:", err);
       });
-  }, []);
+  }, [categoryGroupId]);
 
   return (
-    <div className="sticky top-0 z-30shadow">
+    <div className="sticky top-0 z-30 shadow">
       {/* Danh mục con */}
-      <div className="flex gap-2 p-4 bg-white shadow rounded-tl-2xl rounded-tr-2xl">
-        {categories.map((category, index) => (
-          <div key={index} className="w-[12%] text-center">
+      <div className="flex gap-2 p-4 bg-white shadow rounded-tl-2xl rounded-tr-2xl overflow-x-auto scrollbar-hide">
+        {categories.map((category) => (
+          <div key={category.id} className="w-[12%] text-center min-w-[80px]">
             <img
               src={category.image}
               alt={category.name}
@@ -78,6 +82,5 @@ const ListSubCategory = ({ sortBy, setSortBy }: Props) => {
     </div>
   );
 };
-
 
 export default ListSubCategory;

@@ -40,7 +40,6 @@ const PromotionalBanners = () => {
                 src={banner.desktop_image}
                 alt={`Banner ${banner.id}`}
                 fill
-                className="object-cover"
               />
             </a>
           </li>

@@ -29,9 +29,12 @@ const Product = () => {
     fetchCategories();
   }, []);
 
-  const categoryName = categoryId
-    ? categories.find((c) => c.id === Number(categoryId))?.name
-    : "Tất cả sản phẩm";
+  const currentCategory = categoryId
+    ? categories.find((c) => c.id === Number(categoryId))
+    : null;
+
+  const categoryName = currentCategory?.name || "Tất cả sản phẩm";
+  const categoryGroupId = currentCategory?.category_group_id || 0;
 
   return (
     <PageTransitionWrapper>
@@ -55,7 +58,11 @@ const Product = () => {
             </div>
             {/* Category Child */}
             <div className="z-30 sticky top-0 mb-4">
-              <ListSubCategory sortBy={sortBy} setSortBy={setSortBy} />
+              <ListSubCategory
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                categoryGroupId={categoryGroupId}
+              />
             </div>
 
             {/* Count Product */}

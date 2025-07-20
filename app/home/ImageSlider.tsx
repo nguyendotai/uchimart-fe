@@ -18,13 +18,17 @@ const sliceVariants = {
 export default function ImageSlider() {
   const [index, setIndex] = useState(0);
   const [banners, setBanners] = useState<Banner[]>([]);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true); // Xác nhận đã ở phía client
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return;
     fetch("http://127.0.0.1:8000/api/banners")
       .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
       })
       .then((json) => {
@@ -33,16 +37,18 @@ export default function ImageSlider() {
       .catch((err) => {
         console.error("Lỗi tải banners:", err);
       });
-  }, []);
+  }, [isClient]);
 
   useEffect(() => {
+    if (banners.length === 0) return;
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % banners.length);
     }, 6000);
     return () => clearInterval(interval);
   }, [banners]);
 
-  if (!Array.isArray(banners) || banners.length === 0) return null;
+  // ❌ Tránh render sớm trước khi client load và banners có dữ liệu
+  if (!isClient || banners.length === 0) return null;
 
   const currentBanner = banners[index % banners.length];
   if (!currentBanner) return null;
