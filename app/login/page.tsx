@@ -7,6 +7,11 @@ import { useRouter } from 'next/navigation';
 import { FcGoogle } from 'react-icons/fc';
 
 
+import { Canvas } from '@react-three/fiber';
+import { Environment, OrbitControls } from '@react-three/drei';
+import PhoenixModel from '../robot/components/robot';
+
+
 // 👇 Gắn kiểu rõ ràng cho window
 declare global {
   interface Window {
@@ -155,9 +160,16 @@ const Login = () => {
 
 
 
-            <div className="w-[50%]">
-              <img src="./img/login.jpg" alt="" />
+            <div className="w-[50%] relative "> {/* hoặc h-full, tùy bố cục */}
+              <Canvas className="absolute top-0 left-0 w-full h-full">
+                <ambientLight intensity={0.5} />
+                <directionalLight position={[10, 10, 10]} />
+                <PhoenixModel scale={1.5}/>
+                <OrbitControls enableZoom={false} enableRotate={false} enablePan={false} />
+                <Environment preset="sunset" />
+              </Canvas>
             </div>
+
 
           </div>
         </div>

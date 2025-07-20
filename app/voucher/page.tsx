@@ -52,13 +52,13 @@ const Voucher = () => {
                     </div>
 
 
-                        <Canvas>
+                    <Canvas>
                         <ambientLight intensity={0.5} />
                         <directionalLight position={[10, 10, 10]} />
                         <PhoenixModel scale={0.01} />
                         <OrbitControls />
                         <Environment preset="sunset" />
-                      </Canvas>
+                    </Canvas>
 
 
 
