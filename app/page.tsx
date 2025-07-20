@@ -1,6 +1,5 @@
 "use client";
 import ImageSlider from "./home/ImageSlider";
-import ListCategories from "./components/ui/ListCategories";
 import ListCateHome from "./home/ListCateHome";
 import TimeFlashSale from "./home/TimeFlashSale";
 import ListSaleProduct from "./home/ListSaleProduct";

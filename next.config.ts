@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export', // Cho phép dùng `npm run build` tạo thư mục `out`
+  // ❌ Xóa `output: 'export'`
   eslint: {
     ignoreDuringBuilds: true,
   },
   images: {
-    unoptimized: true, // 🔴 Thêm dòng này để tránh lỗi khi export tĩnh
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'http',

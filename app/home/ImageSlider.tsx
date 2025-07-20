@@ -42,9 +42,10 @@ export default function ImageSlider() {
     return () => clearInterval(interval);
   }, [banners]);
 
-  if (banners.length === 0) return null;
+  if (!Array.isArray(banners) || banners.length === 0) return null;
 
   const currentBanner = banners[index % banners.length];
+  if (!currentBanner) return null;
 
   return (
     <div className="relative w-full h-[450px] rounded-xl bg-[#fff] flex justify-center items-center">

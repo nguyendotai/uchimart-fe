@@ -4,31 +4,24 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProductCard from "../components/ui/ProductCard";
-import { Category } from "@/app/types/Category";
+import { CategoryGroup, Category } from "@/app/types/Category";
 import { Product } from "@/app/types/Product";
-import { productCarouselSettings } from "@/app/utils/carouselSettings"; // đường dẫn phù hợp
+import { productCarouselSettings } from "@/app/utils/carouselSettings";
 
 const ListProductByCate = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [groups, setGroups] = useState<CategoryGroup[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
-  const [pageMap, setPageMap] = useState<{ [key: number]: number }>({});
 
   useEffect(() => {
-    fetch("/data/categories.json")
-      .then((res) => {
-        if (!res.ok) throw new Error(`Lỗi categories: ${res.status}`);
-        return res.json() as Promise<Category[]>;
-      })
-      .then((dataCate) => {
-        setCategories(dataCate);
-        return fetch("/data/products.json");
-      })
-      .then((res) => {
-        if (!res.ok) throw new Error(`Lỗi products: ${res.status}`);
-        return res.json() as Promise<Product[]>;
-      })
-      .then((dataProd) => {
-        setProducts(dataProd);
+    Promise.all([
+      fetch("http://127.0.0.1:8000/api/category-groups").then((res) =>
+        res.json()
+      ),
+      fetch("/data/products.json").then((res) => res.json()),
+    ])
+      .then(([groupData, productData]) => {
+        setGroups(groupData.data ?? []);
+        setProducts(productData ?? []);
       })
       .catch((err) => {
         console.error("Lỗi tải dữ liệu:", err);
@@ -37,50 +30,53 @@ const ListProductByCate = () => {
 
   return (
     <>
-      {categories.map((category) => {
-        const filteredProducts = products.filter(
-          (p) => p.category_id === category.id
+      {groups.map((group) => {
+        // Lấy tất cả sản phẩm thuộc bất kỳ danh mục con nào của group đó
+        const categoryIds = group.categories?.map((cat) => cat.id) || [];
+        const groupProducts = products.filter((p) =>
+          categoryIds.includes(p.category_id)
         );
-        if (filteredProducts.length === 0) return null;
 
-        const currentPage = pageMap[category.id] || 0;
-        const startIndex = currentPage * 6;
-        const visibleProducts = filteredProducts.slice(
-          startIndex,
-          startIndex + 6
-        );
+        if (groupProducts.length === 0) return null;
 
         return (
-          <div key={category.id} className="w-full space-y-4">
-            {/* Banner nằm trên */}
-            <div className="w-full h-[120px] rounded-lg overflow-hidden relative bg-gray-200">
-              {/* Trái: ảnh danh mục */}
+          <div key={group.id} className="w-full space-y-4 mb-6">
+            {/* Banner danh mục cha */}
+            <div className="w-full h-[120px] rounded-lg overflow-hidden relative flex bg-gray-200 shadow">
+              {/* Trái: ảnh danh mục cha */}
               <div className="w-[40%]">
                 <img
-                  src={category.imgLarge}
-                  alt={category.name}
-                  className="w-full h-[120px] object-cover rounded"
+                  src={group.image || "/default-category.png"}
+                  alt={group.name}
+                  className="w-full h-full object-cover rounded-l-lg"
                 />
               </div>
-              <div className="w-[60%]"></div>
+
+              {/* Phải: tên danh mục cha */}
+              <div className="w-[60%] flex items-center px-4">
+                <h2 className="text-2xl font-semibold text-[#921573]">
+                  {group.name}
+                </h2>
+              </div>
             </div>
 
-            {/* Danh sách sản phẩm */}
+            {/* Danh sách sản phẩm dạng carousel */}
             <Slider {...productCarouselSettings}>
-              {visibleProducts.map((product) => (
+              {groupProducts.slice(0, 12).map((product) => (
                 <div key={product.id} className="px-2">
-                  <div
-                    className="bg-white shadow rounded-xl p-2 h-full"
-                  >
+                  <div className="bg-white shadow rounded-xl p-2 h-full">
                     <ProductCard product={product} />
                   </div>
                 </div>
               ))}
             </Slider>
 
-            {/* Nút Xem tất cả */}
+            {/* Nút xem tất cả */}
             <div className="flex justify-center mt-2">
-              <a href="#" className="text-[#921573] hover:underline font-medium">
+              <a
+                href={`/product?category=${group.id}`}
+                className="text-[#921573] hover:underline font-medium"
+              >
                 Xem tất cả
               </a>
             </div>
