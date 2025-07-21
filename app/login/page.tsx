@@ -9,7 +9,7 @@ import { FcGoogle } from 'react-icons/fc';
 
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
-import PhoenixModel from '../robot/components/robot';
+import PhoenixModel from '../components/Animation/robot/components/robot';
 
 
 // 👇 Gắn kiểu rõ ràng cho window
@@ -85,8 +85,8 @@ const Login = () => {
 
         <div className="flex min-h-screen items-center justify-center bg-[#F5F5FA]">
           <div className="w-full rounded-[10px] max-w-[75%] bg-white flex justify-between overflow-hidden">
-            <div className="w-[50%]">
-              <div className='p-4'>
+            <div className="w-[50%] p-4">
+              <div className=''>
                 <div className="w-[8%] border-2 border-[#921573] rounded-full flex items-center justify-center cursor-pointer px-3 py-2  mb-20">
                   <Link href="/"><FaHome className="fa-solid fa-house  text-2xl text-[#921573] rounded-full"></FaHome></Link>
                 </div>
@@ -164,7 +164,7 @@ const Login = () => {
               <Canvas className="absolute top-0 left-0 w-full h-full">
                 <ambientLight intensity={0.5} />
                 <directionalLight position={[10, 10, 10]} />
-                <PhoenixModel scale={1.5}/>
+                <PhoenixModel scale={1.5} />
                 <OrbitControls enableZoom={false} enableRotate={false} enablePan={false} />
                 <Environment preset="sunset" />
               </Canvas>

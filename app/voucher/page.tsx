@@ -3,11 +3,6 @@ import React from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdDiscount } from 'react-icons/md';
 
-
-import { Canvas } from '@react-three/fiber';
-import { Environment, OrbitControls } from '@react-three/drei';
-import PhoenixModel from '../phoenix/components/phoenix';
-
 const Voucher = () => {
     return (
         <div>
@@ -50,15 +45,6 @@ const Voucher = () => {
                         </div>
 
                     </div>
-
-
-                    <Canvas>
-                        <ambientLight intensity={0.5} />
-                        <directionalLight position={[10, 10, 10]} />
-                        <PhoenixModel scale={0.01} />
-                        <OrbitControls />
-                        <Environment preset="sunset" />
-                    </Canvas>
 
 
 
