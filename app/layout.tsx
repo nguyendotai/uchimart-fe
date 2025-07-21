@@ -18,7 +18,7 @@ export default function RootLayout({
     pathname === "/product" ||
     pathname === "/search" ||
     pathname.startsWith("/product/") ||
-    pathname.startsWith("/search");;
+    pathname.startsWith("/search");
 
   return (
     <html lang="en">
@@ -41,18 +41,22 @@ export default function RootLayout({
                 hasSidebar ? "ml-[250px]" : ""
               }`}
             >
+              {/* Nội dung chính */}
               <div
                 className={`mx-auto ${
                   hasSidebar ? "max-w-[1300px]" : "max-w-[1600px]"
                 }`}
               >
                 {children}
-                <div className="w-full">
-                <Footer />
-                </div>
-                
               </div>
             </main>
+          </div>
+          <div
+            className={`${
+              hasSidebar ? "ml-[325px] max-w-[1300px] mx-auto" : "w-full"
+            }`}
+          >
+            <Footer />
           </div>
 
           {/* Portal cho dropdown */}

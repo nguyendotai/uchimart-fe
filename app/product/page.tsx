@@ -19,12 +19,12 @@ const Product = () => {
   const [sortBy, setSortBy] = useState<string>("");
   useEffect(() => {
     async function fetchCategories() {
-      const response = await fetch("/data/categories.json");
+      const response = await fetch("http://127.0.0.1:8000/api/category-groups");
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const data: Category[] = await response.json();
-      setCategories(data);
+      const resJson = await response.json();
+      setCategories(resJson.data || []); // luôn gán mảng vào state
     }
     fetchCategories();
   }, []);
@@ -61,7 +61,6 @@ const Product = () => {
               <ListSubCategory
                 sortBy={sortBy}
                 setSortBy={setSortBy}
-                categoryGroupId={categoryGroupId}
               />
             </div>
 

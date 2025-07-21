@@ -76,8 +76,8 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
       </div>
 
       <div className="overflow-x-auto bg-white shadow rounded">
-        <table className="w-full text-sm text-left">
-          <thead className="bg-[#4DCB44] text-gray-700">
+        <table className="w-full text-sm text-left ">
+          <thead className="bg-[#4DCB44] text-gray-700 h-14">
             <tr>
               <th className="p-3 w-10"></th>
               <th className="p-3">Sản phẩm</th>

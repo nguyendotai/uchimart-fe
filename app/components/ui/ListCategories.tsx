@@ -19,6 +19,16 @@ const ListCategories = () => {
   >([]);
   const [hoveredGroupId, setHoveredGroupId] = useState<number | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [expandedChildIds, setExpandedChildIds] = useState<number[]>([]);
+  const isExpanded = (childId: number) => expandedChildIds.includes(childId);
+
+  const toggleExpand = (childId: number) => {
+    setExpandedChildIds((prev) =>
+      prev.includes(childId)
+        ? prev.filter((id) => id !== childId)
+        : [...prev, childId]
+    );
+  };
 
   const fetchData = async () => {
     try {
@@ -127,8 +137,7 @@ const ListCategories = () => {
                 }}
                 onMouseLeave={handleMouseLeave}
               >
-                {filteredChildren.length > 0 ? (
-                  <div className="grid grid-cols-2 gap-6">
+                  <div className="grid grid-cols-4 gap-6">
                     {filteredChildren.map((category) => (
                       <div
                         key={category.id}
@@ -140,11 +149,11 @@ const ListCategories = () => {
                         }
                       >
                         {/* Hình ảnh và tên danh mục cấp 2 */}
-                        <div className="flex items-center gap-3">
+                        <div className="">
                           <img
                             src={category.image || "/default.png"}
                             alt={category.name}
-                            className="w-12 h-12 object-cover rounded-full"
+                            className="w-20 h-20 object-cover rounded-full"
                           />
                           <span className="font-semibold text-gray-800">
                             {category.name}
@@ -152,34 +161,37 @@ const ListCategories = () => {
                         </div>
 
                         {/* Danh mục cấp 3 */}
-                        <div className="grid grid-cols-2 gap-2 ml-2 mt-2">
-                          {category.subcategories.map(
-                            (sub: {
-                              id: React.Key | null | undefined;
-                              name: string;
-                            }) => (
-                              <div
-                                key={sub.id}
-                                onClick={() =>
-                                  router.push(
-                                    `/product?category=${hoveredGroupId}&child=${category.id}&sub=${sub.id}`
-                                  )
-                                }
-                                className="text-sm text-gray-600 hover:text-purple-700 cursor-pointer transition flex items-start gap-1"
-                              >
-                                <span className="underline">{sub.name}</span>
-                              </div>
-                            )
+                        <div className="grid grid-cols-1 gap-3 ml-2 mt-2">
+                          {(isExpanded(category.id)
+                            ? category.subcategories
+                            : category.subcategories.slice(0, 5)
+                          ).map((sub: { id: React.Key | null | undefined; name: string }) => (
+                            <div
+                              key={sub.id}
+                              onClick={() =>
+                                router.push(
+                                  `/product?category=${hoveredGroupId}&child=${category.id}&sub=${sub.id}`
+                                )
+                              }
+                              className="text-sm text-gray-600 hover:text-purple-700 cursor-pointer transition flex items-start gap-1"
+                            >
+                              <span className="underline">{sub.name}</span>
+                            </div>
+                          ))}
+
+                          {/* Nếu có nhiều hơn 8 thì hiển thị nút Xem thêm / Thu gọn */}
+                          {category.subcategories.length > 8 && (
+                            <div
+                              onClick={() => toggleExpand(category.id)}
+                              className="text-sm text-blue-600 hover:underline cursor-pointer mt-1"
+                            >
+                              {isExpanded(category.id) ? "Thu gọn" : "Xem thêm"}
+                            </div>
                           )}
                         </div>
                       </div>
                     ))}
                   </div>
-                ) : (
-                  <div className="text-sm text-gray-400 italic">
-                    Không có danh mục con
-                  </div>
-                )}
               </div>
 
               {/* Overlay phần còn lại */}

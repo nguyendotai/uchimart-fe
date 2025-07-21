@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProductCard from "@/app/components/ui/ProductCard";
 import { Product } from "@/app/types/Product";
-import { productCarouselSettings } from "@/app/utils/carouselSettings";
+import { productCarouselSettings_7 } from "@/app/utils/carouselSettings_7";
 
 const ListSaleProduct = () => {
   const [saleProducts, setSaleProducts] = useState<Product[]>([]);
@@ -33,7 +33,7 @@ const ListSaleProduct = () => {
       <h2 className="text-3xl font-semibold mb-2 text-[#921573] p-2 rounded w-[21%] text-center">
         Sản phẩm khuyến mãi
       </h2>
-      <Slider {...productCarouselSettings}>
+      <Slider {...productCarouselSettings_7}>
         {saleProducts.map((product) => (
           <div key={product.id} className="px-2">
             <div className="bg-white shadow rounded-xl p-2 h-full">
