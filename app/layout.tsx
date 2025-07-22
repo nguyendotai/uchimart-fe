@@ -4,6 +4,7 @@ import Header from "./components/layout/Header";
 import { ReduxProvider } from "./components/layout/ReduxProvider";
 import Footer from "./components/layout/Footer";
 import ShowSidebar from "./components/layout/ShowSidebar";
+import ScrollToTopButton from "./components/layout/ScrollToTopButton";
 import { usePathname } from "next/navigation";
 
 export default function RootLayout({
@@ -62,6 +63,7 @@ export default function RootLayout({
           {/* Portal cho dropdown */}
           <div id="dropdown-root"></div>
           <div id="sidebar-hover-root" />
+          <ScrollToTopButton />
         </ReduxProvider>
       </body>
     </html>

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Product } from "@/app/types/Product";
-import { Category } from "@/app/types/Category";
+import { CategoryGroup } from "@/app/types/Category";
 import ProductCard from "@/app/components/ui/ProductCard";
 
 const SearchPage = () => {
@@ -10,17 +10,19 @@ const SearchPage = () => {
   const keyword = decodeURIComponent(String(search || "")).toLowerCase();
 
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categoryGroups, setCategoryGroups] = useState<CategoryGroup[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
       fetch("/data/products.json").then((res) => res.json()),
-      fetch("/data/categories.json").then((res) => res.json()),
+      fetch("http://127.0.0.1:8000/api/category-groups").then((res) =>
+        res.json()
+      ),
     ])
-      .then(([productData, categoryData]) => {
+      .then(([productData, categoryGroupData]) => {
         setProducts(productData);
-        setCategories(categoryData);
+        setCategoryGroups(categoryGroupData.data ?? []);
       })
       .catch((err) => console.error("Lỗi fetch dữ liệu:", err))
       .finally(() => setLoading(false));
@@ -30,12 +32,12 @@ const SearchPage = () => {
     p.name.toLowerCase().includes(keyword)
   );
 
-  const matchedCategoryIds = Array.from(
-    new Set(matchedProducts.map((p) => p.category_id))
+  const matchedCategoryGroupIds = Array.from(
+    new Set(matchedProducts.map((p) => p.category_group_id))
   );
 
-  const matchedCategories = categories.filter((c) =>
-    matchedCategoryIds.includes(c.id)
+  const matchedGroups = categoryGroups.filter((g) =>
+    matchedCategoryGroupIds.includes(g.id)
   );
 
   return (
@@ -49,17 +51,19 @@ const SearchPage = () => {
             <span className="text-[#921573] font-bold">"{keyword}"</span>
           </h2>
 
+          {/* Hiển thị các category group tương ứng */}
           <div className="flex gap-4 flex-wrap">
-            {matchedCategories.map((cate) => (
+            {matchedGroups.map((group) => (
               <span
-                key={cate.id}
+                key={group.id}
                 className="px-3 py-1 rounded-full border text-sm text-[#921573] border-[#921573] bg-white hover:bg-[#921573] hover:text-white transition"
               >
-                {cate.name}
+                {group.name}
               </span>
             ))}
           </div>
 
+          {/* Hiển thị sản phẩm */}
           <div className="grid grid-cols-6 gap-4">
             {matchedProducts.map((product) => (
               <div
@@ -71,6 +75,7 @@ const SearchPage = () => {
             ))}
           </div>
 
+          {/* Nếu không tìm thấy */}
           {matchedProducts.length === 0 && (
             <p className="text-gray-500 italic">Không tìm thấy sản phẩm nào.</p>
           )}

@@ -106,7 +106,7 @@ const Header = () => {
         </div>
       </div>
       <div className="text-sm flex justify-between items-center rounded-b-lg bg-white border-t-2 border-gray-200 px-4 py-2">
-        <nav className="flex justify-start items-center gap-4">
+        <nav className="ml-12 flex justify-start items-center gap-4">
           <a href="/account" className="flex items-center font-medium">
             <span style={{ color: "#FFA629" }}>Cam kết</span>
           </a>

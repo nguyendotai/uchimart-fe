@@ -1,5 +1,6 @@
 // product.ts
 export interface Product {
+  category_group_id: any;
   sale_price: any;
   id: number;
   category_id: number;
