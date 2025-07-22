@@ -6,6 +6,9 @@ import Footer from "./components/layout/Footer";
 import ShowSidebar from "./components/layout/ShowSidebar";
 import ScrollToTopButton from "./components/layout/ScrollToTopButton";
 import { usePathname } from "next/navigation";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ToastWrapper from "./components/ui/ToastWrapper";
 
 export default function RootLayout({
   children,
@@ -25,6 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-sans bg-gray-100 text-gray-800 overflow-x-hidden">
         <ReduxProvider>
+          <ToastWrapper />
           {/* Header */}
           <Header />
 
@@ -54,7 +58,7 @@ export default function RootLayout({
           </div>
           <div
             className={`${
-              hasSidebar ? "ml-[325px] max-w-[1300px] mx-auto" : "w-full"
+              hasSidebar ? "ml-[322px] max-w-[1300px] mx-auto" : "w-full"
             }`}
           >
             <Footer />

@@ -6,6 +6,7 @@ import { IoShareSocialSharp } from "react-icons/io5";
 import ProductVariants from "./ProductVariants";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { addToCart } from "@/store/slices/cartSlice";
 
 type Props = {
@@ -26,11 +27,22 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
   };
 
   const onIncrease = () => {
-    setQuantity((prev) => prev + 1);
+    setQuantity((prev) => {
+      if (product.quantity !== undefined && prev >= product.quantity) {
+        return prev; // Không tăng nếu đã đạt giới hạn
+      }
+      return prev + 1;
+    });
   };
 
   const handleAddToCart = () => {
-    dispatch(addToCart({ ...product, cartQuantity: quantity }));
+    dispatch(
+      addToCart({
+        ...product,
+        cartQuantity: quantity,
+        quantity: product.quantity, // ✅ cần truyền số lượng trong kho vào
+      })
+    );
     onNotify?.();
   };
 
@@ -50,6 +62,15 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
   const hasSale =
     product.price !== undefined && product.price > product.promotion_price;
 
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success("Đã sao chép đường dẫn!");
+    } catch (err) {
+      toast.success("Không thể sao chép. Trình duyệt không hỗ trợ.");
+    }
+  };
+
   return (
     <div className="w-[40%] bg-white p-4 rounded-xl shadow sticky top-2 self-start">
       {/* Brand */}
@@ -63,9 +84,13 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
       {/* Name + Share */}
       <div className="flex justify-between">
         <h3 className="text-xl font-semibold">{product.name}</h3>
-        <div className="p-2 border border-gray-400 rounded text-gray-500 text-2xl">
+        <button
+          onClick={handleShare}
+          className="p-2 border border-gray-400 rounded text-gray-500 text-2xl hover:bg-gray-100 transition"
+          title="Sao chép đường dẫn"
+        >
           <IoShareSocialSharp />
-        </div>
+        </button>
       </div>
 
       {/* Price */}
@@ -113,6 +138,11 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
             +
           </button>
         </div>
+        {quantity >= product.quantity && (
+          <p className="text-sm text-red-500 mt-1">
+            Đã đạt số lượng tối đa trong kho
+          </p>
+        )}
       </div>
 
       {/* Provisional */}

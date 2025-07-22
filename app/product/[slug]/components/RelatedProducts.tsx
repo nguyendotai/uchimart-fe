@@ -1,7 +1,11 @@
 "use client";
 import React from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Product } from "@/app/types/Product";
 import ProductCard from "../../../components/ui/ProductCard";
+import { productCarouselSettings } from "@/app/utils/carouselSettings";
 
 type Props = {
   currentProduct: Product;
@@ -21,19 +25,18 @@ const RelatedProducts = ({ currentProduct, allProducts }: Props) => {
 
   return (
     <div className="mt-6">
-      <h2 className="text-2xl font-semibold mb-2 p-2 bg-white w-[19%] text-center rounded-xl">
+      <h2 className="text-2xl font-semibold mb-2 p-2 w-[19%] text-center rounded-xl">
         Sản phẩm liên quan
       </h2>
-      <ul className="flex flex-wrap gap-4 justify-between">
+      <Slider {...productCarouselSettings}>
         {related.map((product) => (
-          <li
-            key={product.id}
-            className="bg-white shadow rounded-xl p-2 relative w-[18.9%]"
-          >
-            <ProductCard product={product} />
-          </li>
+          <div key={product.id} className="px-2">
+            <div className="bg-white shadow rounded-xl p-2 h-full">
+              <ProductCard product={product} />
+            </div>
+          </div>
         ))}
-      </ul>
+      </Slider>
     </div>
   );
 };

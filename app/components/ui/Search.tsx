@@ -29,7 +29,7 @@ const Search = () => {
         setIndex((prev) => (prev + 1) % placeholderTexts.length);
         setIsVisible(true);
       }, 300);
-    }, 3000);
+    }, 1500);
     return () => clearInterval(interval);
   }, []);
 
@@ -52,7 +52,6 @@ const Search = () => {
       <div className="w-full flex gap-2 justify-between">
         <div className="relative w-[91%]">
           <CiSearch className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400 text-xl" />
-          {/* Animated placeholder text */}
           {/* Animated placeholder text */}
           {!keyword && (
             <div className="absolute left-10 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 text-sm whitespace-nowrap">
