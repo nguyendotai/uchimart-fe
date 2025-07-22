@@ -9,11 +9,32 @@ export default function UserAccount() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      setUser(JSON.parse(userData));
-    }
-  }, []);
+          const userData = localStorage.getItem("user");
+          if (!userData) return;
+  
+          const parsedUser = JSON.parse(userData);
+          setUser(parsedUser);  
+          const fetchUser = async () => {
+              try {
+                  const res = await fetch(`http://127.0.0.1:8000/api/users/${parsedUser.id}`);
+                  if (res.ok) {
+                      const latestUser = await res.json();
+                      setUser(latestUser);
+                      
+                      localStorage.setItem("user", JSON.stringify(latestUser));
+                  }
+              } catch (err) {
+                  console.error("Lỗi khi lấy dữ liệu người dùng:", err);
+              }
+          };
+  
+          // Gọi lần đầu
+          fetchUser();
+  
+          // Gọi lại mỗi 5s
+          const interval = setInterval(fetchUser, 1000);
+          return () => clearInterval(interval);
+      }, []);
 
   return (
     <div className="flex items-center gap-3 cursor-pointer overflow-hidden">

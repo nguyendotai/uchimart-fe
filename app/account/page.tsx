@@ -9,6 +9,9 @@ import { MdOutlineSecurity } from 'react-icons/md';
 
 
 
+// import { Canvas } from '@react-three/fiber';
+// import { Environment } from '@react-three/drei';
+// import SmolModel from '../components/Animation/smol/components/smol';
 
 const Account = () => {
 
@@ -174,41 +177,13 @@ const Account = () => {
 
 
                     {/* <!-- info left --> */}
-                    <div className="w-[25%] bg-white rounded-xl p-4 shadow-sm max-w-sm">
-                        <h3 className="text-lg font-semibold mb-4">Lịch sử đơn hàng</h3>
-
-                        <div className="space-y-3 text-sm text-gray-700">
-                            {/* <!-- Đơn hàng 1 --> */}
-                            <div className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2">
-                                <div className="flex items-center gap-2">
-                                    <img src="./public/svg/milk-svgrepo-com.svg" alt="Sữa rửa mặt" className="w-6 h-6 " />
-                                    <span>Thùng sữa Milo 4 hộp...</span>
-                                </div>
-                                <span className="text-green-600 text-xs font-medium">Đã giao</span>
-                            </div>
-
-                            {/* <!-- Đơn hàng 2 --> */}
-                            <div className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2">
-                                <div className="flex items-center gap-2">
-                                    <img src="./public/svg/egg-svgrepo-com.svg" alt="Trà thảo mộc" className="w-5 h-5 object-contain" />
-                                    <span>Trứng gà nướng Tafa 6...</span>
-                                </div>
-                                <span className="text-yellow-600 text-xs font-medium">Đang xử lý</span>
-                            </div>
-
-                            {/* <!-- Đơn hàng 3 --> */}
-                            <div className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2">
-                                <div className="flex items-center gap-2">
-                                    <img src="./public/svg/meat-food-eat-cooking-bbq-svgrepo-com.svg" alt="Viên sủi vitamin C" className="w-5 h-5 object-contain" />
-                                    <span>Thịt đùi khay 400G</span>
-                                </div>
-                                <span className="text-red-500 text-xs font-medium">Đã hủy</span>
-                            </div>
-                        </div>
-
-                        <div className="mt-4 text-right">
-                            <a href="#" className="text-blue-600 text-sm font-medium hover:underline">Xem chi tiết</a>
-                        </div>
+                    <div className="w-[25%]   rounded-xl p-4 ">
+                       {/* <Canvas>
+                               <ambientLight intensity={0.5} />
+                               <directionalLight position={[10,10, 10]} />
+                               <SmolModel scale={1.4} position={[-0.2,0, 0]}/>
+                               <Environment preset="sunset" />
+                             </Canvas> */}
                     </div>
 
 

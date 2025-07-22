@@ -5,5 +5,6 @@ export type User = {
   avatar: string;
   phone_number: string;
   birthday: Date;
-
+  genders: number;
+  provider?: string;
 };
