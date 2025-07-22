@@ -56,11 +56,11 @@ const Account = () => {
                         {/* <!-- row1 --> */}
                         <div className="w-full flex justify-between mb-7">
                             <div className="w-[48%] flex bg-white rounded-[5px] items-center ">
-                                <div className=" w-full ml-5  flex  items-center ">
+                                <Link href="./profile" className=" w-full ml-5  flex  items-center ">
                                     <img className="w-[80px] h-[80px] rounded-full object-cover cursor-pointer"
                                         src={user?.avatar || "/img/default-avatar.jpg"} alt="" />
                                     <p className=" text-3xl font-bold cursor-pointer ml-4">{user?.name || "User"}</p>
-                                </div>
+                                </Link>
                             </div>
 
                             <div className="w-[48%] bg-white rounded-[5px]">
@@ -74,13 +74,28 @@ const Account = () => {
                                         <div className="bg-green-500 h-2 rounded-full" style={{ width: `${completion ?? 0}%` }}></div>
                                     </div>
 
-                                    <div className="flex justify-between">
-                                        <p className="w-[70%] text-sm">Bổ sung các thông tin giúp bạn thanh toán nhanh chóng và an
-                                            toàn hơn</p>
-                                        <Link href="/profile"
-                                            className=" px-5 py-2 bg-[#327FF6] text-[#F5F5FA] rounded-full cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out">Tiếp
-                                            tục</Link>
-                                    </div>
+
+                                    {completion === 100 && (
+                                        <div className="mt-4 p-3 bg-green-100 text-green-800 rounded-lg text-sm font-semibold text-center transition-all duration-500 animate-fade-in">
+                                            🎉 Hồ sơ của bạn đã hoàn thành 100%!
+                                        </div>
+
+                                    )}
+
+
+                                    {completion !== 100 && (
+                                        <div className="flex justify-between">
+                                            <p className="w-[70%] text-sm">
+                                                Bổ sung các thông tin giúp bạn thanh toán nhanh chóng và an toàn hơn
+                                            </p>
+                                            <Link
+                                                href="/profile"
+                                                className="px-5 py-2 bg-[#327FF6] text-[#F5F5FA] rounded-full cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out"
+                                            >
+                                                Tiếp tục
+                                            </Link>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -178,7 +193,7 @@ const Account = () => {
 
                     {/* <!-- info left --> */}
                     <div className="w-[25%]   rounded-xl p-4 ">
-                       {/* <Canvas>
+                        {/* <Canvas>
                                <ambientLight intensity={0.5} />
                                <directionalLight position={[10,10, 10]} />
                                <SmolModel scale={1.4} position={[-0.2,0, 0]}/>
