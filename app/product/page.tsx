@@ -11,6 +11,7 @@ import CountProduct from "./components/CountProduct";
 import CategoryProductPreview from "./components/CategoryProductPreview";
 import CategoryInfo from "./components/CategoryInfo";
 import PromotionalBanners from "./components/PromotionalBanners";
+import ListProductByChildCategory from "./components/ListProductByChildCategory";
 
 const Product = () => {
   const searchParams = useSearchParams();
@@ -58,10 +59,7 @@ const Product = () => {
             </div>
             {/* Category Child */}
             <div className="z-30 sticky top-0 mb-4">
-              <ListSubCategory
-                sortBy={sortBy}
-                setSortBy={setSortBy}
-              />
+              <ListSubCategory sortBy={sortBy} setSortBy={setSortBy} />
             </div>
 
             {/* Count Product */}
@@ -94,6 +92,10 @@ const Product = () => {
               <PromotionalBanners></PromotionalBanners>
             </div>
             <hr className="text-gray-400 mb-4" />
+            {/* Product By CategoryChild */}
+            <div className="w-full mb-4">
+              <ListProductByChildCategory />
+            </div>
           </div>
         </div>
       </div>

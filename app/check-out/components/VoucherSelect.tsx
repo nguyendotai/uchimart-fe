@@ -20,11 +20,11 @@ export default function VoucherSelect({ selectedVoucher, onChange }: Props) {
 
   return (
     <>
-      <div className="bg-[#f5f9ff] p-4 rounded-md shadow-sm">
+      <div className="bg-[#f3e5f5] p-4 rounded-md shadow-sm">
         {/* Tiêu đề */}
         <div className="flex justify-between items-center mb-3">
           <div className="flex items-center gap-2">
-            <span className="w-6 h-6 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
+            <span className="w-6 h-6 flex items-center justify-center bg-[#c67ed1] text-white rounded-full text-sm font-semibold">
               4
             </span>
             <h2 className="text-sm font-semibold text-gray-800">Chọn khuyến mãi</h2>

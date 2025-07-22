@@ -77,7 +77,7 @@ const ListProductByCate = () => {
                 href={`/product?category=${group.id}`}
                 className="text-[#921573] hover:underline font-medium"
               >
-                Xem tất cả
+                Xem thêm
               </a>
             </div>
 

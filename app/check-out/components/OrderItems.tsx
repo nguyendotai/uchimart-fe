@@ -19,7 +19,7 @@ export default function OrderSummary({ items }: Props) {
   const finalTotal = subTotal + shippingFee - totalDiscount;
 
   return (
-    <div className="bg-[#f5f9ff] rounded-lg shadow-sm text-sm p-4 space-y-4">
+    <div className="bg-[#f3e5f5] rounded-lg shadow-sm text-sm p-4 space-y-4">
       {/* VAT */}
       <label className="flex items-center gap-2 cursor-pointer">
         <input

@@ -31,10 +31,10 @@ export default function DeliveryAddress() {
 
   return (
     <>
-      <div className="bg-[#f5f9ff] p-4 rounded-md">
+      <div className="bg-[#f3e5f5] p-4 rounded-md">
         {/* Header */}
         <div className="flex gap-2 items-center mb-3">
-          <h2 className="w-6 h-6 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
+          <h2 className="w-6 h-6 flex items-center justify-center bg-[#c67ed1] text-white rounded-full text-sm font-semibold">
             2
           </h2>
           <h2 className="text-sm font-semibold text-gray-800">

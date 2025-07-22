@@ -22,7 +22,9 @@ const options: Option[] = [
 ];
 
 const ListSubCategory = ({ sortBy, setSortBy }: Props) => {
-  const [displayedCategories, setDisplayedCategories] = useState<Category[]>([]);
+  const [displayedCategories, setDisplayedCategories] = useState<Category[]>(
+    []
+  );
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -45,7 +47,9 @@ const ListSubCategory = ({ sortBy, setSortBy }: Props) => {
 
           if (foundGroup) {
             // Nếu tìm thấy nhóm, hiển thị danh mục cấp 2 của nhóm đó
-            setDisplayedCategories(foundGroup.categories ? foundGroup.categories.slice(0, 8) : []); // Giới hạn 8 danh mục con
+            setDisplayedCategories(
+              foundGroup.categories ? foundGroup.categories.slice(0, 8) : []
+            ); // Giới hạn 8 danh mục con
           } else {
             // Nếu không tìm thấy nhóm (ID không hợp lệ), không hiển thị danh mục con nào
             setDisplayedCategories([]);
@@ -54,18 +58,20 @@ const ListSubCategory = ({ sortBy, setSortBy }: Props) => {
           // Trường hợp không có tham số 'category' trên URL
           // Bạn có thể quyết định hiển thị 8 danh mục cấp 1 đầu tiên
           // hoặc không hiển thị gì cả. Hiện tại, mình sẽ hiển thị 8 danh mục cấp 1 đầu tiên.
-          const firstEightGroupsAsCategories = allCategoryGroups.slice(0, 8).map(group => ({
-            id: group.id,
-            name: group.name,
-            slug: group.slug,
-            image: group.image,
-            status: group.status,
-            subcategories: [],
-            description: group.description ?? "",
-            seo_title: group.seo_title ?? "",
-            seo_description: group.seo_description ?? "",
-            category_group_id: group.id, // hoặc group.category_group_id nếu có
-          }));
+          const firstEightGroupsAsCategories = allCategoryGroups
+            .slice(0, 8)
+            .map((group) => ({
+              id: group.id,
+              name: group.name,
+              slug: group.slug,
+              image: group.image,
+              status: group.status,
+              subcategories: [],
+              description: group.description ?? "",
+              seo_title: group.seo_title ?? "",
+              seo_description: group.seo_description ?? "",
+              category_group_id: group.id, // hoặc group.category_group_id nếu có
+            }));
           setDisplayedCategories(firstEightGroupsAsCategories as Category[]);
         }
       } catch (err) {
@@ -83,7 +89,21 @@ const ListSubCategory = ({ sortBy, setSortBy }: Props) => {
       <div className="flex gap-2 p-4 bg-white shadow rounded-tl-2xl rounded-tr-2xl">
         {displayedCategories.length > 0 ? (
           displayedCategories.map((category, index) => (
-            <div key={index} className="w-[12%] text-center">
+            <div
+              key={index}
+              className="w-[12%] text-center"
+              onClick={() => {
+                const element = document.getElementById(
+                  `category-child-${category.id}`
+                );
+                if (element) {
+                  element.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                }
+              }}
+            >
               <img
                 src={category.image}
                 alt={category.name}
