@@ -6,7 +6,7 @@ import Footer from "./components/layout/Footer";
 import ShowSidebar from "./components/layout/ShowSidebar";
 import ScrollToTopButton from "./components/layout/ScrollToTopButton";
 import { usePathname } from "next/navigation";
-import { ToastContainer } from "react-toastify";
+// import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastWrapper from "./components/ui/ToastWrapper";
 

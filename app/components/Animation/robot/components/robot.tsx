@@ -33,7 +33,7 @@ export default function PhoenixModel({
   useFrame((state) => {
     if (group.current) {
     //   group.current.rotation.y += delta * 0.2;
-      group.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.5;
+      group.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.3;
     }
   });
 

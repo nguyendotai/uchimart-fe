@@ -9,9 +9,9 @@ import { MdOutlineSecurity } from 'react-icons/md';
 
 
 
-// import { Canvas } from '@react-three/fiber';
-// import { Environment } from '@react-three/drei';
-// import SmolModel from '../components/Animation/smol/components/smol';
+import { Canvas } from '@react-three/fiber';
+import { Environment, OrbitControls } from '@react-three/drei';
+import SmolModel from '../components/Animation/smol/components/smol';
 
 const Account = () => {
 
@@ -193,12 +193,18 @@ const Account = () => {
 
                     {/* <!-- info left --> */}
                     <div className="w-[25%]   rounded-xl p-4 ">
-                        {/* <Canvas>
-                               <ambientLight intensity={0.5} />
-                               <directionalLight position={[10,10, 10]} />
-                               <SmolModel scale={1.4} position={[-0.2,0, 0]}/>
-                               <Environment preset="sunset" />
-                             </Canvas> */}
+                        <Canvas>
+                            <ambientLight intensity={0.5} />
+                            <directionalLight position={[10, 10, 10]} />
+                            <OrbitControls
+                                enableZoom={false}          // ❌ Không cho phóng to/thu nhỏ
+                                enablePan={false}           // ❌ Không cho kéo toàn cảnh
+                                minPolarAngle={Math.PI / 2} // 🔒 Giới hạn góc nhìn lên xuống
+                                maxPolarAngle={Math.PI / 2} // 🔒 Chỉ cho xoay trái – phải
+                            />
+                            <SmolModel scale={1.4} position={[-0.2, 0, 0]} />
+                            <Environment preset="sunset" />
+                        </Canvas>
                     </div>
 
 

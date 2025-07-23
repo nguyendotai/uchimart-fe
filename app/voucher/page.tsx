@@ -1,15 +1,42 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import type { Voucher } from '../types/Voucher';
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdDiscount } from 'react-icons/md';
-
+import axios from 'axios';
 const Voucher = () => {
+
+    const [vouchers, setVouchers] = useState<Voucher[]>([]);
+
+    useEffect(() => {
+        const fetchVoucher = async () => {
+        axios.get('http://localhost:8000/api/v1/coupons', {
+            params: {
+                per_page: 1000 // Hoặc số lớn để đảm bảo lấy hết, nếu backend có phân trang
+            }
+        })
+            .then(res => {
+                setVouchers(res.data.data.data); // cấu trúc response là: { data: { data: [...] } }
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy voucher:', error);
+            });
+        };
+
+        // Gọi lần đầu
+        fetchVoucher();
+
+        // Gọi lại mỗi 2s
+        const interval = setInterval(fetchVoucher, 3000);
+        return () => clearInterval(interval);
+
+    }, []);
     return (
         <div>
             <main className="my-[30px]">
 
                 <div className="w-[80%] mx-auto">
-                
+
 
 
                     <div className='bg-white rounded-2xl mb-6'>
@@ -49,302 +76,38 @@ const Voucher = () => {
 
 
                     <div className=''>
-                        <ul className='flex flex-wrap gap-5.5 '>
-                            <li className='w-[32%] bg-white rounded-2xl'>
+                        <ul className='flex flex-wrap gap-5.5'>
+                            {vouchers.map((voucher) => (
+                                <li key={voucher.id} className='w-[32%] bg-white rounded-2xl'>
+                                    <div className='px-3 pt-3 pb-2'>
+                                        <div className='flex pb-2 gap-3 border-b-2 border-[#D9D9D9]'>
+                                            <div className='relative bg-[#C7F6D6] rounded-2xl overflow-hidden'>
+                                                <div className='p-2'>
+                                                    <p className='w-[80%] text-[12px] text-[#299361] font-medium'>PHIẾU GIẢM GIÁ</p>
+                                                    <div className='absolute bottom-[-9%] right-[-9%] rounded-full bg-[#9AE6B5] p-3.5'>
+                                                        <MdDiscount className='text-xl text-[#38A169]' />
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                <div className='px-3 pt-3 pb-2'>
-
-                                    <div className='flex pb-2 gap-3 border-b-2 border-[#D9D9D9]'>
-
-
-                                    <div className='relative bg-[#C7F6D6] rounded-2xl overflow-hidden'>
-                                        <div className=' p-2'>
-                                            <p className='w-[80%] text-[12px] text-[#299361] font-medium'>PHIẾU GIẢM GIÁ</p>
-
-                                            <div className='absolute bottom-[-9%] right-[-9%] rounded-full bg-[#9AE6B5] p-3.5'>
-                                                <MdDiscount className='text-xl text-[#38A169]' />
+                                            <div className='w-[70%] pb-4'>
+                                                <p className='text-[10px] font-medium text-[#898991] mb-1'>UCHIMART</p>
+                                                <h3 className='text-[#4DCB44] truncate'>{voucher.title}</h3>
+                                                <p className='text-[12px]'>Áp dụng cho đơn hàng từ {voucher.discount_value}</p>
+                                                <p className='text-[12px] text-[#4DCB44]'>
+                                                    {voucher.end_date ? `Hết hạn: ${voucher.end_date}` : 'Không giới hạn'}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className='w-[70%] pb-4'>
-                                        <p className='text-[10px] font-medium text-[#898991] mb-1'>UCHIMART</p>
-                                        <h3 className='text-[#4DCB44] truncate'>Phiếu giảm giá 8k cho đơn hàng từ 280k</h3>
-                                        <p className='text-[12px]'>Áp dụng cho đơn hàng online từ 280k</p>
-                                        <p className='text-[12px] text-[#4DCB44]'>Hết hạn trong 3 ngày</p>
+                                    <div className='px-3 pb-2 text-[12px] text-[#898991] font-medium'>
+                                        Áp dụng cho tất cả sản phẩm
                                     </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div className='px-3 pb-2 text-[12px] text-[#898991] font-medium'>Áp dụng cho tất cả sản phẩm</div>
-
-                            </li>
-
-                            <li className='w-[32%] bg-white rounded-2xl'>
-
-                                <div className='px-3 pt-3 pb-2'>
-
-                                    <div className='flex pb-2 gap-3 border-b-2 border-[#D9D9D9]'>
-
-
-                                    <div className='relative bg-[#C7F6D6] rounded-2xl overflow-hidden'>
-                                        <div className=' p-2'>
-                                            <p className='w-[80%] text-[12px] text-[#299361] font-medium'>PHIẾU GIẢM GIÁ</p>
-
-                                            <div className='absolute bottom-[-9%] right-[-9%] rounded-full bg-[#9AE6B5] p-3.5'>
-                                                <MdDiscount className='text-xl text-[#38A169]' />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className='w-[70%] pb-4'>
-                                        <p className='text-[10px] font-medium text-[#898991] mb-1'>UCHIMART</p>
-                                        <h3 className='text-[#4DCB44] truncate'>Phiếu giảm giá 8k cho đơn hàng từ 280k</h3>
-                                        <p className='text-[12px]'>Áp dụng cho đơn hàng online từ 280k</p>
-                                        <p className='text-[12px] text-[#4DCB44]'>Hết hạn trong 3 ngày</p>
-                                    </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div className='px-3 pb-2 text-[12px] text-[#898991] font-medium'>Áp dụng cho tất cả sản phẩm</div>
-
-                            </li>
-
-
-                            <li className='w-[32%] bg-white rounded-2xl'>
-
-                                <div className='px-3 pt-3 pb-2'>
-
-                                    <div className='flex pb-2 gap-3 border-b-2 border-[#D9D9D9]'>
-
-
-                                    <div className='relative bg-[#C7F6D6] rounded-2xl overflow-hidden'>
-                                        <div className=' p-2'>
-                                            <p className='w-[80%] text-[12px] text-[#299361] font-medium'>PHIẾU GIẢM GIÁ</p>
-
-                                            <div className='absolute bottom-[-9%] right-[-9%] rounded-full bg-[#9AE6B5] p-3.5'>
-                                                <MdDiscount className='text-xl text-[#38A169]' />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className='w-[70%] pb-4'>
-                                        <p className='text-[10px] font-medium text-[#898991] mb-1'>UCHIMART</p>
-                                        <h3 className='text-[#4DCB44] truncate'>Phiếu giảm giá 8k cho đơn hàng từ 280k</h3>
-                                        <p className='text-[12px]'>Áp dụng cho đơn hàng online từ 280k</p>
-                                        <p className='text-[12px] text-[#4DCB44]'>Hết hạn trong 3 ngày</p>
-                                    </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div className='px-3 pb-2 text-[12px] text-[#898991] font-medium'>Áp dụng cho tất cả sản phẩm</div>
-
-                            </li>
-
-                            <li className='w-[32%] bg-white rounded-2xl'>
-
-                                <div className='px-3 pt-3 pb-2'>
-
-                                    <div className='flex pb-2 gap-3 border-b-2 border-[#D9D9D9]'>
-
-
-                                    <div className='relative bg-[#C7F6D6] rounded-2xl overflow-hidden'>
-                                        <div className=' p-2'>
-                                            <p className='w-[80%] text-[12px] text-[#299361] font-medium'>PHIẾU GIẢM GIÁ</p>
-
-                                            <div className='absolute bottom-[-9%] right-[-9%] rounded-full bg-[#9AE6B5] p-3.5'>
-                                                <MdDiscount className='text-xl text-[#38A169]' />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className='w-[70%] pb-4'>
-                                        <p className='text-[10px] font-medium text-[#898991] mb-1'>UCHIMART</p>
-                                        <h3 className='text-[#4DCB44] truncate'>Phiếu giảm giá 8k cho đơn hàng từ 280k</h3>
-                                        <p className='text-[12px]'>Áp dụng cho đơn hàng online từ 280k</p>
-                                        <p className='text-[12px] text-[#4DCB44]'>Hết hạn trong 3 ngày</p>
-                                    </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div className='px-3 pb-2 text-[12px] text-[#898991] font-medium'>Áp dụng cho tất cả sản phẩm</div>
-
-                            </li>
-
-                            <li className='w-[32%] bg-white rounded-2xl'>
-
-                                <div className='px-3 pt-3 pb-2'>
-
-                                    <div className='flex pb-2 gap-3 border-b-2 border-[#D9D9D9]'>
-
-
-                                    <div className='relative bg-[#C7F6D6] rounded-2xl overflow-hidden'>
-                                        <div className=' p-2'>
-                                            <p className='w-[80%] text-[12px] text-[#299361] font-medium'>PHIẾU GIẢM GIÁ</p>
-
-                                            <div className='absolute bottom-[-9%] right-[-9%] rounded-full bg-[#9AE6B5] p-3.5'>
-                                                <MdDiscount className='text-xl text-[#38A169]' />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className='w-[70%] pb-4'>
-                                        <p className='text-[10px] font-medium text-[#898991] mb-1'>UCHIMART</p>
-                                        <h3 className='text-[#4DCB44] truncate'>Phiếu giảm giá 8k cho đơn hàng từ 280k</h3>
-                                        <p className='text-[12px]'>Áp dụng cho đơn hàng online từ 280k</p>
-                                        <p className='text-[12px] text-[#4DCB44]'>Hết hạn trong 3 ngày</p>
-                                    </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div className='px-3 pb-2 text-[12px] text-[#898991] font-medium'>Áp dụng cho tất cả sản phẩm</div>
-
-                            </li>
-
-
-                            <li className='w-[32%] bg-white rounded-2xl'>
-
-                                <div className='px-3 pt-3 pb-2'>
-
-                                    <div className='flex pb-2 gap-3 border-b-2 border-[#D9D9D9]'>
-
-
-                                    <div className='relative bg-[#C7F6D6] rounded-2xl overflow-hidden'>
-                                        <div className=' p-2'>
-                                            <p className='w-[80%] text-[12px] text-[#299361] font-medium'>PHIẾU GIẢM GIÁ</p>
-
-                                            <div className='absolute bottom-[-9%] right-[-9%] rounded-full bg-[#9AE6B5] p-3.5'>
-                                                <MdDiscount className='text-xl text-[#38A169]' />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className='w-[70%] pb-4'>
-                                        <p className='text-[10px] font-medium text-[#898991] mb-1'>UCHIMART</p>
-                                        <h3 className='text-[#4DCB44] truncate'>Phiếu giảm giá 8k cho đơn hàng từ 280k</h3>
-                                        <p className='text-[12px]'>Áp dụng cho đơn hàng online từ 280k</p>
-                                        <p className='text-[12px] text-[#4DCB44]'>Hết hạn trong 3 ngày</p>
-                                    </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div className='px-3 pb-2 text-[12px] text-[#898991] font-medium'>Áp dụng cho tất cả sản phẩm</div>
-
-                            </li>
-
-                            <li className='w-[32%] bg-white rounded-2xl'>
-
-                                <div className='px-3 pt-3 pb-2'>
-
-                                    <div className='flex pb-2 gap-3 border-b-2 border-[#D9D9D9]'>
-
-
-                                    <div className='relative bg-[#C7F6D6] rounded-2xl overflow-hidden'>
-                                        <div className=' p-2'>
-                                            <p className='w-[80%] text-[12px] text-[#299361] font-medium'>PHIẾU GIẢM GIÁ</p>
-
-                                            <div className='absolute bottom-[-9%] right-[-9%] rounded-full bg-[#9AE6B5] p-3.5'>
-                                                <MdDiscount className='text-xl text-[#38A169]' />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className='w-[70%] pb-4'>
-                                        <p className='text-[10px] font-medium text-[#898991] mb-1'>UCHIMART</p>
-                                        <h3 className='text-[#4DCB44] truncate'>Phiếu giảm giá 8k cho đơn hàng từ 280k</h3>
-                                        <p className='text-[12px]'>Áp dụng cho đơn hàng online từ 280k</p>
-                                        <p className='text-[12px] text-[#4DCB44]'>Hết hạn trong 3 ngày</p>
-                                    </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div className='px-3 pb-2 text-[12px] text-[#898991] font-medium'>Áp dụng cho tất cả sản phẩm</div>
-
-                            </li>
-
-                            <li className='w-[32%] bg-white rounded-2xl'>
-
-                                <div className='px-3 pt-3 pb-2'>
-
-                                    <div className='flex pb-2 gap-3 border-b-2 border-[#D9D9D9]'>
-
-
-                                    <div className='relative bg-[#C7F6D6] rounded-2xl overflow-hidden'>
-                                        <div className=' p-2'>
-                                            <p className='w-[80%] text-[12px] text-[#299361] font-medium'>PHIẾU GIẢM GIÁ</p>
-
-                                            <div className='absolute bottom-[-9%] right-[-9%] rounded-full bg-[#9AE6B5] p-3.5'>
-                                                <MdDiscount className='text-xl text-[#38A169]' />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className='w-[70%] pb-4'>
-                                        <p className='text-[10px] font-medium text-[#898991] mb-1'>UCHIMART</p>
-                                        <h3 className='text-[#4DCB44] truncate'>Phiếu giảm giá 8k cho đơn hàng từ 280k</h3>
-                                        <p className='text-[12px]'>Áp dụng cho đơn hàng online từ 280k</p>
-                                        <p className='text-[12px] text-[#4DCB44]'>Hết hạn trong 3 ngày</p>
-                                    </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div className='px-3 pb-2 text-[12px] text-[#898991] font-medium'>Áp dụng cho tất cả sản phẩm</div>
-
-                            </li>
-
-
-                            <li className='w-[32%] bg-white rounded-2xl'>
-
-                                <div className='px-3 pt-3 pb-2'>
-
-                                    <div className='flex pb-2 gap-3 border-b-2 border-[#D9D9D9]'>
-
-
-                                    <div className='relative bg-[#C7F6D6] rounded-2xl overflow-hidden'>
-                                        <div className=' p-2'>
-                                            <p className='w-[80%] text-[12px] text-[#299361] font-medium'>PHIẾU GIẢM GIÁ</p>
-
-                                            <div className='absolute bottom-[-9%] right-[-9%] rounded-full bg-[#9AE6B5] p-3.5'>
-                                                <MdDiscount className='text-xl text-[#38A169]' />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className='w-[70%] pb-4'>
-                                        <p className='text-[10px] font-medium text-[#898991] mb-1'>UCHIMART</p>
-                                        <h3 className='text-[#4DCB44] truncate'>Phiếu giảm giá 8k cho đơn hàng từ 280k</h3>
-                                        <p className='text-[12px]'>Áp dụng cho đơn hàng online từ 280k</p>
-                                        <p className='text-[12px] text-[#4DCB44]'>Hết hạn trong 3 ngày</p>
-                                    </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div className='px-3 pb-2 text-[12px] text-[#898991] font-medium'>Áp dụng cho tất cả sản phẩm</div>
-
-                            </li>
-
-                            
-
-                            
+                                </li>
+                            ))}
                         </ul>
+
                     </div>
                 </div>
             </main>
