@@ -4,9 +4,12 @@ import Image from "next/image";
 import { FaUser } from "react-icons/fa";
 import { User } from "@/app/types/User";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 export default function UserAccount() {
   const [user, setUser] = useState<User | null>(null);
+
+  const {t, i18n} = useTranslation();
 
   useEffect(() => {
           const userData = localStorage.getItem("user");
@@ -46,7 +49,7 @@ export default function UserAccount() {
           <div className="bg-[#f3e5f5] rounded-full p-2">
             <FaUser className="text-2xl shrink-0 text-[#921573]" />
           </div>
-          <span className="text-sm font-medium truncate">Đăng nhập</span>
+          <span className="text-sm font-medium truncate">{t("login")}</span>
         </Link>
       ) : (
         <div className="flex items-center gap-3 w-full min-w-0">

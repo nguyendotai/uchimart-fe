@@ -1,0 +1,17 @@
+{
+    "addToCart": "Add to cart",
+    "buyNow": "Buy now",
+    "quantity": "Quantity",
+    "search": "Search",
+    "posts": "Posts",
+    "categories": "Categories",
+    "products": "Products",
+    "productDetails": "Product details",
+    "cart": "Cart",
+    "checkout": "Checkout",
+    "orderSummary": "Order summary",
+    "total": "Total",
+    "login": "Login",
+    "register": "Register",
+    "outOfStock": "Out of stock"
+}

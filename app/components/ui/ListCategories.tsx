@@ -4,6 +4,7 @@ import { TbCategory2 } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import { CategoryGroup, Category } from "@/app/types/Category";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 
 const SIDEBAR_WIDTH = 240;
 const CHILD_WIDTH = 0.4;
@@ -20,6 +21,8 @@ const ListCategories = () => {
   const [hoveredGroupId, setHoveredGroupId] = useState<number | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [expandedChildIds, setExpandedChildIds] = useState<number[]>([]);
+
+  const {t, i18n} = useTranslation();
   const isExpanded = (childId: number) => expandedChildIds.includes(childId);
 
   const toggleExpand = (childId: number) => {
@@ -90,7 +93,7 @@ const ListCategories = () => {
               <TbCategory2 size={20} />
             </div>
             <span className="flex justify-center text-white bg-[#921573] py-2 rounded font-semibold text-sm w-[78%] text-[16px]">
-              Danh mục
+              {t("categories")}
             </span>
           </div>
 
