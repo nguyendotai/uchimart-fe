@@ -1,0 +1,17 @@
+{
+  "addToCart": "Thêm vào giỏ hàng",
+  "buyNow": "Mua ngay",
+  "quantity": "Số lượng",
+  "search": "Tìm kiếm",
+  "posts": "Bài viết",
+  "categories": "Danh mục",
+  "products": "Sản phẩm",
+  "productDetails": "Chi tiết sản phẩm",
+  "cart": "Giỏ hàng",
+  "checkout": "Thanh toán",
+  "orderSummary": "Tóm tắt đơn hàng",
+  "total": "Tổng cộng",
+  "login": "Đăng nhập",
+  "register": "Đăng ký",
+  "outOfStock": "Hết hàng"
+}

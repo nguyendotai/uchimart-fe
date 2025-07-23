@@ -11,9 +11,12 @@ import { HiMiniPercentBadge } from "react-icons/hi2";
 import Link from "next/link";
 import clsx from "clsx";
 import { MdArticle } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const [showHeader, setShowHeader] = useState(true);
+
+  const {t, i18n} = useTranslation();
   // const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
@@ -80,7 +83,7 @@ const Header = () => {
             <div className="bg-[#f3e5f5] rounded-full p-2">
               <MdArticle className="text-2xl shrink-0 text-[#921573]" />
             </div>
-            <span className="text-sm font-medium truncate">Bài viết</span>
+            <span className="text-sm font-medium truncate">{t("posts")}</span>
           </Link>
 
           {/* UserAccount */}

@@ -5,6 +5,7 @@ import { MdEventAvailable } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
 import { Product, CartItem } from "@/app/types/Product";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/store/slices/cartSlice";
@@ -16,6 +17,8 @@ const ProductCard = ({ product }: { product: Product }) => {
   const [showNotif, setShowNotif] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const {t, i18n} = useTranslation();
 
   const [showModal, setShowModal] = useState(false);
   const [actionType, setActionType] = useState<"addToCart" | "buyNow" | null>(
@@ -101,7 +104,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           }}
           className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] rounded-full p-1 w-[79%] transition-all duration-200 ease-in-out hover:bg-[#921573] hover:text-white"
         >
-          Mua ngay
+          {t("buyNow")}
         </button>
 
         <button

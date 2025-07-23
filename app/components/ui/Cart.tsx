@@ -4,8 +4,10 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 const Cart = () => {
+  const { t } = useTranslation();
   const totalItems = useSelector((state: RootState) =>
     state.cart.items.reduce((sum, item) => sum + item.cartQuantity, 0)
   );
@@ -18,7 +20,7 @@ const Cart = () => {
       <div className="bg-[#f3e5f5] rounded-full p-2">
         <FaShoppingCart className="text-2xl" style={{ color: "#921573" }} />
       </div>
-      <span className="text-sm font-medium truncate">Giỏ hàng</span>
+      <span className="text-sm font-medium truncate">{t("cart")}</span>
       {totalItems > 0 && (
         <span className="absolute top-[-8px] right-[60px] bg-green-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
           {totalItems}
