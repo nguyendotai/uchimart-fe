@@ -73,7 +73,7 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
           </div>
           <div>
             <div className="font-medium">{item.name}</div>
-            <div className="text-xs text-gray-500">Đã bán {item.quantity}</div>
+            <div className="text-xs text-gray-500">Đã bán {item.sold}</div>
           </div>
         </td>
         <td className="p-3 text-right">

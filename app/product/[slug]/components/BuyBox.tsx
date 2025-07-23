@@ -40,7 +40,6 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
       addToCart({
         ...product,
         cartQuantity: quantity,
-        quantity: product.quantity, // ✅ cần truyền số lượng trong kho vào
       })
     );
     onNotify?.();
