@@ -2,6 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { User } from '../types/User';
 import Image from 'next/image';
+import { toast } from 'react-toastify';
+
+
+
 const Profile = () => {
     const [gender, setGender] = useState('Nam');
     const [user, setUser] = useState<User | null>(null);
@@ -33,7 +37,7 @@ const Profile = () => {
         fetchUser();
 
         // Gọi lại mỗi 5s
-        const interval = setInterval(fetchUser, 1000);
+        const interval = setInterval(fetchUser, 3000);
         return () => clearInterval(interval);
     }, []);
 
@@ -63,15 +67,23 @@ const Profile = () => {
                         if (!user) return;
 
                         const formData = new FormData(e.currentTarget);
+                        const nameValue = formData.get("name")?.toString().trim();
+
+                        if (!nameValue) {
+                            toast.error("Vui lòng nhập tên!");
+                            return;
+                        }
 
                         const updatedUser = {
                             ...user,
-                            name: formData.get("name")?.toString() || "",
+                            name: nameValue,
                             email: formData.get("email")?.toString() || "",
                             genders: gender === "Nữ" ? 1 : 0,
                             birthday: formData.get("birthday")?.toString() || "",
                             phone_number: formData.get("phone_number")?.toString() || "", // nếu cho sửa
                         };
+
+
 
                         try {
                             const res = await fetch(`http://127.0.0.1:8000/api/users/${user.id}`, {
@@ -82,21 +94,24 @@ const Profile = () => {
                                 body: JSON.stringify(updatedUser),
                             });
 
+
                             if (res.ok) {
                                 const data = await res.json();
-                                setUser(data.user); // ← phải là `data.user` vì response có key `user`
+                                setUser(data.user);
                                 localStorage.setItem("user", JSON.stringify(data.user));
-                                alert("Cập nhật thành công!");
+                                toast.success("Cập nhật thành công!");
                             } else {
                                 const errorData = await res.json();
-                                alert("Cập nhật thất bại: " + errorData.message);
+                                toast.error("Cập nhật thất bại: " + errorData.message);
                                 console.error("Chi tiết lỗi:", errorData);
                             }
 
+
                         } catch (err) {
                             console.error("Lỗi khi cập nhật:", err);
-                            alert("Lỗi kết nối server!");
+                            toast.error("Lỗi kết nối server!");
                         }
+
                     }}
                 >
                     {/* Tên đầy đủ */}
@@ -117,9 +132,9 @@ const Profile = () => {
                             type="text"
                             name='phone_number'
                             defaultValue={user?.phone_number || ""}
-                            readOnly={user?.provider !== "google"}
+                            readOnly={user?.access_channel_type !== 1}
                             className={
-                                user?.provider !== "google"
+                                user?.access_channel_type !== 1
                                     ? "w-full px-4 py-2 border border-gray-200 bg-gray-100 text-gray-500 rounded-lg"
                                     : "w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             }
@@ -133,9 +148,9 @@ const Profile = () => {
                             type="email"
                             name='email'
                             defaultValue={user?.email || ""}
-                            readOnly={user?.provider === 'google'}
+                            readOnly={user?.access_channel_type === 1}
                             className={
-                                user?.provider === "google"
+                                user?.access_channel_type === 1
                                     ? "w-full px-4 py-2 border border-gray-200 bg-gray-100 text-gray-500 rounded-lg outline-none"
                                     : "w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 outline-none"
                             } />

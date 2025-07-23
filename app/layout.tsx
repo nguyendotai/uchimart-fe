@@ -10,8 +10,9 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import ShowSidebar from "./components/layout/ShowSidebar";
 import ScrollToTopButton from "./components/layout/ScrollToTopButton";
-
-// 🌐 UI Utilities
+import { usePathname } from "next/navigation";
+// import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ToastWrapper from "./components/ui/ToastWrapper";
 import LanguageSwitcher from "./components/ui/LanguageSwitcher";
 import "react-toastify/dist/ReactToastify.css";

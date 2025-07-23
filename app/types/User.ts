@@ -6,5 +6,5 @@ export type User = {
   phone_number: string;
   birthday: Date;
   genders: number;
-  provider?: string;
+  access_channel_type?: number;
 };
