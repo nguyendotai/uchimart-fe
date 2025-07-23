@@ -1,17 +1,29 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
+
+// 🔍 Functional Components
 import Search from "../ui/Search";
-import Image from "next/image";
 import UserAccount from "../ui/UserAccount";
 import Cart from "../ui/Cart";
+
+// 🖼️ Next.js Modules
+import Image from "next/image";
+import Link from "next/link";
+
+// 🌐 Quốc tế hóa (i18n)
+import { useTranslation } from "react-i18next";
+
+// 🎨 Style & Utility
+import clsx from "clsx";
+
+// 🧩 Icons
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { HiBadgeCheck } from "react-icons/hi";
 import { RiBankCardFill } from "react-icons/ri";
 import { HiMiniPercentBadge } from "react-icons/hi2";
-import Link from "next/link";
-import clsx from "clsx";
 import { MdArticle } from "react-icons/md";
-import { useTranslation } from "react-i18next";
+
 
 const Header = () => {
   const [showHeader, setShowHeader] = useState(true);

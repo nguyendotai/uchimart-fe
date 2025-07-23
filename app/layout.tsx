@@ -1,15 +1,23 @@
 "use client";
 import "./globals.css";
-import Header from "./components/layout/Header";
+
+// 🧩 Providers
 import { ReduxProvider } from "./components/layout/ReduxProvider";
+import I18nProvider from "./components/layout/I18nProvider";
+
+// 🌐 Layout Components
+import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import ShowSidebar from "./components/layout/ShowSidebar";
 import ScrollToTopButton from "./components/layout/ScrollToTopButton";
-import { usePathname } from "next/navigation";
-import "react-toastify/dist/ReactToastify.css";
+
+// 🌐 UI Utilities
 import ToastWrapper from "./components/ui/ToastWrapper";
 import LanguageSwitcher from "./components/ui/LanguageSwitcher";
-import I18nProvider from "./components/layout/I18nProvider";
+import "react-toastify/dist/ReactToastify.css";
+
+// 🔍 Next.js hooks
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({
   children,

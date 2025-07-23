@@ -1,4 +1,6 @@
 "use client";
+
+// 🖼️ Home Sections
 import ImageSlider from "./home/ImageSlider";
 import ListCateHome from "./home/ListCateHome";
 import TimeFlashSale from "./home/TimeFlashSale";
@@ -6,7 +8,10 @@ import ListSaleProduct from "./home/ListSaleProduct";
 import BrandHome from "./home/BrandHome";
 import ListProduct from "./home/ListProduct";
 import ListProductByCate from "./home/ListProductByCate";
+
+// 🎬 Animation Wrapper
 import PageTransitionWrapper from "./components/Animation/PageTransitionWrapper";
+
 
 export default function Home() {
   return (

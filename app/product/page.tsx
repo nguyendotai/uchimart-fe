@@ -1,17 +1,22 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
-import ListCategories from "../components/ui/ListCategories";
-import ListSaleProduct from "./components/ListSaleProduct";
-import { Category } from "../types/Category";
-import ListSubCategory from "./components/ListSubCategory";
+
+// 📦 Components (UI)
 import PageTransitionWrapper from "../components/Animation/PageTransitionWrapper";
+
+// 📦 Các components thuộc trang product
+import ListSaleProduct from "./components/ListSaleProduct";
+import ListSubCategory from "./components/ListSubCategory";
 import CountProduct from "./components/CountProduct";
 import CategoryProductPreview from "./components/CategoryProductPreview";
 import CategoryInfo from "./components/CategoryInfo";
 import PromotionalBanners from "./components/PromotionalBanners";
 import ListProductByChildCategory from "./components/ListProductByChildCategory";
+
+// 📂 Kiểu dữ liệu
+import { Category } from "../types/Category";
+
 
 const Product = () => {
   const searchParams = useSearchParams();
