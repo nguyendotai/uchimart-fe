@@ -4,23 +4,39 @@ import type { Voucher } from '../types/Voucher';
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdDiscount } from 'react-icons/md';
 import axios from 'axios';
+import { VoucherDetailModal } from './components/ModalVoucherDetail';
 const Voucher = () => {
 
     const [vouchers, setVouchers] = useState<Voucher[]>([]);
+    const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
+
+
+    const [showModal, setShowModal] = useState(false);
+
+    const handleShowDetail = (voucher: Voucher) => {
+        setSelectedVoucher(voucher);
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setSelectedVoucher(null);
+    };
+
 
     useEffect(() => {
         const fetchVoucher = async () => {
-        axios.get('http://localhost:8000/api/v1/coupons', {
-            params: {
-                per_page: 1000 // Hoặc số lớn để đảm bảo lấy hết, nếu backend có phân trang
-            }
-        })
-            .then(res => {
-                setVouchers(res.data.data.data); // cấu trúc response là: { data: { data: [...] } }
+            axios.get('http://localhost:8000/api/v1/coupons', {
+                params: {
+                    per_page: 1000 // Đảm bảo lấy hết, nếu backend có phân trang
+                }
             })
-            .catch(error => {
-                console.error('Lỗi khi lấy voucher:', error);
-            });
+                .then(res => {
+                    setVouchers(res.data.data.data); // cấu trúc response là: { data: { data: [...] } }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi lấy voucher:', error);
+                });
         };
 
         // Gọi lần đầu
@@ -36,8 +52,6 @@ const Voucher = () => {
             <main className="my-[30px]">
 
                 <div className="w-[80%] mx-auto">
-
-
 
                     <div className='bg-white rounded-2xl mb-6'>
                         <div className='p-4'>
@@ -78,7 +92,7 @@ const Voucher = () => {
                     <div className=''>
                         <ul className='flex flex-wrap gap-5.5'>
                             {vouchers.map((voucher) => (
-                                <li key={voucher.id} className='w-[32%] bg-white rounded-2xl'>
+                                <li key={voucher.id} className='w-[32%] bg-white rounded-2xl' onClick={() => handleShowDetail(voucher)}>
                                     <div className='px-3 pt-3 pb-2'>
                                         <div className='flex pb-2 gap-3 border-b-2 border-[#D9D9D9]'>
                                             <div className='relative bg-[#C7F6D6] rounded-2xl overflow-hidden'>
@@ -105,7 +119,14 @@ const Voucher = () => {
                                         Áp dụng cho tất cả sản phẩm
                                     </div>
                                 </li>
+
                             ))}
+                            <VoucherDetailModal
+                                open={showModal}
+                                onClose={handleCloseModal}
+                                voucher={selectedVoucher}
+                            />
+
                         </ul>
 
                     </div>
