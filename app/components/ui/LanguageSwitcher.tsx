@@ -7,14 +7,15 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function LanguageSwitcher() {
   const { i18n } = useTranslation();
   const [showOptions, setShowOptions] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // ✅
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChangeLanguage = async (lang: string) => {
-    setIsLoading(true); // ✅ Bắt đầu loading
+    setIsLoading(true);
     await i18n.changeLanguage(lang);
     setTimeout(() => {
-      window.location.reload(); // ✅ Chờ rồi mới reload
-    }, 500); // delay nhẹ để spinner hiển thị mượt
+      setIsLoading(false);       // Ngừng loading
+      setShowOptions(false);     // Ẩn popup
+    }, 500); // Cho animation mượt hơn (nếu muốn có cảm giác loading)
   };
 
   return (

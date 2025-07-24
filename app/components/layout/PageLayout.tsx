@@ -5,14 +5,12 @@ import { useState, useEffect } from "react";
 import { ReduxProvider } from "./ReduxProvider";
 import I18nProvider from "./I18nProvider";
 import ToastWrapper from "../ui/ToastWrapper";
-import PageLoader from "../ui/PageLoader";
 import Header from "./Header";
 import Footer from "./Footer";
 import ShowSidebar from "./ShowSidebar";
 import ScrollToTopButton from "./ScrollToTopButton";
 import LanguageSwitcher from "../ui/LanguageSwitcher";
 import { usePathname } from "next/navigation";
-import GlobalRouteLoader from "../ui/GlobalRouteLoader";
 
 export default function PageLayout({
   children,
@@ -29,17 +27,9 @@ export default function PageLayout({
     pathname.startsWith("/product/") ||
     pathname.startsWith("/search");
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isLoading) return <PageLoader />;
-
   return (
     <ReduxProvider>
       <I18nProvider>
-        <GlobalRouteLoader />
         <ToastWrapper />
         <Header />
 
