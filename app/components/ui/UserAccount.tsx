@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 export default function UserAccount() {
   const [user, setUser] = useState<User | null>(null);
 
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
 
   useEffect(() => {
           const userData = localStorage.getItem("user");

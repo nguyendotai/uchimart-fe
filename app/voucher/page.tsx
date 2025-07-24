@@ -4,7 +4,7 @@ import type { Voucher } from '../types/Voucher';
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdDiscount } from 'react-icons/md';
 import axios from 'axios';
-import { VoucherDetailModal } from './components/ModalVoucherDetail';
+import { ModalVoucherDetail } from './components/ModalVoucherDetail';
 const Voucher = () => {
 
     const [vouchers, setVouchers] = useState<Voucher[]>([]);
@@ -22,6 +22,15 @@ const Voucher = () => {
         setShowModal(false);
         setSelectedVoucher(null);
     };
+
+
+    const formatCurrency = (value?: number) => {
+  if (value === undefined) return '';
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  }).format(value);
+};
 
 
     useEffect(() => {
@@ -107,7 +116,7 @@ const Voucher = () => {
                                             <div className='w-[70%] pb-4'>
                                                 <p className='text-[10px] font-medium text-[#898991] mb-1'>UCHIMART</p>
                                                 <h3 className='text-[#4DCB44] truncate'>{voucher.title}</h3>
-                                                <p className='text-[12px]'>Áp dụng cho đơn hàng từ {voucher.discount_value}</p>
+                                                <p className='text-[12px]'>Áp dụng cho đơn hàng từ {formatCurrency(voucher.min_order_value)}</p>
                                                 <p className='text-[12px] text-[#4DCB44]'>
                                                     {voucher.end_date ? `Hết hạn: ${voucher.end_date}` : 'Không giới hạn'}
                                                 </p>
@@ -121,7 +130,7 @@ const Voucher = () => {
                                 </li>
 
                             ))}
-                            <VoucherDetailModal
+                            <ModalVoucherDetail
                                 open={showModal}
                                 onClose={handleCloseModal}
                                 voucher={selectedVoucher}

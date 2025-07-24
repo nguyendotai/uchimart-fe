@@ -106,12 +106,12 @@ const Account = () => {
                         <div className="w-full flex justify-between mb-7">
                             {/* <!-- Đơn hàng --> */}
                             <div className="w-[30%] p-5 bg-white rounded-[5px] cursor-pointer">
-                                <div className="flex items-center">
+                                <Link href="/order" className="flex items-center">
 
                                     {/* <i className="fa-regular fa-file-lines p-1 text-xl text-[#327FF6]"></i> */}
                                     <FaClipboardList className=' text-2xl text-[#327FF6]' />
                                     <p className="p-2 font-medium text-[rgb(45,55,72)]">Đơn hàng</p>
-                                </div>
+                                </Link>
                             </div>
 
                             {/* <!-- Voucher --> */}

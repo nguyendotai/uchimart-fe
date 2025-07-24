@@ -17,7 +17,7 @@
     "color-thief-browser": "^2.0.2",
     "embla-carousel-react": "^8.6.0",
     "firebase": "^11.10.0",
-    "framer-motion": "^12.23.6",
+    "framer-motion": "^12.23.9",
     "i18next": "^25.3.2",
     "i18next-browser-languagedetector": "^8.2.0",
     "leaflet": "^1.9.4",

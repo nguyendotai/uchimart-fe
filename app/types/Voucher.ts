@@ -7,5 +7,8 @@ export type Voucher = {
   start_date: string;
   end_date: string;
   status: number;
-  terms: string;
+  target: string;
+  scope: string;
+  content: string;
+  min_order_value?: number;
 }
