@@ -7,16 +7,18 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function LanguageSwitcher() {
   const { i18n } = useTranslation();
   const [showOptions, setShowOptions] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // ✅
 
-  const handleChangeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang).then(() => {
-      window.location.reload();
-    });
-    setShowOptions(false);
+  const handleChangeLanguage = async (lang: string) => {
+    setIsLoading(true); // ✅ Bắt đầu loading
+    await i18n.changeLanguage(lang);
+    setTimeout(() => {
+      window.location.reload(); // ✅ Chờ rồi mới reload
+    }, 500); // delay nhẹ để spinner hiển thị mượt
   };
 
   return (
-    <div className="fixed bottom-100 right-4 z-50">
+    <div className="fixed bottom-20 right-4 z-50">
       <div className="relative">
         {/* Nút chính */}
         <button
@@ -28,7 +30,7 @@ export default function LanguageSwitcher() {
 
         {/* Tùy chọn ngôn ngữ */}
         <AnimatePresence>
-          {showOptions && (
+          {showOptions && !isLoading && (
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -51,6 +53,13 @@ export default function LanguageSwitcher() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Loading Spinner */}
+        {isLoading && (
+          <div className="absolute bottom-14 right-10 flex items-center justify-center bg-white p-2 rounded shadow">
+            <div className="w-6 h-6 border-4 border-[#921573] border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        )}
       </div>
     </div>
   );
