@@ -1,6 +1,6 @@
 // app/layout.tsx
 import "./globals.css";
-import PageLayout from "./components/layout/ClientComponent";
+import PageLayout from "./components/layout/PageLayout";
 
 export const metadata = {
   title: "Uchimart - Mua sắm trực tuyến",
