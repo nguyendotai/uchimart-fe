@@ -77,7 +77,7 @@ const Account = () => {
 
                                     {completion === 100 && (
                                         <div className="mt-4 p-3 bg-green-100 text-green-800 rounded-lg text-sm font-semibold text-center transition-all duration-500 animate-fade-in">
-                                            🎉 Hồ sơ của bạn đã hoàn thành 100%!
+                                            🎉 Hồ sơ của bạn đã hoàn thành 100%! <br /> Mua sắm ngay thôi!
                                         </div>
 
                                     )}

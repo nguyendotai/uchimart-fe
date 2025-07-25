@@ -5,6 +5,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { MdDiscount } from 'react-icons/md';
 import axios from 'axios';
 import { ModalVoucherDetail } from './components/ModalVoucherDetail';
+import Link from 'next/link';
 const Voucher = () => {
 
     const [vouchers, setVouchers] = useState<Voucher[]>([]);
@@ -66,7 +67,9 @@ const Voucher = () => {
                         <div className='p-4'>
 
                             <div className='flex items-center gap-2 mb-4'>
+                                <Link href='/account'>
                                 <IoIosArrowBack className='text-3xl cursor-pointer' />
+                                </Link>
                                 <h1 className='text-2xl'>Ưu đãi của bạn</h1>
                             </div>
 

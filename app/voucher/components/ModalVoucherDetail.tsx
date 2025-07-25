@@ -66,24 +66,24 @@ export const ModalVoucherDetail: React.FC<Props> = ({ open, onClose, voucher }) 
 
                                 </div>
 
-                                <div className='text-center shadow p-4 mb-2 rounded-sm'>
+                                <div className='w-[90%] mx-auto text-center shadow p-4 mb-2 rounded-sm'>
                                     <div className='flex items-center justify-center mb-4'>
                                         <img src="/logok.png" alt="" width={90} height={90} />
                                         {/* <h2 className='text-[11px] ml-2 font-medium text-[#898991] mt-1'>UCHIMART</h2> */}
                                     </div>
 
                                     <div className='mb-4'>
-                                        <p className='text-lg font-medium text-[#4DCB44]'>{voucher.title}</p>
+                                        <p className='text-xl font-medium text-[#4DCB44]'>{voucher.title}</p>
                                         <p className='text-sm text-[#7180A4]'>Áp dụng cho đơn hàng online</p>
                                     </div>
 
-                                    <div className='bg-[#F8FAFC] shadow-sm rounded-sm'>
+                                    <div className='w-[90%] mx-auto bg-[#F8FAFC] shadow-sm rounded-sm'>
                                         <div className='p-3'>
 
                                             <p className='text-sm text-[#7180A4] mb-1'>Hạn dùng</p>
                                             <p className='text-sm text-[#7180A4] mb-2'>{voucher.start_date} - {voucher.end_date}</p>
                                             <div className='w-full flex justify-center'>
-                                                <p className='w-[25%]  text-[13px] border rounded-full border-[#4DCB44] bg-[#EBFAEA] text-[#4DCB44]'>Giao hàng</p>
+                                                <p className='w-[30%]  text-[13px] border rounded-full border-[#4DCB44] bg-[#EBFAEA] text-[#4DCB44]'>Giao hàng</p>
                                             </div>
                                         </div>
                                     </div>
