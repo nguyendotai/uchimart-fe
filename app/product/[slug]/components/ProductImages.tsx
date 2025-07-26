@@ -1,4 +1,6 @@
+"use client";
 import React from "react";
+import Image from "next/image";
 import { Product } from "@/app/types/Product";
 
 interface ProductImagesProps {
@@ -6,15 +8,33 @@ interface ProductImagesProps {
 }
 
 const ProductImages = ({ product }: ProductImagesProps) => {
+  const fallbackImage = "/fallback.jpg"; // Đặt ảnh fallback ở public/
+
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-4">
+      {/* Thumbnail bên trái */}
       <div className="w-[14%]">
-        <img className="rounded-xl shadow" src={product.image} alt={product.name} />
+        <Image
+          src={product.image || fallbackImage}
+          alt={product.title}
+          width={100}
+          height={100}
+          className="rounded-xl shadow object-contain w-full h-auto"
+        />
       </div>
-      <div className="w-[85%] ">
-        <img className="w-full shadow rounded-xl min-h-[600px]" src={product.image} alt={product.name} />
+
+      {/* Ảnh chính bên phải */}
+      <div className="w-[86%]">
+        <div className="relative w-full min-h-[600px] rounded-xl shadow overflow-hidden">
+          <Image
+            src={product.image || fallbackImage}
+            alt={product.title}
+            fill
+            className="object-contain rounded-xl"
+            unoptimized
+          />
+        </div>
       </div>
-      
     </div>
   );
 };

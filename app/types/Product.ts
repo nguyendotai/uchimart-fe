@@ -1,33 +1,29 @@
-// product.ts
+// types/Inventory.ts
 export interface Product {
-  category_group_id: any;
-  sale_price: any;
   id: number;
-  category_id: number;
-  brand_id: number;
-  name: string;
-  description: string;
-  price: number;
-  promotion_price: number;
-  status: string; // Bạn có thể đổi sang enum nếu muốn
-  status_text: string;
-  image: string;
-  group_code: string;
-  quantity: number;
-  pack_size: number;
-  weight: number;
-  weight_unit: string;
-  sold: string;
-  deliveryTime:string;
-  unit: string;
-  display_unit:string;
-  origin: string;
-  usage: string;
+  title: string;
+  product_id: number;
   slug: string;
-  ingredient: string;
-  expired_at: string;
-  updated_at: string; // Hoặc Date nếu bạn parse về Date object
+  sku: string;
+  status: number;
+  status_name: string;
+  purchase_price: string; // "34,170₫"
+  sale_price: string;     // "39,900₫"
+  offer_price?: string | null;
+  stock_quantity: number;
+  min_order_quantity: number;
+  available_from: string;
+  image: string;
+  sold_count: number;
+  init_sold_count: number;
   created_at: string;
+  updated_at: string;
+
+  product?: {
+    code: string;
+    category_id?: number;
+  };
 }
+
 
 export type CartItem = Product & { cartQuantity: number };

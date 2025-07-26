@@ -47,7 +47,5 @@ export const productCarouselSettings = {
   slidesToScroll: 1,
   arrows: true,
   prevArrow: <PrevArrow />,
-  nextArrow: <NextArrow />,
-  autoplay: true,
-  autoplaySpeed: 6000,
+  nextArrow: <NextArrow />
 };

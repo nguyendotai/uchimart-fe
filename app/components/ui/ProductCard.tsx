@@ -1,57 +1,53 @@
 "use client";
 import React, { useState } from "react";
-import { MdOutlineAddShoppingCart } from "react-icons/md";
-import { MdEventAvailable } from "react-icons/md";
+import { MdOutlineAddShoppingCart, MdEventAvailable } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
-import { Product, CartItem } from "@/app/types/Product";
 import Image from "next/image";
-import { useTranslation } from "react-i18next";
 import Link from "next/link";
-import { useDispatch } from "react-redux";
-import { addToCart } from "@/store/slices/cartSlice";
 import { useRouter } from "next/navigation";
-import QuantityModal from "./QuantityModal";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
-const ProductCard = ({ product }: { product: Product }) => {
-  const [showNotif, setShowNotif] = useState(false);
+import { addToCart } from "@/store/slices/cartSlice";
+import QuantityModal from "./QuantityModal";
+import type {
+  Product as InventoryProduct,
+  CartItem,
+} from "@/app/types/Product";
+
+const ProductCard = ({ product }: { product: InventoryProduct }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-
-  const {t, i18n} = useTranslation();
+  const { t } = useTranslation();
 
   const [showModal, setShowModal] = useState(false);
   const [actionType, setActionType] = useState<"addToCart" | "buyNow" | null>(
     null
   );
 
-  const hasSale =
-    product.promotion_price !== undefined &&
-    product.promotion_price < product.price;
-
+  // Chuyển giá từ chuỗi sang số
+  const price = Number(product.sale_price.replace(/[₫,.]/g, ""));
+  const promoPrice = Number(product.purchase_price.replace(/[₫,.]/g, ""));
+  const hasSale = !isNaN(promoPrice) && promoPrice > 0 && promoPrice < price;
   const discount = hasSale
-    ? Math.round(
-        ((product.price - product.promotion_price!) / product.price) * 100
-      )
+    ? Math.round(((price - promoPrice) / price) * 100)
     : 0;
 
   const handleConfirm = (quantity: number) => {
-    const selectedItem = {
+    const selectedItem: CartItem = {
       ...product,
       cartQuantity: quantity,
     };
 
     if (actionType === "buyNow") {
-      // ✅ Lưu đầy đủ thông tin sản phẩm đã chọn
       localStorage.setItem("selectedItems", JSON.stringify([selectedItem]));
-
-      // ✅ Điều hướng sang trang thanh toán
       router.push("/check-out");
     } else {
-      // Trường hợp addToCart bình thường
       dispatch(addToCart(selectedItem));
       toast.success("Đã thêm vào giỏ hàng!");
     }
+
     setShowModal(false);
     setActionType(null);
   };
@@ -64,14 +60,14 @@ const ProductCard = ({ product }: { product: Product }) => {
         open={showModal}
         onClose={() => setShowModal(false)}
         onConfirm={handleConfirm}
-        productName={product.name}
+        productName={product.title}
         productImage={product.image}
-        productPrice={product.price}
-        productPromotionPrice={product.promotion_price}
-        productStock={product.quantity}
+        productPrice={price}
+        productPromotionPrice={hasSale ? promoPrice : undefined}
+        productStock={product.stock_quantity}
       />
 
-      {/* sale */}
+      {/* Tag giảm giá */}
       {hasSale && (
         <div className="absolute top-[-9px] left-[-8px] z-10 overflow-hidden">
           <div className="w-[80px] h-5 bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center rounded-tl-md rounded-br-md shadow">
@@ -80,21 +76,22 @@ const ProductCard = ({ product }: { product: Product }) => {
         </div>
       )}
 
-      {/* Ảnh */}
+      {/* Hình ảnh */}
       <Link
         href={`/product/${product.slug}`}
         className="w-full h-[150px] bg-white flex items-center justify-center overflow-hidden"
       >
         <Image
-          src={product.image}
-          alt={product.name}
+          src={product.image || "/fallback.jpg"}
+          alt={product.title}
           width={230}
           height={230}
           className="w-full h-full object-contain rounded max-w-[200px] max-h-[200px] transition-transform duration-300 ease-in-out group-hover:scale-105"
+          unoptimized
         />
       </Link>
 
-      {/* Button */}
+      {/* Nút hành động */}
       <div className="flex justify-between gap-2 py-1">
         <button
           onClick={() => {
@@ -113,62 +110,53 @@ const ProductCard = ({ product }: { product: Product }) => {
           }}
           className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] rounded-full p-1 w-[20%] transition-all duration-200 ease-in-out hover:bg-[#921573] hover:text-white"
         >
-          <MdOutlineAddShoppingCart></MdOutlineAddShoppingCart>
+          <MdOutlineAddShoppingCart />
         </button>
       </div>
 
-      {/* Content */}
+      {/* Nội dung */}
       <div className="mt-2">
-        {/* Name */}
         <a
           href={`/product/${product.slug}`}
-          className="p-1 font-normal truncate"
+          className="block max-w-full p-1 font-normal text-[14px] truncate"
         >
-          {product.name}
+          {product.title}
         </a>
 
-        {/* Description */}
-        {/* <p className="px-1 text-gray-600 text-xs line-clamp-2">
-          {product.description}
-        </p> */}
-
-        {/* Price */}
-        <div className="">
+        {/* Giá */}
+        <div>
           {hasSale ? (
             <>
               <span className="p-1 text-[#FB5D08] font-medium">
-                {product.promotion_price.toLocaleString()}đ
+                {promoPrice.toLocaleString()}đ
               </span>
               <del className="text-[#999999] text-[14px]">
-                {product.price.toLocaleString()}đ
+                {price.toLocaleString()}đ
               </del>
             </>
           ) : (
             <span className="p-1 text-[#FB5D08] font-medium">
-              {product.price.toLocaleString()}đ
+              {price.toLocaleString()}đ
             </span>
           )}
         </div>
 
+        {/* Tình trạng + đã bán */}
         <div className="flex gap-2 items-center text-[14px]">
-          {/* Trạng thái còn hàng / hết hàng */}
           <div className="flex items-center gap-1 text-[#26AA99]">
+            <MdEventAvailable
+              className={product.status_name !== "Active" ? "text-red-500" : ""}
+            />
             <span
-              className={`${product.status !== "inStock" && "text-red-500"}`}
+              className={product.status_name !== "Active" ? "text-red-500" : ""}
             >
-              <MdEventAvailable />
-            </span>
-            <span
-              className={`${product.status !== "inStock" && "text-red-500"}`}
-            >
-              {product.status === "inStock" ? "Còn hàng" : "Hết hàng"}
+              {product.status_name === "Active" ? "Còn hàng" : "Hết hàng"}
             </span>
           </div>
 
-          {/* Đã bán */}
           <div className="flex items-center gap-1 text-gray-500">
             <GoDotFill className="text-[8px]" />
-            <span className="text-[12px]">Đã bán {product.sold}</span>
+            <span className="text-[12px]">Đã bán {product.sold_count}</span>
           </div>
         </div>
       </div>
