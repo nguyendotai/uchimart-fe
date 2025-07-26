@@ -26,12 +26,26 @@ const Voucher = () => {
 
 
     const formatCurrency = (value?: number) => {
-  if (value === undefined) return '';
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
-  }).format(value);
-};
+        if (value === undefined) return '';
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+        }).format(value);
+    };
+
+
+    const getDaysLeft = (endDate?: string): number | null => {
+        if (!endDate) return null;
+        const end = new Date(endDate);
+        const now = new Date();
+
+        // Tính số mili giây chênh lệch rồi chuyển sang ngày
+        const diffTime = end.getTime() - now.getTime();
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        return diffDays >= 0 ? diffDays : 0; // Nếu đã hết hạn thì trả về 0
+    };
+
 
 
     useEffect(() => {
@@ -68,7 +82,7 @@ const Voucher = () => {
 
                             <div className='flex items-center gap-2 mb-4'>
                                 <Link href='/account'>
-                                <IoIosArrowBack className='text-3xl cursor-pointer' />
+                                    <IoIosArrowBack className='text-3xl cursor-pointer' />
                                 </Link>
                                 <h1 className='text-2xl'>Ưu đãi của bạn</h1>
                             </div>
@@ -104,7 +118,7 @@ const Voucher = () => {
                     <div className=''>
                         <ul className='flex flex-wrap gap-5.5'>
                             {vouchers.map((voucher) => (
-                                <li key={voucher.id} className='w-[32%] bg-white rounded-2xl' onClick={() => handleShowDetail(voucher)}>
+                                <li key={voucher.id} className='w-[32%]  bg-white rounded-lg cursor-pointer' onClick={() => handleShowDetail(voucher)}>
                                     <div className='px-3 pt-3 pb-2'>
                                         <div className='flex pb-2 gap-3 border-b-2 border-[#D9D9D9]'>
                                             <div className='relative bg-[#C7F6D6] rounded-2xl overflow-hidden'>
@@ -118,10 +132,10 @@ const Voucher = () => {
 
                                             <div className='w-[70%] pb-4'>
                                                 <p className='text-[10px] font-medium text-[#898991] mb-1'>UCHIMART</p>
-                                                <h3 className='text-[#4DCB44] truncate'>{voucher.title}</h3>
+                                                <h3 className='text-[#299361] truncate'>{voucher.title}</h3>
                                                 <p className='text-[12px]'>Áp dụng cho đơn hàng từ {formatCurrency(voucher.min_order_value)}</p>
-                                                <p className='text-[12px] text-[#4DCB44]'>
-                                                    {voucher.end_date ? `Hết hạn: ${voucher.end_date}` : 'Không giới hạn'}
+                                                <p className='text-[12px] text-[#299361]'>
+                                                    Hết hạn trong {getDaysLeft(voucher.end_date)} ngày
                                                 </p>
                                             </div>
                                         </div>

@@ -66,6 +66,19 @@ const Footer = () => {
                         </div>
 
 
+                         <div className='w-[30%]'>
+                            <div className='mt-6 mb-7'>
+                            <h1 className='text-xl font-medium'>Đăng ký nhận ưu đãi</h1>
+                            </div>
+
+                            <div>
+                                <p className='mb-4'>Bạn muốn nhận khuyến mãi đặc biệt? Đăng ký tham gia cộng đồng</p>
+                            </div>
+                                
+                        
+                        </div>
+
+
                         <div className='w-[10%] flex flex-col gap-5'>
                             <Link href="https://www.facebook.com/tuan.anh.358553" className='mt-6'>
                                 <BsFacebook className='text-5xl text-blue-500'/>
