@@ -51,7 +51,7 @@ export const ModalVoucherDetail: React.FC<Props> = ({ open, onClose, voucher }) 
                         className="bg-[#F3F4F6] w-full max-w-[400px] rounded-xl shadow-lg relative max-h-[90vh] overflow-y-auto scrollbar-hide"
                     >
                         <div className='mb-5'>
-                            <div className='bg-white p-4 shadow-sm'>
+                            <div className='bg-white p-4 '>
 
                                 <div className='flex relative mb-4'>
                                     <div className='w-full text-center'>
@@ -66,7 +66,7 @@ export const ModalVoucherDetail: React.FC<Props> = ({ open, onClose, voucher }) 
 
                                 </div>
 
-                                <div className='w-[90%] mx-auto text-center shadow p-4 mb-2 rounded-sm'>
+                                <div className='w-[90%] mx-auto text-center  p-4 mb-2 rounded-sm'>
                                     <div className='flex items-center justify-center mb-4'>
                                         <img src="/logok.png" alt="" width={90} height={90} />
                                         {/* <h2 className='text-[11px] ml-2 font-medium text-[#898991] mt-1'>UCHIMART</h2> */}

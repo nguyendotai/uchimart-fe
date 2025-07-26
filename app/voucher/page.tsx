@@ -36,13 +36,13 @@ const Voucher = () => {
 
     useEffect(() => {
         const fetchVoucher = async () => {
-            axios.get('http://localhost:8000/api/v1/coupons', {
+            axios.get('http://localhost:8000/api/coupons', {
                 params: {
                     per_page: 1000 // Đảm bảo lấy hết, nếu backend có phân trang
                 }
             })
                 .then(res => {
-                    setVouchers(res.data.data.data); // cấu trúc response là: { data: { data: [...] } }
+                    setVouchers(res.data.data); // cấu trúc response là: { data: { data: [...] } }
                 })
                 .catch(error => {
                     console.error('Lỗi khi lấy voucher:', error);
