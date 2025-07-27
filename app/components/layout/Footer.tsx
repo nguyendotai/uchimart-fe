@@ -12,7 +12,7 @@ const Footer = () => {
                     <div className='flex gap-7 border-b-2 border-[#DDDDE3]'>
                         <div className='w-[30%]'>
                             <div className='mb-7'>
-                                <img src="./logo.png" alt="" className='w-[90%]'/>
+                                <img src="./logo.png" alt="" className='w-[90%]' />
                             </div>
 
                             <div className='mb-4'>
@@ -20,16 +20,16 @@ const Footer = () => {
                                 <p>Mã số doanh nghiệp: 0104918404 Đăng ký lần đầu ngày 20 tháng 09 năm 2010, đăng ký thay đổi lần thứ 48, ngày 30 tháng 06 năm 2023</p>
                             </div>
                             <div>
-                                <img src="./img/certification.png" alt="" className='w-[60%]'/>
+                                <img src="./img/certification.png" alt="" className='w-[60%]' />
                             </div>
                         </div>
 
 
                         <div className='w-[30%] '>
                             <div className='mt-6 mb-7'>
-                            <h1 className='text-xl font-medium'>Về chúng tôi</h1>
+                                <h1 className='text-xl font-medium'>Về chúng tôi</h1>
                             </div>
-                                
+
                             <ul className='flex flex-col gap-2'>
                                 <li>Giới thiệu về Uchi Mart</li>
                                 <li>Chính sách bảo mật</li>
@@ -41,9 +41,9 @@ const Footer = () => {
 
                         <div className='w-[30%]'>
                             <div className='mt-6 mb-7'>
-                            <h1 className='text-xl font-medium text-[rgb(45,55,72)]'>Hỗ trợ khách hàng</h1>
+                                <h1 className='text-xl font-medium text-[rgb(45,55,72)]'>Hỗ trợ khách hàng</h1>
                             </div>
-                                
+
                             <ul className='flex flex-col gap-2'>
                                 <li>Trung tâm hỗ trợ khách hàng</li>
                                 <li>Chính sách giao hàng</li>
@@ -52,13 +52,13 @@ const Footer = () => {
                                 <li>Hỏi đáp</li>
                             </ul>
                         </div>
-                        
+
 
                         <div className='w-[30%]'>
                             <div className='mt-6 mb-7'>
-                            <h1 className='text-xl font-medium'>Chăm sóc khách hàng</h1>
+                                <h1 className='text-xl font-medium'>Chăm sóc khách hàng</h1>
                             </div>
-                                
+
                             <ul className='flex flex-col gap-2'>
                                 <li>Mua online: 0332493487</li>
                                 <li>Email: cskh@uchimart.com</li>
@@ -66,30 +66,44 @@ const Footer = () => {
                         </div>
 
 
-                         <div className='w-[30%]'>
+                        <div className='w-[30%]'>
                             <div className='mt-6 mb-7'>
-                            <h1 className='text-xl font-medium'>Đăng ký nhận ưu đãi</h1>
+                                <h1 className='text-xl font-medium'>Đăng ký nhận ưu đãi</h1>
                             </div>
 
                             <div>
-                                <p className='mb-4'>Bạn muốn nhận khuyến mãi đặc biệt? Đăng ký tham gia cộng đồng</p>
+                                <p className='mb-4'>Bạn muốn nhận khuyến mãi đặc biệt? Đăng ký tham gia ngay cộng đồng của chúng tôi để cập nhật khuyến mãi ngay lập tức</p>
+
+                                <form className="flex justify-between gap-1">
+                                    <input
+                                        type="email"
+                                        placeholder="Email của bạn..."
+                                        className="w-[60%] p-3 rounded-full border border-gray-300 focus:outline-none  focus:ring-green-500"
+                                    />
+                                    <button
+                                        type="submit"
+                                        className="w-[40%] text-sm bg-green-600 text-white rounded-full hover:bg-green-700 transition duration-300 cursor-pointer"
+                                    >
+                                        Đăng ký
+                                    </button>
+                                </form>
                             </div>
-                                
-                        
+
+
                         </div>
 
 
                         <div className='w-[10%] flex flex-col gap-5'>
                             <Link href="https://www.facebook.com/tuan.anh.358553" className='mt-6'>
-                                <BsFacebook className='text-5xl text-blue-500'/>
+                                <BsFacebook className='text-5xl text-blue-500' />
                             </Link>
 
                             <Link href="https://www.facebook.com/tuan.anh.358553">
-                                <FaYoutube  className='text-5xl text-red-500'/>
+                                <FaYoutube className='text-5xl text-red-500' />
                             </Link>
 
                             <Link href="https://www.facebook.com/tuan.anh.358553">
-                                <FaTiktok  className='text-5xl'/>
+                                <FaTiktok className='text-5xl' />
                             </Link>
                         </div>
                     </div>
