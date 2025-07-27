@@ -11,29 +11,42 @@ type Props = {
 
 const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [visibleCount, setVisibleCount] = useState(12); // mặc định hiển thị 12
+  const [visibleCount, setVisibleCount] = useState(12);
 
   useEffect(() => {
-    fetch("/data/products.json")
+    fetch("http://127.0.0.1:8000/api/products")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
       })
-      .then((data: Product[]) => {
-        if (!Array.isArray(data)) return;
-        const filtered = data.filter(
+      .then((res) => {
+        const products = res.data || [];
+        const inventories: Product[] = products.flatMap(
+          (p: { inventories: Product[] }) => p.inventories || []
+        );
+
+        const filtered = inventories.filter(
           (product) => Number(product.category_id) === Number(categoryId)
         );
+
         const sorted = [...filtered];
         switch (sortBy) {
           case "price-asc":
-            sorted.sort((a, b) => a.price - b.price);
+            sorted.sort(
+              (a, b) =>
+                Number(a.purchase_price.replace(/[^\d]/g, "")) -
+                Number(b.purchase_price.replace(/[^\d]/g, ""))
+            );
             break;
           case "price-desc":
-            sorted.sort((a, b) => b.price - a.price);
+            sorted.sort(
+              (a, b) =>
+                Number(b.purchase_price.replace(/[^\d]/g, "")) -
+                Number(a.purchase_price.replace(/[^\d]/g, ""))
+            );
             break;
           case "best-seller":
-            sorted.sort((a, b) => b.quantity - a.quantity);
+            sorted.sort((a, b) => b.sold_count - a.sold_count);
             break;
           case "newest":
             sorted.sort(
@@ -43,8 +56,9 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
             );
             break;
         }
+
         setAllProducts(sorted);
-        setVisibleCount(12); // reset mỗi lần thay đổi categoryId hoặc sort
+        setVisibleCount(12); // reset khi thay đổi
       })
       .catch((err) => {
         console.error("Lỗi khi tải sản phẩm:", err);
@@ -60,26 +74,33 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
 
   return (
     <div className="mb-6 p-2">
-      <ul className="grid grid-cols-6 gap-4">
-        {visibleProducts.map((product) => (
-          <li
-            key={product.id}
-            className="bg-white shadow rounded-xl p-2 flex flex-col"
-          >
-            <ProductCard product={product} />
-          </li>
-        ))}
-      </ul>
+      {visibleProducts.length > 0 ? (
+        <>
+          <ul className="grid grid-cols-6 gap-4">
+            {visibleProducts.map((product) => (
+              <li
+                key={product.id}
+                className="bg-white shadow rounded-xl p-2 flex flex-col"
+              >
+                <ProductCard product={product} />
+              </li>
+            ))}
+          </ul>
 
-      {/* Nút Xem thêm */}
-      {hasMore && (
-        <div className="flex justify-center mt-6">
-          <button
-            onClick={handleShowMore}
-            className="px-6 py-2 font-medium text-[#7d125f] rounded underline transition"
-          >
-            Xem thêm
-          </button>
+          {hasMore && (
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={handleShowMore}
+                className="px-6 py-2 font-medium text-[#7d125f] rounded underline transition"
+              >
+                Xem thêm
+              </button>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="text-center text-gray-500 italic py-8">
+          Không có sản phẩm nào trong danh mục này.
         </div>
       )}
     </div>
@@ -87,110 +108,3 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
 };
 
 export default CategoryProductPreview;
-
-
-
-
-// "use client";
-// import React, { useEffect, useState } from "react";
-// import ProductCard from "../../components/ui/ProductCard";
-// import { Product } from "@/app/types/Product";
-
-// type Props = {
-//   categoryId: number;
-//   categoryName: string;
-//   sortBy: string;
-// };
-
-// const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
-//   const [allProducts, setAllProducts] = useState<Product[]>([]);
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const productsPerPage = 12; // nếu bạn muốn 2 hàng mỗi page
-
-//   useEffect(() => {
-//     fetch("/data/products.json")
-//       .then((res) => {
-//         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-//         return res.json();
-//       })
-//       .then((data: Product[]) => {
-//         if (!Array.isArray(data)) return;
-//         const filtered = data.filter(
-//           (product) => Number(product.category_id) === Number(categoryId)
-//         );
-//         const sorted = [...filtered];
-//         switch (sortBy) {
-//           case "price-asc":
-//             sorted.sort((a, b) => a.price - b.price);
-//             break;
-//           case "price-desc":
-//             sorted.sort((a, b) => b.price - a.price);
-//             break;
-//           case "best-seller":
-//             sorted.sort((a, b) => b.quantity - a.quantity);
-//             break;
-//           case "newest":
-//             sorted.sort(
-//               (a, b) =>
-//                 new Date(b.created_at).getTime() -
-//                 new Date(a.created_at).getTime()
-//             );
-//             break;
-//         }
-//         setAllProducts(sorted);
-//         setCurrentPage(1);
-//       })
-//       .catch((err) => {
-//         console.error("Lỗi khi tải sản phẩm:", err);
-//       });
-//   }, [categoryId, sortBy]);
-
-//   // Pagination logic
-//   const totalPages = Math.ceil(allProducts.length / productsPerPage);
-//   const startIndex = (currentPage - 1) * productsPerPage;
-//   const visibleProducts = allProducts.slice(
-//     startIndex,
-//     startIndex + productsPerPage
-//   );
-
-//   const handlePageChange = (page: number) => {
-//     setCurrentPage(page);
-//   };
-
-//   return (
-//     <div className="mb-6 p-2">
-//       <ul className="grid grid-cols-6 gap-4">
-//         {visibleProducts.map((product) => (
-//           <li
-//             key={product.id}
-//             className="bg-white shadow rounded-xl p-2 flex flex-col"
-//           >
-//             <ProductCard product={product} />
-//           </li>
-//         ))}
-//       </ul>
-
-//       {/* Pagination Controls */}
-//       {totalPages > 1 && (
-//         <div className="flex justify-center mt-6 gap-2 flex-wrap">
-//           {Array.from({ length: totalPages }, (_, i) => (
-//             <button
-//               key={i + 1}
-//               onClick={() => handlePageChange(i + 1)}
-//               className={`px-3 py-1 rounded border ${
-//                 currentPage === i + 1
-//                   ? "bg-[#921573] text-white"
-//                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-//               }`}
-//             >
-//               {i + 1}
-//             </button>
-//           ))}
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default CategoryProductPreview;
-

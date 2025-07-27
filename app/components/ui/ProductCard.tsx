@@ -86,7 +86,7 @@ const ProductCard = ({ product }: { product: InventoryProduct }) => {
           alt={product.title}
           width={230}
           height={230}
-          className="w-full h-full object-contain rounded max-w-[200px] max-h-[200px] transition-transform duration-300 ease-in-out group-hover:scale-105"
+          className="w-[90%] h-[80%] object-contain rounded max-w-[200px] max-h-[200px] transition-transform duration-300 ease-in-out group-hover:scale-105"
           unoptimized
         />
       </Link>
