@@ -1,8 +1,32 @@
 "use client";
+import { Province, District, Ward, fetchProvinces, fetchDistricts, fetchWards } from '../types/address'; // đường dẫn tùy dự án bạn
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import React, { useState } from 'react';
-
 const AddressBookHand = () => {
+
+    const [provinces, setProvinces] = useState<Province[]>([]);
+    const [districts, setDistricts] = useState<District[]>([]);
+    const [wards, setWards] = useState<Ward[]>([]);
+
+    const [selectedProvince, setSelectedProvince] = useState<number | null>(null);
+    const [selectedDistrict, setSelectedDistrict] = useState<number | null>(null);
+
+    useEffect(() => {
+        fetchProvinces().then(setProvinces);
+    }, []);
+
+    useEffect(() => {
+        if (selectedProvince) {
+            fetchDistricts(selectedProvince).then(setDistricts);
+        }
+    }, [selectedProvince]);
+
+    useEffect(() => {
+        if (selectedDistrict) {
+            fetchWards(selectedDistrict).then(setWards);
+        }
+    }, [selectedDistrict]);
+
     const [enabled, setEnabled] = useState(false);
     return (
         <main className="my-[50px]">
@@ -23,25 +47,58 @@ const AddressBookHand = () => {
                     {/* Tỉnh / Thành phố */}
                     <div>
                         <label className="block text-sm font-medium mb-1">Tỉnh / Thành phố</label>
-                        <select className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-500">
-                            <option>Vui lòng chọn</option>
+                        <select
+                            value={selectedProvince ?? ''}
+                            onChange={(e) => {
+                                const code = Number(e.target.value);
+                                setSelectedProvince(code);
+                                setSelectedDistrict(null);
+                                setWards([]);
+                            }}
+                            className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700"
+                        >
+                            <option value="">Chọn tỉnh/thành</option>
+                            {provinces.map((province) => (
+                                <option key={province.code} value={province.code}>
+                                    {province.name}
+                                </option>
+                            ))}
                         </select>
+
                     </div>
 
                     {/* Quận / Huyện */}
                     <div>
                         <label className="block text-sm font-medium mb-1">Quận / Huyện</label>
-                        <select className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-500">
-                            <option>Vui lòng chọn</option>
+                        <select
+                            value={selectedDistrict ?? ''}
+                            onChange={(e) => setSelectedDistrict(Number(e.target.value))}
+                            className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700"
+                        >
+                            <option value="">Chọn quận/huyện</option>
+                            {districts.map((district) => (
+                                <option key={district.code} value={district.code}>
+                                    {district.name}
+                                </option>
+                            ))}
                         </select>
+
                     </div>
 
                     {/* Phường / Xã */}
                     <div>
                         <label className="block text-sm font-medium mb-1">Phường / Xã</label>
-                        <select className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-500">
-                            <option>Vui lòng chọn</option>
+                        <select
+                            className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700"
+                        >
+                            <option value="">Chọn phường/xã</option>
+                            {wards.map((ward) => (
+                                <option key={ward.code} value={ward.code}>
+                                    {ward.name}
+                                </option>
+                            ))}
                         </select>
+
                     </div>
 
                     {/* Số nhà, tên đường */}

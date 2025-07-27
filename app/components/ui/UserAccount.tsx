@@ -9,35 +9,47 @@ import { useTranslation } from "react-i18next";
 export default function UserAccount() {
   const [user, setUser] = useState<User | null>(null);
 
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
-          const userData = localStorage.getItem("user");
-          if (!userData) return;
-  
-          const parsedUser = JSON.parse(userData);
-          setUser(parsedUser);  
-          const fetchUser = async () => {
-              try {
-                  const res = await fetch(`http://127.0.0.1:8000/api/users/${parsedUser.id}`);
-                  if (res.ok) {
-                      const latestUser = await res.json();
-                      setUser(latestUser);
-                      
-                      localStorage.setItem("user", JSON.stringify(latestUser));
-                  }
-              } catch (err) {
-                  console.error("Lỗi khi lấy dữ liệu người dùng:", err);
-              }
-          };
-  
-          // Gọi lần đầu
-          fetchUser();
-  
-          // Gọi lại mỗi 5s
-          const interval = setInterval(fetchUser, 1000);
-          return () => clearInterval(interval);
-      }, []);
+    const userData = localStorage.getItem("user");
+    if (!userData) return;
+
+    const parsedUser = JSON.parse(userData);
+    setUser(parsedUser);
+
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch(`http://127.0.0.1:8000/api/users/${parsedUser.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json'
+          },
+        });
+
+        if (!res.ok) {
+          const text = await res.text(); // để hiển thị thông báo lỗi
+          console.error("Lỗi phản hồi từ server:", res.status, text);
+          return;
+        }
+
+        const latestUser = await res.json();
+        setUser(latestUser);
+        localStorage.setItem("user", JSON.stringify(latestUser));
+      } catch (err) {
+        console.error("Lỗi khi lấy dữ liệu người dùng:", err);
+      }
+    };
+
+
+    // Gọi lần đầu
+    fetchUser();
+
+    // Gọi lại mỗi 5s
+    const interval = setInterval(fetchUser, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="flex items-center gap-3 cursor-pointer overflow-hidden">
@@ -59,6 +71,8 @@ export default function UserAccount() {
                 src={user.avatar}
                 alt="User avatar"
                 fill
+                // width={100}
+                // height={100}
                 className="object-cover"
               />
             </Link>

@@ -9,6 +9,8 @@ import { toast } from 'react-toastify';
 const Profile = () => {
     const [gender, setGender] = useState('Nam');
     const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(false);
+
 
     // Gọi API mỗi 5s để lấy dữ liệu mới nhất
     useEffect(() => {
@@ -84,7 +86,7 @@ const Profile = () => {
                         };
 
 
-
+                        setLoading(true);
                         try {
                             const res = await fetch(`http://127.0.0.1:8000/api/users/${user.id}`, {
                                 method: 'PUT',
@@ -110,6 +112,8 @@ const Profile = () => {
                         } catch (err) {
                             console.error("Lỗi khi cập nhật:", err);
                             toast.error("Lỗi kết nối server!");
+                        } finally {
+                            setLoading(false);       // 🔹 Tắt loading — luôn chạy
                         }
 
                     }}
@@ -202,9 +206,10 @@ const Profile = () => {
                     <div>
                         <button
                             type="submit"
-                            className="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full text-lg font-semibold shadow-md hover:opacity-90 transition cursor-pointer"
+                            disabled={loading}
+                            className={`w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full text-lg font-semibold shadow-md transition cursor-pointer ${loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"}`}
                         >
-                            Cập nhật
+                            {loading ? "Đang cập nhật..." : "Cập nhật"}
                         </button>
                     </div>
                 </form>
