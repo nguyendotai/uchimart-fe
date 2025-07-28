@@ -1,7 +1,32 @@
 "use client";
-import React from 'react';
-
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
 const Clause = () => {
+    // const [page, setPage] = useState<{ title: string; content: string } | null>(null);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState("");
+
+    // useEffect(() => {
+    //     const fetchPage = async () => {
+    //         try {
+    //             const res = await axios.get("http://localhost:8000/backoffice/pages");
+    //             // Nếu API trả về 1 mảng, bạn có thể lấy phần tử đầu tiên:
+    //             const data = Array.isArray(res.data) ? res.data[0] : res.data;
+    //             setPage(data);
+    //         } catch (err) {
+    //             console.error(err);
+    //             setError("Không thể tải nội dung điều khoản.");
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+
+    //     fetchPage();
+    // }, []);
+
+    // if (loading) return <p className="text-center py-10">Đang tải nội dung...</p>;
+    // if (error) return <p className="text-center text-red-500 py-10">{error}</p>;
+
     return (
         <div>
             <main className="my-[50px]">
