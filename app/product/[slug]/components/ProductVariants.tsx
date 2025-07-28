@@ -3,54 +3,66 @@ import React from "react";
 import Link from "next/link";
 import { GoDotFill } from "react-icons/go";
 import { Product } from "@/app/types/Product";
+import { formatCurrencyToNumber } from "@/app/utils/helpers";
 
 type Props = {
   currentProduct: Product;
-  allProducts: Product[];
+  allProducts: Product[]; // danh sách inventory (kiểu Product[])
   onSelect: (product: Product) => void;
 };
 
-const ProductVariants = ({ currentProduct, allProducts }: Props) => {
-  const variants = allProducts
-    .filter((p) => p.group_code === currentProduct.group_code)
-    .slice(0, 3);
+const ProductVariants = ({ currentProduct, allProducts, onSelect }: Props) => {
+  // Lọc ra những inventory cùng product_id (cùng sản phẩm gốc)
+  const variants = allProducts.filter(
+    (p) => p.product_id === currentProduct.product_id
+  );
 
   return (
-    <div className="flex flex-wrap gap-3 my-4 justify-between">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 my-4">
       {variants.map((variant) => {
         const isSelected = variant.slug === currentProduct.slug;
-        const unitPrice =
-          variant.pack_size > 0
-            ? Math.round(variant.promotion_price / variant.pack_size)
-            : null;
+        const salePrice = formatCurrencyToNumber(variant.sale_price);
+        const offerPrice = formatCurrencyToNumber(variant.offer_price ?? "0");
+        const hasSale = offerPrice > 0 && offerPrice < salePrice;
+        const displayPrice = hasSale ? offerPrice : salePrice;
+
         return (
           <Link
             key={variant.slug}
             href={`/product/${variant.slug}`}
-            className={`border w-[31%] rounded-md p-2 text-sm block ${
+            className={`border rounded-md p-2 text-sm flex flex-col justify-between ${
               isSelected ? "border-blue-500 bg-[#EEF6FF]" : "border-gray-300"
             }`}
           >
-            <span className={`text-sm mb-2 ${isSelected ? "text-[#327FF6]"  : ""}`}>
-              {variant.pack_size} {variant.display_unit}
-            </span>
-            <div className="flex items-center gap-2 mb-2">
-              <div className="">
-                {variant.promotion_price.toLocaleString()}đ   
-              </div>
-              {unitPrice !== null && (
-                <div className="text-xs text-gray-400">
-                  ({unitPrice.toLocaleString()}đ/{variant.unit})
-                </div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-red-500 font-semibold">
+                {displayPrice.toLocaleString()}đ
+              </span>
+              {hasSale && (
+                <del className="text-xs text-gray-400">
+                  {salePrice.toLocaleString()}đ
+                </del>
               )}
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-600 bg-[#C6FBC2] px-1.5 py-1 rounded text-[9px]">
-                {variant.status_text}
+
+            <div className="text-xs text-gray-500 mb-1">
+              ({(displayPrice / variant.stock_quantity).toLocaleString()} đ/
+              {variant.unit ?? "sp"})
+            </div>
+
+            <div className="flex items-center gap-2 mt-auto">
+              <span
+                className={`text-xs px-1.5 py-0.5 rounded ${
+                  variant.status_name === "Active"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-600"
+                }`}
+              >
+                {variant.status_name === "Active" ? "Còn hàng" : "Hết hàng"}
               </span>
-              <span className="text-gray-400 text-[8px] flex items-center">
-                <GoDotFill></GoDotFill>
-                <span>{variant.deliveryTime}</span>
+              <span className="text-gray-400 text-[10px] flex items-center">
+                <GoDotFill className="text-[8px]" />
+                <span>Đã bán {variant.sold_count}</span>
               </span>
             </div>
           </Link>

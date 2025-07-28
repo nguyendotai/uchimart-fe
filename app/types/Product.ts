@@ -1,5 +1,6 @@
 // types/Inventory.ts
 export interface Product {
+  unit: string;
   id: number;
   title: string;
   product_id: number;
@@ -22,6 +23,12 @@ export interface Product {
   product?: {
     code: string;
     category_id?: number;
+    description?: string;
+    brand: {
+      id: number;
+      name: string;
+      images: string;
+    }
   };
 }
 

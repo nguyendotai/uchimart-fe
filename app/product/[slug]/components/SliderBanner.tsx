@@ -44,7 +44,7 @@ export default function SliderBanner() {
   if (banners.length === 0) return null;
 
   return (
-    <div className="relative w-full h-[300px] rounded-xl bg-white flex justify-center items-center overflow-hidden mt-4">
+    <div className="relative w-full h-[300px] rounded-xl bg-white flex justify-center items-center overflow-hidden mt-4 shadow">
       <div className="relative w-full h-full rounded-xl overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div

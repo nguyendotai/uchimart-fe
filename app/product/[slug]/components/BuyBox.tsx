@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { Product } from "@/app/types/Product";
 import { Brand } from "@/app/types/Brand";
@@ -8,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { addToCart } from "@/store/slices/cartSlice";
+import { formatCurrencyToNumber } from "@/app/utils/helpers";
 
 type Props = {
   product: Product;
@@ -22,14 +24,22 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
 
+  // ✅ Format giá (string → number)
+  const salePrice = formatCurrencyToNumber(product.sale_price);
+  const offerPrice = formatCurrencyToNumber(product.offer_price ?? "0");
+  const hasSale = offerPrice > 0 && offerPrice < salePrice;
+
   const onDecrease = () => {
     setQuantity((prev) => Math.max(1, prev - 1));
   };
 
   const onIncrease = () => {
     setQuantity((prev) => {
-      if (product.quantity !== undefined && prev >= product.quantity) {
-        return prev; // Không tăng nếu đã đạt giới hạn
+      if (
+        product.stock_quantity !== undefined &&
+        prev >= product.stock_quantity
+      ) {
+        return prev;
       }
       return prev + 1;
     });
@@ -50,29 +60,22 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
       ...product,
       cartQuantity: quantity,
     };
-
-    // ✅ Lưu trực tiếp sản phẩm vào localStorage
     localStorage.setItem("selectedItems", JSON.stringify([selectedItem]));
-
-    // ✅ Chuyển sang trang thanh toán
     router.push("/check-out");
   };
-
-  const hasSale =
-    product.price !== undefined && product.price > product.promotion_price;
 
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
       toast.success("Đã sao chép đường dẫn!");
     } catch (err) {
-      toast.success("Không thể sao chép. Trình duyệt không hỗ trợ.");
+      toast.error("Không thể sao chép. Trình duyệt không hỗ trợ.");
     }
   };
 
   return (
     <div className="w-[40%] bg-white p-4 rounded-xl shadow sticky top-2 self-start">
-      {/* Brand */}
+      {/* ✅ Thương hiệu */}
       {brand && (
         <div className="mb-1.5 flex items-center gap-2 w-full">
           <span className="text-gray-600">Thương hiệu:</span>
@@ -80,78 +83,79 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
         </div>
       )}
 
-      {/* Name + Share */}
+      {/* ✅ Tên + Nút share */}
       <div className="flex justify-between">
-        <h3 className="text-xl font-semibold">{product.name}</h3>
+        <h3 className="w-[90%] text-xl font-semibold">{product.title}</h3>
         <button
           onClick={handleShare}
-          className="p-2 border border-gray-400 rounded text-gray-500 text-2xl hover:bg-gray-100 transition"
+          className="flex justify-center items-center w-[10%] border border-gray-400 rounded text-gray-500 text-2xl hover:bg-gray-100 transition"
           title="Sao chép đường dẫn"
         >
           <IoShareSocialSharp />
         </button>
       </div>
 
-      {/* Price */}
+      {/* ✅ Giá bán & Giảm giá */}
       <div className="flex gap-2 items-center pb-2 mb-2 border-b border-b-gray-400">
         <div className="text-xl font-bold text-red-500">
-          {(product.promotion_price * quantity).toLocaleString()}đ{" "}
+          {((hasSale ? offerPrice : salePrice) * quantity).toLocaleString()}đ
           {hasSale && (
             <span className="text-gray-400 line-through ml-2 text-sm font-normal">
-              {(product.price * quantity).toLocaleString()}đ
+              {(salePrice * quantity).toLocaleString()}đ
             </span>
           )}
         </div>
 
         {hasSale && (
-          <div className="text-green-600 font-medium ">
-            Tiết kiệm{" "}
-            {Math.round((product.price - product.promotion_price) / 1000)}K
+          <div className="text-green-600 font-medium">
+            Tiết kiệm {Math.round(((salePrice - offerPrice) * quantity) / 1000)}K
           </div>
         )}
       </div>
 
+      {/* ✅ Biến thể */}
       <ProductVariants
         currentProduct={product}
         allProducts={allProducts}
         onSelect={onSelect}
       />
 
-      {/* Quantity */}
+      {/* ✅ Số lượng */}
       <div className="mb-4 w-full">
         <p className="font-medium mb-2">Số Lượng</p>
         <div className="flex border border-blue-400 rounded-full h-10 overflow-hidden w-full">
           <button
             onClick={onDecrease}
-            className="flex-2 text-blue-500 text-xl border-r border-blue-400 w-[15%]"
+            className="text-blue-500 text-xl border-r border-blue-400 w-[15%]"
           >
             –
           </button>
-          <div className="flex-6 flex items-center justify-center text-blue-500 text-lg font-medium w-[70%]">
+          <div className="flex-1 flex items-center justify-center text-blue-500 text-lg font-medium w-[70%]">
             {quantity}
           </div>
           <button
             onClick={onIncrease}
-            className="flex-2 text-blue-500 text-xl border-l border-blue-400 w-[15%]"
+            className="text-blue-500 text-xl border-l border-blue-400 w-[15%]"
           >
             +
           </button>
         </div>
-        {quantity >= product.quantity && (
+        {quantity >= product.stock_quantity && (
           <p className="text-sm text-red-500 mt-1">
             Đã đạt số lượng tối đa trong kho
           </p>
         )}
       </div>
 
-      {/* Provisional */}
+      {/* ✅ Tạm tính */}
       <div className="mb-4">
         <p className="font-medium">Tạm tính</p>
         <span className="text-lg font-bold text-[#921573]">
-          {(product.promotion_price * quantity).toLocaleString()}đ
+          {((hasSale ? offerPrice : salePrice) * quantity).toLocaleString()}đ
         </span>
       </div>
 
+      {/* ✅ Nút mua / thêm giỏ */}
       <button
         onClick={handleBuyNow}
         className="bg-[#4DCB44] text-white px-6 py-2 rounded hover:bg-green-600 transition w-full mb-2"
