@@ -15,6 +15,7 @@ import type {
   Product as InventoryProduct,
   CartItem,
 } from "@/app/types/Product";
+import { formatCurrencyToNumber } from "@/app/utils/helpers";
 
 const ProductCard = ({ product }: { product: InventoryProduct }) => {
   const dispatch = useDispatch();
@@ -26,12 +27,14 @@ const ProductCard = ({ product }: { product: InventoryProduct }) => {
     null
   );
 
-  // Chuyển giá từ chuỗi sang số
-  const price = Number(product.sale_price.replace(/[₫,.]/g, ""));
-  const promoPrice = Number(product.purchase_price.replace(/[₫,.]/g, ""));
-  const hasSale = !isNaN(promoPrice) && promoPrice > 0 && promoPrice < price;
+  const salePrice = formatCurrencyToNumber(product.sale_price);
+const offerPrice = formatCurrencyToNumber(product.offer_price ?? "0");
+
+const hasSale = offerPrice > 0 && offerPrice < salePrice;
+
+
   const discount = hasSale
-    ? Math.round(((price - promoPrice) / price) * 100)
+    ? Math.round(((salePrice - offerPrice) / salePrice) * 100)
     : 0;
 
   const handleConfirm = (quantity: number) => {
@@ -51,6 +54,15 @@ const ProductCard = ({ product }: { product: InventoryProduct }) => {
     setShowModal(false);
     setActionType(null);
   };
+  console.log("🧪 ProductCard:", {
+  title: product.title,
+  sale_price: product.sale_price,
+  offer_price: product.offer_price,
+  salePrice,
+  offerPrice,
+  hasSale,
+});
+
 
   return (
     <div className="relative group">
@@ -62,8 +74,8 @@ const ProductCard = ({ product }: { product: InventoryProduct }) => {
         onConfirm={handleConfirm}
         productName={product.title}
         productImage={product.image}
-        productPrice={price}
-        productPromotionPrice={hasSale ? promoPrice : undefined}
+        productPrice={salePrice}
+        productPromotionPrice={hasSale ? offerPrice : undefined}
         productStock={product.stock_quantity}
       />
 
@@ -128,15 +140,15 @@ const ProductCard = ({ product }: { product: InventoryProduct }) => {
           {hasSale ? (
             <>
               <span className="p-1 text-[#FB5D08] font-medium">
-                {promoPrice.toLocaleString()}đ
+                {offerPrice.toLocaleString()}đ
               </span>
               <del className="text-[#999999] text-[14px]">
-                {price.toLocaleString()}đ
+                {salePrice.toLocaleString()}đ
               </del>
             </>
           ) : (
             <span className="p-1 text-[#FB5D08] font-medium">
-              {price.toLocaleString()}đ
+              {salePrice.toLocaleString()}đ
             </span>
           )}
         </div>

@@ -1,12 +1,14 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Product } from "@/app/types/Product";
 import ProductCard from "../components/ui/ProductCard";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
+const ITEMS_PER_PAGE = 6;
+
 const ListProduct = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
@@ -30,60 +32,72 @@ const ListProduct = () => {
     const el = scrollRef.current;
     if (!el) return;
     setCanScrollLeft(el.scrollLeft > 0);
-    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 10);
   };
 
   useEffect(() => {
-    updateScrollButtons();
     const el = scrollRef.current;
-    if (el) el.addEventListener("scroll", updateScrollButtons);
+    updateScrollButtons();
+    if (el) {
+      el.addEventListener("scroll", updateScrollButtons);
+    }
     return () => {
       if (el) el.removeEventListener("scroll", updateScrollButtons);
     };
   }, [allProducts]);
 
-  const scrollByAmount = (amount: number) => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: amount, behavior: "smooth" });
-    }
+  const scrollByAmount = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const card = el.querySelector("div > div");
+    const cardWidth = card ? (card as HTMLElement).offsetWidth + 16 : 220; // 16 là gap-4
+    el.scrollBy({ left: cardWidth * ITEMS_PER_PAGE, behavior: "smooth" });
+  };
+
+  const scrollBackAmount = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const card = el.querySelector("div > div");
+    const cardWidth = card ? (card as HTMLElement).offsetWidth + 16 : 220;
+    el.scrollBy({ left: -cardWidth * ITEMS_PER_PAGE, behavior: "smooth" });
   };
 
   return (
-    <div className="relative rounded-xl">
-
-      <div className="relative">
-        <div
-          ref={scrollRef}
-          className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-2"
+    <div className="relative w-full overflow-hidden">
+      {/* Nút trái */}
+      {canScrollLeft && (
+        <button
+          onClick={scrollBackAmount}
+          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
         >
-          {allProducts.slice(0, 6).map((product) => (
-            <div
-              key={product.id}
-              className="max-w-[200px] flex-shrink-0 bg-white shadow rounded-xl p-2"
-            >
-              <ProductCard product={product} />
-            </div>
-          ))}
-        </div>
+          <FaChevronLeft />
+        </button>
+      )}
 
-        {canScrollLeft && (
-          <button
-            onClick={() => scrollByAmount(-1000)}
-            className="absolute top-1/2 left-0 -translate-y-1/2 z-10 bg-white shadow p-2 rounded-full"
+      {/* Container cuộn ngang */}
+      <div
+        ref={scrollRef}
+        className="flex gap-4 scroll-smooth overflow-x-auto scrollbar-hide px-2"
+      >
+        {allProducts.map((product) => (
+          <div
+            key={product.id}
+            className="min-w-[200px] max-w-[200px] flex-shrink-0 bg-white shadow rounded-xl p-2"
           >
-            <FaChevronLeft />
-          </button>
-        )}
-
-        {canScrollRight && (
-          <button
-            onClick={() => scrollByAmount(1000)}
-            className="absolute top-1/2 right-0 -translate-y-1/2 z-10 bg-white shadow p-2 rounded-full"
-          >
-            <FaChevronRight />
-          </button>
-        )}
+            <ProductCard product={product} />
+          </div>
+        ))}
       </div>
+
+      {/* Nút phải */}
+      {canScrollRight && (
+        <button
+          onClick={scrollByAmount}
+          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+        >
+          <FaChevronRight />
+        </button>
+      )}
     </div>
   );
 };
