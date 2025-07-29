@@ -3,6 +3,7 @@ export interface CategoryGroup {
   name: string;
   slug: string;
   image: string;
+  cover: string;
   description: string;
   seo_title: string;
   seo_description: string;
