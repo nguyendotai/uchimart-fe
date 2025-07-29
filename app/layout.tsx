@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi">
-      <body className="font-sans bg-gray-100 text-gray-800 overflow-x-hidden">
+      <body className="font-sans text-gray-800 overflow-x-hidden">
         <PageLayout>{children}</PageLayout>
       </body>
     </html>

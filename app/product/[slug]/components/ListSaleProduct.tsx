@@ -87,7 +87,7 @@ const ListSaleProduct = ({ currentProduct, allProducts }: Props) => {
         {related.map((product) => (
           <div
             key={product.id}
-            className="min-w-[200px] max-w-[200px] flex-shrink-0 bg-white shadow rounded-xl p-2"
+            className="min-w-[200px] max-w-[200px] flex-shrink-0 border border-gray-200 rounded-xl p-2"
           >
             <ProductCard product={product} />
           </div>

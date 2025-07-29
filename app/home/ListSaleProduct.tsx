@@ -53,7 +53,7 @@ const ListSaleProduct = () => {
           {saleProducts.map((product) => (
             <li
               key={product.id}
-              className="bg-white shadow rounded-xl p-2 relative"
+              className="border border-gray-200 rounded-xl p-2 relative"
             >
               <ProductCard product={product} />
             </li>
