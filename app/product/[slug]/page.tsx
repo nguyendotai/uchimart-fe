@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 
 // 🧩 Types
-import { Product } from "@/app/types/Product";
+import { Inventory, Product } from "@/app/types/Product";
 import { Brand } from "@/app/types/Brand";
 
 // 🧭 UI Components
@@ -25,9 +25,11 @@ const DetailProduct = () => {
   const params = useParams();
   const slug = params?.slug as string;
 
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [product, setProduct] = useState<Product | null>(null);
-  const [brands, setBrands] = useState<Brand[]>([]);
+  const [allInventories, setAllInventories] = useState<Inventory[]>([]);
+  const [currentInventory, setCurrentInventory] = useState<Inventory | null>(
+    null
+  );
+  const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [showNotif, setShowNotif] = useState(false);
 
@@ -39,94 +41,72 @@ const DetailProduct = () => {
       })
       .then((response) => {
         const allData = response.data;
-
-        let foundProduct: Product | null = null;
+        const inventories: Inventory[] = [];
+        let selectedInventory: Inventory | null = null;
+        let selectedProduct: Product | null = null;
 
         for (const product of allData) {
-          const inventory = product.inventories?.find(
-            (inv: any) => inv.slug === slug
-          );
-
-          if (inventory) {
-            foundProduct = {
-              ...inventory,
-              brand: product.brand,
-              description: product.description,
-              primary_image: product.primary_image,
+          for (const inv of product.inventories || []) {
+            const inventory: Inventory = {
+              ...inv,
+              product: {
+                code: product.code,
+              },
               subcategories: product.subcategories,
-              product_code: product.code, // nếu cần
-              category_id:
-                product.subcategories?.[0]?.category?.id ?? undefined,
             };
 
-            break;
+            inventories.push(inventory);
+
+            if (inv.slug === slug) {
+              selectedInventory = inventory;
+              selectedProduct = product;
+            }
           }
         }
 
-        setProduct(foundProduct);
-        const allVariants: Product[] = [];
-
-        for (const product of allData) {
-          const baseData = {
-            brand: product.brand,
-            description: product.description,
-            primary_image: product.primary_image,
-            subcategories: product.subcategories,
-            product_code: product.code,
-            category_id: product.subcategories?.[0]?.category?.id,
-          };
-
-          for (const inv of product.inventories) {
-            allVariants.push({
-              ...inv,
-              ...baseData,
-            });
-          }
-        }
-
-        setAllProducts(allVariants); // ✅ now this is the correct data for ProductVariants
+        setAllInventories(inventories);
+        setCurrentInventory(selectedInventory);
+        setCurrentProduct(selectedProduct);
       })
       .catch((err) => {
         console.error("Lỗi tải sản phẩm từ API:", err);
-        setProduct(null);
+        setCurrentInventory(null);
+        setCurrentProduct(null);
       })
       .finally(() => setLoading(false));
   }, [slug]);
-
-  useEffect(() => {
-    fetch("/data/brands.json")
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        return res.json() as Promise<Brand[]>;
-      })
-      .then((data) => setBrands(data))
-      .catch((err) => console.error("Lỗi tải brands:", err));
-  }, []);
-
-  const brand = brands.find((b) => b.id === product?.product?.brand?.id);
 
   return (
     <PageTransitionWrapper>
       <div className="w-full">
         <div className="container mx-auto mt-2 flex justify-between">
-          {/* Center - Images */}
           <div className="w-full">
-            {loading || !product ? (
+            {loading || !currentInventory || !currentProduct ? (
               <div className="text-center mt-10">Đang tải sản phẩm...</div>
             ) : (
               <>
                 <div className="flex gap-2 justify-between">
+                  {/* Bên trái: hình ảnh, mô tả, banner */}
                   <div className="w-[58.5%]">
-                    <ProductImages product={product} />
-                    <ProductInfo product={product} />
+                    <ProductImages
+                      inventory={currentInventory}
+                      product={currentProduct}
+                    />
+                    <ProductInfo
+                      inventory={currentInventory}
+                      product={currentProduct}
+                    />
                     <SliderBanner />
                   </div>
 
+                  {/* Bên phải: thông tin mua hàng */}
                   <BuyBox
-                    product={product}
-                    brand={brand}
-                    allProducts={allProducts}
-                    onSelect={(p) => setProduct(p)}
+                    inventory={currentInventory}
+                    product={currentProduct}
+                    allInventories={allInventories}
+                    onSelect={(inv) => {
+                      setCurrentInventory(inv);
+                    }}
                     onNotify={() => {
                       setShowNotif(true);
                       setTimeout(() => setShowNotif(false), 2000);
@@ -134,13 +114,15 @@ const DetailProduct = () => {
                   />
                 </div>
 
+                {/* Sản phẩm liên quan + đang khuyến mãi */}
                 <RelatedProducts
-                  currentProduct={product}
-                  allProducts={allProducts}
+                  currentInventory={currentInventory}
+                  allProducts={allInventories}
                 />
+
                 <ListSaleProduct
-                  currentProduct={product}
-                  allProducts={allProducts}
+                  currentProduct={currentProduct}
+                  allProducts={allInventories}
                 />
               </>
             )}

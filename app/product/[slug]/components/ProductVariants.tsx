@@ -2,25 +2,29 @@
 import React from "react";
 import Link from "next/link";
 import { GoDotFill } from "react-icons/go";
-import { Product } from "@/app/types/Product";
+import { Inventory } from "@/app/types/Product";
 import { formatCurrencyToNumber } from "@/app/utils/helpers";
 
 type Props = {
-  currentProduct: Product;
-  allProducts: Product[]; // danh sách inventory (kiểu Product[])
-  onSelect: (product: Product) => void;
+  currentInventory: Inventory;
+  allInventories: Inventory[];
+  onSelect: (inventory: Inventory) => void;
 };
 
-const ProductVariants = ({ currentProduct, allProducts, onSelect }: Props) => {
-  // Lọc ra những inventory cùng product_id (cùng sản phẩm gốc)
-  const variants = allProducts.filter(
-    (p) => p.product_id === currentProduct.product_id
+const ProductVariants = ({
+  currentInventory,
+  allInventories,
+  onSelect,
+}: Props) => {
+  // Lọc các inventory có cùng product_id
+  const variants = allInventories.filter(
+    (inv) => inv.product_id === currentInventory.product_id
   );
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 my-4">
       {variants.map((variant) => {
-        const isSelected = variant.slug === currentProduct.slug;
+        const isSelected = variant.slug === currentInventory.slug;
         const salePrice = formatCurrencyToNumber(variant.sale_price);
         const offerPrice = formatCurrencyToNumber(variant.offer_price ?? "0");
         const hasSale = offerPrice > 0 && offerPrice < salePrice;
@@ -34,6 +38,7 @@ const ProductVariants = ({ currentProduct, allProducts, onSelect }: Props) => {
               isSelected ? "border-blue-500 bg-[#EEF6FF]" : "border-gray-300"
             }`}
           >
+            {/* Giá */}
             <div className="flex items-center gap-2 mb-1">
               <span className="text-red-500 font-semibold">
                 {displayPrice.toLocaleString()}đ
@@ -45,11 +50,13 @@ const ProductVariants = ({ currentProduct, allProducts, onSelect }: Props) => {
               )}
             </div>
 
+            {/* Giá theo đơn vị */}
             <div className="text-xs text-gray-500 mb-1">
               ({(displayPrice / variant.stock_quantity).toLocaleString()} đ/
               {variant.unit ?? "sp"})
             </div>
 
+            {/* Tình trạng + đã bán */}
             <div className="flex items-center gap-2 mt-auto">
               <span
                 className={`text-xs px-1.5 py-0.5 rounded ${

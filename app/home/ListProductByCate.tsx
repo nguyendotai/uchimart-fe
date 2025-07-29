@@ -5,12 +5,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProductCard from "../components/ui/ProductCard";
 import { CategoryGroup } from "@/app/types/Category";
-import { Product } from "@/app/types/Product"; // Dùng kiểu Inventory
+import { Product, Inventory } from "@/app/types/Product"; // Dùng kiểu Inventory
 import { productCarouselSettings } from "@/app/utils/carouselSettings";
 
 const ListProductByCate = () => {
   const [groups, setGroups] = useState<CategoryGroup[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [inventories, setInventories] = useState<Inventory[]>([]);
 
   useEffect(() => {
     Promise.all([
@@ -21,7 +21,17 @@ const ListProductByCate = () => {
     ])
       .then(([groupData, productData]) => {
         setGroups(groupData.data ?? []);
-        setProducts(productData.data ?? []); // Dữ liệu inventory
+        const products: Product[] = productData.data ?? [];
+
+        const allInventories: Inventory[] = products.flatMap((p) =>
+          p.inventories.map((inv) => ({
+            ...inv,
+            subcategories: p.subcategories,
+            unit: undefined,
+          }))
+        );
+
+        setInventories(allInventories); // Dữ liệu inventory
       })
       .catch((err) => {
         console.error("Lỗi tải dữ liệu:", err);
@@ -31,12 +41,12 @@ const ListProductByCate = () => {
   return (
     <>
       {groups.map((group) => {
-        const categoryIds = group.categories?.map((cat) => cat.id) || [];
-
-        // Lọc các inventory có product.category_id nằm trong group
-        const groupProducts = products.filter(
-          (p) => p.product?.category_id && categoryIds.includes(p.product.category_id)
-        );
+        // Lọc các inventory theo category_group
+        const groupProducts = inventories.filter((inv) => {
+          const groupId =
+            inv.subcategories?.[0]?.category?.category_group?.id;
+          return groupId === group.id;
+        });
 
         if (groupProducts.length === 0) return null;
 
@@ -60,10 +70,10 @@ const ListProductByCate = () => {
 
             {/* Carousel sản phẩm */}
             <Slider {...productCarouselSettings}>
-              {groupProducts.slice(0, 12).map((product) => (
-                <div key={product.id} className="px-2">
+              {groupProducts.slice(0, 12).map((inv) => (
+                <div key={inv.id} className="px-2">
                   <div className="bg-white shadow rounded-xl p-2 h-full">
-                    <ProductCard product={product} />
+                    <ProductCard product={inv} />
                   </div>
                 </div>
               ))}
@@ -72,7 +82,7 @@ const ListProductByCate = () => {
             {/* Nút xem thêm */}
             <div className="flex justify-center mt-2">
               <a
-                href={`/product?category=${group.id}`}
+                href={`/product?category_group=${group.id}`}
                 className="text-[#921573] hover:underline font-medium"
               >
                 Xem thêm

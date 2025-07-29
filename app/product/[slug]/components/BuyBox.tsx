@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Product } from "@/app/types/Product";
+import { Inventory, Product } from "@/app/types/Product";
 import { Brand } from "@/app/types/Brand";
 import { IoShareSocialSharp } from "react-icons/io5";
 import ProductVariants from "./ProductVariants";
@@ -12,21 +12,27 @@ import { addToCart } from "@/store/slices/cartSlice";
 import { formatCurrencyToNumber } from "@/app/utils/helpers";
 
 type Props = {
+  inventory: Inventory;
   product: Product;
   brand?: Brand;
-  allProducts: Product[];
-  onSelect: (product: Product) => void;
+  allInventories: Inventory[]; // ✅ Đổi tên cho rõ nghĩa
+  onSelect: (variant: Inventory) => void; // ✅ Sửa type
   onNotify?: () => void;
 };
 
-const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
+const BuyBox = ({
+  inventory,
+  brand,
+  allInventories,
+  onSelect,
+  onNotify,
+}: Props) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
 
-  // ✅ Format giá (string → number)
-  const salePrice = formatCurrencyToNumber(product.sale_price);
-  const offerPrice = formatCurrencyToNumber(product.offer_price ?? "0");
+  const salePrice = formatCurrencyToNumber(inventory.sale_price);
+  const offerPrice = formatCurrencyToNumber(inventory.offer_price ?? "0");
   const hasSale = offerPrice > 0 && offerPrice < salePrice;
 
   const onDecrease = () => {
@@ -36,8 +42,8 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
   const onIncrease = () => {
     setQuantity((prev) => {
       if (
-        product.stock_quantity !== undefined &&
-        prev >= product.stock_quantity
+        inventory.stock_quantity !== undefined &&
+        prev >= inventory.stock_quantity
       ) {
         return prev;
       }
@@ -46,18 +52,13 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
   };
 
   const handleAddToCart = () => {
-    dispatch(
-      addToCart({
-        ...product,
-        cartQuantity: quantity,
-      })
-    );
+    dispatch(addToCart({ ...inventory, cartQuantity: quantity }));
     onNotify?.();
   };
 
   const handleBuyNow = () => {
     const selectedItem = {
-      ...product,
+      ...inventory,
       cartQuantity: quantity,
     };
     localStorage.setItem("selectedItems", JSON.stringify([selectedItem]));
@@ -75,7 +76,6 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
 
   return (
     <div className="w-[40%] bg-white p-4 rounded-xl shadow sticky top-2 self-start">
-      {/* ✅ Thương hiệu */}
       {brand && (
         <div className="mb-1.5 flex items-center gap-2 w-full">
           <span className="text-gray-600">Thương hiệu:</span>
@@ -83,9 +83,8 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
         </div>
       )}
 
-      {/* ✅ Tên + Nút share */}
       <div className="flex justify-between">
-        <h3 className="w-[90%] text-xl font-semibold">{product.title}</h3>
+        <h3 className="w-[90%] text-xl font-semibold">{inventory.title}</h3>
         <button
           onClick={handleShare}
           className="flex justify-center items-center w-[10%] border border-gray-400 rounded text-gray-500 text-2xl hover:bg-gray-100 transition"
@@ -95,7 +94,6 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
         </button>
       </div>
 
-      {/* ✅ Giá bán & Giảm giá */}
       <div className="flex gap-2 items-center pb-2 mb-2 border-b border-b-gray-400">
         <div className="text-xl font-bold text-red-500">
           {((hasSale ? offerPrice : salePrice) * quantity).toLocaleString()}đ
@@ -105,18 +103,18 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
             </span>
           )}
         </div>
-
         {hasSale && (
           <div className="text-green-600 font-medium">
-            Tiết kiệm {Math.round(((salePrice - offerPrice) * quantity) / 1000)}K
+            Tiết kiệm {Math.round(((salePrice - offerPrice) * quantity) / 1000)}
+            K
           </div>
         )}
       </div>
 
       {/* ✅ Biến thể */}
       <ProductVariants
-        currentProduct={product}
-        allProducts={allProducts}
+        currentInventory={inventory}
+        allInventories={allInventories}
         onSelect={onSelect}
       />
 
@@ -140,7 +138,7 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
             +
           </button>
         </div>
-        {quantity >= product.stock_quantity && (
+        {quantity >= inventory.stock_quantity && (
           <p className="text-sm text-red-500 mt-1">
             Đã đạt số lượng tối đa trong kho
           </p>
@@ -155,7 +153,6 @@ const BuyBox = ({ product, brand, allProducts, onSelect, onNotify }: Props) => {
         </span>
       </div>
 
-      {/* ✅ Nút mua / thêm giỏ */}
       <button
         onClick={handleBuyNow}
         className="bg-[#4DCB44] text-white px-6 py-2 rounded hover:bg-green-600 transition w-full mb-2"

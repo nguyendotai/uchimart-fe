@@ -1,16 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import ProductCard from "../../components/ui/ProductCard";
-import { Product } from "@/app/types/Product";
+import { Inventory, Product } from "@/app/types/Product"; // ✅ sửa import đúng
 
 type Props = {
-  categoryId: number;
+  categoryId: number;         // category_group.id
   categoryName: string;
   sortBy: string;
 };
 
 const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [allProducts, setAllProducts] = useState<Inventory[]>([]);
   const [visibleCount, setVisibleCount] = useState(12);
 
   useEffect(() => {
@@ -20,14 +20,20 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
         return res.json();
       })
       .then((res) => {
-        const products = res.data || [];
-        const inventories: Product[] = products.flatMap(
-          (p: { inventories: Product[] }) => p.inventories || []
+        const products: Product[] = res.data || [];
+
+        const inventories: Inventory[] = products.flatMap((p) =>
+          p.inventories.map((inv) => ({
+            ...inv,
+            subcategories: p.subcategories, // gán subcategories từ product cha vào inventory
+          }))
         );
 
-        const filtered = inventories.filter(
-          (product) => Number(product.category_id) === Number(categoryId)
-        );
+        const filtered = inventories.filter((item) => {
+          const groupId =
+            item?.subcategories?.[0]?.category?.category_group?.id;
+          return groupId === categoryId;
+        });
 
         const sorted = [...filtered];
         switch (sortBy) {
@@ -58,7 +64,7 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
         }
 
         setAllProducts(sorted);
-        setVisibleCount(12); // reset khi thay đổi
+        setVisibleCount(12);
       })
       .catch((err) => {
         console.error("Lỗi khi tải sản phẩm:", err);

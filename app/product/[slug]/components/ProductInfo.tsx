@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, useRef } from "react";
-import { Product } from "@/app/types/Product";
+import { Product, Inventory } from "@/app/types/Product";
 
 type Props = {
   product: Product;
+  inventory?: Inventory; // Optional, in case you want to use inventory data
 };
 
 const ProductInfo = ({ product }: Props) => {
@@ -34,7 +35,7 @@ const ProductInfo = ({ product }: Props) => {
         <div
           className="mt-2 prose prose-sm max-w-none"
           dangerouslySetInnerHTML={{
-            __html: cleanHTML(product.product?.description || "<p>Chưa có mô tả</p>"),
+            __html: cleanHTML(product.description || "<p>Chưa có mô tả</p>"),
           }}
         />
 

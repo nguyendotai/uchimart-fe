@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { Product } from "@/app/types/Product";
+import { Inventory } from "@/app/types/Product";
 import ProductCard from "../components/ui/ProductCard";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const ITEMS_PER_PAGE = 6;
 
 const ListProduct = () => {
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [allProducts, setAllProducts] = useState<Inventory[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -20,8 +20,8 @@ const ListProduct = () => {
       })
       .then((res) => {
         const products = res.data || [];
-        const allInventories = products.flatMap(
-          (p: { inventories: any[] }) => p.inventories || []
+        const allInventories: Inventory[] = products.flatMap(
+          (p: { inventories: Inventory[] }) => p.inventories || []
         );
         setAllProducts(allInventories);
       })

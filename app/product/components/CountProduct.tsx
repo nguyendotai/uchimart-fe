@@ -11,18 +11,30 @@ const CountProduct = ({
   categoryId = null,
   categoryName = "tất cả danh mục",
 }: Props) => {
-  const [count, setCount] = useState<number>(0); 
+  const [count, setCount] = useState<number>(0);
+
   useEffect(() => {
-    fetch("/data/products.json")
+    fetch("http://127.0.0.1:8000/api/products")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
       })
-      .then((data: Product[]) => {
+      .then((res) => {
+        const data = res.data;
         if (!Array.isArray(data)) return;
+
+        // Lấy danh sách tất cả inventories
+        const inventories: Product[] = data.flatMap(
+          (p: { inventories: Product[] }) => p.inventories || []
+        );
+
         const filtered = categoryId
-          ? data.filter((product) => Number(product.category_id) === Number(categoryId)) // ép kiểu cho chắc
-          : data;
+          ? inventories.filter(
+              (item) =>
+                item?.subcategories?.[0]?.category?.id === Number(categoryId)
+            )
+          : inventories;
+
         setCount(filtered.length);
       })
       .catch((err) => {

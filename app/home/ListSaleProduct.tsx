@@ -1,13 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import ProductCard from "../components/ui/ProductCard";
-import { Product } from "@/app/types/Product";
-import {
-  formatCurrencyToNumber,
-} from "../utils/helpers";
+import { Inventory, Product } from "@/app/types/Product";
+import { formatCurrencyToNumber } from "../utils/helpers";
 
 const ListSaleProduct = () => {
-  const [saleProducts, setSaleProducts] = useState<Product[]>([]);
+  const [saleProducts, setSaleProducts] = useState<Inventory[]>([]);
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/products")
@@ -16,24 +14,21 @@ const ListSaleProduct = () => {
         return res.json();
       })
       .then((res) => {
-        const products = res?.data ?? [];
+        const products: Product[] = res?.data ?? [];
 
-        // ✅ Lấy tất cả inventories
-        const allInventories = products.flatMap(
-          (p: { inventories: Product[] }) => p.inventories || []
+        const inventoriesWithSub: Inventory[] = products.flatMap((p) =>
+          p.inventories.map((inv) => ({
+            ...inv,
+            subcategories: p.subcategories,
+            unit: undefined,
+          }))
         );
 
-        // ✅ Lọc sản phẩm có khuyến mãi
-        const filtered = allInventories.filter(
-          (p: {
-            sale_price: string | null | undefined;
-            offer_price: string | null | undefined;
-          }) => {
-            const sale = formatCurrencyToNumber(p.sale_price);
-            const promo = formatCurrencyToNumber(p.offer_price);
-            return !isNaN(sale) && !isNaN(promo) && promo > 0 && promo < sale;
-          }
-        );
+        const filtered = inventoriesWithSub.filter((inv) => {
+          const sale = formatCurrencyToNumber(inv.sale_price);
+          const promo = formatCurrencyToNumber(inv.offer_price ?? "0");
+          return !isNaN(sale) && !isNaN(promo) && promo > 0 && promo < sale;
+        });
 
         setSaleProducts(filtered);
       })
@@ -54,30 +49,15 @@ const ListSaleProduct = () => {
           </p>
         </div>
       ) : (
-        <ul className="flex flex-wrap gap-4 justify-between">
-          {saleProducts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-10 bg-white rounded-xl shadow">
-              <img
-                src="/no-sale-today.png"
-                alt="Không có sản phẩm khuyến mãi"
-                className="w-40 h-40 object-contain mb-4"
-              />
-              <p className="text-gray-500 text-center text-lg font-medium">
-                Hôm nay không có sản phẩm đang khuyến mãi.
-              </p>
-            </div>
-          ) : (
-            <ul className="grid grid-cols-6 gap-4">
-              {saleProducts.map((product) => (
-                <li
-                  key={product.id}
-                  className="bg-white shadow rounded-xl p-2 relative"
-                >
-                  <ProductCard product={product} />
-                </li>
-              ))}
-            </ul>
-          )}
+        <ul className="grid grid-cols-6 gap-4">
+          {saleProducts.map((product) => (
+            <li
+              key={product.id}
+              className="bg-white shadow rounded-xl p-2 relative"
+            >
+              <ProductCard product={product} />
+            </li>
+          ))}
         </ul>
       )}
     </div>
