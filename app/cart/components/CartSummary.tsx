@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import type { CartItem } from "@/app/types/Product";
+import { formatCurrencyToNumber, formatNumberToCurrency } from "@/app/utils/helpers";
 
 export default function CartSummary({ selectedIds }: { selectedIds: number[] }) {
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -15,24 +16,17 @@ export default function CartSummary({ selectedIds }: { selectedIds: number[] }) 
 
   if (selectedItems.length === 0) return null;
 
-  // Helper: chuyển giá chuỗi sang số
-  const parsePrice = (priceStr: string | number | null | undefined) => {
-    if (!priceStr) return 0;
-    if (typeof priceStr === "number") return priceStr;
-    return Number(priceStr.replace(/[₫,.]/g, "")) || 0;
-  };
-
+  // Tổng phụ
   const subTotal = selectedItems.reduce((sum, item) => {
-    const price = parsePrice(item.purchase_price ?? item.sale_price);
+    const offerPrice = formatCurrencyToNumber(item.offer_price ?? "");
+    const salePrice = formatCurrencyToNumber(item.sale_price);
+    const price = offerPrice > 0 && offerPrice < salePrice ? offerPrice : salePrice;
     return sum + price * item.cartQuantity;
   }, 0);
 
   const shipping = 0;
   const taxes = 0;
   const total = subTotal + shipping + taxes;
-
-  const formatVND = (value: number) =>
-    value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
 
   const handleCheckout = () => {
     if (selectedItems.length === 0) return;
@@ -47,7 +41,10 @@ export default function CartSummary({ selectedIds }: { selectedIds: number[] }) 
         <h3 className="font-medium mb-2">Sản phẩm đã chọn</h3>
         <ul className="space-y-2 max-h-40 overflow-y-auto pr-1">
           {selectedItems.map((item) => {
-            const unitPrice = parsePrice(item.purchase_price ?? item.sale_price);
+            const offerPrice = formatCurrencyToNumber(item.offer_price ?? "");
+            const salePrice = formatCurrencyToNumber(item.sale_price);
+            const unitPrice = offerPrice > 0 && offerPrice < salePrice ? offerPrice : salePrice;
+
             return (
               <li key={item.id} className="flex gap-3 items-center">
                 <div className="relative w-14 h-14 flex-shrink-0">
@@ -61,14 +58,14 @@ export default function CartSummary({ selectedIds }: { selectedIds: number[] }) 
                 <div className="flex-1">
                   <div className="font-medium line-clamp-1">{item.title}</div>
                   <div className="text-xs text-gray-500">
-                    Đơn giá: {formatVND(unitPrice)}
+                    Đơn giá: {formatNumberToCurrency(unitPrice)}₫
                   </div>
                   <div className="text-xs text-gray-500">
                     Số lượng: {item.cartQuantity}
                   </div>
                 </div>
                 <div className="font-medium whitespace-nowrap">
-                  {formatVND(unitPrice * item.cartQuantity)}
+                  {formatNumberToCurrency(unitPrice * item.cartQuantity)}₫
                 </div>
               </li>
             );
@@ -87,22 +84,22 @@ export default function CartSummary({ selectedIds }: { selectedIds: number[] }) 
         </div>
         <div className="flex justify-between">
           <span>Tạm tính</span>
-          <span>{formatVND(subTotal)}</span>
+          <span>{formatNumberToCurrency(subTotal)}₫</span>
         </div>
         <div className="flex justify-between">
           <span>Phí vận chuyển</span>
-          <span>{formatVND(shipping)}</span>
+          <span>{formatNumberToCurrency(shipping)}₫</span>
         </div>
         <div className="flex justify-between">
           <span>Thuế</span>
-          <span>{formatVND(taxes)}</span>
+          <span>{formatNumberToCurrency(taxes)}₫</span>
         </div>
       </div>
 
       <hr className="my-4" />
       <div className="flex justify-between text-base font-semibold mb-6">
         <span>Tổng cộng</span>
-        <span>{formatVND(total)}</span>
+        <span>{formatNumberToCurrency(total)}₫</span>
       </div>
 
       <button

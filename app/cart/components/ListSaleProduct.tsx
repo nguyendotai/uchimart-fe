@@ -4,38 +4,40 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProductCard from "@/app/components/ui/ProductCard";
-import { Product } from "@/app/types/Product"; // Đảm bảo đúng loại Product từ Inventory
+import { Product, Inventory } from "@/app/types/Product"; // Đảm bảo đúng loại Product từ Inventory
 import { productCarouselSettings_7 } from "@/app/utils/carouselSettings_7";
+import { formatCurrencyToNumber } from "@/app/utils/helpers";
 
 const ListSaleProduct = () => {
-  const [saleProducts, setSaleProducts] = useState<Product[]>([]);
-
-  // Helper: parse giá chuỗi "43,000₫" => 43000
-  const parsePrice = (price: string | number | null | undefined) => {
-    if (!price) return 0;
-    if (typeof price === "number") return price;
-    return Number(price.replace(/[₫,.]/g, "")) || 0;
-  };
-
-  useEffect(() => {
-    fetch("/data/products.json")
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        return res.json();
-      })
-      .then((products: Product[]) => {
-        const filtered = products
-          .filter((p) => {
-            const normalPrice = parsePrice(p.sale_price);
-            const promoPrice = parsePrice(p.offer_price ?? p.purchase_price);
-            return promoPrice > 0 && promoPrice < normalPrice;
-          })
-          .slice(0, 12);
-
-        setSaleProducts(filtered);
-      })
-      .catch((err) => console.error("Lỗi tải dữ liệu:", err));
-  }, []);
+  const [saleProducts, setSaleProducts] = useState<Inventory[]>([]);
+  
+    useEffect(() => {
+      fetch("http://127.0.0.1:8000/api/products")
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+          return res.json();
+        })
+        .then((res) => {
+          const products: Product[] = res?.data ?? [];
+  
+          const inventoriesWithSub: Inventory[] = products.flatMap((p) =>
+            p.inventories.map((inv) => ({
+              ...inv,
+              subcategories: p.subcategories,
+              unit: undefined,
+            }))
+          );
+  
+          const filtered = inventoriesWithSub.filter((inv) => {
+            const sale = formatCurrencyToNumber(inv.sale_price);
+            const promo = formatCurrencyToNumber(inv.offer_price ?? "0");
+            return !isNaN(sale) && !isNaN(promo) && promo > 0 && promo < sale;
+          });
+  
+          setSaleProducts(filtered);
+        })
+        .catch((err) => console.error("Lỗi tải dữ liệu:", err));
+    }, []);
 
   return (
     <>

@@ -7,12 +7,13 @@ import {
   increaseQuantity,
   decreaseQuantity,
 } from "@/store/slices/cartSlice";
-import { Product } from "@/app/types/Product";
+import type { CartItem } from "@/app/types/Product";
 import ConfirmModal from "./ComfirmModal";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { formatCurrencyToNumber, formatNumberToCurrency } from "@/app/utils/helpers"; // bạn đã viết sẵn
 
 type Props = {
-  item: Product & { cartQuantity: number };
+  item: CartItem;
   checked: boolean;
   onItemClick: () => void;
 };
@@ -21,10 +22,14 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
   const dispatch = useDispatch();
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const price = item.promotion_price ?? item.price;
-  const originalPrice = item.promotion_price ? item.price : null;
-  const discount = item.promotion_price
-    ? Math.round(((item.price - item.promotion_price) / item.price) * 100)
+  const salePrice = formatCurrencyToNumber(item.sale_price);
+  const offerPrice = formatCurrencyToNumber(item.offer_price ?? "0");
+
+  const finalPrice = offerPrice > 0 && offerPrice < salePrice ? offerPrice : salePrice;
+  const hasDiscount = offerPrice > 0 && offerPrice < salePrice;
+
+  const discount = hasDiscount
+    ? Math.round(((salePrice - offerPrice) / salePrice) * 100)
     : 0;
 
   const handleDelete = () => {
@@ -42,7 +47,7 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
         open={showConfirm}
         onClose={() => setShowConfirm(false)}
         onConfirm={confirmDelete}
-        message={`Bạn có chắc chắn muốn xóa "${item.name}" khỏi giỏ hàng?`}
+        message={`Bạn có chắc chắn muốn xóa "${item.product?.name}" khỏi giỏ hàng?`}
       />
 
       <tr
@@ -61,7 +66,7 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
           <div className="relative w-16 h-16 flex-shrink-0">
             <Image
               src={item.image}
-              alt={item.name}
+              alt={item.product?.name || "Sản phẩm"}
               fill
               className="object-contain"
             />
@@ -72,17 +77,19 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
             )}
           </div>
           <div>
-            <div className="font-medium">{item.name}</div>
-            <div className="text-xs text-gray-500">Đã bán {item.sold}</div>
+            <div className="font-medium">{item.product?.name}</div>
+            <div className="text-xs text-gray-500">
+              Đã bán {item.sold_count}
+            </div>
           </div>
         </td>
         <td className="p-3 text-right">
           <div className="text-[#FB5D08] font-medium">
-            {price.toLocaleString()}đ
+            {formatNumberToCurrency(finalPrice)}₫
           </div>
-          {originalPrice && (
+          {hasDiscount && (
             <del className="text-gray-400 text-xs">
-              {originalPrice.toLocaleString()}đ
+              {formatNumberToCurrency(salePrice)}₫
             </del>
           )}
         </td>
@@ -116,7 +123,7 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
           </div>
         </td>
         <td className="p-3 text-right font-medium">
-          {(price * item.cartQuantity).toLocaleString()}đ
+          {formatNumberToCurrency(finalPrice * item.cartQuantity)}₫
         </td>
         <td className="p-3 text-center">
           <button
