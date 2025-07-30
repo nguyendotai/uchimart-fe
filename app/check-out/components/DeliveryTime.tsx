@@ -2,9 +2,14 @@
 import React from "react";
 import { MdAccessTime } from "react-icons/md";
 import Image from "next/image";
+import type { CartItem } from "@/app/types/Product";
+import {
+  formatCurrencyToNumber,
+  formatNumberToCurrency,
+} from "@/app/utils/helpers";
 
 type Props = {
-  items: any[];
+  items: CartItem[];
   selectedTime: string;
   onChange: (time: string) => void;
 };
@@ -42,36 +47,43 @@ export default function DeliveryTime({ items, selectedTime, onChange }: Props) {
 
       {/* Danh sách sản phẩm */}
       <div className="space-y-3 mb-3">
-        {items.map((item) => (
-          <div
-            key={item.id}
-            className="flex items-start gap-3 border-b pb-3 last:border-none"
-          >
-            <Image
-              src={item.image}
-              alt={item.name}
-              width={48}
-              height={48}
-              className="rounded object-cover w-12 h-12"
-            />
-            <div className="flex-1">
-              <p className="text-sm text-gray-800">{item.name}</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="font-semibold text-gray-800">
-                  {item.price.toLocaleString()} ₫
-                </span>
-                {item.discount && (
-                  <span className="text-red-500 text-xs bg-red-100 px-2 py-[2px] rounded-full">
-                    Ưu đãi
+        {items.map((item) => {
+          const offerPrice = formatCurrencyToNumber(item.offer_price ?? "");
+          const salePrice = formatCurrencyToNumber(item.sale_price);
+          const unitPrice =
+            offerPrice > 0 && offerPrice < salePrice ? offerPrice : salePrice;
+
+          return (
+            <div
+              key={item.id}
+              className="flex items-start gap-3 border-b pb-3 last:border-none"
+            >
+              <Image
+                src={item.image || "/fallback.jpg"}
+                alt={item.title}
+                width={48}
+                height={48}
+                className="rounded object-cover w-12 h-12"
+              />
+              <div className="flex-1">
+                <p className="text-sm text-gray-800">{item.title}</p>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="font-semibold text-gray-800">
+                    {formatNumberToCurrency(unitPrice)} ₫
                   </span>
-                )}
+                  {offerPrice > 0 && offerPrice < salePrice && (
+                    <span className="text-red-500 text-xs bg-red-100 px-2 py-[2px] rounded-full">
+                      Ưu đãi
+                    </span>
+                  )}
+                </div>
               </div>
+              <span className="text-sm text-gray-700 whitespace-nowrap">
+                x{item.cartQuantity}
+              </span>
             </div>
-            <span className="text-sm text-gray-700 whitespace-nowrap">
-              x{item.quantity}
-            </span>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Ghi chú đơn */}

@@ -1,18 +1,24 @@
 "use client";
 import React, { useState } from "react";
+import { CartItem } from "@/app/types/Product";
+import { formatCurrencyToNumber } from "@/app/utils/helpers";
 
 type Props = {
-  items: any[];
+  items: CartItem[];
 };
 
 export default function OrderSummary({ items }: Props) {
   const [showDetails, setShowDetails] = useState(false);
   const [vatChecked, setVatChecked] = useState(false);
 
-  const subTotal = items.reduce(
-    (sum, item) => sum + (item.promotion_price ?? item.price) * item.cartQuantity,
-    0
-  );
+  const subTotal = items.reduce((sum, item) => {
+    const salePrice = formatCurrencyToNumber(item.sale_price);
+    const offerPrice = formatCurrencyToNumber(item.offer_price ?? "0");
+    const price = offerPrice > 0 && offerPrice < salePrice ? offerPrice : salePrice;
+
+    return sum + price * item.cartQuantity;
+  }, 0);
+
   const shippingFee = 16000;
   const shippingDiscount = 16000;
   const totalDiscount = shippingDiscount;
@@ -37,12 +43,12 @@ export default function OrderSummary({ items }: Props) {
 
         <div className="flex justify-between">
           <span className="text-gray-600">Tổng tạm tính</span>
-          <span className="text-gray-800 font-medium">{subTotal.toLocaleString()} đ</span>
+          <span className="text-gray-800 font-medium">{(subTotal ?? 0).toLocaleString()} đ</span>
         </div>
 
         <div className="flex justify-between">
           <span className="text-gray-600">Tổng phí vận chuyển</span>
-          <span className="text-gray-800 font-medium">{shippingFee.toLocaleString()} đ</span>
+          <span className="text-gray-800 font-medium">{(shippingFee ?? 0).toLocaleString()} đ</span>
         </div>
 
         {/* Tổng khuyến mãi */}
@@ -58,7 +64,7 @@ export default function OrderSummary({ items }: Props) {
               </span>
             </span>
             <span className="text-green-600 font-medium">
-              -{totalDiscount.toLocaleString()} đ
+              -{(totalDiscount ?? 0).toLocaleString()} đ
             </span>
           </div>
 
@@ -81,7 +87,7 @@ export default function OrderSummary({ items }: Props) {
 
         <div className="flex justify-between items-center text-lg font-semibold mb-4">
           <span>Tổng tiền</span>
-          <span className="text-orange-600">{finalTotal.toLocaleString()} đ</span>
+          <span className="text-orange-600">{(finalTotal ?? 0).toLocaleString()} đ</span>
         </div>
 
         <button
