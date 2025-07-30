@@ -15,9 +15,9 @@ const LoginGGSuccess = () => {
     const birthday = searchParams.get("birthday");
     const phone_number = searchParams.get("phone_number");
     const genders = searchParams.get("genders");
+    const token = searchParams.get("token"); // Lấy token từ URL
 
-
-    if (id && email && name) {
+    if (id && email && name && token) {
       const user = {
         id,
         email,
@@ -28,6 +28,7 @@ const LoginGGSuccess = () => {
         genders: Number(genders),
       };
       localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token); // Lưu token
       router.push("/"); // hoặc chuyển đến /profile
     }
   }, [searchParams, router]);

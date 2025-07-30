@@ -7,4 +7,5 @@ export type User = {
   birthday: Date;
   genders: number;
   access_channel_type?: number;
+  token?: string; 
 };

@@ -10,7 +10,7 @@ const Profile = () => {
     const [gender, setGender] = useState('Nam');
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(false);
-
+    const token = localStorage.getItem("token");
 
     // Gọi API mỗi 5s để lấy dữ liệu mới nhất
     useEffect(() => {
@@ -92,6 +92,7 @@ const Profile = () => {
                                 method: 'PUT',
                                 headers: {
                                     'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${token}`,
                                 },
                                 body: JSON.stringify(updatedUser),
                             });
