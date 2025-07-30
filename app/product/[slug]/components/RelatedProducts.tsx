@@ -16,16 +16,17 @@ const RelatedProducts = ({ currentInventory, allProducts }: Props) => {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
-  const currentCategoryId =
-    currentInventory?.subcategories?.[0]?.category?.id ?? null;
+  const currentCategoryGroupId =
+    currentInventory?.subcategories?.[0]?.category?.category_group?.id ?? null;
 
   const related = allProducts
     .filter(
       (p) =>
         p.id !== currentInventory.id &&
-        p.subcategories?.[0]?.category?.id === currentCategoryId
+        p.subcategories?.[0]?.category?.category_group?.id ===
+          currentCategoryGroupId
     )
-    .slice(0, 10);
+    .slice(0, 12);
 
   const updateScrollButtons = () => {
     const el = scrollRef.current;
