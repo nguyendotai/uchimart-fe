@@ -1,19 +1,17 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import ProductCard from "../../components/ui/ProductCard";
-import { Product } from "@/app/types/Product";
+import { Inventory, Product } from "@/app/types/Product";
+import { formatCurrencyToNumber } from "@/app/utils/helpers";
 
 interface Props {
-  currentProduct: Product;
+  categoryGroupId: number;
 }
 
-const ListSaleProduct = ({ currentProduct }: Props) => {
-  const [saleProducts, setSaleProducts] = useState<Product[]>([]);
+const ListSaleProduct = ({ categoryGroupId }: Props) => {
+  const [saleProducts, setSaleProducts] = useState<Inventory[]>([]);
 
   useEffect(() => {
-    const categoryGroupId =
-      currentProduct?.subcategories?.[0]?.category?.category_group?.id;
-
     if (!categoryGroupId) return;
 
     fetch("http://127.0.0.1:8000/api/products")
@@ -21,45 +19,55 @@ const ListSaleProduct = ({ currentProduct }: Props) => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
       })
-      .then((data) => {
-        if (!data.success || !Array.isArray(data.data)) return;
+      .then((res) => {
+        const products: Product[] = res?.data ?? [];
 
-        // Giả sử mỗi item trong data.data là Product (Inventory đã flatten)
-        const filtered = data.data
-          .filter((p: Product) => {
-            // Parse giá vì sale_price và offer_price là string có thể chứa ký tự ₫
-            const sale = parseInt(p.sale_price.replace(/[₫,.]/g, ""));
-            const offer = parseInt(
-              (p.offer_price || "0").replace(/[₫,.]/g, "")
-            );
+        const inventoriesWithSub: Inventory[] = products.flatMap((p) =>
+          p.inventories.map((inv) => ({
+            ...inv,
+            subcategories: p.subcategories,
+            unit: inv.unit ?? "sp",
+            product: p,
+          }))
+        );
 
-            const sameGroup =
-              p.subcategories?.[0]?.category?.category_group?.id ===
-              categoryGroupId;
+        const filtered = inventoriesWithSub.filter((inv) => {
+          const sale = formatCurrencyToNumber(inv.sale_price);
+          const promo = formatCurrencyToNumber(inv.offer_price ?? "0");
 
-            return sameGroup && sale > offer;
-          })
-          .slice(0, 6);
+          const inSameCategoryGroup =
+            inv.subcategories?.some(
+              (sub) => sub.category.category_group.id === categoryGroupId
+            ) ?? false;
 
-        setSaleProducts(filtered);
+          return (
+            !isNaN(sale) &&
+            !isNaN(promo) &&
+            promo > 0 &&
+            promo < sale &&
+            inSameCategoryGroup
+          );
+        });
+
+        setSaleProducts(filtered.slice(0, 6));
       })
       .catch((err) => console.error("Lỗi tải dữ liệu:", err));
-  }, [currentProduct]);
+  }, [categoryGroupId]);
 
   if (saleProducts.length === 0) return null;
 
   return (
-    <div className="bg-[#FED7D7] shadow rounded-xl p-6 relative flex justify-center">
+    <div className="bg-[#FED7D7] shadow rounded-xl p-6 relative flex justify-center mt-10">
       <span className="absolute top-0 left-0 py-2 px-4 font-medium text-xl bg-red-500 text-white rounded-tl-xl rounded-br-xl">
         Khuyến mãi HOT
       </span>
-      <div className="flex justify-between items-center mt-10 w-full gap-2 flex-wrap">
-        {saleProducts.map((product) => (
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 pt-10 px-2">
+        {saleProducts.map((inventory) => (
           <div
-            key={product.id}
-            className="w-[15.5%] bg-white shadow rounded-xl p-2"
+            key={inventory.id}
+            className="bg-white border border-gray-200 rounded-xl p-2"
           >
-            <ProductCard product={product} />
+            <ProductCard product={inventory} />
           </div>
         ))}
       </div>

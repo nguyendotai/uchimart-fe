@@ -59,7 +59,7 @@ const Product = () => {
             {/* List Sale */}
             <div className="w-full mb-4">
               {categoryId && !isNaN(Number(categoryId)) && (
-                <ListSaleProduct categoryId={Number(categoryId)} />
+                <ListSaleProduct categoryGroupId={Number(categoryId)} />
               )}
             </div>
             {/* Category Child */}
