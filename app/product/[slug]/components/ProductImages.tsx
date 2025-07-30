@@ -20,13 +20,13 @@ const ProductImages = ({ inventory }: ProductImagesProps) => {
           alt={inventory.title}
           width={100}
           height={100}
-          className="rounded-xl shadow object-contain w-full h-auto"
+          className="rounded-xl border border-gray-200 object-contain w-full h-auto"
         />
       </div>
 
       {/* Ảnh chính bên phải */}
       <div className="w-[86%]">
-        <div className="relative w-full min-h-[600px] rounded-xl shadow overflow-hidden">
+        <div className="relative w-full min-h-[600px] rounded-xl border border-gray-200 overflow-hidden">
           <Image
             src={inventory.image || fallbackImage}
             alt={inventory.title}

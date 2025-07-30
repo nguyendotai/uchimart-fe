@@ -69,16 +69,12 @@ const ListProductByCate = () => {
         return (
           <div key={group.id} className="w-full space-y-4 mb-6 relative">
             {/* Banner nhóm danh mục */}
-            <div className="w-full h-[120px] rounded-lg overflow-hidden relative flex bg-gray-200 shadow">
+            <div className="w-full h-[103px] rounded-lg overflow-hidden relative flex bg-gray-100">
               <div className="w-[40%]">
                 <img
                   src={group.cover || "/default-category.png"}
                   alt={group.name}
-                  className="w-full h-full object-cover rounded-l-lg"
                 />
-              </div>
-              <div className="w-[60%] flex items-center px-4">
-                <h2 className="text-2xl font-semibold text-[#921573]">{group.name}</h2>
               </div>
             </div>
 

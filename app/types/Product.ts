@@ -1,6 +1,7 @@
 // types/Inventory.ts
 
 export interface CategoryGroup {
+  image: any;
   id: number;
   name: string;
   slug: string;
