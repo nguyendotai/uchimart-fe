@@ -1,49 +1,47 @@
 export type Province = {
-    code: number;
-    name: string;
-}
+  code: string;
+  name: string;
+};
 
 export type District = {
-    code: number;
-    name: string;
-}
+  code: string;
+  name: string;
+};
 
 export type Ward = {
-    code: number;
-    name: string;
-}
-
-export type AddressPayload = {
-    user_id: number;
-    name: string;
-    phone: string;
-    supported_provinces: number[];   // ✅ thêm
-    supported_districts: number[];   // ✅ thêm
-    supported_wards: number[];
-    address_line: string;
-    is_default: number; // 0 hoặc 1
-    addressable_type: string;
-    addressable_id: number;
-}
-
-
-
-
-export const fetchProvinces = async (): Promise<Province[]> => {
-    const res = await fetch('https://provinces.open-api.vn/api/p/');
-    return res.json();
-};
-
-export const fetchDistricts = async (provinceCode: number): Promise<District[]> => {
-    const res = await fetch(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`);
-    const data = await res.json();
-    return data.districts || [];
-};
-
-export const fetchWards = async (districtCode: number): Promise<Ward[]> => {
-    const res = await fetch(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`);
-    const data = await res.json();
-    return data.wards || [];
+  code: string;
+  name: string;
 };
 
 
+// Kiểu dữ liệu API trả về
+export type APIItem = {
+  id: number;
+  code: string;       // API trả string
+  full_name: string;  // API trả full_name
+};
+
+export type APIResponse = {
+  success: boolean;
+  data: APIItem[];
+};
+
+
+export type AddressItem = {
+  id: number;
+  user: { id: number };
+  name: string;
+  phone: string;
+  address_line: string;
+  province: { code: string; name: string };
+  district: { code: string; name: string };
+  ward: { code: string; name: string };
+  is_default: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type AddressListResponse = {
+  success: boolean;
+  data: AddressItem[];
+};

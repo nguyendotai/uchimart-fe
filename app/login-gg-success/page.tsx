@@ -28,7 +28,7 @@ const LoginGGSuccess = () => {
         genders: Number(genders),
       };
       localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("token", token); // Lưu token
+      localStorage.setItem("token", token);
       router.push("/"); // hoặc chuyển đến /profile
     }
   }, [searchParams, router]);

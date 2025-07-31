@@ -21,6 +21,7 @@ const Account = () => {
     const handleLogout = () => {
         // Xóa dữ liệu user khỏi localStorage
         localStorage.removeItem("user");
+        localStorage.removeItem("token");
 
         // console.log("Đã đăng xuất thành công!");
 

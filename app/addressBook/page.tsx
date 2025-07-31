@@ -1,9 +1,32 @@
+"use client";
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { FaBookBookmark, FaMap } from 'react-icons/fa6';
-
+import axios from 'axios';
+import { AddressItem } from "../types/address";
+const API_BASE = "http://127.0.0.1:8000/api";
 const AddressBook = () => {
+    const [addresses, setAddresses] = useState<AddressItem[]>([]);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        axios
+            .get(`${API_BASE}/addresses`, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            .then((res) => {
+                if (res.data.success) {
+                    setAddresses(res.data.data);
+                }
+            })
+            .catch((err) => {
+                console.error("Lỗi lấy địa chỉ:", err);
+            });
+    }, []);
+
     return (
         <div>
             <main className="my-[50px]">
@@ -39,35 +62,44 @@ const AddressBook = () => {
                     </div>
 
 
-                    <div className="w-[70%] flex justify-between">
-                        {/* <!-- column left --> */}
-                        <div className="w-[48%] bg-white rounded-[5px] relative  shadow-sm">
-                            <div className="absolute right-2 top-1 cursor-pointer">
-
-                                <i className="fas fa-ellipsis-v text-gray-600"></i>
-                            </div>
-                            <div className="py-5 ml-5 flex items-center">
-                                <input type="radio" name="address" checked className="mt-1 accent-blue-600 w-8 h-8" />
-                                <div className="ml-2 ">
-                                    <p className=" font-bold text-xl">Nhà</p>
-                                    <p className="text-[#A29E9E] font-medium">Anh <span className="font-bold ">Tuaneli</span></p>
-                                    <p className="text-[#A29E9E] font-medium mb-2">382/15 Đường Tân Kỳ Tân Quý, Phường Sơn Kỳ, Quận Tân
-                                        Phú, Thành phố Hồ Chí Minh</p>
-                                    <span className=" border-2 border-green-500 text-green-500 px-2 py-1 rounded-full text-xs font-medium">Mặc định</span>
-
+                    <div className="w-[70%] flex flex-col gap-5">
+                        {addresses.length > 0 ? (
+                            addresses.map((address) => (
+                                <div key={address.id} className="w-[48%]  bg-white rounded-[5px] relative shadow-sm">
+                                    <div className="absolute right-2 top-1 cursor-pointer">
+                                        <i className="fas fa-ellipsis-v text-gray-600"></i>
+                                    </div>
+                                    <div className="py-5 mx-5 flex items-center">
+                                        <input
+                                            type="radio"
+                                            name="address"
+                                            checked={address.is_default}
+                                            className="mt-1 accent-blue-600 w-8 h-8"
+                                            readOnly
+                                        />
+                                        <div className="ml-2">
+                                            <p className="w-[90%] font-medium text-[15px]">{address.address_line}</p>
+                                            <p className="text-[#A29E9E] font-medium">
+                                                {address.name}
+                                            </p>
+                                            <p className="text-[#A29E9E] font-medium mb-2">
+                                                {address.address_line}, {address.ward?.name}, Quận {address.district?.name}, {address.province?.name}
+                                            </p>
+                                            {address.is_default && (
+                                                <span className="border-2 border-green-500 text-green-500 px-2 py-1 rounded-full text-xs font-medium">
+                                                    Mặc định
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-
-
-                        {/* <!-- column right --> */}
-                        <div
-                            className="w-[48%] h-min flex items-center justify-center px-5 py-2 bg-[#921573] rounded-[5px] cursor-pointer">
-                            <button className="text-[#F5F5FA] text-lg cursor-pointer">
-                                Đăng xuất
-                            </button>
-                        </div>
+                            ))
+                        ) : (
+                            <p className="text-gray-500">Bạn chưa có địa chỉ nào.</p>
+                        )}
                     </div>
+
+
                 </div>
             </main>
         </div>
