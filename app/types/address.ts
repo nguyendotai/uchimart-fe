@@ -33,10 +33,17 @@ export type AddressItem = {
   name: string;
   phone: string;
   address_line: string;
+  note?: string;
+
+  province_code?: string;
+  district_code?: string;
+  ward_code?: string;
+
   province: { code: string; name: string };
   district: { code: string; name: string };
   ward: { code: string; name: string };
-  is_default: boolean;
+
+  is_default: number;
   created_at: string;
   updated_at: string;
 };

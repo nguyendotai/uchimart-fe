@@ -1,7 +1,7 @@
 // app/components/layout/PageLayout.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 import { ReduxProvider } from "./ReduxProvider";
 import I18nProvider from "./I18nProvider";
 import ToastWrapper from "../ui/ToastWrapper";
@@ -19,7 +19,7 @@ export default function PageLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   const hasSidebar =
     pathname === "/" ||
