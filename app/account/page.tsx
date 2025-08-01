@@ -49,14 +49,14 @@ const Account = () => {
     }, []);
 
     return (
-        <div>
-            <main className="my-[100px]">
+        <div className="">
+            <main className="my-[100px] ">
                 <div className="w-[80%] mx-auto flex justify-between ">
                     {/* <!-- info right --> */}
                     <div className="w-[70%]">
                         {/* <!-- row1 --> */}
                         <div className="w-full flex justify-between mb-7">
-                            <div className="w-[48%] flex bg-white rounded-[5px] items-center ">
+                            <div className="w-[48%] flex bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] items-center ">
                                 <Link href="./profile" className=" w-full ml-5  flex  items-center ">
                                     <img className="w-[80px] h-[80px] rounded-full object-cover cursor-pointer"
                                         src={user?.avatar || "/img/default-avatar.jpg"} alt="" />
@@ -64,7 +64,7 @@ const Account = () => {
                                 </Link>
                             </div>
 
-                            <div className="w-[48%] bg-white rounded-[5px]">
+                            <div className="w-[48%] bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)]">
                                 <div className="p-5">
                                     <div className=" flex justify-between mb-3">
                                         <strong>Hoàn thiện hồ sơ của bạn</strong>
@@ -106,7 +106,7 @@ const Account = () => {
                         {/* <!-- row2 --> */}
                         <div className="w-full flex justify-between mb-7">
                             {/* <!-- Đơn hàng --> */}
-                            <div className="w-[30%] p-5 bg-white rounded-[5px] cursor-pointer">
+                            <div className="w-[30%] p-5 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
                                 <Link href="/order" className="flex items-center">
 
                                     {/* <i className="fa-regular fa-file-lines p-1 text-xl text-[#327FF6]"></i> */}
@@ -116,7 +116,7 @@ const Account = () => {
                             </div>
 
                             {/* <!-- Voucher --> */}
-                            <div className="w-[30%] p-5 bg-white rounded-[5px] cursor-pointer">
+                            <div className="w-[30%] p-5 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
                                 <div className="flex items-center">
 
                                     <FaTicketAlt className=' text-2xl text-[#921573c2]' />
@@ -126,7 +126,7 @@ const Account = () => {
                             </div>
 
                             {/* <!-- Gopoint --> */}
-                            <div className="w-[30%] p-5 bg-white rounded-[5px] cursor-pointer">
+                            <div className="w-[30%] p-5 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
                                 <div className="flex items-center">
 
                                     <IoCard className=' text-2xl text-[#921573c2]' />
@@ -139,7 +139,7 @@ const Account = () => {
 
                         {/* <!-- row3 --> */}
                         <div className="w-full flex justify-between mb-7">
-                            <Link href="/addressBook" className="w-[48%] px-5 py-2 bg-white rounded-[5px] cursor-pointer">
+                            <Link href="/addressBook" className="w-[48%] px-5 py-2 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center justify-center">
                                         <FaBookBookmark className=' text-xl' />
@@ -152,7 +152,7 @@ const Account = () => {
                             </Link>
 
 
-                            <Link href="/clause" className="w-[48%] px-5 py-2 bg-white rounded-[5px] cursor-pointer">
+                            <Link href="/clause" className="w-[48%] px-5 py-2 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center justify-center">
                                         <IoDocument className=' text-xl' />
@@ -169,7 +169,7 @@ const Account = () => {
 
                         {/* <!-- row4 --> */}
                         <div className="w-full flex justify-between ">
-                            <div className="w-[48%] px-5 py-2  bg-white rounded-[5px] cursor-pointer">
+                            <div className="w-[48%] px-5 py-2  bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center justify-center">
                                         <MdOutlineSecurity className=' text-xl' />
@@ -183,7 +183,7 @@ const Account = () => {
 
 
                             <div
-                                className="w-[48%] flex items-center justify-center px-5 py-2 bg-[#921573] rounded-[5px] cursor-pointer" onClick={handleLogout}>
+                                className="w-[48%] flex items-center justify-center px-5 py-2 bg-[#921573] rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer" onClick={handleLogout}>
                                 <button className="text-[#F5F5FA] text-lg cursor-pointer">
                                     Đăng xuất
                                 </button>

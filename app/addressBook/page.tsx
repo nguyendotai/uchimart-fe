@@ -74,15 +74,15 @@ const AddressBook = () => {
                                             type="radio"
                                             name="address"
                                             checked={address.is_default}
-                                            className="mt-1 accent-blue-600 w-8 h-8"
+                                            className="mt-1 accent-blue-600"
                                             readOnly
                                         />
                                         <div className="ml-2">
                                             <p className="w-[90%] font-medium text-[15px]">{address.address_line}</p>
-                                            <p className="text-[#A29E9E] font-medium">
+                                            <p className="text-[#718096] font-medium">
                                                 {address.name}
                                             </p>
-                                            <p className="text-[#A29E9E] font-medium mb-2">
+                                            <p className="text-[#718096]  font-medium mb-2">
                                                 {address.address_line}, {address.ward?.name}, Quận {address.district?.name}, {address.province?.name}
                                             </p>
                                             {address.is_default && (

@@ -12,6 +12,7 @@ import ScrollToTopButton from "./ScrollToTopButton";
 import LanguageSwitcher from "../ui/LanguageSwitcher";
 import { usePathname } from "next/navigation";
 
+
 export default function PageLayout({
   children,
 }: {
@@ -26,8 +27,11 @@ export default function PageLayout({
     pathname === "/search" ||
     pathname.startsWith("/product/") ||
     pathname.startsWith("/search");
+    const isAccountPage = pathname.startsWith("/account");
+
 
   return (
+    
     <ReduxProvider>
       <I18nProvider>
         <ToastWrapper />
@@ -41,24 +45,22 @@ export default function PageLayout({
           )}
 
           <main
-            className={`flex-1 min-h-screen pt-[120px] px-4 ${
-              hasSidebar ? "ml-[250px]" : ""
-            }`}
+            className={`flex-1 min-h-screen pt-[120px] px-4 ${hasSidebar ? "ml-[250px]" : ""
+              } ${isAccountPage ? "bg-[#edf2f78a]" : "bg-white"}`}
           >
             <div
-              className={`mx-auto ${
-                hasSidebar ? "max-w-[1300px]" : "max-w-[1600px]"
-              }`}
+              className={`mx-auto ${hasSidebar ? "max-w-[1300px]" : "max-w-[1600px]"
+                }`}
             >
               {children}
             </div>
           </main>
+
         </div>
 
         <div
-          className={`${
-            hasSidebar ? "ml-[322px] max-w-[1300px] mx-auto" : "w-full"
-          }`}
+          className={`${hasSidebar ? "ml-[322px] max-w-[1300px] mx-auto" : "w-full"
+            }`}
         >
           <Footer />
         </div>
