@@ -17,9 +17,7 @@ const ProductVariants = ({
   onSelect,
 }: Props) => {
   // Lọc các inventory có cùng product_id
-  const variants = allInventories.filter(
-    (inv) => inv.product_id === currentInventory.product_id
-  );
+  const variants = allInventories;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 my-4">

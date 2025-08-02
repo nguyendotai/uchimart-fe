@@ -103,7 +103,7 @@ const DetailProduct = () => {
                   <BuyBox
                     inventory={currentInventory}
                     product={currentProduct}
-                    allInventories={allInventories}
+                    allInventories={currentProduct?.inventories}
                     onSelect={(inv) => {
                       setCurrentInventory(inv);
                     }}
