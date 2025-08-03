@@ -109,8 +109,15 @@ const ListSubCategory = ({ sortBy, setSortBy }: Props) => {
                     const el = document.getElementById(
                       `category-child-${category.id}`
                     );
-                    if (el)
-                      el.scrollIntoView({ behavior: "smooth", block: "start" });
+                    if (el) {
+                      const yOffset = -190; // 👈 Offset cao hơn 100px (tuỳ chỉnh nếu sticky header cao hơn)
+                      const y =
+                        el.getBoundingClientRect().top +
+                        window.pageYOffset +
+                        yOffset;
+
+                      window.scrollTo({ top: y, behavior: "smooth" });
+                    }
                   }}
                 >
                   <img

@@ -86,7 +86,7 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
             {visibleProducts.map((product) => (
               <li
                 key={product.id}
-                className="bg-white shadow rounded-xl p-2 flex flex-col"
+                className="border border-gray-200 rounded-xl p-2 flex flex-col"
               >
                 <ProductCard product={product} />
               </li>
