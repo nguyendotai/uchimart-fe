@@ -23,10 +23,7 @@ const cartSlice = createSlice({
         const maxAddable =
           currentItem.stock_quantity - currentItem.cartQuantity;
 
-        const quantityToAdd = Math.min(
-          action.payload.cartQuantity,
-          maxAddable
-        );
+        const quantityToAdd = Math.min(action.payload.cartQuantity, maxAddable);
 
         if (quantityToAdd > 0) {
           currentItem.cartQuantity += quantityToAdd;
@@ -51,7 +48,21 @@ const cartSlice = createSlice({
     increaseQuantity(state, action: PayloadAction<number>) {
       const item = state.items.find((item) => item.id === action.payload);
       if (item && item.cartQuantity < item.stock_quantity) {
-        item.cartQuantity += 1; 
+        item.cartQuantity += 1;
+      }
+    },
+    setQuantity(
+      state,
+      action: PayloadAction<{ id: number; quantity: number }>
+    ) {
+      const { id, quantity } = action.payload;
+      const item = state.items.find((item) => item.id === id);
+      if (item) {
+        const newQuantity = Math.max(
+          1,
+          Math.min(quantity, item.stock_quantity)
+        );
+        item.cartQuantity = newQuantity;
       }
     },
 
@@ -72,6 +83,7 @@ export const {
   addToCart,
   removeFromCart,
   increaseQuantity,
+  setQuantity,
   decreaseQuantity,
   clearCart,
 } = cartSlice.actions;

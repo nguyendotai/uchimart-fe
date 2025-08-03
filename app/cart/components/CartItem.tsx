@@ -6,11 +6,15 @@ import {
   removeFromCart,
   increaseQuantity,
   decreaseQuantity,
+  setQuantity,
 } from "@/store/slices/cartSlice";
 import type { CartItem as CartItemType } from "@/app/types/Product";
 import ConfirmModal from "./ComfirmModal";
 import { FaRegTrashCan } from "react-icons/fa6";
-import { formatCurrencyToNumber, formatNumberToCurrency } from "@/app/utils/helpers";
+import {
+  formatCurrencyToNumber,
+  formatNumberToCurrency,
+} from "@/app/utils/helpers";
 
 type Props = {
   item: CartItemType;
@@ -24,8 +28,9 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
 
   const salePrice = formatCurrencyToNumber(item.sale_price);
   const offerPrice = formatCurrencyToNumber(item.offer_price ?? "0");
-  const finalPrice = offerPrice > 0 && offerPrice < salePrice ? offerPrice : salePrice;
+
   const hasDiscount = offerPrice > 0 && offerPrice < salePrice;
+  const finalPrice = hasDiscount ? offerPrice : salePrice;
   const discount = hasDiscount
     ? Math.round(((salePrice - offerPrice) / salePrice) * 100)
     : 0;
@@ -43,7 +48,7 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
         open={showConfirm}
         onClose={() => setShowConfirm(false)}
         onConfirm={confirmDelete}
-        message={`Bạn có chắc chắn muốn xóa "${item.product?.name}" khỏi giỏ hàng?`}
+        message={`Bạn có chắc chắn muốn xóa "${item.title}" khỏi giỏ hàng?`}
       />
 
       <div
@@ -57,10 +62,11 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
           onClick={(e) => e.stopPropagation()}
           className="mt-2"
         />
+
         <div className="relative w-20 h-20 flex-shrink-0 rounded overflow-hidden">
           <Image
             src={item.image}
-            alt={item.product?.name || "Sản phẩm"}
+            alt={item.title}
             fill
             className="object-contain"
           />
@@ -72,7 +78,7 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
         </div>
 
         <div className="flex flex-col flex-1 gap-1">
-          <div className="font-medium text-sm">{item.product?.name}</div>
+          <div className="font-medium text-sm">{item.title}</div>
           <div className="text-xs text-gray-500">Đã bán {item.sold_count}</div>
 
           <div className="flex items-center gap-2 mt-1">
@@ -98,12 +104,20 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
                 -
               </button>
               <input
-                type="text"
-                readOnly
+                type="number"
+                min={1}
+                max={item.stock_quantity}
                 value={item.cartQuantity}
-                className="w-10 text-center border rounded"
                 onClick={(e) => e.stopPropagation()}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value, 10);
+                  if (!isNaN(value)) {
+                    dispatch(setQuantity({ id: item.id, quantity: value }));
+                  }
+                }}
+                className="w-12 text-center border rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
+
               <button
                 className="w-6 h-6 border rounded"
                 onClick={(e) => {
