@@ -1,25 +1,34 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import { useInView } from "react-intersection-observer";
+import dynamic from "next/dynamic";
 
 // 🧩 Types
 import { Inventory, Product } from "@/app/types/Product";
-import { Brand } from "@/app/types/Brand";
 
-// 🧭 UI Components
+// 🎬 Animation Wrapper
+import PageTransitionWrapper from "@/app/components/Animation/PageTransitionWrapper";
 import Notification from "@/app/components/ui/Notification";
 
-// 📦 Product Detail Components
-import ProductImages from "@/app/product/[slug]/components/ProductImages";
-import BuyBox from "@/app/product/[slug]/components/BuyBox";
-import ProductInfo from "@/app/product/[slug]/components/ProductInfo";
-import RelatedProducts from "@/app/product/[slug]/components/RelatedProducts";
-import SliderBanner from "@/app/product/[slug]/components/SliderBanner";
-import ListSaleProduct from "@/app/product/[slug]/components/ListSaleProduct";
-
-// 🎬 Animation
-import PageTransitionWrapper from "@/app/components/Animation/PageTransitionWrapper";
+// 🧩 Dynamic Components (lazy load)
+const ProductImages = dynamic(
+  () => import("@/app/product/[slug]/components/ProductImages")
+);
+const ProductInfo = dynamic(
+  () => import("@/app/product/[slug]/components/ProductInfo")
+);
+const BuyBox = dynamic(() => import("@/app/product/[slug]/components/BuyBox"));
+const SliderBanner = dynamic(
+  () => import("@/app/product/[slug]/components/SliderBanner")
+);
+const RelatedProducts = dynamic(
+  () => import("@/app/product/[slug]/components/RelatedProducts")
+);
+const ListSaleProduct = dynamic(
+  () => import("@/app/product/[slug]/components/ListSaleProduct")
+);
 
 const DetailProduct = () => {
   const params = useParams();
@@ -32,6 +41,28 @@ const DetailProduct = () => {
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [showNotif, setShowNotif] = useState(false);
+
+  // 👀 In-view tracking
+  const { ref: imagesRef, inView: imagesInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+  const { ref: buyBoxRef, inView: buyBoxInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+  const { ref: bannerRef, inView: bannerInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+  const { ref: relatedRef, inView: relatedInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+  const { ref: saleRef, inView: saleInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/products")
@@ -49,14 +80,10 @@ const DetailProduct = () => {
           for (const inv of product.inventories || []) {
             const inventory: Inventory = {
               ...inv,
-              product: {
-                code: product.code,
-              },
+              product: { code: product.code },
               subcategories: product.subcategories,
             };
-
             inventories.push(inventory);
-
             if (inv.slug === slug) {
               selectedInventory = inventory;
               selectedProduct = product;
@@ -76,59 +103,110 @@ const DetailProduct = () => {
       .finally(() => setLoading(false));
   }, [slug]);
 
+  const Skeleton = ({ height = 200, grid = 1, sections = 1 }) => (
+    <div className="space-y-4">
+      {Array.from({ length: sections }).map((_, idx) => (
+        <div key={idx} className={`grid grid-cols-${grid} gap-4`}>
+          {Array.from({ length: grid }).map((_, i) => (
+            <div
+              key={i}
+              style={{ height }}
+              className="bg-gray-200 animate-pulse rounded-md"
+            ></div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <PageTransitionWrapper>
       <div className="w-full">
         <div className="container mx-auto mt-2 flex justify-between">
           <div className="w-full">
             {loading || !currentInventory || !currentProduct ? (
-              <div className="text-center mt-10">Đang tải sản phẩm...</div>
+              <div className="space-y-6">
+                {/* Hình ảnh + thông tin sản phẩm (giả lập) */}
+                <Skeleton height={300} grid={2} />
+
+                {/* Mua hàng bên phải */}
+                <Skeleton height={300} grid={1} />
+
+                {/* Banner */}
+                <Skeleton height={100} grid={1} />
+
+                {/* Sản phẩm liên quan */}
+                <Skeleton height={250} grid={4} />
+
+                {/* Sale product */}
+                <Skeleton height={250} grid={4} />
+              </div>
             ) : (
               <>
                 <div className="flex gap-2 justify-between">
                   {/* Bên trái: hình ảnh, mô tả, banner */}
                   <div className="w-[58.5%]">
-                    <ProductImages
-                      inventory={currentInventory}
-                      product={currentProduct}
-                    />
-                    <ProductInfo
-                      inventory={currentInventory}
-                      product={currentProduct}
-                    />
-                    <SliderBanner />
+                    <div ref={imagesRef}>
+                      {imagesInView && (
+                        <>
+                          <ProductImages
+                            inventory={currentInventory}
+                            product={currentProduct}
+                          />
+                          <ProductInfo
+                            inventory={currentInventory}
+                            product={currentProduct}
+                          />
+                        </>
+                      )}
+                    </div>
+
+                    <div ref={bannerRef} className="mt-4">
+                      {bannerInView && <SliderBanner />}
+                    </div>
                   </div>
 
                   {/* Bên phải: thông tin mua hàng */}
-                  <BuyBox
-                    inventory={currentInventory}
-                    product={currentProduct}
-                    allInventories={currentProduct?.inventories}
-                    onSelect={(inv) => {
-                      setCurrentInventory(inv);
-                    }}
-                    onNotify={() => {
-                      setShowNotif(true);
-                      setTimeout(() => setShowNotif(false), 2000);
-                    }}
-                  />
+                  <div ref={buyBoxRef} className="w-[40%]">
+                    {buyBoxInView && (
+                      <BuyBox
+                        inventory={currentInventory}
+                        product={currentProduct}
+                        allInventories={currentProduct?.inventories}
+                        onSelect={(inv) => setCurrentInventory(inv)}
+                        onNotify={() => {
+                          setShowNotif(true);
+                          setTimeout(() => setShowNotif(false), 2000);
+                        }}
+                      />
+                    )}
+                  </div>
                 </div>
 
                 {/* Sản phẩm liên quan + đang khuyến mãi */}
-                <RelatedProducts
-                  currentInventory={currentInventory}
-                  allProducts={allInventories}
-                />
+                <div ref={relatedRef}>
+                  {relatedInView && (
+                    <RelatedProducts
+                      currentInventory={currentInventory}
+                      allProducts={allInventories}
+                    />
+                  )}
+                </div>
 
-                <ListSaleProduct
-                  currentProduct={currentProduct}
-                  allProducts={allInventories}
-                />
+                <div ref={saleRef}>
+                  {saleInView && (
+                    <ListSaleProduct
+                      currentProduct={currentProduct}
+                      allProducts={allInventories}
+                    />
+                  )}
+                </div>
               </>
             )}
           </div>
         </div>
       </div>
+
       <Notification show={showNotif} message="Đã thêm vào giỏ hàng!" />
     </PageTransitionWrapper>
   );

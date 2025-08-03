@@ -6,6 +6,7 @@ import { formatCurrencyToNumber } from "../utils/helpers";
 
 const ListSaleProduct = () => {
   const [saleProducts, setSaleProducts] = useState<Inventory[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/products")
@@ -32,11 +33,19 @@ const ListSaleProduct = () => {
 
         setSaleProducts(filtered);
       })
-      .catch((err) => console.error("Lỗi tải dữ liệu:", err));
+      .catch((err) => console.error("Lỗi tải dữ liệu:", err))
+      .finally(() => {
+        setIsLoading(false); 
+      });
   }, []);
+
+  if (isLoading) return null;
 
   return (
     <div>
+      <div className="bg-white shadow rounded-xl p-4 flex items-center justify-start gap-2 text-xl font-semibold text-red-600 mb-4">
+      Khuyến mãi hôm nay
+    </div>
       {saleProducts.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-10 bg-white rounded-xl shadow">
           <img

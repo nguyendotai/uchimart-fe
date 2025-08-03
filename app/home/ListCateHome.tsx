@@ -10,24 +10,30 @@ import "slick-carousel/slick/slick-theme.css";
 const ListCateHome = () => {
   const router = useRouter();
   const [groups, setGroups] = useState<CategoryGroup[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchGroups() {
-      try {
-        const res = await fetch("http://127.0.0.1:8000/api/category-groups");
-        const json = await res.json();
+    fetch("http://127.0.0.1:8000/api/category-groups")
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+      })
+      .then((json) => {
         setGroups(json.data ?? []);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error("Lỗi khi fetch category groups:", error);
-      }
-    }
-
-    fetchGroups();
+      })
+      .finally(() => {
+        setIsLoading(false); 
+      });
   }, []);
 
   const handleGroupClick = (groupId: number) => {
     router.push(`/product?category=${groupId}`);
   };
+
+  if (isLoading) return null;
 
   return (
     <div className="bg-white shadow rounded-xl p-4 relative">

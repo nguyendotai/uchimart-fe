@@ -19,6 +19,7 @@ export default function ImageSlider() {
   const [index, setIndex] = useState(0);
   const [banners, setBanners] = useState<Banner[]>([]);
   const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsClient(true); // Xác nhận đã ở phía client
@@ -36,6 +37,9 @@ export default function ImageSlider() {
       })
       .catch((err) => {
         console.error("Lỗi tải banners:", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, [isClient]);
 
@@ -47,7 +51,12 @@ export default function ImageSlider() {
     return () => clearInterval(interval);
   }, [banners]);
 
-  // ❌ Tránh render sớm trước khi client load và banners có dữ liệu
+  if (isLoading) {
+    return (
+      <div className="w-full h-[450px] bg-gray-200 animate-pulse rounded-xl shadow"></div>
+    );
+  }
+
   if (!isClient || banners.length === 0) return null;
 
   const currentBanner = banners[index % banners.length];

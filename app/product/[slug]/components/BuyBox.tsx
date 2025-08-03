@@ -15,8 +15,8 @@ type Props = {
   inventory: Inventory;
   product: Product;
   brand?: Brand;
-  allInventories: Inventory[]; // ✅ Đổi tên cho rõ nghĩa
-  onSelect: (variant: Inventory) => void; // ✅ Sửa type
+  allInventories: Inventory[]; // 
+  onSelect: (variant: Inventory) => void; 
   onNotify?: () => void;
 };
 
@@ -75,7 +75,7 @@ const BuyBox = ({
   };
 
   return (
-    <div className="w-[40%] bg-white p-4 rounded-xl shadow sticky top-2 self-start">
+    <div className=" bg-white p-4 rounded-xl shadow sticky top-2 self-start">
       {brand && (
         <div className="mb-1.5 flex items-center gap-2 w-full">
           <span className="text-gray-600">Thương hiệu:</span>

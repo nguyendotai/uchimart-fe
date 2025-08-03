@@ -16,7 +16,6 @@ const ProductVariants = ({
   allInventories,
   onSelect,
 }: Props) => {
-  // Lọc các inventory có cùng product_id
   const variants = allInventories;
 
   return (
