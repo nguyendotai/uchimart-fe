@@ -56,16 +56,7 @@ const BuyBox = ({
     onNotify?.();
   };
 
-  const handleBuyNow = () => {
-    const selectedItem = {
-      ...inventory,
-      cartQuantity: quantity,
-    };
-    localStorage.setItem("selectedItems", JSON.stringify([selectedItem]));
-    router.push("/check-out");
-  };
-
-  const handleShare = async () => {
+  const handleShare = async () => { 
     try {
       await navigator.clipboard.writeText(window.location.href);
       toast.success("Đã sao chép đường dẫn!");
@@ -154,14 +145,8 @@ const BuyBox = ({
       </div>
 
       <button
-        onClick={handleBuyNow}
-        className="bg-[#4DCB44] text-white px-6 py-2 rounded hover:bg-green-600 transition w-full mb-2"
-      >
-        Mua ngay
-      </button>
-      <button
         onClick={handleAddToCart}
-        className="text-[#1C78D9] border px-6 py-2 rounded hover:bg-[#1C78D9] hover:text-white transition w-full"
+        className="text-[#0e9d1a] border px-6 py-2 rounded hover:bg-[#0e9d1a] hover:text-white transition w-full"
       >
         Thêm vào giỏ hàng
       </button>

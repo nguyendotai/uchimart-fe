@@ -16,7 +16,6 @@ export default function CartSummary({ selectedIds }: { selectedIds: number[] }) 
 
   if (selectedItems.length === 0) return null;
 
-  // Tổng phụ
   const subTotal = selectedItems.reduce((sum, item) => {
     const offerPrice = formatCurrencyToNumber(item.offer_price ?? "");
     const salePrice = formatCurrencyToNumber(item.sale_price);
@@ -24,6 +23,7 @@ export default function CartSummary({ selectedIds }: { selectedIds: number[] }) 
     return sum + price * item.cartQuantity;
   }, 0);
 
+  
   const shipping = 0;
   const taxes = 0;
   const total = subTotal + shipping + taxes;

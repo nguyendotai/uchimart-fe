@@ -53,7 +53,7 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
         message={`Bạn có chắc chắn muốn xóa ${selectedIds.length} sản phẩm đã chọn khỏi giỏ hàng?`}
       />
 
-      <div className="bg-white shadow rounded mb-4 p-2 text-sm text-gray-500 flex items-center justify-between">
+      <div className="bg-white shadow rounded mb-4 p-4 flex items-center justify-between text-sm text-gray-500">
         <div className="flex items-center gap-2">
           <input
             id="selectAll"
@@ -75,29 +75,15 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
         )}
       </div>
 
-      <div className="overflow-x-auto bg-white shadow rounded">
-        <table className="w-full text-sm text-left ">
-          <thead className="bg-[#4DCB44] text-gray-700 h-14">
-            <tr>
-              <th className="p-3 w-10"></th>
-              <th className="p-3">Sản phẩm</th>
-              <th className="p-3 text-right">Giá</th>
-              <th className="p-3 text-center">Số lượng</th>
-              <th className="p-3 text-right">Thành tiền</th>
-              <th className="p-3 text-center">Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cartItems.map((item) => (
-              <CartItem
-                key={item.id}
-                item={item}
-                checked={selectedIds.includes(item.id)}
-                onItemClick={() => toggleSelect(item.id)}
-              />
-            ))}
-          </tbody>
-        </table>
+      <div className="grid gap-4">
+        {cartItems.map((item) => (
+          <CartItem
+            key={item.id}
+            item={item}
+            checked={selectedIds.includes(item.id)}
+            onItemClick={() => toggleSelect(item.id)}
+          />
+        ))}
       </div>
     </>
   );

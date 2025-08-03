@@ -2,6 +2,30 @@
 @import "tailwindcss";
 body {
   font-family: 'Roboto', sans-serif;
+  color: black;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html.dark body {
+  background-color: #121212;
+  color: #f5f5f5;
+}
+
+/* Ví dụ cho header, footer, ... */
+.header {
+  background-color: white;
+}
+
+html.dark .header {
+  background-color: #1a1a1a;
+}
+
+.footer {
+  background-color: #f3f3f3;
+}
+
+html.dark .footer {
+  background-color: #111;
 }
 
 @keyframes shake {

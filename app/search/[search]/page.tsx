@@ -30,18 +30,15 @@ const SearchPage = () => {
             });
           });
         });
-
         setInventories(allInventories);
         setCategoryGroups(categoryGroupData.data ?? []);
       })
       .catch((err) => console.error("Lỗi fetch dữ liệu:", err))
       .finally(() => setLoading(false));
   }, []);
-
   const matchedInventories = inventories.filter((inv) =>
     inv.title.toLowerCase().includes(keyword)
   );
-
   const matchedCategoryGroupIds = Array.from(
     new Set(
       matchedInventories
@@ -51,7 +48,6 @@ const SearchPage = () => {
         .filter(Boolean)
     )
   );
-
   const matchedGroups = categoryGroups.filter((g) =>
     matchedCategoryGroupIds.includes(g.id)
   );

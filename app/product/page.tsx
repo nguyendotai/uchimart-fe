@@ -60,13 +60,19 @@ const Product = () => {
   const { ref: childRef, inView: childInView } = useInView({ triggerOnce: true, threshold: 0.2 });
 
   useEffect(() => {
-    async function fetchCategories() {
-      const response = await fetch("http://127.0.0.1:8000/api/category-groups");
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const resJson = await response.json();
-      setCategories(resJson.data || []);
-    }
-    fetchCategories();
+  fetch("http://127.0.0.1:8000/api/category-groups")
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then((data) => {
+      setCategories(data.data || []);
+    })
+    .catch((error) => {
+      console.error("Lỗi khi fetch category groups:", error);
+    });
   }, []);
 
   const currentCategory = categoryId

@@ -7,13 +7,13 @@ import {
   increaseQuantity,
   decreaseQuantity,
 } from "@/store/slices/cartSlice";
-import type { CartItem } from "@/app/types/Product";
+import type { CartItem as CartItemType } from "@/app/types/Product";
 import ConfirmModal from "./ComfirmModal";
 import { FaRegTrashCan } from "react-icons/fa6";
-import { formatCurrencyToNumber, formatNumberToCurrency } from "@/app/utils/helpers"; // bạn đã viết sẵn
+import { formatCurrencyToNumber, formatNumberToCurrency } from "@/app/utils/helpers";
 
 type Props = {
-  item: CartItem;
+  item: CartItemType;
   checked: boolean;
   onItemClick: () => void;
 };
@@ -24,17 +24,13 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
 
   const salePrice = formatCurrencyToNumber(item.sale_price);
   const offerPrice = formatCurrencyToNumber(item.offer_price ?? "0");
-
   const finalPrice = offerPrice > 0 && offerPrice < salePrice ? offerPrice : salePrice;
   const hasDiscount = offerPrice > 0 && offerPrice < salePrice;
-
   const discount = hasDiscount
     ? Math.round(((salePrice - offerPrice) / salePrice) * 100)
     : 0;
 
-  const handleDelete = () => {
-    setShowConfirm(true);
-  };
+  const handleDelete = () => setShowConfirm(true);
 
   const confirmDelete = () => {
     dispatch(removeFromCart(item.id));
@@ -50,93 +46,92 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
         message={`Bạn có chắc chắn muốn xóa "${item.product?.name}" khỏi giỏ hàng?`}
       />
 
-      <tr
-        className="border-b border-b-gray-300 hover:bg-gray-50 cursor-pointer"
+      <div
+        className="flex items-start gap-3 p-3 rounded shadow hover:shadow-md bg-white"
         onClick={onItemClick}
       >
-        <td className="p-3 text-center">
-          <input
-            type="checkbox"
-            checked={checked}
-            onChange={(e) => e.stopPropagation()}
-            onClick={(e) => e.stopPropagation()}
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+          className="mt-2"
+        />
+        <div className="relative w-20 h-20 flex-shrink-0 rounded overflow-hidden">
+          <Image
+            src={item.image}
+            alt={item.product?.name || "Sản phẩm"}
+            fill
+            className="object-contain"
           />
-        </td>
-        <td className="p-3 flex gap-3 items-center">
-          <div className="relative w-16 h-16 flex-shrink-0">
-            <Image
-              src={item.image}
-              alt={item.product?.name || "Sản phẩm"}
-              fill
-              className="object-contain"
-            />
-            {discount > 0 && (
-              <span className="absolute top-0 left-0 bg-red-500 text-white text-xs rounded-full px-1">
-                -{discount}%
-              </span>
+          {discount > 0 && (
+            <span className="absolute top-0 left-0 bg-red-500 text-white text-xs px-1 rounded-br">
+              -{discount}%
+            </span>
+          )}
+        </div>
+
+        <div className="flex flex-col flex-1 gap-1">
+          <div className="font-medium text-sm">{item.product?.name}</div>
+          <div className="text-xs text-gray-500">Đã bán {item.sold_count}</div>
+
+          <div className="flex items-center gap-2 mt-1">
+            <span className="text-[#FB5D08] font-semibold text-sm">
+              {formatNumberToCurrency(finalPrice)}₫
+            </span>
+            {hasDiscount && (
+              <del className="text-xs text-gray-400">
+                {formatNumberToCurrency(salePrice)}₫
+              </del>
             )}
           </div>
-          <div>
-            <div className="font-medium">{item.product?.name}</div>
-            <div className="text-xs text-gray-500">
-              Đã bán {item.sold_count}
+
+          <div className="flex justify-between items-center mt-2">
+            <div className="flex items-center gap-2">
+              <button
+                className="w-6 h-6 border rounded"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  dispatch(decreaseQuantity(item.id));
+                }}
+              >
+                -
+              </button>
+              <input
+                type="text"
+                readOnly
+                value={item.cartQuantity}
+                className="w-10 text-center border rounded"
+                onClick={(e) => e.stopPropagation()}
+              />
+              <button
+                className="w-6 h-6 border rounded"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  dispatch(increaseQuantity(item.id));
+                }}
+              >
+                +
+              </button>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="text-sm font-semibold text-right text-gray-700">
+                {formatNumberToCurrency(finalPrice * item.cartQuantity)}₫
+              </div>
+              <button
+                className="text-red-500 hover:text-red-700 text-lg"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete();
+                }}
+              >
+                <FaRegTrashCan />
+              </button>
             </div>
           </div>
-        </td>
-        <td className="p-3 text-right">
-          <div className="text-[#FB5D08] font-medium">
-            {formatNumberToCurrency(finalPrice)}₫
-          </div>
-          {hasDiscount && (
-            <del className="text-gray-400 text-xs">
-              {formatNumberToCurrency(salePrice)}₫
-            </del>
-          )}
-        </td>
-        <td className="p-3 text-center">
-          <div className="flex items-center justify-center gap-2">
-            <button
-              className="w-6 h-6 border rounded"
-              onClick={(e) => {
-                e.stopPropagation();
-                dispatch(decreaseQuantity(item.id));
-              }}
-            >
-              -
-            </button>
-            <input
-              type="text"
-              value={item.cartQuantity}
-              readOnly
-              className="w-10 text-center border rounded"
-              onClick={(e) => e.stopPropagation()}
-            />
-            <button
-              className="w-6 h-6 border rounded"
-              onClick={(e) => {
-                e.stopPropagation();
-                dispatch(increaseQuantity(item.id));
-              }}
-            >
-              +
-            </button>
-          </div>
-        </td>
-        <td className="p-3 text-right font-medium">
-          {formatNumberToCurrency(finalPrice * item.cartQuantity)}₫
-        </td>
-        <td className="p-3 text-center">
-          <button
-            className="text-red-400 hover:underline text-lg"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDelete();
-            }}
-          >
-            <FaRegTrashCan />
-          </button>
-        </td>
-      </tr>
+        </div>
+      </div>
     </>
   );
 }

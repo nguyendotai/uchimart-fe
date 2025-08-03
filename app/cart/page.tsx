@@ -17,15 +17,18 @@ export default function CartPage() {
           GIỎ HÀNG
         </h1>
         <div className="text-sm text-gray-500 mb-6 text-center">
-          <Link href="/" className="hover:underline cursor-pointer text-[#921573]">
+          <Link
+            href="/"
+            className="hover:underline cursor-pointer text-[#921573]"
+          >
             Trang chủ
           </Link>
           <span className="mx-1">/</span>
           <span>Giỏ hàng</span>
         </div>
-        <div className="w-full flex lg:gap-8 flex-col lg:flex-row">
+        <div className="w-full flex lg:gap-8 flex-col lg:flex-row justify-center">
           {/* Left: Danh sách sản phẩm */}
-          <div className="flex-1">
+          <div className="w-[60%]">
             <CartList
               selectedIds={selectedIds}
               setSelectedIds={setSelectedIds}
@@ -38,11 +41,16 @@ export default function CartPage() {
           </div>
         </div>
 
-        <div className="mt-10">
-          <ProductSuggestions></ProductSuggestions>
+        <div className="mt-10 w-full flex justify-center">
+          <div className="w-full max-w-[1330px]">
+            <ProductSuggestions />
+          </div>
         </div>
-        <div className="mt-10">
-          <ListSaleProduct></ListSaleProduct>
+
+        <div className="mt-10 w-full flex justify-center">
+          <div className="w-full max-w-[1330px]">
+            <ListSaleProduct />
+          </div>
         </div>
       </div>
     </PageTransitionWrapper>

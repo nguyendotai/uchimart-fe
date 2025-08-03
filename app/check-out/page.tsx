@@ -21,7 +21,6 @@ export default function CheckoutPage() {
 
   return (
     <div className="w-[1000px] mx-auto py-6 flex flex-col lg:flex-row gap-6">
-      {/* CỘT TRÁI - THÔNG TIN GIAO HÀNG */}
       <div className="lg:w-[65%] w-full space-y-6">
         <h2 className="font-bold text-3xl">Thanh toán</h2>
         <DeliveryMethod value={deliveryMethod} onChange={setDeliveryMethod} />
@@ -29,8 +28,7 @@ export default function CheckoutPage() {
         <DeliveryTime selectedTime={selectedTime} onChange={setSelectedTime} items={items} />
         <VoucherSelect selectedVoucher={selectedVoucher} onChange={setSelectedVoucher} />
       </div>
-
-      {/* CỘT PHẢI - SẢN PHẨM, VOUCHER, ĐẶT HÀNG */}
+      
       <div className="lg:w-[35%] w-full space-y-4 mt-15">
         <OrderItems items={items} />
       </div>

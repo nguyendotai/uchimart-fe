@@ -1,64 +1,134 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import React, { useEffect, useRef, useState } from "react";
 import ProductCard from "@/app/components/ui/ProductCard";
-import { Product, Inventory } from "@/app/types/Product"; // Đảm bảo đúng loại Product từ Inventory
-import { productCarouselSettings_7 } from "@/app/utils/carouselSettings_7";
+import { Inventory, Product } from "@/app/types/Product";
 import { formatCurrencyToNumber } from "@/app/utils/helpers";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const ListSaleProduct = () => {
+const ITEMS_PER_PAGE = 6;
+
+export default function ListSaleProduct() {
   const [saleProducts, setSaleProducts] = useState<Inventory[]>([]);
-  
-    useEffect(() => {
-      fetch("http://127.0.0.1:8000/api/products")
-        .then((res) => {
-          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-          return res.json();
-        })
-        .then((res) => {
-          const products: Product[] = res?.data ?? [];
-  
-          const inventoriesWithSub: Inventory[] = products.flatMap((p) =>
-            p.inventories.map((inv) => ({
-              ...inv,
-              subcategories: p.subcategories,
-              unit: undefined,
-            }))
-          );
-  
-          const filtered = inventoriesWithSub.filter((inv) => {
-            const sale = formatCurrencyToNumber(inv.sale_price);
-            const promo = formatCurrencyToNumber(inv.offer_price ?? "0");
-            return !isNaN(sale) && !isNaN(promo) && promo > 0 && promo < sale;
-          });
-  
-          setSaleProducts(filtered);
-        })
-        .catch((err) => console.error("Lỗi tải dữ liệu:", err));
-    }, []);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/products")
+      .then((res) => res.json())
+      .then((res: { data: Product[] }) => {
+        const products = res.data || [];
+        const inventoriesWithSub: Inventory[] = products.flatMap((p) =>
+          p.inventories.map((inv) => ({
+            ...inv,
+            subcategories: p.subcategories,
+            unit: undefined,
+          }))
+        );
+
+        const filtered = inventoriesWithSub.filter((inv) => {
+          const sale = formatCurrencyToNumber(inv.sale_price);
+          const promo = formatCurrencyToNumber(inv.offer_price ?? "0");
+          return !isNaN(sale) && !isNaN(promo) && promo > 0 && promo < sale;
+        });
+
+        setSaleProducts(filtered);
+      });
+  }, []);
+
+  const updateScrollButtons = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const scrollLeft = Math.ceil(el.scrollLeft);
+    const scrollRight = el.scrollWidth - el.clientWidth - scrollLeft;
+
+    setCanScrollLeft(scrollLeft > 10);
+    setCanScrollRight(scrollRight > 10);
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    updateScrollButtons();
+    if (el) {
+      el.addEventListener("scroll", updateScrollButtons);
+    }
+    return () => {
+      if (el) el.removeEventListener("scroll", updateScrollButtons);
+    };
+  }, [saleProducts]);
+
+  const getCardWidth = () => {
+    const el = scrollRef.current;
+    if (!el) return 216;
+    const card = el.querySelector("div > div");
+    if (!card) return 216;
+    const style = window.getComputedStyle(card as HTMLElement);
+    const marginRight = parseInt(style.marginRight || "16", 10);
+    return (card as HTMLElement).offsetWidth + marginRight;
+  };
+
+  const scrollByAmount = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cardWidth = getCardWidth();
+    el.scrollBy({ left: cardWidth * ITEMS_PER_PAGE, behavior: "smooth" });
+  };
+
+  const scrollBackAmount = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cardWidth = getCardWidth();
+    el.scrollBy({ left: -cardWidth * ITEMS_PER_PAGE, behavior: "smooth" });
+  };
+
+  if (saleProducts.length === 0) return null;
 
   return (
-    <>
-      <h2 className="text-3xl font-semibold mb-2 text-[#921573] p-2 rounded w-fit text-center">
+    <div className="relative w-full overflow-hidden mt-6">
+      <h2 className="text-2xl font-semibold mb-2 text-[#921573] p-2 rounded w-fit text-center">
         Sản phẩm khuyến mãi
       </h2>
-      {saleProducts.length > 0 ? (
-        <Slider {...productCarouselSettings_7}>
+
+      <div className="relative max-w-[1296px] mx-auto">
+        {/* Nút trái */}
+        {canScrollLeft && (
+          <button
+            onClick={scrollBackAmount}
+            className="absolute left-0 top-[50%] z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+          >
+            <FaChevronLeft />
+          </button>
+        )}
+
+        {/* Vùng cuộn ngang */}
+        <div
+          ref={scrollRef}
+          className="flex gap-4 scroll-smooth overflow-x-auto scrollbar-hide"
+          style={{
+            width: `${ITEMS_PER_PAGE * 216}px`,
+            margin: "0 auto",
+          }}
+        >
           {saleProducts.map((product) => (
-            <div key={product.id} className="px-2">
-              <div className="bg-white shadow rounded-xl p-2 h-full">
-                <ProductCard product={product} />
-              </div>
+            <div
+              key={product.id}
+              className="min-w-[200px] max-w-[200px] flex-shrink-0 border border-gray-200 rounded-xl p-2"
+            >
+              <ProductCard product={product} />
             </div>
           ))}
-        </Slider>
-      ) : (
-        <p className="text-gray-500 px-4">Không có sản phẩm khuyến mãi.</p>
-      )}
-    </>
-  );
-};
+        </div>
 
-export default ListSaleProduct;
+        {/* Nút phải */}
+        {canScrollRight && (
+          <button
+            onClick={scrollByAmount}
+            className="absolute right-0 top-[50%] z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+          >
+            <FaChevronRight />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
