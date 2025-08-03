@@ -1,5 +1,4 @@
 "use client";
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { FaEllipsisV, FaPlus } from 'react-icons/fa';
 import { FaBookBookmark, FaMap } from 'react-icons/fa6';
@@ -9,6 +8,7 @@ import { AddressItem } from "../types/address";
 import ModalAddressBookHand from './components/ModalAddressBookHand';
 import { HiPencilSquare } from 'react-icons/hi2';
 import { MdDelete } from 'react-icons/md';
+import ModalAddressBookMap from './components/ModalAddressBookMap';
 
 const API_BASE = "http://127.0.0.1:8000/api";
 
@@ -17,6 +17,7 @@ export default function AddressBook() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [openMenuId, setOpenMenuId] = useState<number | null>(null);
     const [addressToEdit, setAddressToEdit] = useState<AddressItem | null>(null);
+    const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
 
 
@@ -107,10 +108,12 @@ export default function AddressBook() {
                     <div className="w-[48%] bg-white rounded-[5px] shadow-sm">
                         <div className="p-2">
                             <div className="p-2">
-                                <Link href="/addressBook-map" className="flex items-center">
+                                <button
+                                    onClick={() => setIsMapModalOpen(true)}
+                                    className="flex items-center">
                                     <FaMap className='text-[#327FF6]' />
                                     <p className="pl-2 text-[#327FF6] font-medium">Tạo địa chỉ bằng bản đồ</p>
-                                </Link>
+                                </button>
                             </div>
                             <div className="p-2">
                                 <button
@@ -228,6 +231,21 @@ export default function AddressBook() {
                     addressToEdit={addressToEdit} // 👈 truyền dữ liệu xuống
                 />
             )}
+
+
+            {/* // Hiển thị modal */}
+            {isMapModalOpen && (
+                <ModalAddressBookMap
+                    onClose={() => setIsMapModalOpen(false)}
+                    onSuccess={() => {
+                        setIsMapModalOpen(false);
+                        fetchAddresses();
+                    }}
+                    addressToEdit={addressToEdit} // có thể truyền vào khi sửa
+                />
+            )}
+
+
 
         </main>
     );

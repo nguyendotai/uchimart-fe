@@ -3,9 +3,8 @@ import { User } from "@/app/types/User";
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { FaChevronRight, FaClipboardList, FaTicketAlt } from "react-icons/fa";
-import { FaBookBookmark } from 'react-icons/fa6';
-import { IoCard, IoDocument } from 'react-icons/io5';
-import { MdOutlineSecurity } from 'react-icons/md';
+import { IoCard, IoDocumentTextOutline } from 'react-icons/io5';
+import { MdOutlineBook, MdOutlineSecurity } from 'react-icons/md';
 
 
 
@@ -142,7 +141,7 @@ const Account = () => {
                             <Link href="/addressBook" className="w-[48%] px-5 py-2 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center justify-center">
-                                        <FaBookBookmark className=' text-xl' />
+                                        <MdOutlineBook className=' text-2xl' />
                                         <p className="p-2 text-[rgb(45,55,72)]">Sổ địa chỉ</p>
                                     </div>
 
@@ -155,7 +154,7 @@ const Account = () => {
                             <Link href="/clause" className="w-[48%] px-5 py-2 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center justify-center">
-                                        <IoDocument className=' text-xl' />
+                                        <IoDocumentTextOutline className=' text-2xl' />
 
                                         <p className="p-2 text-[rgb(45,55,72)]">Điều khoản</p>
                                     </div>
@@ -172,7 +171,7 @@ const Account = () => {
                             <div className="w-[48%] px-5 py-2  bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center justify-center">
-                                        <MdOutlineSecurity className=' text-xl' />
+                                        <MdOutlineSecurity className=' text-2xl' />
 
                                         <p className="p-2 text-[rgb(45,55,72)]">Chính sách bảo mật</p>
                                     </div>

@@ -1,16 +1,28 @@
 export type Province = {
   code: string;
   name: string;
+  full_name?: string;
 };
 
 export type District = {
   code: string;
   name: string;
+  full_name?: string;
+
 };
 
 export type Ward = {
   code: string;
   name: string;
+  full_name?: string;
+  district_code?: string;
+
+};
+
+export type WardAPI = {
+  code: string;
+  full_name: string;
+  district_code: string;
 };
 
 
@@ -46,6 +58,7 @@ export type AddressItem = {
   is_default: number;
   created_at: string;
   updated_at: string;
+
 };
 
 export type AddressListResponse = {
