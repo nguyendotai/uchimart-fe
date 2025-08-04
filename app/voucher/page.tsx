@@ -77,7 +77,7 @@ const Voucher = () => {
 
                 <div className="w-[80%] mx-auto">
 
-                    <div className='bg-white rounded-2xl mb-6'>
+                    <div className='bg-white shadow-[0_4px_10px_rgba(0,0,0,0.08)] rounded-2xl mb-6'>
                         <div className='p-4'>
 
                             <div className='flex items-center gap-2 mb-4'>
@@ -118,7 +118,7 @@ const Voucher = () => {
                     <div className=''>
                         <ul className='flex flex-wrap gap-5.5'>
                             {vouchers.map((voucher) => (
-                                <li key={voucher.id} className='w-[32%]  bg-white rounded-lg cursor-pointer' onClick={() => handleShowDetail(voucher)}>
+                                <li key={voucher.id} className='w-[32%]  bg-white shadow-[0_4px_10px_rgba(0,0,0,0.08)] rounded-lg cursor-pointer' onClick={() => handleShowDetail(voucher)}>
                                     <div className='px-3 pt-3 pb-2'>
                                         <div className='flex pb-2 gap-3 border-b-2 border-[#D9D9D9]'>
                                             <div className='relative bg-[#C7F6D6] rounded-2xl overflow-hidden'>

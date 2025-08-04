@@ -12,7 +12,6 @@ const Profile = () => {
     const [loading, setLoading] = useState(false);
     const token = localStorage.getItem("token");
 
-    // Gọi API mỗi 5s để lấy dữ liệu mới nhất
     useEffect(() => {
         const userData = localStorage.getItem("user");
         if (!userData) return;
@@ -35,7 +34,6 @@ const Profile = () => {
             }
         };
 
-        // Gọi lần đầu
         fetchUser();
 
         // Gọi lại mỗi 5s

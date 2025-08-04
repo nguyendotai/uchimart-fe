@@ -15,7 +15,7 @@ const LoginGGSuccess = () => {
     const birthday = searchParams.get("birthday");
     const phone_number = searchParams.get("phone_number");
     const genders = searchParams.get("genders");
-    const token = searchParams.get("token"); // Lấy token từ URL
+    const token = searchParams.get("token"); 
 
     if (id && email && name && token) {
       const user = {
