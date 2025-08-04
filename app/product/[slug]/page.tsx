@@ -174,10 +174,6 @@ const DetailProduct = () => {
                         product={currentProduct}
                         allInventories={currentProduct?.inventories}
                         onSelect={(inv) => setCurrentInventory(inv)}
-                        onNotify={() => {
-                          setShowNotif(true);
-                          setTimeout(() => setShowNotif(false), 2000);
-                        }}
                       />
                     )}
                   </div>

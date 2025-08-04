@@ -1,15 +1,12 @@
 "use client";
-
 import dynamic from "next/dynamic";
 import { useInView } from "react-intersection-observer";
 
-// 🖼️ Home Sections
 const ImageSlider = dynamic(() => import("./home/ImageSlider"), {
   loading: () => (
     <div className="w-full h-[250px] bg-gray-200 animate-pulse rounded-lg"></div>
   ),
 });
-
 const ListCateHome = dynamic(() => import("./home/ListCateHome"), {
   loading: () => (
     <div className="grid grid-cols-4 gap-4">

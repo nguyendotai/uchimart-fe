@@ -17,7 +17,6 @@ type Props = {
   brand?: Brand;
   allInventories: Inventory[]; // 
   onSelect: (variant: Inventory) => void; 
-  onNotify?: () => void;
 };
 
 const BuyBox = ({
@@ -25,7 +24,6 @@ const BuyBox = ({
   brand,
   allInventories,
   onSelect,
-  onNotify,
 }: Props) => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -52,9 +50,10 @@ const BuyBox = ({
   };
 
   const handleAddToCart = () => {
-    dispatch(addToCart({ ...inventory, cartQuantity: quantity }));
-    onNotify?.();
-  };
+  dispatch(addToCart({ ...inventory, cartQuantity: quantity }));
+  toast.success("Đã thêm vào giỏ hàng!");
+};
+
 
   const handleShare = async () => { 
     try {
