@@ -73,7 +73,7 @@ const BuyBox = ({
         </div>
       )}
 
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-2">
         <h3 className="w-[90%] text-xl font-semibold">{inventory.title}</h3>
         <button
           onClick={handleShare}
@@ -110,7 +110,7 @@ const BuyBox = ({
 
       {/* ✅ Số lượng */}
       <div className="mb-4 w-full">
-        <p className="font-medium mb-2">Số Lượng</p>
+        <p className="font-medium mb-4">Số Lượng</p>
         <div className="flex border border-blue-400 rounded-full h-10 overflow-hidden w-full">
           <button
             onClick={onDecrease}
