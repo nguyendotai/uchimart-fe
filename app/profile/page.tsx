@@ -17,29 +17,78 @@ const Profile = () => {
         if (!userData) return;
 
         const parsedUser = JSON.parse(userData);
-        setUser(parsedUser);
         setGender(parsedUser.genders === 1 ? "Nữ" : "Nam");
 
         const fetchUser = async () => {
             try {
-                const res = await fetch(`http://127.0.0.1:8000/api/users/${parsedUser.id}`);
-                if (res.ok) {
-                    const latestUser = await res.json();
-                    setUser(latestUser);
-
-                    localStorage.setItem("user", JSON.stringify(latestUser));
-                }
+                const res = await fetch(`http://127.0.0.1:8000/api/users/${parsedUser.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (!res.ok) throw new Error(`Lỗi ${res.status}`);
+                const latestUser = await res.json();
+                setUser(latestUser);
+                localStorage.setItem("user", JSON.stringify(latestUser));
             } catch (err) {
                 console.error("Lỗi khi lấy dữ liệu người dùng:", err);
             }
         };
 
         fetchUser();
-
-        // Gọi lại mỗi 5s
-        const interval = setInterval(fetchUser, 3000);
-        return () => clearInterval(interval);
     }, []);
+
+    const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!user) return;
+
+        const formData = new FormData(e.currentTarget);
+        const updatedUser = {
+            ...user,
+            name: formData.get("name")?.toString() || "",
+            email: formData.get("email")?.toString() || "",
+            genders: gender === "Nữ" ? 1 : 0,
+            birthday: formData.get("birthday")?.toString() || "",
+            phone_number: formData.get("phone_number")?.toString() || "",
+        };
+        console.log("User ID:", user?.id);
+        console.log("Fetch URL:", `http://127.0.0.1:8000/api/users/${user?.id}`);
+        console.log("Token gửi lên:", token);
+
+
+
+
+        setLoading(true);
+        try {
+            const res = await fetch(`http://127.0.0.1:8000/api/users/${user.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(updatedUser),
+            });
+
+            if (!res.ok) {
+                const text = await res.text();
+                console.error("Server trả về:", text);
+                toast.error("Cập nhật thất bại!");
+                return;
+            }
+
+            const data = await res.json();
+            setUser(data.user);
+            localStorage.setItem("user", JSON.stringify(data.user));
+            toast.success("Cập nhật thành công!");
+        } catch (err) {
+            console.error("Lỗi khi cập nhật:", err);
+            toast.error("Lỗi kết nối server!");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (!user) return <p>Đang tải...</p>;
 
 
 
@@ -62,60 +111,7 @@ const Profile = () => {
 
                 {/* Form */}
                 <form className="grid grid-cols-1 gap-4 mt-4"
-                    onSubmit={async (e) => {
-                        e.preventDefault();
-                        if (!user) return;
-
-                        const formData = new FormData(e.currentTarget);
-                        const nameValue = formData.get("name")?.toString().trim();
-
-                        if (!nameValue) {
-                            toast.error("Vui lòng nhập tên!");
-                            return;
-                        }
-
-                        const updatedUser = {
-                            ...user,
-                            name: nameValue,
-                            email: formData.get("email")?.toString() || "",
-                            genders: gender === "Nữ" ? 1 : 0,
-                            birthday: formData.get("birthday")?.toString() || "",
-                            phone_number: formData.get("phone_number")?.toString() || "", // nếu cho sửa
-                        };
-
-
-                        setLoading(true);
-                        try {
-                            const res = await fetch(`http://127.0.0.1:8000/api/users/${user.id}`, {
-                                method: 'PUT',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${token}`,
-                                },
-                                body: JSON.stringify(updatedUser),
-                            });
-
-
-                            if (res.ok) {
-                                const data = await res.json();
-                                setUser(data.user);
-                                localStorage.setItem("user", JSON.stringify(data.user));
-                                toast.success("Cập nhật thành công!");
-                            } else {
-                                const errorData = await res.json();
-                                toast.error("Cập nhật thất bại: " + errorData.message);
-                                console.error("Chi tiết lỗi:", errorData);
-                            }
-
-
-                        } catch (err) {
-                            console.error("Lỗi khi cập nhật:", err);
-                            toast.error("Lỗi kết nối server!");
-                        } finally {
-                            setLoading(false);       // 🔹 Tắt loading — luôn chạy
-                        }
-
-                    }}
+                    onSubmit={handleUpdate}
                 >
                     {/* Tên đầy đủ */}
                     <div >
