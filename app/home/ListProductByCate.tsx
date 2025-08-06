@@ -5,7 +5,7 @@ import { CategoryGroup } from "@/app/types/Category";
 import { Product, Inventory } from "@/app/types/Product";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const ITEMS_PER_PAGE = 4;
+const ITEMS_PER_PAGE = 6;
 
 const ListProductByCate = () => {
   const [groups, setGroups] = useState<CategoryGroup[]>([]);
@@ -13,6 +13,7 @@ const ListProductByCate = () => {
   const scrollRefs = useRef<Record<number, HTMLDivElement | null>>({});
   const [scrollState, setScrollState] = useState<Record<number, { left: boolean; right: boolean }>>({});
 
+  // Fetch data
   useEffect(() => {
     Promise.all([
       fetch("http://127.0.0.1:8000/api/category-groups").then((res) => res.json()),
@@ -35,15 +36,43 @@ const ListProductByCate = () => {
       .catch((err) => console.error("Lỗi tải dữ liệu:", err));
   }, []);
 
+  // Cập nhật trạng thái scroll khi DOM thay đổi
+  useEffect(() => {
+    const observers: ResizeObserver[] = [];
+
+    groups.forEach((group) => {
+      const el = scrollRefs.current[group.id];
+      if (!el) return;
+
+      const observer = new ResizeObserver(() => {
+        updateScrollButtons(group.id);
+      });
+
+      observer.observe(el);
+      observers.push(observer);
+    });
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+    };
+  }, [groups, inventories]);
+
   const updateScrollButtons = (groupId: number) => {
     const el = scrollRefs.current[groupId];
     if (!el) return;
 
+    const scrollLeft = el.scrollLeft;
+    const scrollWidth = el.scrollWidth;
+    const clientWidth = el.clientWidth;
+
+    const canScrollLeft = scrollLeft > 0;
+    const canScrollRight = scrollLeft + clientWidth < scrollWidth - 1;
+
     setScrollState((prev) => ({
       ...prev,
       [groupId]: {
-        left: el.scrollLeft > 0,
-        right: el.scrollLeft + el.clientWidth < el.scrollWidth - 1,
+        left: canScrollLeft,
+        right: canScrollRight,
       },
     }));
   };
@@ -51,9 +80,16 @@ const ListProductByCate = () => {
   const scrollByAmount = (groupId: number, direction: "left" | "right") => {
     const el = scrollRefs.current[groupId];
     if (!el) return;
+
     const card = el.querySelector("div > div");
     const cardWidth = card ? (card as HTMLElement).offsetWidth + 16 : 220;
-    el.scrollBy({ left: direction === "right" ? cardWidth * ITEMS_PER_PAGE : -cardWidth * ITEMS_PER_PAGE, behavior: "smooth" });
+
+    el.scrollBy({
+      left: direction === "right" ? cardWidth * ITEMS_PER_PAGE : -cardWidth * ITEMS_PER_PAGE,
+      behavior: "smooth",
+    });
+
+    setTimeout(() => updateScrollButtons(groupId), 300);
   };
 
   return (
@@ -74,6 +110,7 @@ const ListProductByCate = () => {
                 <img
                   src={group.cover || "/default-category.png"}
                   alt={group.name}
+                  className="w-full h-full object-cover"
                 />
               </div>
             </div>
@@ -82,7 +119,7 @@ const ListProductByCate = () => {
             {scrollState[group.id]?.left && (
               <button
                 onClick={() => scrollByAmount(group.id, "left")}
-                className="absolute left-0 top-[60%] z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+                className="absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
               >
                 <FaChevronLeft />
               </button>
@@ -94,7 +131,7 @@ const ListProductByCate = () => {
                 scrollRefs.current[group.id] = el;
               }}
               onScroll={() => updateScrollButtons(group.id)}
-              className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth"
+              className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth px-2"
             >
               {groupProducts.slice(0, 12).map((inv) => (
                 <div
@@ -110,7 +147,7 @@ const ListProductByCate = () => {
             {scrollState[group.id]?.right && (
               <button
                 onClick={() => scrollByAmount(group.id, "right")}
-                className="absolute right-0 top-[60%] z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+                className="absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
               >
                 <FaChevronRight />
               </button>

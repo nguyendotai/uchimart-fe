@@ -5,8 +5,6 @@ import { Inventory, Product } from "@/app/types/Product";
 import { formatCurrencyToNumber } from "@/app/utils/helpers";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const ITEMS_PER_PAGE = 6;
-
 export default function ListSaleProduct() {
   const [saleProducts, setSaleProducts] = useState<Inventory[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -39,62 +37,65 @@ export default function ListSaleProduct() {
   const updateScrollButtons = () => {
     const el = scrollRef.current;
     if (!el) return;
-    const scrollLeft = Math.ceil(el.scrollLeft);
-    const scrollRight = el.scrollWidth - el.clientWidth - scrollLeft;
-
-    setCanScrollLeft(scrollLeft > 10);
-    setCanScrollRight(scrollRight > 10);
+    const threshold = 5;
+    setCanScrollLeft(el.scrollLeft > threshold);
+    setCanScrollRight(
+      el.scrollLeft + el.clientWidth < el.scrollWidth - threshold
+    );
   };
 
   useEffect(() => {
     const el = scrollRef.current;
-    updateScrollButtons();
+    const raf = requestAnimationFrame(() => {
+      updateScrollButtons();
+    });
+
     if (el) {
       el.addEventListener("scroll", updateScrollButtons);
     }
+
     return () => {
+      cancelAnimationFrame(raf);
       if (el) el.removeEventListener("scroll", updateScrollButtons);
     };
   }, [saleProducts]);
 
-  const getCardWidth = () => {
+  const scrollByAmount = (direction: "left" | "right") => {
     const el = scrollRef.current;
-    if (!el) return 216;
+    if (!el) return;
+
     const card = el.querySelector("div > div");
-    if (!card) return 216;
-    const style = window.getComputedStyle(card as HTMLElement);
-    const marginRight = parseInt(style.marginRight || "16", 10);
-    return (card as HTMLElement).offsetWidth + marginRight;
-  };
+    if (!card) return;
 
-  const scrollByAmount = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const cardWidth = getCardWidth();
-    el.scrollBy({ left: cardWidth * ITEMS_PER_PAGE, behavior: "smooth" });
-  };
+    const cardEl = card as HTMLElement;
+    const cardStyle = window.getComputedStyle(cardEl);
+    const cardWidth =
+      cardEl.offsetWidth + parseInt(cardStyle.marginRight || "16", 10);
 
-  const scrollBackAmount = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const cardWidth = getCardWidth();
-    el.scrollBy({ left: -cardWidth * ITEMS_PER_PAGE, behavior: "smooth" });
+    const containerWidth = el.clientWidth;
+    const itemsPerView = Math.floor(containerWidth / cardWidth);
+    const scrollAmount = cardWidth * itemsPerView;
+
+    el.scrollBy({
+      left: direction === "right" ? scrollAmount : -scrollAmount,
+      behavior: "smooth",
+    });
   };
 
   if (saleProducts.length === 0) return null;
 
   return (
     <div className="relative w-full overflow-hidden mt-6">
-      <h2 className="text-2xl font-semibold mb-2 text-[#921573] p-2 rounded w-fit text-center">
+      <h2 className="text-2xl font-semibold mb-2 text-[#921573] p-2 rounded w-fit mx-auto text-center">
         Sản phẩm khuyến mãi
       </h2>
 
-      <div className="relative max-w-[1296px] mx-auto">
+      <div className="relative max-w-[1296px] mx-auto overflow-hidden">
         {/* Nút trái */}
         {canScrollLeft && (
           <button
-            onClick={scrollBackAmount}
-            className="absolute left-0 top-[50%] z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+            onClick={() => scrollByAmount("left")}
+            className="absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
           >
             <FaChevronLeft />
           </button>
@@ -103,16 +104,12 @@ export default function ListSaleProduct() {
         {/* Vùng cuộn ngang */}
         <div
           ref={scrollRef}
-          className="flex gap-4 scroll-smooth overflow-x-auto scrollbar-hide"
-          style={{
-            width: `${ITEMS_PER_PAGE * 216}px`,
-            margin: "0 auto",
-          }}
+          className="flex gap-4 scroll-smooth overflow-x-auto scrollbar-hide px-2 snap-x snap-mandatory"
         >
           {saleProducts.map((product) => (
             <div
               key={product.id}
-              className="min-w-[200px] max-w-[200px] flex-shrink-0 border border-gray-200 rounded-xl p-2"
+              className="snap-start min-w-[200px] max-w-[200px] flex-shrink-0 border border-gray-200 rounded-xl p-2"
             >
               <ProductCard product={product} />
             </div>
@@ -122,8 +119,8 @@ export default function ListSaleProduct() {
         {/* Nút phải */}
         {canScrollRight && (
           <button
-            onClick={scrollByAmount}
-            className="absolute right-0 top-[50%] z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+            onClick={() => scrollByAmount("right")}
+            className="absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
           >
             <FaChevronRight />
           </button>

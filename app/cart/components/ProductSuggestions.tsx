@@ -4,115 +4,123 @@ import { Inventory, Product } from "@/app/types/Product";
 import ProductCard from "@/app/components/ui/ProductCard";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const ITEMS_PER_PAGE = 6;
-
 export default function ProductSuggestions() {
   const [products, setProducts] = useState<Inventory[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/products")
-      .then((res) => res.json())
-      .then((res: { data: Product[] }) => {
-        const products = res.data || [];
-        const allInventories: Inventory[] = products.flatMap(
-          (p: { inventories: Inventory[] }) => p.inventories || []
-        );
-        setProducts(allInventories);
-      });
-  }, []);
-
+  // Hàm cập nhật trạng thái các nút
   const updateScrollButtons = () => {
     const el = scrollRef.current;
     if (!el) return;
 
-    const scrollLeft = Math.ceil(el.scrollLeft);
-    const scrollRight = el.scrollWidth - el.clientWidth - scrollLeft;
+    const threshold = 4; // Ngưỡng để xác định đã cuộn hết hay chưa
 
-    setCanScrollLeft(scrollLeft > 10);
-    setCanScrollRight(scrollRight > 10);
+    // Kiểm tra xem có thể cuộn sang trái không
+    setCanScrollLeft(el.scrollLeft > threshold);
+    // Kiểm tra xem có thể cuộn sang phải không
+    setCanScrollRight(
+      el.scrollLeft + el.clientWidth < el.scrollWidth - threshold
+    );
   };
 
+  // Effect để fetch dữ liệu
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/products")
+      .then((res) => res.json())
+      .then((res: { data: Product[] }) => {
+        const allInventories: Inventory[] =
+          res.data?.flatMap((p) => p.inventories || []) || [];
+        setProducts(allInventories);
+      });
+  }, []);
+
+  // Effect để cập nhật trạng thái nút sau khi render
   useEffect(() => {
     const el = scrollRef.current;
-    updateScrollButtons();
+
+    // Đảm bảo gọi sau khi DOM đã render xong
+    const raf = requestAnimationFrame(() => {
+      updateScrollButtons();
+    });
+
     if (el) {
       el.addEventListener("scroll", updateScrollButtons);
     }
+
     return () => {
-      if (el) el.removeEventListener("scroll", updateScrollButtons);
+      cancelAnimationFrame(raf);
+      if (el) {
+        el.removeEventListener("scroll", updateScrollButtons);
+      }
     };
   }, [products]);
+  // Chạy lại effect khi danh sách sản phẩm thay đổi
 
-  const getCardWidth = () => {
-    const el = scrollRef.current;
-    if (!el) return 216;
-    const card = el.querySelector("div > div"); // thẻ đầu tiên trong scrollRef
-    if (!card) return 216;
-    const style = window.getComputedStyle(card as HTMLElement);
-    const marginRight = parseInt(style.marginRight || "16", 10);
-    return (card as HTMLElement).offsetWidth + marginRight;
-  };
-
-  const scrollByAmount = () => {
+  const scrollByAmount = (direction: "left" | "right") => {
     const el = scrollRef.current;
     if (!el) return;
-    const cardWidth = getCardWidth();
-    el.scrollBy({ left: cardWidth * ITEMS_PER_PAGE, behavior: "smooth" });
-  };
 
-  const scrollBackAmount = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const cardWidth = getCardWidth();
-    el.scrollBy({ left: -cardWidth * ITEMS_PER_PAGE, behavior: "smooth" });
+    // Lấy kích thước thẻ sản phẩm
+    const card = el.querySelector("div > div");
+    if (!card) return;
+
+    const cardEl = card as HTMLElement;
+    const cardStyle = window.getComputedStyle(cardEl);
+    const cardWidth =
+      cardEl.offsetWidth + parseInt(cardStyle.marginRight || "16", 10);
+
+    // Tính toán số lượng thẻ có thể cuộn
+    const containerWidth = el.clientWidth;
+    const itemsPerView = Math.floor(containerWidth / cardWidth);
+    const scrollAmount = cardWidth * itemsPerView;
+
+    el.scrollBy({
+      left: direction === "right" ? scrollAmount : -scrollAmount,
+      behavior: "smooth",
+    });
   };
 
   if (products.length === 0) return null;
 
   return (
     <div className="relative w-full overflow-hidden">
-      <h2 className="text-2xl font-semibold mb-2 text-[#921573] p-2 rounded w-[21%] text-center">
+      <h2 className="text-2xl font-semibold mb-2 text-[#921573] p-2 rounded w-fit ">
         Có thể bạn cũng thích
       </h2>
 
-      <div className="relative max-w-[1296px] mx-auto">
-        {" "}
-        {/* NEW */}
+      <div className="relative max-w-[1296px] mx-auto overflow-hidden">
         {/* Nút trái */}
         {canScrollLeft && (
           <button
-            onClick={scrollBackAmount}
-            className="absolute left-0 top-[50%] z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+            onClick={() => scrollByAmount("left")}
+            className="absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
           >
             <FaChevronLeft />
           </button>
         )}
-        {/* Container cuộn ngang */}
+
+        {/* Container cuộn */}
         <div
           ref={scrollRef}
-          className="flex gap-4 scroll-smooth overflow-x-auto scrollbar-hide"
-          style={{
-            width: `${ITEMS_PER_PAGE * 216}px`, // 200px card + 16px gap
-            margin: "0 auto",
-          }}
+          className="flex gap-4 scroll-smooth overflow-x-auto scrollbar-hide snap-x snap-mandatory"
         >
           {products.map((product) => (
             <div
               key={product.id}
-              className="min-w-[200px] max-w-[200px] flex-shrink-0 border border-gray-200 rounded-xl p-2"
+              className="snap-start min-w-[200px] max-w-[200px] flex-shrink-0 border border-gray-200 rounded-xl p-2"
             >
               <ProductCard product={product} />
             </div>
           ))}
         </div>
+
         {/* Nút phải */}
         {canScrollRight && (
           <button
-            onClick={scrollByAmount}
-            className="absolute right-0 top-[50%] z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+            onClick={() => scrollByAmount("right")}
+            className="absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
           >
             <FaChevronRight />
           </button>

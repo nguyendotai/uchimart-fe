@@ -26,7 +26,7 @@ const ProductImages = ({ inventory }: ProductImagesProps) => {
 
       {/* Ảnh chính bên phải */}
       <div className="w-[86%]">
-        <div className="relative w-full min-h-[500px] rounded-xl border border-gray-200 overflow-hidden">
+        <div className="relative w-full min-h-[440px] rounded-xl border border-gray-200 overflow-hidden">
           <Image
             src={inventory.image || fallbackImage}
             alt={inventory.title}

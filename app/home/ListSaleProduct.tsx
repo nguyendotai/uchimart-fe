@@ -3,10 +3,15 @@ import React, { useState, useEffect } from "react";
 import ProductCard from "../components/ui/ProductCard";
 import { Inventory, Product } from "@/app/types/Product";
 import { formatCurrencyToNumber } from "../utils/helpers";
+import { FaAngleRight } from "react-icons/fa6";
+import { FaAngleLeft } from "react-icons/fa6";
+
+const ITEMS_PER_PAGE = 12;
 
 const ListSaleProduct = () => {
   const [saleProducts, setSaleProducts] = useState<Inventory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/products")
@@ -35,17 +40,22 @@ const ListSaleProduct = () => {
       })
       .catch((err) => console.error("Lỗi tải dữ liệu:", err))
       .finally(() => {
-        setIsLoading(false); 
+        setIsLoading(false);
       });
   }, []);
 
   if (isLoading) return null;
 
+  const totalPages = Math.ceil(saleProducts.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentProducts = saleProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
   return (
     <div>
       <div className="bg-white shadow rounded-xl p-4 flex items-center justify-start gap-2 text-xl font-semibold text-red-600 mb-4">
-      Khuyến mãi hôm nay
-    </div>
+        Khuyến mãi hôm nay
+      </div>
+
       {saleProducts.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-10 bg-white rounded-xl shadow">
           <img
@@ -58,16 +68,51 @@ const ListSaleProduct = () => {
           </p>
         </div>
       ) : (
-        <ul className="grid grid-cols-6 gap-4">
-          {saleProducts.map((product) => (
-            <li
-              key={product.id}
-              className="border border-gray-200 rounded-xl p-2 relative"
-            >
-              <ProductCard product={product} />
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul className="grid grid-cols-6 gap-4">
+            {currentProducts.map((product) => (
+              <li
+                key={product.id}
+                className="border border-gray-200 rounded-xl p-2 relative"
+              >
+                <ProductCard product={product} />
+              </li>
+            ))}
+          </ul>
+
+          {/* Phân trang */}
+          {totalPages > 1 && (
+            <div className="flex justify-center mt-6 gap-2">
+              <button
+                className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-300"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              >
+                <FaAngleLeft />
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  className={`px-4 py-2 rounded ${
+                    page === currentPage
+                      ? "bg-[#921573] text-white"
+                      : "bg-gray-100 hover:bg-gray-200"
+                  }`}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </button>
+              ))}
+              <button
+                className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-300"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              >
+                <FaAngleRight />
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
