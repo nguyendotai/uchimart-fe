@@ -15,7 +15,8 @@ const PromotionalBanners = () => {
     fetch("http://127.0.0.1:8000/api/banners")
       .then((res) => res.json())
       .then((json) => {
-        setBanners(json.data);
+        const data: Banner[] = json.data ?? [];
+        setBanners(data.slice(0, 3)); // <-- lấy 3 cái đầu
       })
       .catch((err) => {
         console.error("Lỗi tải banners:", err);

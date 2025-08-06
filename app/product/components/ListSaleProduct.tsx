@@ -12,8 +12,6 @@ const ListSaleProduct = ({ categoryGroupId }: Props) => {
   const [saleProducts, setSaleProducts] = useState<Inventory[]>([]);
 
   useEffect(() => {
-    if (!categoryGroupId) return;
-
     fetch("http://127.0.0.1:8000/api/products")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -35,21 +33,26 @@ const ListSaleProduct = ({ categoryGroupId }: Props) => {
           const sale = formatCurrencyToNumber(inv.sale_price);
           const promo = formatCurrencyToNumber(inv.offer_price ?? "0");
 
-          const inSameCategoryGroup =
-            inv.subcategories?.some(
-              (sub) => sub.category.category_group.id === categoryGroupId
-            ) ?? false;
+          const hasValidDiscount =
+            !isNaN(sale) && !isNaN(promo) && promo > 0 && promo < sale;
 
-          return (
-            !isNaN(sale) &&
-            !isNaN(promo) &&
-            promo > 0 &&
-            promo < sale &&
-            inSameCategoryGroup
-          );
+          const inSameCategoryGroup = categoryGroupId
+            ? inv.subcategories?.some(
+                (sub) => sub.category.category_group.id === categoryGroupId
+              ) ?? false
+            : true; // nếu không truyền categoryGroupId, lấy tất cả
+
+          return hasValidDiscount && inSameCategoryGroup;
         });
 
-        setSaleProducts(filtered.slice(0, 6));
+        // Sắp xếp theo ngày mới nhất
+        const sorted = filtered.sort(
+          (a, b) =>
+            new Date(b.created_at ?? "").getTime() -
+            new Date(a.created_at ?? "").getTime()
+        );
+
+        setSaleProducts(sorted.slice(0, 6));
       })
       .catch((err) => console.error("Lỗi tải dữ liệu:", err));
   }, [categoryGroupId]);

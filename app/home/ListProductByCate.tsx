@@ -4,6 +4,7 @@ import ProductCard from "../components/ui/ProductCard";
 import { CategoryGroup } from "@/app/types/Category";
 import { Product, Inventory } from "@/app/types/Product";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useSearchParams } from "next/navigation";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -11,12 +12,22 @@ const ListProductByCate = () => {
   const [groups, setGroups] = useState<CategoryGroup[]>([]);
   const [inventories, setInventories] = useState<Inventory[]>([]);
   const scrollRefs = useRef<Record<number, HTMLDivElement | null>>({});
-  const [scrollState, setScrollState] = useState<Record<number, { left: boolean; right: boolean }>>({});
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const [scrollState, setScrollState] = useState<
+    Record<number, { left: boolean; right: boolean }>
+  >({});
+  const searchParams = useSearchParams();
+  const filter = searchParams.get("filter");
+  const isSalePage = filter === "khuyen-mai-hot";
 
   // Fetch data
   useEffect(() => {
     Promise.all([
-      fetch("http://127.0.0.1:8000/api/category-groups").then((res) => res.json()),
+      fetch("http://127.0.0.1:8000/api/category-groups").then((res) =>
+        res.json()
+      ),
       fetch("http://127.0.0.1:8000/api/products").then((res) => res.json()),
     ])
       .then(([groupData, productData]) => {
@@ -85,11 +96,50 @@ const ListProductByCate = () => {
     const cardWidth = card ? (card as HTMLElement).offsetWidth + 16 : 220;
 
     el.scrollBy({
-      left: direction === "right" ? cardWidth * ITEMS_PER_PAGE : -cardWidth * ITEMS_PER_PAGE,
+      left:
+        direction === "right"
+          ? cardWidth * ITEMS_PER_PAGE
+          : -cardWidth * ITEMS_PER_PAGE,
       behavior: "smooth",
     });
 
     setTimeout(() => updateScrollButtons(groupId), 300);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent, groupId: number) => {
+    if (e.button !== 0) return; // chỉ xử lý chuột trái
+
+    const el = scrollRefs.current[groupId];
+    if (!el) return;
+
+    isDraggingRef.current = true;
+    startXRef.current = e.pageX - el.offsetLeft;
+    scrollLeftRef.current = el.scrollLeft;
+    el.classList.add("cursor-grabbing");
+  };
+
+  const handleMouseLeave = (groupId: number) => {
+    isDraggingRef.current = false;
+    const el = scrollRefs.current[groupId];
+    if (el) el.classList.remove("cursor-grabbing");
+  };
+
+  const handleMouseUp = (groupId: number) => {
+    isDraggingRef.current = false;
+    const el = scrollRefs.current[groupId];
+    if (el) el.classList.remove("cursor-grabbing");
+  };
+
+  const handleMouseMove = (e: React.MouseEvent, groupId: number) => {
+    if (!isDraggingRef.current) return;
+
+    const el = scrollRefs.current[groupId];
+    if (!el) return;
+
+    e.preventDefault(); // ngăn chặn chọn văn bản
+    const x = e.pageX - el.offsetLeft;
+    const walk = (x - startXRef.current) * 1.5; // tốc độ kéo
+    el.scrollLeft = scrollLeftRef.current - walk;
   };
 
   return (
@@ -97,7 +147,9 @@ const ListProductByCate = () => {
       {groups.map((group) => {
         const groupProducts = inventories.filter((inv) => {
           const groupId = inv.subcategories?.[0]?.category?.category_group?.id;
-          return groupId === group.id;
+          const isInGroup = groupId === group.id;
+          const hasDiscount = inv.offer_price && Number(inv.offer_price) > 0;
+          return isSalePage ? isInGroup && hasDiscount : isInGroup;
         });
 
         if (groupProducts.length === 0) return null;
@@ -131,7 +183,11 @@ const ListProductByCate = () => {
                 scrollRefs.current[group.id] = el;
               }}
               onScroll={() => updateScrollButtons(group.id)}
-              className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth px-2"
+              onMouseDown={(e) => handleMouseDown(e, group.id)}
+              onMouseLeave={() => handleMouseLeave(group.id)}
+              onMouseUp={() => handleMouseUp(group.id)}
+              onMouseMove={(e) => handleMouseMove(e, group.id)}
+              className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth cursor-grab select-none"
             >
               {groupProducts.slice(0, 12).map((inv) => (
                 <div
@@ -156,7 +212,11 @@ const ListProductByCate = () => {
             {/* Xem thêm */}
             <div className="flex justify-center mt-2">
               <a
-                href={`/product?category_group=${group.id}`}
+                href={
+                  isSalePage
+                    ? `/product?filter=khuyen-mai-hot&category=${group.id}`
+                    : `/product?category_group=${group.id}`
+                }
                 className="text-[#921573] hover:underline font-medium"
               >
                 Xem thêm

@@ -60,9 +60,14 @@ const ListCategories = () => {
     }, 200);
   };
 
-  const handleCategoryClick = (groupId: number) => {
+  const handleCategoryClick = (groupId: number, slug?: string) => {
+  if (slug === "khuyen-mai-hot") {
+    router.push("/product?filter=khuyen-mai-hot");
+  } else {
     router.push(`/product?category=${groupId}`);
-  };
+  }
+};
+
 
   const handleChildCategoryClick = (child: Category, groupId: number) => {
     router.push(`/product?category=${groupId}&child=${child.id}`);
@@ -110,7 +115,7 @@ const ListCategories = () => {
                 key={group.id}
                 className="group flex items-center py-4 px-2 hover:bg-purple-100 cursor-pointer rounded"
                 onMouseEnter={() => handleMouseEnterCategory(group.id)}
-                onClick={() => handleCategoryClick(group.id)}
+                onClick={() => handleCategoryClick(group.id, group.slug)}
               >
                 <img
                   src={group.image || "/default.png"}

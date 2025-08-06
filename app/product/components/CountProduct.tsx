@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Product } from "@/app/types/Product";
+import { Product, Inventory } from "@/app/types/Product";
 
 type Props = {
   categoryId?: number | null;
@@ -20,20 +20,27 @@ const CountProduct = ({
         return res.json();
       })
       .then((res) => {
-        const data = res.data;
-        if (!Array.isArray(data)) return;
+        const data: Product[] = res.data ?? [];
 
-        // Lấy danh sách tất cả inventories
-        const inventories: Product[] = data.flatMap(
-          (p: { inventories: Product[] }) => p.inventories || []
+        // Lấy ra toàn bộ inventory, và gắn subcategories từ product
+        const inventories: Inventory[] = data.flatMap((product) =>
+          product.inventories.map((inv) => ({
+            ...inv,
+            subcategories: product.subcategories,
+            product,
+          }))
         );
 
-        const filtered = categoryId
-          ? inventories.filter(
-              (item) =>
-                item?.subcategories?.[0]?.category?.id === Number(categoryId)
-            )
-          : inventories;
+        const filtered = inventories.filter((item) => {
+          if (!categoryId) return true;
+
+          // Sửa: Kiểm tra theo category_group.id
+          return (
+            item.subcategories?.some(
+              (sub) => sub.category?.category_group?.id === categoryId
+            ) ?? false
+          );
+        });
 
         setCount(filtered.length);
       })
@@ -44,7 +51,8 @@ const CountProduct = ({
 
   return (
     <p className="p-2 text-gray-600 text-sm italic mt-1">
-      Có <span className="font-semibold">{count}</span> sản phẩm trong {categoryName}
+      Có <span className="font-semibold">{count}</span> sản phẩm trong{" "}
+      {categoryName}
     </p>
   );
 };

@@ -17,16 +17,29 @@ const ListSaleProduct = dynamic(() => import("./components/ListSaleProduct"), {
 });
 const ListSubCategory = dynamic(() => import("./components/ListSubCategory"));
 const CountProduct = dynamic(() => import("./components/CountProduct"));
-const CategoryProductPreview = dynamic(() => import("./components/CategoryProductPreview"), {
-  loading: () => <Skeleton height={250} grid={4} />,
-});
+const CategoryProductPreview = dynamic(
+  () => import("./components/CategoryProductPreview"),
+  {
+    loading: () => <Skeleton height={250} grid={4} />,
+  }
+);
 const CategoryInfo = dynamic(() => import("./components/CategoryInfo"), {
   loading: () => <Skeleton height={100} />,
 });
-const PromotionalBanners = dynamic(() => import("./components/PromotionalBanners"), {
-  loading: () => <Skeleton height={120} />,
-});
-const ListProductByChildCategory = dynamic(() => import("./components/ListProductByChildCategory"), {
+const PromotionalBanners = dynamic(
+  () => import("./components/PromotionalBanners"),
+  {
+    loading: () => <Skeleton height={120} />,
+  }
+);
+const ListProductByChildCategory = dynamic(
+  () => import("./components/ListProductByChildCategory"),
+  {
+    loading: () => <Skeleton height={240} grid={4} />,
+  }
+);
+
+const ListProductByCate = dynamic(() => import("../home/ListProductByCate"), {
   loading: () => <Skeleton height={240} grid={4} />,
 });
 
@@ -50,36 +63,56 @@ const Skeleton = ({ height = 200, grid = 1, sections = 1 }) => (
 const Product = () => {
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("category");
+  const filter = searchParams.get("filter");
+
+  const isSalePage = filter === "khuyen-mai-hot";
   const [categories, setCategories] = useState<Category[]>([]);
   const [sortBy, setSortBy] = useState<string>("");
 
-  const { ref: saleRef, inView: saleInView } = useInView({ triggerOnce: true, threshold: 0.2 });
-  const { ref: previewRef, inView: previewInView } = useInView({ triggerOnce: true, threshold: 0.2 });
-  const { ref: infoRef, inView: infoInView } = useInView({ triggerOnce: true, threshold: 0.2 });
-  const { ref: bannerRef, inView: bannerInView } = useInView({ triggerOnce: true, threshold: 0.2 });
-  const { ref: childRef, inView: childInView } = useInView({ triggerOnce: true, threshold: 0.2 });
+  const { ref: saleRef, inView: saleInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+  const { ref: previewRef, inView: previewInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+  const { ref: infoRef, inView: infoInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+  const { ref: bannerRef, inView: bannerInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+  const { ref: childRef, inView: childInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
 
   useEffect(() => {
-  fetch("http://127.0.0.1:8000/api/category-groups")
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-      return res.json();
-    })
-    .then((data) => {
-      setCategories(data.data || []);
-    })
-    .catch((error) => {
-      console.error("Lỗi khi fetch category groups:", error);
-    });
+    fetch("http://127.0.0.1:8000/api/category-groups")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setCategories(data.data || []);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi fetch category groups:", error);
+      });
   }, []);
 
   const currentCategory = categoryId
     ? categories.find((c) => c.id === Number(categoryId))
     : null;
 
-  const categoryName = currentCategory?.name || "Tất cả sản phẩm";
+  const categoryName = isSalePage
+    ? "Khuyến mãi hot"
+    : currentCategory?.name || "Tất cả sản phẩm";
 
   return (
     <PageTransitionWrapper>
@@ -98,16 +131,25 @@ const Product = () => {
             </div>
 
             {/* Sale Products */}
+            {/* Sale Products */}
             <div className="w-full mb-4" ref={saleRef}>
-              {categoryId && !isNaN(Number(categoryId)) && saleInView && (
-                <ListSaleProduct categoryGroupId={Number(categoryId)} />
+              {saleInView && (
+                <ListSaleProduct
+                  categoryGroupId={
+                    !isSalePage && categoryId && !isNaN(Number(categoryId))
+                      ? Number(categoryId)
+                      : 0 // hoặc một giá trị mặc định phù hợp, ví dụ: 0
+                  }
+                />
               )}
             </div>
 
             {/* SubCategory Filter */}
-            <div className="z-30 sticky top-0 mb-4">
-              <ListSubCategory sortBy={sortBy} setSortBy={setSortBy} />
-            </div>
+            {!isSalePage && (
+              <div className="z-30 sticky top-0 mb-4">
+                <ListSubCategory sortBy={sortBy} setSortBy={setSortBy} />
+              </div>
+            )}
 
             {/* Product Count */}
             <div className="w-full mb-4">
@@ -131,11 +173,13 @@ const Product = () => {
             <hr className="text-gray-400 mb-4" />
 
             {/* Category Info */}
-            <div className="w-full mb-4" ref={infoRef}>
-              {categoryId && !isNaN(Number(categoryId)) && infoInView && (
-                <CategoryInfo categoryId={Number(categoryId)} />
-              )}
-            </div>
+            {!isSalePage && (
+              <div className="w-full mb-4" ref={infoRef}>
+                {categoryId && !isNaN(Number(categoryId)) && infoInView && (
+                  <CategoryInfo categoryId={Number(categoryId)} />
+                )}
+              </div>
+            )}
 
             <hr className="text-gray-400 mb-4" />
 
@@ -147,8 +191,14 @@ const Product = () => {
             <hr className="text-gray-400 mb-4" />
 
             {/* List by Child Category */}
+            {/* List sản phẩm theo danh mục hoặc theo danh mục con */}
             <div className="w-full mb-4" ref={childRef}>
-              {childInView && <ListProductByChildCategory />}
+              {childInView &&
+                (isSalePage ? (
+                  <ListProductByCate />
+                ) : (
+                  <ListProductByChildCategory />
+                ))}
             </div>
           </div>
         </div>
