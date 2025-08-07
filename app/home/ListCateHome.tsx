@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Slider from "react-slick";
 import { CategoryGroup } from "@/app/types/Category";
-import { productCarouselSettings_Cate } from "../utils/carouselSettings_Cate"; // hoặc "@/utils/carouselSettings"
+import { productCarouselSettings_Cate } from "../utils/carouselSettings_Cate";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -25,7 +25,7 @@ const ListCateHome = () => {
         console.error("Lỗi khi fetch category groups:", error);
       })
       .finally(() => {
-        setIsLoading(false); 
+        setIsLoading(false);
       });
   }, []);
 
@@ -44,13 +44,15 @@ const ListCateHome = () => {
             onClick={() => handleGroupClick(group.id)}
             className="px-2 cursor-pointer"
           >
-            <div className="bg-white text-center p-2 font-medium rounded">
-              <img
-                src={group.image || "/default.png"}
-                className="mx-auto mb-1 h-12 object-contain rounded-full"
-                alt={group.name}
-              />
-              <span className="text-xs">{group.name}</span>
+            <div className="bg-white text-center p-2 rounded transition hover:shadow-md">
+              <div className="w-16 mx-auto aspect-square mb-2 overflow-hidden rounded-full bg-gray-100">
+                <img
+                  src={group.image || "/default.png"}
+                  alt={group.name}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <p className="text-sm font-medium truncate">{group.name}</p>
             </div>
           </div>
         ))}

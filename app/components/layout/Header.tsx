@@ -24,11 +24,10 @@ import { RiBankCardFill } from "react-icons/ri";
 import { HiMiniPercentBadge } from "react-icons/hi2";
 import { MdArticle } from "react-icons/md";
 
-
 const Header = () => {
   const [showHeader, setShowHeader] = useState(true);
 
-  const {t, i18n} = useTranslation();
+  const { t, i18n } = useTranslation();
   // const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
@@ -64,16 +63,28 @@ const Header = () => {
       )}
     >
       {/* --- Mobile layout (<768px) --- */}
-      <div className="flex sm:hidden items-center justify-between py-3">
-        <Link href="/" className="relative w-[100px] h-[40px]">
+      <div className="flex sm:hidden items-center gap-2 px-2 py-3 w-full overflow-hidden">
+        {/* Logo */}
+        <Link href="/" className="relative w-[80px] h-[32px] shrink-0">
           <Image src="/logo.png" alt="Logo" fill className="object-contain" />
         </Link>
 
-        <div className="flex gap-4 items-center">
-          <UserAccount />
+        {/* Search chiếm phần lớn chiều rộng */}
+        <div className="flex-1 overflow-hidden">
+          <Search />
+        </div>
+
+        {/* Voucher icon */}
+        <Link href="/voucher" className="p-2 shrink-0">
+          <HiMiniPercentBadge className="text-2xl text-[#FFA629]" />
+        </Link>
+
+        {/* Cart */}
+        <div className="shrink-0">
           <Cart />
         </div>
       </div>
+
       {/* --- Tablet & Desktop layout (≥768px) --- */}
       <div className="hidden sm:flex items-center justify-around gap-6 p-2">
         {/* Logo - 20% */}

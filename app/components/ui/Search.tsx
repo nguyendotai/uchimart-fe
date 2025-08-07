@@ -49,12 +49,11 @@ const Search = () => {
 
   return (
     <div className="w-full flex">
-      <div className="w-full flex gap-2 justify-between">
-        <div className="relative w-[91%]">
+      <div className="w-full flex gap-2 items-center">
+        <div className="relative flex-1 min-w-0">
           <CiSearch className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400 text-xl" />
-          {/* Animated placeholder text */}
           {!keyword && (
-            <div className="absolute left-10 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 text-sm whitespace-nowrap">
+            <div className="absolute left-10 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 text-sm whitespace-nowrap overflow-hidden text-ellipsis">
               <AnimatePresence mode="wait">
                 {isVisible && (
                   <motion.span
@@ -76,13 +75,13 @@ const Search = () => {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full pl-10 text-black pr-3 h-10 placeholder-transparent border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#00bf63]"
+            className="w-full pl-10 pr-3 h-10 placeholder-transparent border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#00bf63] text-sm"
           />
         </div>
 
         <button
           onClick={handleSearch}
-          className="w-[19%] h-10 text-white rounded hover:bg-blue-600 flex items-center justify-center"
+          className="h-10 px-4 text-white rounded hover:bg-blue-600 whitespace-nowrap shrink-0"
           style={{ backgroundColor: "#921573" }}
         >
           Tìm kiếm

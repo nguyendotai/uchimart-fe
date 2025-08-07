@@ -6,7 +6,7 @@ import React from "react";
 export function PrevArrow({ style, onClick }: any) {
   return (
     <div
-      className="z-40 !left-[-10px] absolute top-1/2 transform -translate-y-1/2 group"
+      className="z-40 !left-[-10px] absolute top-1/2 transform -translate-y-1/2 group hidden sm:block"
       style={{ ...style, display: "block" }}
       onClick={onClick}
     >
@@ -24,7 +24,7 @@ export function PrevArrow({ style, onClick }: any) {
 export function NextArrow({ style, onClick }: any) {
   return (
     <div
-      className="z-50 !right-[-10px] absolute top-1/2 transform -translate-y-1/2 group"
+      className="z-50 !right-[-10px] absolute top-1/2 transform -translate-y-1/2 group hidden sm:block"
       style={{ ...style, display: "block" }}
       onClick={onClick}
     >
@@ -41,13 +41,44 @@ export function NextArrow({ style, onClick }: any) {
 
 // Cấu hình carousel chung
 export const productCarouselSettings_Cate = {
-  infinite: true,
+  infinite: false,
   speed: 500,
-  slidesToShow: 8,
   slidesToScroll: 1,
   arrows: true,
   prevArrow: <PrevArrow />,
   nextArrow: <NextArrow />,
-  autoplay: true,
-  autoplaySpeed: 6000,
+  swipeToSlide: true,
+  touchMove: true,
+  autoplay: false,
+  variableWidth: true,
+  responsive: [
+    {
+      breakpoint: 1280,
+      settings: {
+        slidesToShow: 6,
+        arrows: true,
+      },
+    },
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 5,
+        arrows: true,
+      },
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 4,
+        arrows: false, // ẩn mũi tên trên mobile
+      },
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 2.5,
+        arrows: false, // mobile nhỏ
+      },
+    },
+  ],
 };

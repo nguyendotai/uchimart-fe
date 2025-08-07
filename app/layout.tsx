@@ -5,6 +5,7 @@ import PageLayout from "./components/layout/PageLayout";
 export const metadata = {
   title: "Uchimart - Mua sắm trực tuyến",
   description: "Mua sắm thực phẩm và đồ tiêu dùng giá rẻ mỗi ngày",
+  viewport: "width=device-width, initial-scale=1",
 };
 
 export default function RootLayout({

@@ -170,7 +170,7 @@ const Product = () => {
               )}
             </div>
 
-            <hr className="text-gray-400 mb-4" />
+            {!isSalePage && <hr className="text-gray-400 mb-4" />}
 
             {/* Category Info */}
             {!isSalePage && (
@@ -181,16 +181,15 @@ const Product = () => {
               </div>
             )}
 
-            <hr className="text-gray-400 mb-4" />
+            {!isSalePage && <hr className="text-gray-400 mb-4" />}
 
             {/* Promotional Banners */}
             <div className="w-full mb-4" ref={bannerRef}>
               {bannerInView && <PromotionalBanners />}
             </div>
 
-            <hr className="text-gray-400 mb-4" />
+            {!isSalePage && <hr className="text-gray-400 mb-4" />}
 
-            {/* List by Child Category */}
             {/* List sản phẩm theo danh mục hoặc theo danh mục con */}
             <div className="w-full mb-4" ref={childRef}>
               {childInView &&

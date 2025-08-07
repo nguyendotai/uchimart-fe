@@ -50,7 +50,7 @@ const ListProduct = () => {
     const el = scrollRef.current;
     if (!el) return;
     const card = el.querySelector("div > div");
-    const cardWidth = card ? (card as HTMLElement).offsetWidth + 16 : 220; // 16 là gap-4
+    const cardWidth = card ? (card as HTMLElement).offsetWidth + 16 : 220; // 16 là gap giả định
     el.scrollBy({ left: cardWidth * ITEMS_PER_PAGE, behavior: "smooth" });
   };
 
@@ -68,7 +68,7 @@ const ListProduct = () => {
       {canScrollLeft && (
         <button
           onClick={scrollBackAmount}
-          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
         >
           <FaChevronLeft />
         </button>
@@ -77,12 +77,12 @@ const ListProduct = () => {
       {/* Container cuộn ngang */}
       <div
         ref={scrollRef}
-        className="flex gap-4 scroll-smooth overflow-x-auto scrollbar-hide px-2"
+        className="flex gap-x-4 overflow-x-auto scroll-smooth scrollbar-hide px-3 sm:px-4"
       >
         {allProducts.map((product) => (
           <div
             key={product.id}
-            className="min-w-[200px] max-w-[200px] flex-shrink-0 border border-gray-200 rounded-xl p-2"
+            className="flex-shrink-0 w-[clamp(140px,25vw,195px)] border border-gray-200 rounded-xl p-2 sm:p-3"
           >
             <ProductCard product={product} />
           </div>
@@ -93,7 +93,7 @@ const ListProduct = () => {
       {canScrollRight && (
         <button
           onClick={scrollByAmount}
-          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
         >
           <FaChevronRight />
         </button>

@@ -1,47 +1,31 @@
-// components/animations/StaggerFadeIn.tsx
-'use client';
-import { motion,Variants } from 'framer-motion';
+// components/ScrollFadeIn.tsx
+"use client";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { useInView } from "react-intersection-observer";
 
+export default function ScrollFadeIn({ children }: { children: React.ReactNode }) {
+  const controls = useAnimation();
+  const [ref, inView] = useInView({ threshold: 0.2 });
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15, // delay giữa các phần tử con
-      when: "beforeChildren",
-    },
-  },
-};
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [inView, controls]);
 
-const item: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.4,
-      ease: [0.25, 0.8, 0.25, 1] as [number, number, number, number], // cubic-bezier mượt hơn
-      type: "spring",
-    },
-  },
-};
-
-export default function FadeIn({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
-      variants={container}
+      ref={ref}
       initial="hidden"
-      animate="show"
-      className="space-y-4"
+      animate={controls}
+      transition={{ duration: 0.6 }}
+      variants={{
+        visible: { opacity: 1, y: 0 },
+        hidden: { opacity: 0, y: 50 },
+      }}
     >
-      {Array.isArray(children)
-        ? children.map((child, index) => (
-          <motion.div key={index} variants={item}>
-            {child}
-          </motion.div>
-        ))
-        : <motion.div variants={item}>{children}</motion.div>}
+      {children}
     </motion.div>
   );
 }

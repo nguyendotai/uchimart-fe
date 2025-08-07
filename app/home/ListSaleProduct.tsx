@@ -48,7 +48,10 @@ const ListSaleProduct = () => {
 
   const totalPages = Math.ceil(saleProducts.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentProducts = saleProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const currentProducts = saleProducts.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
 
   return (
     <div>
@@ -69,7 +72,23 @@ const ListSaleProduct = () => {
         </div>
       ) : (
         <>
-          <ul className="grid grid-cols-6 gap-4">
+          {/* Mobile: scroll ngang bằng tay */}
+          <div className="md:hidden overflow-x-auto px-2">
+            <ul className="flex gap-4 w-max pb-2">
+              {saleProducts.map((product) => (
+                <li
+                  key={product.id}
+                  className="min-w-[160px] max-w-[180px] flex-shrink-0 border border-gray-200 rounded-xl p-2"
+                >
+                  <ProductCard product={product} />
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Desktop: hiển thị dạng lưới với phân trang */}
+          {/* Grid responsive: mobile 2 cột, desktop 6 cột */}
+          <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {currentProducts.map((product) => (
               <li
                 key={product.id}
@@ -80,9 +99,9 @@ const ListSaleProduct = () => {
             ))}
           </ul>
 
-          {/* Phân trang */}
+          {/* Phân trang: chỉ hiện trên desktop */}
           {totalPages > 1 && (
-            <div className="flex justify-center mt-6 gap-2">
+            <div className="hidden md:flex justify-center mt-6 gap-2">
               <button
                 className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-300"
                 disabled={currentPage === 1}
@@ -90,23 +109,27 @@ const ListSaleProduct = () => {
               >
                 <FaAngleLeft />
               </button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  className={`px-4 py-2 rounded ${
-                    page === currentPage
-                      ? "bg-[#921573] text-white"
-                      : "bg-gray-100 hover:bg-gray-200"
-                  }`}
-                  onClick={() => setCurrentPage(page)}
-                >
-                  {page}
-                </button>
-              ))}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    className={`px-4 py-2 rounded ${
+                      page === currentPage
+                        ? "bg-[#921573] text-white"
+                        : "bg-gray-100 hover:bg-gray-200"
+                    }`}
+                    onClick={() => setCurrentPage(page)}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
               <button
                 className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-300"
                 disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
               >
                 <FaAngleRight />
               </button>

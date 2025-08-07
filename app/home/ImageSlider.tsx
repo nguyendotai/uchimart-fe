@@ -22,7 +22,7 @@ export default function ImageSlider() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsClient(true); // Xác nhận đã ở phía client
+    setIsClient(true);
   }, []);
 
   useEffect(() => {
@@ -35,12 +35,8 @@ export default function ImageSlider() {
       .then((json) => {
         setBanners(json.data);
       })
-      .catch((err) => {
-        console.error("Lỗi tải banners:", err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      .catch((err) => console.error("Lỗi tải banners:", err))
+      .finally(() => setIsLoading(false));
   }, [isClient]);
 
   useEffect(() => {
@@ -53,7 +49,7 @@ export default function ImageSlider() {
 
   if (isLoading) {
     return (
-      <div className="w-full h-[450px] bg-gray-200 animate-pulse rounded-xl shadow"></div>
+      <div className="w-full aspect-[2/1] bg-gray-200 animate-pulse rounded-xl shadow"></div>
     );
   }
 
@@ -63,8 +59,8 @@ export default function ImageSlider() {
   if (!currentBanner) return null;
 
   return (
-    <div className="relative w-full h-[450px] rounded-xl bg-[#fff]  shadow flex justify-center items-center">
-      <div className="relative w-[93%] h-[82%] rounded-xl overflow-hidden">
+    <div className="relative w-full aspect-[/1] md:aspect-[16/6] rounded-xl bg-white shadow flex justify-center items-center">
+      <div className="relative w-full h-full rounded-xl overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
@@ -94,7 +90,7 @@ export default function ImageSlider() {
         {banners.map((_, i) => (
           <div
             key={i}
-            className={`w-10 h-1 rounded-full transition-all duration-300 ${
+            className={`min-w-[16px] h-[4px] rounded-full transition-all duration-300 ${
               i === index ? "bg-blue-600 scale-110" : "bg-gray-400"
             }`}
           />

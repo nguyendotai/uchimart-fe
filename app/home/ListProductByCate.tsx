@@ -5,7 +5,6 @@ import { CategoryGroup } from "@/app/types/Category";
 import { Product, Inventory } from "@/app/types/Product";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useSearchParams } from "next/navigation";
-import FastAverageColor from "fast-average-color";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -16,7 +15,6 @@ const ListProductByCate = () => {
   const [scrollState, setScrollState] = useState<
     Record<number, { left: boolean; right: boolean }>
   >({});
-  const [bgColors, setBgColors] = useState<Record<number, string>>({});
   const searchParams = useSearchParams();
   const filter = searchParams.get("filter");
   const isSalePage = filter === "khuyen-mai-hot";
@@ -46,7 +44,7 @@ const ListProductByCate = () => {
       .catch((err) => console.error("Lỗi tải dữ liệu:", err));
   }, []);
 
-  // Cập nhật trạng thái scroll khi DOM thay đổi
+  // Cập nhật trạng thái scroll
   useEffect(() => {
     const observers: ResizeObserver[] = [];
 
@@ -71,12 +69,8 @@ const ListProductByCate = () => {
     const el = scrollRefs.current[groupId];
     if (!el) return;
 
-    const scrollLeft = el.scrollLeft;
-    const scrollWidth = el.scrollWidth;
-    const clientWidth = el.clientWidth;
-
-    const canScrollLeft = scrollLeft > 0;
-    const canScrollRight = scrollLeft + clientWidth < scrollWidth - 1;
+    const canScrollLeft = el.scrollLeft > 0;
+    const canScrollRight = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
 
     setScrollState((prev) => ({
       ...prev,
@@ -104,7 +98,6 @@ const ListProductByCate = () => {
 
     setTimeout(() => updateScrollButtons(groupId), 300);
   };
-  
 
   return (
     <>
@@ -119,10 +112,10 @@ const ListProductByCate = () => {
         if (groupProducts.length === 0) return null;
 
         return (
-          <div key={group.id} className="w-full space-y-4 mb-6 relative">
+          <div key={group.id} className="w-full space-y-6 mb-8 relative">
             {/* Banner nhóm danh mục */}
-            <div className="w-full h-[103px] rounded-lg overflow-hidden relative flex bg-gray-100">
-              <div className="w-[40%]">
+            <div className="w-full rounded-lg overflow-hidden relative flex bg-gray-100 h-auto min-h-[6rem]">
+              <div className="flex-[1_1_40%] max-w-[40%]">
                 <img
                   src={group.cover || "/default-category.png"}
                   alt={group.name}
@@ -135,24 +128,24 @@ const ListProductByCate = () => {
             {scrollState[group.id]?.left && (
               <button
                 onClick={() => scrollByAmount(group.id, "left")}
-                className="absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+                className="absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
               >
                 <FaChevronLeft />
               </button>
             )}
 
-            {/* Danh sách sản phẩm cuộn ngang */}
+            {/* Danh sách sản phẩm */}
             <div
               ref={(el) => {
                 scrollRefs.current[group.id] = el;
               }}
               onScroll={() => updateScrollButtons(group.id)}
-              className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth cursor-grab select-none"
+              className="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide cursor-grab select-none px-1"
             >
               {groupProducts.slice(0, 12).map((inv) => (
                 <div
                   key={inv.id}
-                  className="min-w-[200px] max-w-[200px] flex-shrink-0 border border-gray-200 rounded-xl p-2"
+                  className="flex-shrink-0 w-[clamp(140px,25vw,195px)] border border-gray-200 rounded-xl p-2 sm:p-3"
                 >
                   <ProductCard product={inv} />
                 </div>
@@ -163,14 +156,14 @@ const ListProductByCate = () => {
             {scrollState[group.id]?.right && (
               <button
                 onClick={() => scrollByAmount(group.id, "right")}
-                className="absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+                className="absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
               >
                 <FaChevronRight />
               </button>
             )}
 
             {/* Xem thêm */}
-            <div className="flex justify-center mt-2">
+            <div className="flex justify-center mt-3">
               <a
                 href={
                   isSalePage
@@ -183,7 +176,7 @@ const ListProductByCate = () => {
               </a>
             </div>
 
-            <hr className="border-gray-300 mt-4" />
+            <hr className="border-gray-300 mt-6" />
           </div>
         );
       })}
