@@ -25,7 +25,7 @@ export type RegisterPayload = {
 
 // Dùng khi API login trả về
 export type LoginResponse = {
-  access_token: string; // Laravel JWT token
+  token: string; 
   token_type: string;
   expires_in: number;
   user: User; // Laravel trả thêm thông tin user

@@ -60,13 +60,13 @@ export default function Login() {
           password: form.password,
         }
       );
-      if (!res.data.access_token) {
+      if (!res.data.token) {
         toast.error("Không nhận được token từ server!");
         return;
       }
 
       // Lưu token riêng
-      localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem("token", res.data.token);
 
       // Lưu user riêng
       localStorage.setItem("user", JSON.stringify(res.data.user));
