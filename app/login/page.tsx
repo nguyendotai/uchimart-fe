@@ -72,6 +72,8 @@ export default function Login() {
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
       toast.success("Đăng nhập thành công!");
+      // Phát sự kiện custom để các component khác biết user đã thay đổi
+      window.dispatchEvent(new Event("userChanged"));
       router.push("/"); // quay lại trang chủ
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
@@ -206,9 +208,9 @@ export default function Login() {
 
           {/* Forgot password */}
           <div className="text-right">
-            <a href="#" className="text-sm text-green-600 hover:underline">
+            <Link href="/forgotPassword" className="text-sm text-green-600 hover:underline">
               Quên mật khẩu?
-            </a>
+            </Link>
           </div>
 
           {/* Login button */}

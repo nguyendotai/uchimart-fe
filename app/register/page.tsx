@@ -1,12 +1,28 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { RegisterPayload, User } from "../types/User";
 import axios, { AxiosError } from "axios";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"; // cần cài heroicons
+import { CgShapeZigzag } from "react-icons/cg";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 
 type RegisterForm = RegisterPayload & { confirmPassword: string };
+type IconData = {
+  id: number;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  rotate: number;
+  vr: number;
+  color: string;
+};
+
 
 export default function Register() {
+  const router = useRouter();
   const [form, setForm] = useState<RegisterForm>({
     name: "",
     phone_number: "",
@@ -19,6 +35,12 @@ export default function Register() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const colors = ["#921573", "#000000"];
+  const numIcons = 7;
+
+  const [icons, setIcons] = useState<IconData[]>([]);
+  const iconsRef = useRef<IconData[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -48,6 +70,7 @@ export default function Register() {
       );
       alert("Đăng ký thành công!");
       console.log("User mới:", res.data);
+      router.push("/login");
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const axiosErr = err as AxiosError<{ message?: string }>;
@@ -59,137 +82,215 @@ export default function Register() {
     }
   };
 
+
+  useEffect(() => {
+    const initIcons: IconData[] = Array.from({ length: numIcons }, (_, i) => ({
+      id: i,
+      x: Math.random() * 90,
+      y: Math.random() * 85,
+      vx: (Math.random() - 0.5) * 0.01,
+      vy: (Math.random() - 0.5) * 0.01,
+      rotate: Math.random() * 360,
+      vr: (Math.random() - 0.5) * 0.2,
+      color: colors[Math.floor(Math.random() * colors.length)]
+    }));
+
+    setIcons(initIcons);
+    iconsRef.current = initIcons;
+
+    const animate = () => {
+      iconsRef.current = iconsRef.current.map(icon => {
+        let { x, y, vx, vy, rotate } = icon;
+        const { vr } = icon; // vr dùng const vì không đổi
+
+        x += vx;
+        y += vy;
+        rotate += vr;
+
+        if (x <= 0 || x >= 95) vx *= -1;
+        if (y <= 0 || y >= 90) vy *= -1;
+
+        return { ...icon, x, y, vx, vy, rotate };
+      });
+
+
+      setIcons([...iconsRef.current]);
+      requestAnimationFrame(animate);
+    };
+
+    requestAnimationFrame(animate);
+  }, []);
+
   return (
-    <div className="bg-gray-100 text-gray-900 flex justify-center">
-      <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
-        <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-          <div>
-            <img
-              src="./logo.png"
-              alt="Logo"
-              className="mx-auto w-auto max-w-[100px] sm:max-w-[140px] md:max-w-[300px]"
-            />
-          </div>
-
-          <div className="mt-10 flex flex-col items-center">
-            <div className="w-full flex-1 mt-8">
-              <div className="mx-auto max-w-xs">
-                {/* Họ tên */}
-                <input
-                  name="name"
-                  type="text"
-                  placeholder="Họ và tên"
-                  value={form.name}
-                  onChange={handleChange}
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border mt-2"
-                />
-
-                {/* Số điện thoại */}
-                <input
-                  name="phone_number"
-                  type="tel"
-                  placeholder="Số điện thoại"
-                  value={form.phone_number}
-                  onChange={handleChange}
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border mt-2"
-                />
-
-                {/* Email */}
-                <input
-                  name="email"
-                  type="email"
-                  placeholder="Email"
-                  value={form.email}
-                  onChange={handleChange}
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border mt-2"
-                />
-
-                {/* Mật khẩu */}
-                <div className="relative mt-2">
-                  <input
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Mật khẩu"
-                    value={form.password}
-                    onChange={handleChange}
-                    className="w-full px-8 py-4 rounded-lg border"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
-                  >
-                    {showPassword ? (
-                      <EyeSlashIcon className="w-5 h-5" />
-                    ) : (
-                      <EyeIcon className="w-5 h-5" />
-                    )}
-                  </button>
-                </div>
-
-                {/* Nhập lại mật khẩu */}
-                <div className="relative mt-2">
-                  <input
-                    name="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Nhập lại mật khẩu"
-                    value={form.confirmPassword}
-                    onChange={handleChange}
-                    className="w-full px-8 py-4 rounded-lg border"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword((prev) => !prev)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
-                  >
-                    {showConfirmPassword ? (
-                      <EyeSlashIcon className="w-5 h-5" />
-                    ) : (
-                      <EyeIcon className="w-5 h-5" />
-                    )}
-                  </button>
-                </div>
-
-                {/* Nút đăng ký */}
-                <button
-                  onClick={handleSubmit}
-                  className="mt-5 tracking-wide font-semibold bg-green-400 text-white w-full py-4 rounded-lg hover:bg-green-700 transition-all"
-                >
-                  Đăng ký
-                </button>
-
-                {/* Điều khoản */}
-                <p className="mt-6 text-xs text-gray-600 text-center">
-                  Bằng việc đăng ký, tôi đồng ý với{" "}
-                  <a
-                    href="#"
-                    className="border-b border-gray-500 border-dotted"
-                  >
-                    Điều khoản dịch vụ
-                  </a>{" "}
-                  và{" "}
-                  <a
-                    href="#"
-                    className="border-b border-gray-500 border-dotted"
-                  >
-                    Chính sách bảo mật
-                  </a>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Hình bên phải */}
-        <div className="flex-1 bg-green-100 text-center hidden lg:flex">
-          <div
-            className="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat"
-            style={{
-              backgroundImage: "url('./img/loginrb.png')",
-            }}
-          ></div>
-        </div>
+    <div className="relative w-full h-[83vh] overflow-hidden">
+      {/* Ảnh nền */}
+      <div className="absolute inset-0">
+        <div
+          className="absolute inset-0 z-1 bg-contain bg-right bg-no-repeat opacity-40"
+          style={{ backgroundImage: "url('./img/bglogin1.png')" }}
+        ></div>
+        <div
+          className="absolute inset-0 z-1 bg-contain bg-left bg-no-repeat opacity-50"
+          style={{ backgroundImage: "url('./img/bglogin2.1.png')" }}
+        ></div>
       </div>
+
+      {/* SVG background */}
+      <svg
+        className="absolute inset-0 w-full h-full"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M0,0 L0,97 C15,70 20,0 180,0 Z" fill="#8FC446" />
+      </svg>
+
+      {/* Div màu đen bên trái */}
+      <div
+        className="absolute top-0 left-[12%] h-full w-[17%] bg-white opacity-80 z-5 bg-cover"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('https://images.pexels.com/photos/4877842/pexels-photo-4877842.jpeg')",
+        }}
+      >
+        <img
+          src="./img/logo2rb.png"
+          alt=""
+          className="w-[60%] mx-auto mt-3 drop-shadow-lg"
+        />
+      </div>
+
+      <div>
+        <img src="./img/salad3.png" alt="" className="absolute top-5 left-5 z-10 w-[35%]" />
+        <img src="./img/fruits1.png" alt="" className="absolute top-30 left-20 z-9 w-[35%]" />
+        <img src="./img/salad1.png" alt="" className="absolute top-95 left-10 z-8 w-[30%]" />
+      </div>
+
+      {/* Form đăng nhập */}
+      <div className="absolute top-[55%] z-15 right-[18%] transform -translate-y-1/2 z-20 w-[27%] p-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+          Đăng Ký
+        </h2>
+
+        <form className="space-y-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}>
+          {/* Name */}
+          <input
+            name="name"
+            type="text"
+            placeholder="Họ và tên"
+            value={form.name}
+            onChange={handleChange}
+            className="w-full bg-gray-100 rounded-lg px-4 py-3 focus:outline-none"
+          />
+
+          {/* Phone */}
+          <input
+            name="phone_number"
+            type="tel"
+            placeholder="Số điện thoại"
+            value={form.phone_number}
+            onChange={handleChange}
+            className="w-full bg-gray-100 rounded-lg px-4 py-3 focus:outline-none"
+          />
+
+          {/* Email */}
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            className="w-full bg-gray-100 rounded-lg px-4 py-3 focus:outline-none"
+          />
+
+          {/* Password */}
+          <div className="relative mt-2">
+
+            <input
+              name="password"
+              type={showPassword ? "text" : "password"}
+              placeholder="Mật khẩu"
+              value={form.password}
+              onChange={handleChange}
+              className="w-full bg-gray-100 rounded-lg px-4 py-3 focus:outline-none"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+            >
+              {showPassword ? (
+                <EyeSlashIcon className="w-5 h-5" />
+              ) : (
+                <EyeIcon className="w-5 h-5" />
+              )}
+            </button>
+          </div>
+
+          {/* xác nhận Password */}
+          <div className="relative mt-2">
+            <input
+              name="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Nhập lại mật khẩu"
+              value={form.confirmPassword}
+              onChange={handleChange}
+              className="w-full bg-gray-100 rounded-lg px-4 py-3 focus:outline-none"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword((prev) => !prev)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+            >
+              {showConfirmPassword ? (
+                <EyeSlashIcon className="w-5 h-5" />
+              ) : (
+                <EyeIcon className="w-5 h-5" />
+              )}
+            </button>
+          </div>
+
+
+
+          {/* Login button */}
+          <button
+            onClick={handleSubmit}
+            className="w-full bg-[#89C841] hover:bg-[#00A63E] text-white py-3 rounded-lg font-semibold transition cursor-pointer"
+          >
+            Đăng ký
+          </button>
+        </form>
+
+        {/* Sign up */}
+        <p className="text-sm text-gray-500 mt-4 text-center">
+          Bạn đã có tài khoản?{" "}
+          <Link href="/login" className="text-[#00A63E] hover:underline">
+            Đăng nhập!
+          </Link>
+        </p>
+      </div>
+
+
+      {/* Icons di chuyển mượt */}
+      {icons.map(icon => (
+        <div
+          key={icon.id}
+          className="absolute z-10"
+          style={{
+            top: `${icon.y}%`,
+            left: `${icon.x}%`,
+            transform: `rotate(${icon.rotate}deg)`,
+            fontSize: "50px",
+            color: icon.color
+          }}
+        >
+          <CgShapeZigzag />
+        </div>
+      ))}
     </div>
   );
 }

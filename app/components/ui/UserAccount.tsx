@@ -51,6 +51,27 @@ export default function UserAccount() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+  const loadUser = () => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    } else {
+      setUser(null);
+    }
+  };
+
+  loadUser();
+
+  // Lắng nghe sự kiện userChanged
+  window.addEventListener("userChanged", loadUser);
+
+  return () => {
+    window.removeEventListener("userChanged", loadUser);
+  };
+}, []);
+
+
   return (
     <div className="flex items-center gap-3 cursor-pointer overflow-hidden">
       {!user ? (
