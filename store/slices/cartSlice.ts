@@ -1,13 +1,32 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import type { CartItem } from "@/app/types/Product";
+import { fetchCart, addToCartApi, removeCartItem } from "@/app/utils/cartApi";
 
 interface CartState {
   items: CartItem[];
+  loading: boolean;
 }
 
 const initialState: CartState = {
   items: [],
+  loading: false,
 };
+
+export const fetchCartItems = createAsyncThunk(
+  "cart/fetchCartItems",
+  async () => {
+    const data = await fetchCart();
+    return data;
+  }
+);
+
+export const removeCartItemThunk = createAsyncThunk(
+  "cart/removeItem",
+  async ({ cartId, inventoryId }: { cartId: number; inventoryId: number }) => {
+    await removeCartItem(cartId, inventoryId);
+    return inventoryId;
+  }
+);
 
 const cartSlice = createSlice({
   name: "cart",
@@ -76,6 +95,19 @@ const cartSlice = createSlice({
     clearCart(state) {
       state.items = [];
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCartItems.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchCartItems.fulfilled, (state, action: PayloadAction<CartItem[]>) => {
+        state.items = action.payload;
+        state.loading = false;
+      })
+      .addCase(removeCartItemThunk.fulfilled, (state, action: PayloadAction<number>) => {
+        state.items = state.items.filter(item => item.id !== action.payload);
+      });
   },
 });
 

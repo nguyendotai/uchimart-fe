@@ -3,16 +3,26 @@ import React, { useState, useEffect } from "react";
 import ProductCard from "../components/ui/ProductCard";
 import { Inventory, Product } from "@/app/types/Product";
 import { formatCurrencyToNumber } from "../utils/helpers";
-import { FaAngleRight } from "react-icons/fa6";
-import { FaAngleLeft } from "react-icons/fa6";
-
-const ITEMS_PER_PAGE = 12;
+import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
 
 const ListSaleProduct = () => {
   const [saleProducts, setSaleProducts] = useState<Inventory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
 
+  // Cập nhật số sản phẩm mỗi trang tùy vào kích thước màn hình
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      setItemsPerPage(window.innerWidth < 768 ? 6 : 12);
+    };
+
+    updateItemsPerPage();
+    window.addEventListener("resize", updateItemsPerPage);
+    return () => window.removeEventListener("resize", updateItemsPerPage);
+  }, []);
+
+  // Fetch dữ liệu sản phẩm
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/products")
       .then((res) => {
@@ -46,11 +56,11 @@ const ListSaleProduct = () => {
 
   if (isLoading) return null;
 
-  const totalPages = Math.ceil(saleProducts.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const totalPages = Math.ceil(saleProducts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
   const currentProducts = saleProducts.slice(
     startIndex,
-    startIndex + ITEMS_PER_PAGE
+    startIndex + itemsPerPage
   );
 
   return (
@@ -72,22 +82,7 @@ const ListSaleProduct = () => {
         </div>
       ) : (
         <>
-          {/* Mobile: scroll ngang bằng tay */}
-          <div className="md:hidden overflow-x-auto px-2">
-            <ul className="flex gap-4 w-max pb-2">
-              {saleProducts.map((product) => (
-                <li
-                  key={product.id}
-                  className="min-w-[160px] max-w-[180px] flex-shrink-0 border border-gray-200 rounded-xl p-2"
-                >
-                  <ProductCard product={product} />
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Desktop: hiển thị dạng lưới với phân trang */}
-          {/* Grid responsive: mobile 2 cột, desktop 6 cột */}
+          {/* Grid layout: mobile 2 cột × 3 hàng, desktop 6 cột */}
           <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {currentProducts.map((product) => (
               <li
@@ -99,11 +94,11 @@ const ListSaleProduct = () => {
             ))}
           </ul>
 
-          {/* Phân trang: chỉ hiện trên desktop */}
+          {/* Phân trang: hiển thị ở mọi kích thước màn hình */}
           {totalPages > 1 && (
-            <div className="hidden md:flex justify-center mt-6 gap-2">
+            <div className="flex justify-center mt-6 gap-2">
               <button
-                className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-300"
+                className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-300 disabled:opacity-50"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               >
@@ -125,7 +120,7 @@ const ListSaleProduct = () => {
                 )
               )}
               <button
-                className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-300"
+                className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-300 disabled:opacity-50"
                 disabled={currentPage === totalPages}
                 onClick={() =>
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages))

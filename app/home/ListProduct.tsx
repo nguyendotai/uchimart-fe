@@ -82,7 +82,7 @@ const ListProduct = () => {
         {allProducts.map((product) => (
           <div
             key={product.id}
-            className="flex-shrink-0 w-[clamp(140px,25vw,195px)] border border-gray-200 rounded-xl p-2 sm:p-3"
+            className="flex-shrink-0 w-[calc(50%-0.5rem)] sm:w-[clamp(140px,25vw,195px)] border border-gray-200 rounded-xl p-2 sm:p-3"
           >
             <ProductCard product={product} />
           </div>

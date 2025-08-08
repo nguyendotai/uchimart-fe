@@ -9,7 +9,8 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
-import { addToCart } from "@/store/slices/cartSlice";
+import { addToCartApi } from "@/app/utils/cartApi";
+import { fetchCartItems } from "@/store/slices/cartSlice";
 import QuantityModal from "./QuantityModal";
 import type { Inventory, CartItem } from "@/app/types/Product";
 import { formatCurrencyToNumber } from "@/app/utils/helpers";
@@ -20,7 +21,9 @@ const ProductCard = ({ product }: { product: Inventory }) => {
   const { t } = useTranslation();
 
   const [showModal, setShowModal] = useState(false);
-  const [actionType, setActionType] = useState<"addToCart" | "buyNow" | null>(null);
+  const [actionType, setActionType] = useState<"addToCart" | "buyNow" | null>(
+    null
+  );
 
   const salePrice = formatCurrencyToNumber(product.sale_price);
   const offerPrice = formatCurrencyToNumber(product.offer_price ?? "0");
@@ -31,18 +34,28 @@ const ProductCard = ({ product }: { product: Inventory }) => {
     ? Math.round(((salePrice - offerPrice) / salePrice) * 100)
     : 0;
 
-  const handleConfirm = (quantity: number) => {
+  const handleConfirm = async (quantity: number) => {
     const selectedItem: CartItem = {
       ...product,
       cartQuantity: quantity,
     };
 
-    if (actionType === "buyNow") {
-      localStorage.setItem("selectedItems", JSON.stringify([selectedItem]));
-      router.push("/check-out");
-    } else {
-      dispatch(addToCart(selectedItem));
+    try {
+      // Gọi API thêm vào giỏ hàng
+      await addToCartApi(selectedItem);
+
+      // Lấy lại cart từ server để sync Redux
+      await dispatch(fetchCartItems() as any);
+
       toast.success("Đã thêm vào giỏ hàng!");
+
+      if (actionType === "buyNow") {
+        localStorage.setItem("selectedItems", JSON.stringify([selectedItem]));
+        router.push("/check-out");
+      }
+    } catch (error) {
+      toast.error("Không thể thêm vào giỏ hàng. Vui lòng đăng nhập.");
+      console.error("Add to cart error:", error);
     }
 
     setShowModal(false);
@@ -50,7 +63,7 @@ const ProductCard = ({ product }: { product: Inventory }) => {
   };
 
   return (
-    <div className="relative group">
+    <div className="relative group w-full max-w-[200px] mx-auto">
       {/* Modal */}
       <QuantityModal
         key={actionType}
@@ -66,8 +79,8 @@ const ProductCard = ({ product }: { product: Inventory }) => {
 
       {/* Tag giảm giá */}
       {hasSale && (
-        <div className="absolute top-[-9px] left-[-8px] z-10 overflow-hidden">
-          <div className="w-[80px] h-5 bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center rounded-tl-md rounded-br-md shadow">
+        <div className="absolute top-[-8px] left-[-8px] z-10">
+          <div className="w-[70px] h-5 bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center rounded-tl-md rounded-br-md shadow">
             GIẢM {discount}%
           </div>
         </div>
@@ -76,26 +89,26 @@ const ProductCard = ({ product }: { product: Inventory }) => {
       {/* Hình ảnh */}
       <Link
         href={`/product/${product.slug}`}
-        className="w-full h-[150px] bg-white flex items-center justify-center overflow-hidden"
+        className="w-full h-[120px] sm:h-[150px] bg-white flex items-center justify-center overflow-hidden"
       >
         <Image
           src={product.image || "/fallback.jpg"}
           alt={product.title}
-          width={230}
-          height={230}
-          className="w-[90%] h-[80%] object-contain rounded max-w-[200px] max-h-[200px] transition-transform duration-300 ease-in-out group-hover:scale-105"
+          width={200}
+          height={200}
+          className="w-[85%] h-[85%] object-contain rounded transition-transform duration-300 ease-in-out group-hover:scale-105"
           unoptimized
         />
       </Link>
 
       {/* Nút hành động */}
-      <div className="flex justify-between gap-2 py-1">
+      <div className="flex justify-between gap-2 py-1 px-1">
         <button
           onClick={() => {
             setActionType("buyNow");
             setShowModal(true);
           }}
-          className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] rounded-full p-1 w-[79%] transition-all duration-200 ease-in-out hover:bg-[#921573] hover:text-white"
+          className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] text-xs sm:text-sm rounded-full px-2 py-1 w-[70%] hover:bg-[#921573] hover:text-white transition"
         >
           {t("buyNow")}
         </button>
@@ -105,44 +118,45 @@ const ProductCard = ({ product }: { product: Inventory }) => {
             setActionType("addToCart");
             setShowModal(true);
           }}
-          className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] rounded-full p-1 w-[20%] transition-all duration-200 ease-in-out hover:bg-[#921573] hover:text-white"
+          className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] text-sm rounded-full px-2 py-1 w-[30%] hover:bg-[#921573] hover:text-white transition"
         >
-          <MdOutlineAddShoppingCart />
+          <MdOutlineAddShoppingCart size={16} />
         </button>
       </div>
 
       {/* Nội dung */}
-      <div className="mt-2">
+      <div className="mt-2 px-1">
         <Link
           href={`/product/${product.slug}`}
-          className="block max-w-full p-1 font-normal text-[14px] truncate"
+          className="block text-sm sm:text-[14px] font-normal truncate line-clamp-2 h-[38px]"
         >
           {product.title}
         </Link>
 
         {/* Giá */}
-        <div>
+        <div className="text-sm sm:text-base mt-1">
           {hasSale ? (
             <>
-              <span className="p-1 text-[#FB5D08] font-medium">
+              <span className="text-[#FB5D08] font-medium">
                 {offerPrice.toLocaleString()}đ
               </span>
-              <del className="text-[#999999] text-[14px]">
+              <del className="text-[#999999] text-xs sm:text-sm ml-2">
                 {salePrice.toLocaleString()}đ
               </del>
             </>
           ) : (
-            <span className="p-1 text-[#FB5D08] font-medium">
+            <span className="text-[#FB5D08] font-medium">
               {salePrice.toLocaleString()}đ
             </span>
           )}
         </div>
 
-        {/* Tình trạng + đã bán */}
-        <div className="flex gap-2 items-center text-[14px]">
+        {/* Trạng thái và đã bán */}
+        <div className="flex flex-wrap items-center text-xs sm:text-sm text-gray-600 mt-1 gap-x-2">
           <div className="flex items-center gap-1 text-[#26AA99]">
             <MdEventAvailable
               className={product.status_name !== "Active" ? "text-red-500" : ""}
+              size={14}
             />
             <span
               className={product.status_name !== "Active" ? "text-red-500" : ""}
@@ -150,10 +164,9 @@ const ProductCard = ({ product }: { product: Inventory }) => {
               {product.status_name === "Active" ? "Còn hàng" : "Hết hàng"}
             </span>
           </div>
-
           <div className="flex items-center gap-1 text-gray-500">
             <GoDotFill className="text-[8px]" />
-            <span className="text-[12px]">Đã bán {product.sold_count}</span>
+            <span>Đã bán {product.sold_count}</span>
           </div>
         </div>
       </div>

@@ -1,16 +1,16 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import Slider from "react-slick";
 import { CategoryGroup } from "@/app/types/Category";
-import { productCarouselSettings_Cate } from "../utils/carouselSettings_Cate";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const ListCateHome = () => {
   const router = useRouter();
   const [groups, setGroups] = useState<CategoryGroup[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/category-groups")
@@ -29,6 +29,35 @@ const ListCateHome = () => {
       });
   }, []);
 
+  const updateScrollButtons = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 0);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 10);
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    updateScrollButtons();
+    if (el) {
+      el.addEventListener("scroll", updateScrollButtons);
+    }
+    return () => {
+      if (el) el.removeEventListener("scroll", updateScrollButtons);
+    };
+  }, [groups]);
+
+  const scrollByAmount = (direction: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const card = el.querySelector("div > div");
+    const cardWidth = card ? (card as HTMLElement).offsetWidth + 16 : 120;
+    const scrollAmount = direction === "right" ? cardWidth * 4 : -cardWidth * 4;
+
+    el.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  };
+
   const handleGroupClick = (groupId: number) => {
     router.push(`/product?category=${groupId}`);
   };
@@ -37,26 +66,52 @@ const ListCateHome = () => {
 
   return (
     <div className="bg-white shadow rounded-xl p-4 relative">
-      <Slider {...productCarouselSettings_Cate}>
+      {/* Nút trái */}
+      {canScrollLeft && (
+        <button
+          onClick={() => scrollByAmount("left")}
+          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
+        >
+          <FaChevronLeft size={16} />
+        </button>
+      )}
+
+      {/* Danh sách nhóm danh mục */}
+      <div
+        ref={scrollRef}
+        className="flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth scrollbar-hide px-1 sm:px-2"
+      >
         {groups.map((group) => (
           <div
             key={group.id}
             onClick={() => handleGroupClick(group.id)}
-            className="px-2 cursor-pointer"
+            className="flex-shrink-0 w-[70px] sm:w-[90px] cursor-pointer"
           >
             <div className="bg-white text-center p-2 rounded transition hover:shadow-md">
-              <div className="w-16 mx-auto aspect-square mb-2 overflow-hidden rounded-full bg-gray-100">
+              <div className="w-[48px] h-[48px] sm:w-[60px] sm:h-[60px] mx-auto mb-1 overflow-hidden rounded-full bg-gray-100">
                 <img
                   src={group.image || "/default.png"}
                   alt={group.name}
                   className="w-full h-full object-contain"
                 />
               </div>
-              <p className="text-sm font-medium truncate">{group.name}</p>
+              <p className="text-[12px] sm:text-sm font-medium truncate">
+                {group.name}
+              </p>
             </div>
           </div>
         ))}
-      </Slider>
+      </div>
+
+      {/* Nút phải */}
+      {canScrollRight && (
+        <button
+          onClick={() => scrollByAmount("right")}
+          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
+        >
+          <FaChevronRight size={16} />
+        </button>
+      )}
     </div>
   );
 };

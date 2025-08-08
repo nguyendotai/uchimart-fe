@@ -76,13 +76,6 @@ const ListProductByCate = dynamic(() => import("./home/ListProductByCate"), {
 import PageTransitionWrapper from "./components/Animation/PageTransitionWrapper";
 
 export default function Home() {
-  const { ref: sliderRef, inView: sliderInView } = useInView({ triggerOnce: true, threshold: 0.2 });
-  const { ref: cateRef, inView: cateInView } = useInView({ triggerOnce: true, threshold: 0.2 });
-  const { ref: saleRef, inView: saleInView } = useInView({ triggerOnce: true, threshold: 0.2 });
-  const { ref: brandRef, inView: brandInView } = useInView({ triggerOnce: true, threshold: 0.2 });
-  const { ref: productRef, inView: productInView } = useInView({ triggerOnce: true, threshold: 0.2 });
-  const { ref: suggestRef, inView: suggestInView } = useInView({ triggerOnce: true, threshold: 0.2 });
-
   const Skeleton = ({ height = 180, grid = 1, sections = 1 }) => (
     <div className="space-y-4">
       {Array.from({ length: sections }).map((_, idx) => (
@@ -104,37 +97,37 @@ export default function Home() {
       <div className="w-full mx-auto mt-2 flex flex-col md:flex-row justify-between relative">
         <div className="w-full">
           {/* Slider */}
-          <div ref={sliderRef} className="w-full mb-4">
-            {sliderInView ? <ImageSlider /> : <Skeleton height={200} />}
+          <div className="w-full mb-4">
+            <ImageSlider />
           </div>
 
           {/* Categories */}
-          <div ref={cateRef} className="w-full mb-4">
-            {cateInView ? <ListCateHome /> : <Skeleton grid={2} height={80} />}
+          <div className="w-full mb-4">
+            <ListCateHome />
           </div>
 
           {/* Sale Products */}
-          <div ref={saleRef} className="w-full mb-4">
-            {saleInView ? <ListSaleProduct /> : <Skeleton grid={2} height={200} />}
+          <div className="w-full mb-4">
+            <ListSaleProduct />
           </div>
 
           {/* Brand Section */}
-          <div className="w-full mx-auto mt-4 md:mt-6" ref={brandRef}>
+          <div className="w-full mx-auto mt-4 md:mt-6">
             <div className="w-full px-2 md:px-4">
               <div className="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-4 w-full">
                 <span className="flex-1 bg-white shadow rounded-xl px-3 py-4 md:py-7.5 flex items-center text-lg md:text-2xl font-semibold">
                   Duy nhất hôm nay
                 </span>
                 <div className="flex-[2] w-full">
-                  {brandInView ? <BrandHome /> : <Skeleton height={64} />}
+                  <BrandHome />
                 </div>
               </div>
             </div>
           </div>
 
           {/* List Product */}
-          <div ref={productRef} className="w-full mx-auto mt-6 md:mt-10">
-            {productInView ? <ListProduct /> : <Skeleton grid={2} height={200} />}
+          <div className="w-full mx-auto mt-6 md:mt-10">
+            <ListProduct />
           </div>
 
           {/* Suggest Today */}
@@ -144,13 +137,9 @@ export default function Home() {
             </span>
           </div>
 
-          <div ref={suggestRef} className="w-full mx-auto mt-6 space-y-4">
-            <div className="w-full min-h-[400px] md:min-h-[500px]">
-              {suggestInView ? (
-                <ListProductByCate />
-              ) : (
-                <Skeleton grid={2} height={200} sections={2} />
-              )}
+          <div className="w-full mx-auto mt-6 space-y-4">
+            <div className="w-full  md:min-h-[500px]">
+              <ListProductByCate />
             </div>
           </div>
         </div>

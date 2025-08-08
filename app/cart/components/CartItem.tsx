@@ -8,6 +8,7 @@ import {
   decreaseQuantity,
   setQuantity,
 } from "@/store/slices/cartSlice";
+import { updateCartItem, removeCartItem } from "@/app/utils/cartApi";
 import type { CartItem as CartItemType } from "@/app/types/Product";
 import ConfirmModal from "./ComfirmModal";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -37,9 +38,14 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
 
   const handleDelete = () => setShowConfirm(true);
 
-  const confirmDelete = () => {
-    dispatch(removeFromCart(item.id));
-    setShowConfirm(false);
+  const confirmDelete = async () => {
+    try {
+      await removeCartItem(item.id, item.id); // cần có item.cart_id từ BE
+      dispatch(removeFromCart(item.id));
+      setShowConfirm(false);
+    } catch (error) {
+      console.error("Xoá sản phẩm thất bại:", error);
+    }
   };
 
   return (
@@ -95,34 +101,67 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
           <div className="flex justify-between items-center mt-2">
             <div className="flex items-center gap-2">
               <button
-                className="w-6 h-6 border rounded"
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.stopPropagation();
-                  dispatch(decreaseQuantity(item.id));
+                  const newQuantity = item.cartQuantity - 1;
+                  if (newQuantity >= 1) {
+                    try {
+                      await updateCartItem(item.id, {
+                        ...item,
+                        cartQuantity: newQuantity,
+                      });
+                      dispatch(decreaseQuantity(item.id));
+                    } catch (err) {
+                      console.error("Giảm số lượng thất bại:", err);
+                    }
+                  }
                 }}
               >
                 -
               </button>
+
               <input
                 type="number"
                 min={1}
                 max={item.stock_quantity}
                 value={item.cartQuantity}
                 onClick={(e) => e.stopPropagation()}
-                onChange={(e) => {
+                onChange={async (e) => {
                   const value = parseInt(e.target.value, 10);
-                  if (!isNaN(value)) {
-                    dispatch(setQuantity({ id: item.id, quantity: value }));
+                  if (
+                    !isNaN(value) &&
+                    value >= 1 &&
+                    value <= item.stock_quantity
+                  ) {
+                    try {
+                      await updateCartItem(item.id, {
+                        ...item,
+                        cartQuantity: value,
+                      });
+                      dispatch(setQuantity({ id: item.id, quantity: value }));
+                    } catch (err) {
+                      console.error("Cập nhật số lượng thất bại:", err);
+                    }
                   }
                 }}
                 className="w-12 text-center border rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
 
               <button
-                className="w-6 h-6 border rounded"
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.stopPropagation();
-                  dispatch(increaseQuantity(item.id));
+                  const newQuantity = item.cartQuantity + 1;
+                  if (newQuantity <= item.stock_quantity) {
+                    try {
+                      await updateCartItem(item.id, {
+                        ...item,
+                        cartQuantity: newQuantity,
+                      });
+                      dispatch(increaseQuantity(item.id));
+                    } catch (err) {
+                      console.error("Tăng số lượng thất bại:", err);
+                    }
+                  }
                 }}
               >
                 +

@@ -115,7 +115,7 @@ const ListProductByCate = () => {
           <div key={group.id} className="w-full space-y-6 mb-8 relative">
             {/* Banner nhóm danh mục */}
             <div className="w-full rounded-lg overflow-hidden relative flex bg-gray-100 h-auto min-h-[6rem]">
-              <div className="flex-[1_1_40%] max-w-[40%]">
+              <div className=" max-w-[40%]">
                 <img
                   src={group.cover || "/default-category.png"}
                   alt={group.name}
@@ -145,7 +145,8 @@ const ListProductByCate = () => {
               {groupProducts.slice(0, 12).map((inv) => (
                 <div
                   key={inv.id}
-                  className="flex-shrink-0 w-[clamp(140px,25vw,195px)] border border-gray-200 rounded-xl p-2 sm:p-3"
+                  className="flex-shrink-0 w-[calc(50%-0.5rem)] sm:w-[clamp(140px,25vw,195px)] border border-gray-200 rounded-xl p-2 sm:p-3"
+
                 >
                   <ProductCard product={inv} />
                 </div>
