@@ -1,10 +1,48 @@
 "use client"
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsFacebook } from 'react-icons/bs';
 import { FaTiktok, FaYoutube } from 'react-icons/fa';
+import axios from 'axios';
+
+type Page = {
+    id: number;
+    name: string;
+    slug: string;
+    title: string;
+    description: string | null;
+    order: number;
+    code: string | null;
+    display_in: string | null;
+    author: string | null;
+    status: number;
+    post_at: string | null;
+};
 
 const Footer = () => {
+
+    const [pages, setPages] = useState<Page[]>([]);
+
+    useEffect(() => {
+        axios.get<{ success: boolean; data: Page[] }>("http://localhost:8000/api/pages")
+            .then(res => setPages(res.data.data))
+            .catch(err => console.error(err));
+    }, []);
+
+    const veChungToiSlug = [
+        'chinh-sach-bao-mat',
+        'dieu-khoan-giao-dich'
+    ];
+
+    const hoTroSlug = [
+        'chinh-sach-giao-hang',
+        'chinh-sach-thanh-toan',
+        'chinh-sach-doi-tra',
+        'huong-dan-mua-hang'
+    ];
+
+    const veChungToi = pages.filter(p => veChungToiSlug.includes(p.slug));
+    const hoTroKhachHang = pages.filter(p => hoTroSlug.includes(p.slug));
     return (
         <div className='mt-10'>
             <div className='bg-white rounded-xl'>
@@ -25,31 +63,35 @@ const Footer = () => {
                         </div>
 
 
+                        {/* Về chúng tôi */}
                         <div className='w-[30%] '>
                             <div className='mt-6 mb-7'>
                                 <h1 className='text-xl font-medium'>Về chúng tôi</h1>
                             </div>
-
                             <ul className='flex flex-col gap-2'>
-                                <li>Giới thiệu về Uchi Mart</li>
-                                <li>Chính sách bảo mật</li>
-                                <li>Điều khoản và điều kiện giao dịch</li>
-                                <li>Quy chế web</li>
+                                {veChungToi.map(page => (
+                                    <li key={page.id}>
+                                        <Link href={`/pages/${page.slug}`} className="hover:underline">
+                                            {page.name}
+                                        </Link>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
 
-
+                        {/* Hỗ trợ khách hàng */}
                         <div className='w-[30%]'>
                             <div className='mt-6 mb-7'>
                                 <h1 className='text-xl font-medium text-[rgb(45,55,72)]'>Hỗ trợ khách hàng</h1>
                             </div>
-
                             <ul className='flex flex-col gap-2'>
-                                <li>Trung tâm hỗ trợ khách hàng</li>
-                                <li>Chính sách giao hàng</li>
-                                <li>Chính sách thanh toán</li>
-                                <li>Chính sách đổi trả</li>
-                                <li>Hỏi đáp</li>
+                                {hoTroKhachHang.map(page => (
+                                    <li key={page.id}>
+                                        <Link href={`/pages/${page.slug}`} className="hover:underline">
+                                            {page.name}
+                                        </Link>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
 

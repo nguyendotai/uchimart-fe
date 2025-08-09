@@ -71,7 +71,7 @@ export default function Login() {
       // Lưu user riêng
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      toast.success("Đăng nhập thành công!");
+      
       // Phát sự kiện custom để các component khác biết user đã thay đổi
       window.dispatchEvent(new Event("userChanged"));
       router.push("/"); // quay lại trang chủ

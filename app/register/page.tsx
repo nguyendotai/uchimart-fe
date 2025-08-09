@@ -2,10 +2,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { RegisterPayload, User } from "../types/User";
 import axios, { AxiosError } from "axios";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"; // cần cài heroicons
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { CgShapeZigzag } from "react-icons/cg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 
 type RegisterForm = RegisterPayload & { confirmPassword: string };
@@ -49,7 +50,7 @@ export default function Register() {
 
   const handleSubmit = async () => {
     if (form.password.trim() !== form.confirmPassword.trim()) {
-      alert("Mật khẩu nhập lại không khớp!");
+      toast.error("Mật khẩu nhập lại không khớp!");
       return;
     }
 
@@ -68,16 +69,16 @@ export default function Register() {
         "http://localhost:8000/api/register",
         payload
       );
-      alert("Đăng ký thành công!");
+      toast("Đăng ký thành công!");
       console.log("User mới:", res.data);
       router.push("/login");
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const axiosErr = err as AxiosError<{ message?: string }>;
-        alert(axiosErr.response?.data?.message || "Đăng ký thất bại!");
+        toast.error(axiosErr.response?.data?.message || "Đăng ký thất bại!");
       } else {
         console.error(err);
-        alert("Lỗi không xác định!");
+        toast.error("Lỗi không xác định!");
       }
     }
   };
@@ -258,7 +259,6 @@ export default function Register() {
 
           {/* Login button */}
           <button
-            onClick={handleSubmit}
             className="w-full bg-[#89C841] hover:bg-[#00A63E] text-white py-3 rounded-lg font-semibold transition cursor-pointer"
           >
             Đăng ký
