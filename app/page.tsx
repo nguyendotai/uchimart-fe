@@ -93,7 +93,7 @@ export default function Home() {
   );
 
   return (
-    <div className="px-2 md:px-4">
+    <div className="container mx-auto">
       <div className="w-full mx-auto mt-2 flex flex-col md:flex-row justify-between relative">
         <div className="w-full">
           {/* Slider */}

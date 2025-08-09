@@ -70,7 +70,7 @@ const ListCateHome = () => {
       {canScrollLeft && (
         <button
           onClick={() => scrollByAmount("left")}
-          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
+          className="hidden sm:flex absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
         >
           <FaChevronLeft size={16} />
         </button>
@@ -79,13 +79,21 @@ const ListCateHome = () => {
       {/* Danh sách nhóm danh mục */}
       <div
         ref={scrollRef}
-        className="flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth scrollbar-hide px-1 sm:px-2"
+        className="
+    flex gap-3 sm:gap-4 
+    overflow-x-auto scroll-smooth scrollbar-hide px-1 sm:px-2
+    touch-pan-x snap-x snap-mandatory
+  "
       >
         {groups.map((group) => (
           <div
             key={group.id}
             onClick={() => handleGroupClick(group.id)}
-            className="flex-shrink-0 w-[70px] sm:w-[90px] cursor-pointer"
+            className="
+        flex-shrink-0 
+        w-[72px] sm:w-[90px] cursor-pointer 
+        snap-start
+      "
           >
             <div className="bg-white text-center p-2 rounded transition hover:shadow-md">
               <div className="w-[48px] h-[48px] sm:w-[60px] sm:h-[60px] mx-auto mb-1 overflow-hidden rounded-full bg-gray-100">
@@ -95,7 +103,7 @@ const ListCateHome = () => {
                   className="w-full h-full object-contain"
                 />
               </div>
-              <p className="text-[12px] sm:text-sm font-medium truncate">
+              <p className="text-[11px] sm:text-sm font-medium truncate">
                 {group.name}
               </p>
             </div>
@@ -107,7 +115,7 @@ const ListCateHome = () => {
       {canScrollRight && (
         <button
           onClick={() => scrollByAmount("right")}
-          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
+          className="hidden sm:flex absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
         >
           <FaChevronRight size={16} />
         </button>

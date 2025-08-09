@@ -112,7 +112,7 @@ const ListProductByCate = () => {
         if (groupProducts.length === 0) return null;
 
         return (
-          <div key={group.id} className="w-full space-y-6 mb-8 relative">
+          <div key={group.id} className=" space-y-6 mb-8 relative">
             {/* Banner nhóm danh mục */}
             <div className="w-full rounded-lg overflow-hidden relative flex bg-gray-100 h-auto min-h-[6rem]">
               <div className=" max-w-[40%]">
@@ -140,13 +140,20 @@ const ListProductByCate = () => {
                 scrollRefs.current[group.id] = el;
               }}
               onScroll={() => updateScrollButtons(group.id)}
-              className="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide cursor-grab select-none px-1"
+              className="
+    flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide select-none
+    px-1 touch-pan-x
+  "
             >
               {groupProducts.slice(0, 12).map((inv) => (
                 <div
                   key={inv.id}
-                  className="flex-shrink-0 w-[calc(50%-0.5rem)] sm:w-[clamp(140px,25vw,195px)] border border-gray-200 rounded-xl p-2 sm:p-3"
-
+                  className="
+        flex-shrink-0 
+        w-[calc(50%-0.5rem)]    /* mobile ~376px */
+        sm:w-[clamp(140px,25vw,195px)] 
+        border border-gray-200 rounded-xl p-2 sm:p-3 bg-white
+      "
                 >
                   <ProductCard product={inv} />
                 </div>

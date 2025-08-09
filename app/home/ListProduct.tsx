@@ -64,11 +64,11 @@ const ListProduct = () => {
 
   return (
     <div className="relative w-full overflow-hidden">
-      {/* Nút trái */}
+      {/* Nút trái - ẩn trên mobile */}
       {canScrollLeft && (
         <button
           onClick={scrollBackAmount}
-          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
+          className="hidden sm:flex absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
         >
           <FaChevronLeft />
         </button>
@@ -77,23 +77,35 @@ const ListProduct = () => {
       {/* Container cuộn ngang */}
       <div
         ref={scrollRef}
-        className="flex gap-x-4 overflow-x-auto scroll-smooth scrollbar-hide px-3 sm:px-4"
+        className="
+      flex gap-x-3 sm:gap-x-4 
+      overflow-x-auto scroll-smooth scrollbar-hide 
+      px-2 sm:px-4
+      touch-pan-x snap-x snap-mandatory
+    "
       >
         {allProducts.map((product) => (
           <div
             key={product.id}
-            className="flex-shrink-0 w-[calc(50%-0.5rem)] sm:w-[clamp(140px,25vw,195px)] border border-gray-200 rounded-xl p-2 sm:p-3"
+            className="
+          flex-shrink-0 
+          w-[calc(50%-0.375rem)]   /* 2 sản phẩm/1 hàng mobile */
+          sm:w-[clamp(140px,25vw,195px)]
+          border border-gray-200 rounded-xl 
+          p-2 sm:p-3 bg-white
+          snap-start
+        "
           >
             <ProductCard product={product} />
           </div>
         ))}
       </div>
 
-      {/* Nút phải */}
+      {/* Nút phải - ẩn trên mobile */}
       {canScrollRight && (
         <button
           onClick={scrollByAmount}
-          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
+          className="hidden sm:flex absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
         >
           <FaChevronRight />
         </button>
