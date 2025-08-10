@@ -42,14 +42,13 @@ export default function PageLayout({
 
           {/* Main content */}
           <main
-            className={`flex-1 min-h-screen pt-[120px] px-4 md:px-6 ${
-              hasSidebar ? "lg:ml-[250px]" : ""
-            } ${isAccountPage ? "bg-[#edf2f78a]" : "bg-white"}`}
+            className={`flex-1 min-h-screen pt-[120px] px-2 sm:px-4 md:px-6 overflow-x-hidden
+    ${hasSidebar ? "lg:ml-[250px]" : ""}
+    ${isAccountPage ? "bg-[#edf2f78a]" : "bg-white"}`}
           >
             <div
-              className={`mx-auto w-full ${
-                hasSidebar ? "lg:max-w-[1300px]" : "lg:max-w-[1600px]"
-              }`}
+              className={`w-full mx-auto
+      ${hasSidebar ? "lg:max-w-[1300px]" : "lg:max-w-[1600px]"}`}
             >
               {children}
             </div>

@@ -14,7 +14,7 @@ const ListSaleProduct = () => {
   // Cập nhật số sản phẩm mỗi trang tùy vào kích thước màn hình
   useEffect(() => {
     const updateItemsPerPage = () => {
-      setItemsPerPage(window.innerWidth < 768 ? 6 : 12);
+      setItemsPerPage(window.innerWidth < 768 ? 4 : 12);
     };
 
     updateItemsPerPage();

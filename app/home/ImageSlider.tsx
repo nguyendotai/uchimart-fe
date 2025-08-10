@@ -59,7 +59,7 @@ export default function ImageSlider() {
   if (!currentBanner) return null;
 
   return (
-    <div className="relative w-full aspect-[/1] md:aspect-[16/6] rounded-xl bg-white shadow flex justify-center items-center">
+    <div className="relative w-full aspect-[2/1] md:aspect-[16/6] rounded-xl bg-white shadow flex justify-center items-center">
       <div className="relative w-full h-full rounded-xl overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div

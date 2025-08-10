@@ -117,7 +117,7 @@ const Product = () => {
   return (
     <PageTransitionWrapper>
       <div className="w-full">
-        <div className="container mx-auto mt-2 flex justify-between">
+        <div className="w-full px-2 sm:container sm:mx-auto mt-2 flex justify-between">
           <div className="w-full">
             {/* Breadcrumbs */}
             <div className="w-full mb-4 font-medium">

@@ -68,7 +68,7 @@ const ListProduct = () => {
       {canScrollLeft && (
         <button
           onClick={scrollBackAmount}
-          className="hidden sm:flex absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
+          className="flex absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
         >
           <FaChevronLeft />
         </button>
@@ -105,7 +105,7 @@ const ListProduct = () => {
       {canScrollRight && (
         <button
           onClick={scrollByAmount}
-          className="hidden sm:flex absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 sm:p-3 rounded-full"
+          className="flex absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
         >
           <FaChevronRight />
         </button>

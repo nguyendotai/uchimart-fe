@@ -112,7 +112,7 @@ const ListProductByCate = () => {
         if (groupProducts.length === 0) return null;
 
         return (
-          <div key={group.id} className=" space-y-6 mb-8 relative">
+          <div key={group.id} className=" w-full space-y-6 mb-8 relative">
             {/* Banner nhóm danh mục */}
             <div className="w-full rounded-lg overflow-hidden relative flex bg-gray-100 h-auto min-h-[6rem]">
               <div className=" max-w-[40%]">

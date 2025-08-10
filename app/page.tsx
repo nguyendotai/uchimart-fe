@@ -93,7 +93,7 @@ export default function Home() {
   );
 
   return (
-    <div className="container mx-auto">
+    <div className="w-full px-2 sm:px-4">
       <div className="w-full mx-auto mt-2 flex flex-col md:flex-row justify-between relative">
         <div className="w-full">
           {/* Slider */}
@@ -138,7 +138,7 @@ export default function Home() {
           </div>
 
           <div className="w-full mx-auto mt-6 space-y-4">
-            <div className="w-full  md:min-h-[500px]">
+            <div className="w-full md:min-h-[500px]">
               <ListProductByCate />
             </div>
           </div>
