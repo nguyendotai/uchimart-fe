@@ -62,26 +62,37 @@ const Header = () => {
         }
       )}
     >
-      {/* --- Mobile layout (<768px) --- */}
-      <div className="flex sm:hidden items-center gap-2 px-2 py-3 w-full overflow-hidden">
-        {/* Logo */}
-        <Link href="/" className="relative w-[80px] h-[32px] shrink-0">
-          <Image src="/logo.png" alt="Logo" fill className="object-contain" />
-        </Link>
+      {/* Mobile layout */}
+      <div className="sm:hidden w-full bg-white">
+        {/* Hàng 1: Logo + Địa chỉ + Voucher + Cart */}
+        <div className="flex items-center justify-between px-2 py-2 gap-2">
+          {/* Logo */}
+          <Link href="/" className="relative w-[65px] h-[50px] shrink-0">
+            <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+          </Link>
 
-        {/* Search chiếm phần lớn chiều rộng */}
-        <div className="flex-1 overflow-hidden">
-          <Search />
+          {/* Địa chỉ nhận hàng */}
+          <div className="flex items-center bg-[#f3e5f5] rounded-full px-2 py-1 gap-1 flex-1 min-w-0">
+            <FaMapMarkerAlt className="text-[#921573] text-base shrink-0" />
+            <span className="text-xs font-medium text-gray-800 truncate">
+              P.Thạnh Xuân, Q.12
+            </span>
+          </div>
+
+          {/* Voucher */}
+          <Link href="/voucher" className="p-1 shrink-0">
+            <HiMiniPercentBadge className="text-xl text-[#FFA629]" />
+          </Link>
+
+          {/* Cart */}
+          <div className="shrink-0">
+            <Cart />
+          </div>
         </div>
 
-        {/* Voucher icon */}
-        <Link href="/voucher" className="p-2 shrink-0">
-          <HiMiniPercentBadge className="text-2xl text-[#FFA629]" />
-        </Link>
-
-        {/* Cart */}
-        <div className="shrink-0">
-          <Cart />
+        {/* Hàng 2: Search full width */}
+        <div className="px-2 pb-2">
+          <Search isMobile />
         </div>
       </div>
 

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
+import clsx from "clsx";
 
 const placeholderTexts = [
   "Giá siêu rẻ...",
@@ -11,7 +12,7 @@ const placeholderTexts = [
   "Giảm giá hôm nay...",
 ];
 
-const Search = () => {
+const Search = ({ isMobile = false }: { isMobile?: boolean }) => {
   const [index, setIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const [keyword, setKeyword] = useState("");
@@ -51,7 +52,13 @@ const Search = () => {
     <div className="w-full flex">
       <div className="w-full flex gap-2 items-center">
         <div className="relative flex-1 min-w-0">
-          <CiSearch className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400 text-xl" />
+          <CiSearch
+            className={clsx(
+              "absolute top-1/2 left-2 -translate-y-1/2 text-gray-400",
+              isMobile ? "text-lg" : "text-xl"
+            )}
+          />
+
           {!keyword && (
             <div className="absolute left-10 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 text-sm whitespace-nowrap overflow-hidden text-ellipsis">
               <AnimatePresence mode="wait">
@@ -75,13 +82,16 @@ const Search = () => {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full pl-10 pr-3 h-10 placeholder-transparent border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#00bf63] text-sm"
+            className={clsx(
+              "w-full border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#00bf63] text-sm",
+              isMobile ? "pl-8 pr-2 h-8" : "pl-10 pr-3 h-10"
+            )}
           />
         </div>
 
         <button
           onClick={handleSearch}
-          className="h-10 px-4 text-white rounded hover:bg-blue-600 whitespace-nowrap shrink-0"
+          className="h-8 sm:h-10 px-4 text-white rounded hover:bg-blue-600 whitespace-nowrap shrink-0"
           style={{ backgroundColor: "#921573" }}
         >
           Tìm kiếm
