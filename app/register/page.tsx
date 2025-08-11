@@ -37,6 +37,8 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const colors = ["#921573", "#000000"];
   const numIcons = 7;
 
@@ -65,11 +67,12 @@ export default function Register() {
     };
 
     try {
+      setLoading(true);
       const res = await axios.post<User>(
         "http://localhost:8000/api/register",
         payload
       );
-      toast("Đăng ký thành công!");
+      toast.success("Đăng ký thành công! Vui lòng xác thực email.");
       console.log("User mới:", res.data);
       router.push("/login");
     } catch (err: unknown) {
@@ -80,6 +83,8 @@ export default function Register() {
         console.error(err);
         toast.error("Lỗi không xác định!");
       }
+    } finally {
+      setLoading(false); // Tắt loading khi request kết thúc
     }
   };
 
@@ -258,10 +263,37 @@ export default function Register() {
 
 
           {/* Login button */}
-          <button
-            className="w-full bg-[#89C841] hover:bg-[#00A63E] text-white py-3 rounded-lg font-semibold transition cursor-pointer"
+           <button
+            type="submit"
+            disabled={loading} // disable khi đang load
+            className={`w-full py-3 rounded-lg font-semibold transition cursor-pointer text-white ${
+              loading ? "bg-gray-400 cursor-not-allowed" : "bg-[#89C841] hover:bg-[#00A63E]"
+            }`}
           >
-            Đăng ký
+            {loading ? (
+              <svg
+                className="animate-spin h-5 w-5 mx-auto text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                ></path>
+              </svg>
+            ) : (
+              "Đăng ký"
+            )}
           </button>
         </form>
 
