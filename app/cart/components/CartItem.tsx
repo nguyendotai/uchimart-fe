@@ -8,7 +8,6 @@ import {
   decreaseQuantity,
   setQuantity,
 } from "@/store/slices/cartSlice";
-import { updateCartItem, removeCartItem } from "@/app/utils/cartApi";
 import type { CartItem as CartItemType } from "@/app/types/Product";
 import ConfirmModal from "./ComfirmModal";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -38,14 +37,9 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
 
   const handleDelete = () => setShowConfirm(true);
 
-  const confirmDelete = async () => {
-    try {
-      await removeCartItem(item.id, item.id); // cần có item.cart_id từ BE
-      dispatch(removeFromCart(item.id));
-      setShowConfirm(false);
-    } catch (error) {
-      console.error("Xoá sản phẩm thất bại:", error);
-    }
+  const confirmDelete = () => {
+    dispatch(removeFromCart(item.id));
+    setShowConfirm(false);
   };
 
   return (
@@ -101,19 +95,10 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
           <div className="flex justify-between items-center mt-2">
             <div className="flex items-center gap-2">
               <button
-                onClick={async (e) => {
+                onClick={(e) => {
                   e.stopPropagation();
-                  const newQuantity = item.cartQuantity - 1;
-                  if (newQuantity >= 1) {
-                    try {
-                      await updateCartItem(item.id, {
-                        ...item,
-                        cartQuantity: newQuantity,
-                      });
-                      dispatch(decreaseQuantity(item.id));
-                    } catch (err) {
-                      console.error("Giảm số lượng thất bại:", err);
-                    }
+                  if (item.cartQuantity > 1) {
+                    dispatch(decreaseQuantity(item.id));
                   }
                 }}
               >
@@ -126,41 +111,24 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
                 max={item.stock_quantity}
                 value={item.cartQuantity}
                 onClick={(e) => e.stopPropagation()}
-                onChange={async (e) => {
+                onChange={(e) => {
                   const value = parseInt(e.target.value, 10);
                   if (
                     !isNaN(value) &&
                     value >= 1 &&
                     value <= item.stock_quantity
                   ) {
-                    try {
-                      await updateCartItem(item.id, {
-                        ...item,
-                        cartQuantity: value,
-                      });
-                      dispatch(setQuantity({ id: item.id, quantity: value }));
-                    } catch (err) {
-                      console.error("Cập nhật số lượng thất bại:", err);
-                    }
+                    dispatch(setQuantity({ id: item.id, quantity: value }));
                   }
                 }}
                 className="w-12 text-center border rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
 
               <button
-                onClick={async (e) => {
+                onClick={(e) => {
                   e.stopPropagation();
-                  const newQuantity = item.cartQuantity + 1;
-                  if (newQuantity <= item.stock_quantity) {
-                    try {
-                      await updateCartItem(item.id, {
-                        ...item,
-                        cartQuantity: newQuantity,
-                      });
-                      dispatch(increaseQuantity(item.id));
-                    } catch (err) {
-                      console.error("Tăng số lượng thất bại:", err);
-                    }
+                  if (item.cartQuantity < item.stock_quantity) {
+                    dispatch(increaseQuantity(item.id));
                   }
                 }}
               >

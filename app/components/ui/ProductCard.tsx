@@ -9,11 +9,10 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
-import { addToCartApi } from "@/app/utils/cartApi";
-import { fetchCartItems } from "@/store/slices/cartSlice";
 import QuantityModal from "./QuantityModal";
 import type { Inventory, CartItem } from "@/app/types/Product";
 import { formatCurrencyToNumber } from "@/app/utils/helpers";
+import { addToCart } from "@/store/slices/cartSlice";
 
 const ProductCard = ({ product }: { product: Inventory }) => {
   const dispatch = useDispatch();
@@ -29,33 +28,24 @@ const ProductCard = ({ product }: { product: Inventory }) => {
   const offerPrice = formatCurrencyToNumber(product.offer_price ?? "0");
 
   const hasSale = offerPrice > 0 && offerPrice < salePrice;
-
   const discount = hasSale
     ? Math.round(((salePrice - offerPrice) / salePrice) * 100)
     : 0;
 
-  const handleConfirm = async (quantity: number) => {
+  const handleConfirm = (quantity: number) => {
     const selectedItem: CartItem = {
       ...product,
       cartQuantity: quantity,
     };
 
-    try {
-      // Gọi API thêm vào giỏ hàng
-      await addToCartApi(selectedItem);
+    // ✅ Thêm vào Redux store
+    dispatch(addToCart(selectedItem));
 
-      // Lấy lại cart từ server để sync Redux
-      await dispatch(fetchCartItems() as any);
+    toast.success("Đã thêm vào giỏ hàng!");
 
-      toast.success("Đã thêm vào giỏ hàng!");
-
-      if (actionType === "buyNow") {
-        localStorage.setItem("selectedItems", JSON.stringify([selectedItem]));
-        router.push("/check-out");
-      }
-    } catch (error) {
-      toast.error("Không thể thêm vào giỏ hàng. Vui lòng đăng nhập.");
-      console.error("Add to cart error:", error);
+    if (actionType === "buyNow") {
+      localStorage.setItem("selectedItems", JSON.stringify([selectedItem]));
+      router.push("/check-out");
     }
 
     setShowModal(false);
@@ -131,7 +121,7 @@ const ProductCard = ({ product }: { product: Inventory }) => {
           className="block text-sm sm:text-[14px] font-normal line-clamp-2 h-[38px] overflow-hidden"
         >
           {product.title}
-        </Link> 
+        </Link>
 
         {/* Giá */}
         <div className="text-sm sm:text-base mt-1">
