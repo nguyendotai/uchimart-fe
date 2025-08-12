@@ -5,17 +5,21 @@ import { GoDotFill } from "react-icons/go";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
 import QuantityModal from "./QuantityModal";
 import type { Inventory, CartItem } from "@/app/types/Product";
 import { formatCurrencyToNumber } from "@/app/utils/helpers";
-import { addToCart } from "@/store/slices/cartSlice";
+
+// Import action mới từ cartSlice
+import { addToCartLocal, addToCartApi } from "@/store/slices/cartSlice";
+import { RootState } from "@/store";
+import { AppDispatch } from "@/store";
 
 const ProductCard = ({ product }: { product: Inventory }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -23,6 +27,9 @@ const ProductCard = ({ product }: { product: Inventory }) => {
   const [actionType, setActionType] = useState<"addToCart" | "buyNow" | null>(
     null
   );
+
+  // Kiểm tra trạng thái đăng nhập (từ store user)
+  const isLoggedIn = !!localStorage.getItem("token");
 
   const salePrice = formatCurrencyToNumber(product.sale_price);
   const offerPrice = formatCurrencyToNumber(product.offer_price ?? "0");
@@ -32,20 +39,32 @@ const ProductCard = ({ product }: { product: Inventory }) => {
     ? Math.round(((salePrice - offerPrice) / salePrice) * 100)
     : 0;
 
-  const handleConfirm = (quantity: number) => {
+  const handleConfirm = async (quantity: number) => {
     const selectedItem: CartItem = {
       ...product,
       cartQuantity: quantity,
     };
 
-    // ✅ Thêm vào Redux store
-    dispatch(addToCart(selectedItem));
+    try {
+      if (isLoggedIn) {
+        await dispatch(
+          addToCartApi({
+            product_id: product.id,
+            quantity,
+          } as any) // tuỳ kiểu API yêu cầu
+        ).unwrap();
+        toast.success("Đã thêm vào giỏ hàng (API)!");
+      } else {
+        dispatch(addToCartLocal(selectedItem));
+        toast.success("Đã thêm vào giỏ hàng (Local)!");
+      }
 
-    toast.success("Đã thêm vào giỏ hàng!");
-
-    if (actionType === "buyNow") {
-      localStorage.setItem("selectedItems", JSON.stringify([selectedItem]));
-      router.push("/check-out");
+      if (actionType === "buyNow") {
+        localStorage.setItem("selectedItems", JSON.stringify([selectedItem]));
+        router.push("/check-out");
+      }
+    } catch (error) {
+      toast.error("Lỗi khi thêm sản phẩm vào giỏ!");
     }
 
     setShowModal(false);
@@ -54,9 +73,8 @@ const ProductCard = ({ product }: { product: Inventory }) => {
 
   return (
     <div className="relative group w-full max-w-[200px] mx-auto">
-      {/* Modal */}
       <QuantityModal
-        key={actionType}
+        key={actionType ?? "modal"}
         open={showModal}
         onClose={() => setShowModal(false)}
         onConfirm={handleConfirm}
@@ -67,7 +85,6 @@ const ProductCard = ({ product }: { product: Inventory }) => {
         productStock={product.stock_quantity}
       />
 
-      {/* Tag giảm giá */}
       {hasSale && (
         <div className="absolute top-[-8px] left-[-8px] z-10">
           <div className="w-[70px] h-5 bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center rounded-tl-md rounded-br-md shadow">
@@ -76,7 +93,6 @@ const ProductCard = ({ product }: { product: Inventory }) => {
         </div>
       )}
 
-      {/* Hình ảnh */}
       <Link
         href={`/product/${product.slug}`}
         className="w-full h-[120px] sm:h-[150px] bg-white flex items-center justify-center overflow-hidden"
@@ -91,7 +107,6 @@ const ProductCard = ({ product }: { product: Inventory }) => {
         />
       </Link>
 
-      {/* Nút hành động */}
       <div className="flex justify-between gap-2 py-1 px-1">
         <button
           onClick={() => {
@@ -114,7 +129,6 @@ const ProductCard = ({ product }: { product: Inventory }) => {
         </button>
       </div>
 
-      {/* Nội dung */}
       <div className="mt-2 px-1">
         <Link
           href={`/product/${product.slug}`}
@@ -123,7 +137,6 @@ const ProductCard = ({ product }: { product: Inventory }) => {
           {product.title}
         </Link>
 
-        {/* Giá */}
         <div className="text-sm sm:text-base mt-1">
           {hasSale ? (
             <>
@@ -141,7 +154,6 @@ const ProductCard = ({ product }: { product: Inventory }) => {
           )}
         </div>
 
-        {/* Trạng thái và đã bán */}
         <div className="flex flex-wrap items-center text-xs sm:text-sm text-gray-600 mt-1 gap-x-2">
           <div className="flex items-center gap-1 text-[#26AA99]">
             <MdEventAvailable

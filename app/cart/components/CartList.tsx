@@ -3,7 +3,7 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { removeFromCart } from "@/store/slices/cartSlice";
+import { removeFromCartLocal } from "@/store/slices/cartSlice";
 import CartItem from "./CartItem";
 import ConfirmModal from "./ComfirmModal";
 
@@ -36,7 +36,7 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
   };
 
   const confirmDelete = () => {
-    selectedIds.forEach((id) => dispatch(removeFromCart(id)));
+    selectedIds.forEach((id) => dispatch(removeFromCartLocal(id)));
     setSelectedIds([]);
     setShowConfirm(false);
   };

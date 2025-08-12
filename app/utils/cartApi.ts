@@ -1,47 +1,40 @@
-// utils/cartApi.ts
 import axios from "axios";
-import { CartItem } from "@/app/types/Product";
+import type { CartItem } from "@/app/types/Product";
+import { RootState } from "@/store";
 
-const API_BASE = "http://127.0.0.1:8000/api"; // chỉnh lại nếu khác
+const API_URL = `http://127.0.0.1:8000`; // vd: http://localhost:8000/api
 
-export const fetchCart = async () => {
-  const response = await axios.get(`${API_BASE}/carts`);
-  return response.data;
-};
-
-export const addToCartApi = async (item: CartItem) => {
-  const token = localStorage.getItem("token"); // dùng authToken, KHÔNG phải "token"
-
-  if (!token) {
-    throw new Error("No auth token found");
-  }
-
-  const response = await axios.post(`${API_BASE}/carts`, item, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+// Thêm sản phẩm vào giỏ
+export const addCartItem = async (inventory_id: number, quantity: number) => {
+  const res = await axios.post(`${API_URL}/carts/items`, {
+    inventory_id,
+    quantity,
+  }, {
+    withCredentials: true, // nếu dùng Sanctum
   });
-
-  return response.data;
+  return res.data;
 };
 
+// Lấy giỏ hàng
+export const getCart = async () => {
+  const res = await axios.get(`${API_URL}/carts`, { withCredentials: true });
+  return res.data;
+};
 
-export const updateCartItem = async (cartId: number, item: CartItem) => {
-  const token = localStorage.getItem("token");
-  console.log("TOKEN GỬI LÊN:", token);
-
-  const response = await axios.put(`${API_BASE}/carts/${cartId}`, item, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+// Cập nhật số lượng
+export const updateCartItem = async (itemId: number, quantity: number) => {
+  const res = await axios.put(`${API_URL}/carts/items/${itemId}`, {
+    quantity,
+  }, {
+    withCredentials: true,
   });
-
-  return response.data;
+  return res.data;
 };
 
-export const removeCartItem = async (cartId: number, inventoryId: number) => {
-  const response = await axios.delete(
-    `${API_BASE}/carts/${cartId}/items/${inventoryId}`
-  );
-  return response.data;
+// Xóa sản phẩm
+export const removeCartItem = async (itemId: number) => {
+  const res = await axios.delete(`${API_URL}/carts/items/${itemId}`, {
+    withCredentials: true,
+  });
+  return res.data;
 };

@@ -1,12 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import {
-  removeFromCart,
-  increaseQuantity,
-  decreaseQuantity,
-  setQuantity,
+  setQuantityLocal,
+  removeFromCartLocal,
+  increaseQuantityLocal,
+  decreaseQuantityLocal,
+  removeItemFromCartApi,
+  updateCartItemApi,
 } from "@/store/slices/cartSlice";
 import type { CartItem as CartItemType } from "@/app/types/Product";
 import ConfirmModal from "./ComfirmModal";
@@ -15,6 +17,7 @@ import {
   formatCurrencyToNumber,
   formatNumberToCurrency,
 } from "@/app/utils/helpers";
+import type { AppDispatch } from "@/store/index";
 
 type Props = {
   item: CartItemType;
@@ -23,23 +26,46 @@ type Props = {
 };
 
 export default function CartItem({ item, checked, onItemClick }: Props) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [showConfirm, setShowConfirm] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Kiểm tra trạng thái login từ localStorage
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
 
   const salePrice = formatCurrencyToNumber(item.sale_price);
   const offerPrice = formatCurrencyToNumber(item.offer_price ?? "0");
-
   const hasDiscount = offerPrice > 0 && offerPrice < salePrice;
   const finalPrice = hasDiscount ? offerPrice : salePrice;
   const discount = hasDiscount
     ? Math.round(((salePrice - offerPrice) / salePrice) * 100)
     : 0;
 
-  const handleDelete = () => setShowConfirm(true);
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowConfirm(true);
+  };
 
   const confirmDelete = () => {
-    dispatch(removeFromCart(item.id));
+    if (isLoggedIn) {
+      dispatch(removeItemFromCartApi(item.id)); // API mode
+    } else {
+      dispatch(removeFromCartLocal(item.id)); // Local mode
+    }
     setShowConfirm(false);
+  };
+
+  const changeQuantity = (newQuantity: number) => {
+    if (newQuantity < 1 || newQuantity > item.stock_quantity) return;
+
+    if (isLoggedIn) {
+      dispatch(updateCartItemApi({ id: item.id, quantity: newQuantity }));
+    } else {
+      dispatch(setQuantityLocal({ id: item.id, quantity: newQuantity }));
+    }
   };
 
   return (
@@ -98,7 +124,16 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
                 onClick={(e) => {
                   e.stopPropagation();
                   if (item.cartQuantity > 1) {
-                    dispatch(decreaseQuantity(item.id));
+                    if (isLoggedIn) {
+                      dispatch(
+                        updateCartItemApi({
+                          id: item.id,
+                          quantity: item.cartQuantity - 1,
+                        })
+                      );
+                    } else {
+                      dispatch(decreaseQuantityLocal(item.id));
+                    }
                   }
                 }}
               >
@@ -113,12 +148,8 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
                 onClick={(e) => e.stopPropagation()}
                 onChange={(e) => {
                   const value = parseInt(e.target.value, 10);
-                  if (
-                    !isNaN(value) &&
-                    value >= 1 &&
-                    value <= item.stock_quantity
-                  ) {
-                    dispatch(setQuantity({ id: item.id, quantity: value }));
+                  if (!isNaN(value)) {
+                    changeQuantity(value);
                   }
                 }}
                 className="w-12 text-center border rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
@@ -128,7 +159,16 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
                 onClick={(e) => {
                   e.stopPropagation();
                   if (item.cartQuantity < item.stock_quantity) {
-                    dispatch(increaseQuantity(item.id));
+                    if (isLoggedIn) {
+                      dispatch(
+                        updateCartItemApi({
+                          id: item.id,
+                          quantity: item.cartQuantity + 1,
+                        })
+                      );
+                    } else {
+                      dispatch(increaseQuantityLocal(item.id));
+                    }
                   }
                 }}
               >
@@ -142,10 +182,7 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
               </div>
               <button
                 className="text-red-500 hover:text-red-700 text-lg"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDelete();
-                }}
+                onClick={handleDeleteClick}
               >
                 <FaRegTrashCan />
               </button>

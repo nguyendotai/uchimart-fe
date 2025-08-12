@@ -7,7 +7,9 @@ import { toast } from "react-toastify";
 import { CgShapeZigzag } from "react-icons/cg";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
-
+import { useDispatch, useSelector } from "react-redux";
+import { syncCartApi, fetchCartFromApi } from "@/store/slices/cartSlice";
+import type { AppDispatch, RootState } from "@/store";
 
 type IconData = {
   id: number;
@@ -19,7 +21,6 @@ type IconData = {
   vr: number;
   color: string;
 };
-
 
 export default function Login() {
   const router = useRouter();
@@ -34,9 +35,13 @@ export default function Login() {
   const [icons, setIcons] = useState<IconData[]>([]);
   const iconsRef = useRef<IconData[]>([]);
 
-
-
-
+  const dispatch = useDispatch<AppDispatch>();
+  const persistedCart = localStorage.getItem("persist:cart");
+  let cartItems = [];
+  if (persistedCart) {
+    const parsed = JSON.parse(persistedCart);
+    cartItems = JSON.parse(parsed.items || "[]");
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -52,33 +57,33 @@ export default function Login() {
     try {
       setLoading(true);
 
-      // Gọi API đăng nhập
       const res = await axios.post<LoginResponse>(
         "http://localhost:8000/api/login",
-        {
-          email: form.email,
-          password: form.password,
-        }
+        { email: form.email, password: form.password }
       );
+
       if (!res.data.token) {
         toast.error("Không nhận được token từ server!");
         return;
       }
 
-      // Lưu token riêng
       localStorage.setItem("token", res.data.token);
-
-      // Lưu user riêng
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      
-      // Phát sự kiện custom để các component khác biết user đã thay đổi
       window.dispatchEvent(new Event("userChanged"));
-      router.push("/"); // quay lại trang chủ
+
+      // 🔹 Gọi merge cart ngay sau login thành công
+      if (cartItems.length > 0) {
+        await dispatch(syncCartApi(cartItems));
+      }
+
+      // 🔹 Lấy lại cart từ DB để Redux có đúng cart_item_id
+      await dispatch(fetchCartFromApi());
+
+      router.push("/");
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
-        const axiosErr = err as AxiosError<{ error?: string }>;
-        toast.error(axiosErr.response?.data?.error || "Đăng nhập thất bại!");
+        toast.error(err.response?.data?.error || "Đăng nhập thất bại!");
       } else {
         toast.error("Lỗi không xác định!");
       }
@@ -86,7 +91,6 @@ export default function Login() {
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     const initIcons: IconData[] = Array.from({ length: numIcons }, (_, i) => ({
@@ -97,14 +101,14 @@ export default function Login() {
       vy: (Math.random() - 0.5) * 0.01,
       rotate: Math.random() * 360,
       vr: (Math.random() - 0.5) * 0.2,
-      color: colors[Math.floor(Math.random() * colors.length)]
+      color: colors[Math.floor(Math.random() * colors.length)],
     }));
 
     setIcons(initIcons);
     iconsRef.current = initIcons;
 
     const animate = () => {
-      iconsRef.current = iconsRef.current.map(icon => {
+      iconsRef.current = iconsRef.current.map((icon) => {
         let { x, y, vx, vy, rotate } = icon;
         const { vr } = icon; // vr dùng const vì không đổi
 
@@ -118,14 +122,12 @@ export default function Login() {
         return { ...icon, x, y, vx, vy, rotate };
       });
 
-
       setIcons([...iconsRef.current]);
       requestAnimationFrame(animate);
     };
 
     requestAnimationFrame(animate);
   }, []);
-
 
   const handleLoginWithGoogle = () => {
     window.location.href = "http://127.0.0.1:8000/auth/google"; // URL BE Laravel
@@ -171,9 +173,21 @@ export default function Login() {
       </div>
 
       <div>
-        <img src="./img/salad3.png" alt="" className="absolute top-5 left-5 z-10 w-[35%]" />
-        <img src="./img/fruits1.png" alt="" className="absolute top-30 left-20 z-9 w-[35%]" />
-        <img src="./img/salad1.png" alt="" className="absolute top-95 left-10 z-8 w-[30%]" />
+        <img
+          src="./img/salad3.png"
+          alt=""
+          className="absolute top-5 left-5 z-10 w-[35%]"
+        />
+        <img
+          src="./img/fruits1.png"
+          alt=""
+          className="absolute top-30 left-20 z-9 w-[35%]"
+        />
+        <img
+          src="./img/salad1.png"
+          alt=""
+          className="absolute top-95 left-10 z-8 w-[30%]"
+        />
       </div>
 
       {/* Form đăng nhập */}
@@ -182,10 +196,13 @@ export default function Login() {
           Đăng nhập
         </h2>
 
-        <form className="space-y-4" onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit();
-        }}>
+        <form
+          className="space-y-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+        >
           {/* Email */}
           <input
             name="email"
@@ -208,7 +225,10 @@ export default function Login() {
 
           {/* Forgot password */}
           <div className="text-right">
-            <Link href="/forgotPassword" className="text-sm text-green-600 hover:underline">
+            <Link
+              href="/forgotPassword"
+              className="text-sm text-green-600 hover:underline"
+            >
               Quên mật khẩu?
             </Link>
           </div>
@@ -231,7 +251,10 @@ export default function Login() {
 
         {/* Social login */}
         <div className="flex gap-4">
-          <button onClick={handleLoginWithGoogle} className="flex-1 flex items-center justify-center border border-gray-300 rounded-full py-2 hover:bg-gray-50 cursor-pointer">
+          <button
+            onClick={handleLoginWithGoogle}
+            className="flex-1 flex items-center justify-center border border-gray-300 rounded-full py-2 hover:bg-gray-50 cursor-pointer"
+          >
             <FcGoogle className="w-5 h-5 mr-2" />
             Google
           </button>
@@ -246,9 +269,8 @@ export default function Login() {
         </p>
       </div>
 
-
       {/* Icons di chuyển mượt */}
-      {icons.map(icon => (
+      {icons.map((icon) => (
         <div
           key={icon.id}
           className="absolute z-10"
@@ -257,13 +279,12 @@ export default function Login() {
             left: `${icon.x}%`,
             transform: `rotate(${icon.rotate}deg)`,
             fontSize: "50px",
-            color: icon.color
+            color: icon.color,
           }}
         >
           <CgShapeZigzag />
         </div>
       ))}
     </div>
-
   );
 }
