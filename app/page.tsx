@@ -115,7 +115,7 @@ export default function Home() {
           <div className="w-full mx-auto mt-4 md:mt-6">
             <div className="w-full px-2 md:px-4">
               <div className="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-4 w-full">
-                <span className="flex-1 bg-white shadow rounded-xl px-3 py-4 md:py-7.5 flex items-center text-lg md:text-2xl font-semibold">
+                <span className="flex-1 bg-white shadow rounded-xl px-3 py-4 md:py-5.5 flex items-center text-lg md:text-2xl font-semibold">
                   Duy nhất hôm nay
                 </span>
                 <div className="flex-[2] w-full">

@@ -43,7 +43,7 @@ export default function PageLayout({
 
           {/* Main content */}
           <main
-            className={`flex-1 min-h-screen pt-[80px] md:pt-[120px] pb-[60px] px-2 sm:px-4 md:px-6 overflow-x-hidden
+            className={`flex-1 min-h-screen pt-[110px] md:pt-[120px] pb-[60px] px-2 sm:px-4 md:px-6 overflow-x-hidden
               ${hasSidebar ? "lg:ml-[250px]" : ""}
               ${isAccountPage ? "bg-[#edf2f78a]" : "bg-white"}`}
           >

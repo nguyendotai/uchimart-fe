@@ -1,17 +1,26 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import ProductCard from "../../components/ui/ProductCard";
-import { Inventory, Product } from "@/app/types/Product"; // ✅ sửa import đúng
+import { Inventory, Product } from "@/app/types/Product";
 
 type Props = {
-  categoryId: number;         // category_group.id
-  categoryName: string;
+  categoryId: number;
+  categoryName?: string;
   sortBy: string;
 };
 
 const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
   const [allProducts, setAllProducts] = useState<Inventory[]>([]);
   const [visibleCount, setVisibleCount] = useState(12);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Xác định màn hình mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/products")
@@ -25,7 +34,7 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
         const inventories: Inventory[] = products.flatMap((p) =>
           p.inventories.map((inv) => ({
             ...inv,
-            subcategories: p.subcategories, // gán subcategories từ product cha vào inventory
+            subcategories: p.subcategories,
           }))
         );
 
@@ -64,25 +73,25 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
         }
 
         setAllProducts(sorted);
-        setVisibleCount(12);
+        setVisibleCount(isMobile ? 12 : 12); // Mobile bắt đầu 4 sp, desktop 12 sp
       })
       .catch((err) => {
         console.error("Lỗi khi tải sản phẩm:", err);
       });
-  }, [categoryId, sortBy]);
+  }, [categoryId, sortBy, isMobile]);
 
   const visibleProducts = allProducts.slice(0, visibleCount);
   const hasMore = visibleCount < allProducts.length;
 
   const handleShowMore = () => {
-    setVisibleCount((prev) => prev + 12);
+    setVisibleCount((prev) => prev + (isMobile ? 2 : 12)); // Mobile +2, Desktop +12
   };
 
   return (
     <div className="mb-6 p-2">
       {visibleProducts.length > 0 ? (
         <>
-          <ul className="grid grid-cols-6 gap-4">
+          <ul className="grid grid-cols-2 sm:grid-cols-6 gap-4">
             {visibleProducts.map((product) => (
               <li
                 key={product.id}

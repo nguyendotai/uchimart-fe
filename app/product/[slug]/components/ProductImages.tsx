@@ -9,12 +9,12 @@ interface ProductImagesProps {
 }
 
 const ProductImages = ({ inventory }: ProductImagesProps) => {
-  const fallbackImage = "/fallback.jpg"; // fallback ảnh nếu không có
+  const fallbackImage = "/fallback.jpg";
 
   return (
-    <div className="flex gap-4">
-      {/* Thumbnail bên trái */}
-      <div className="w-[14%]">
+    <div className="flex gap-4 flex-col sm:flex-row">
+      {/* Thumbnail bên trái (ẩn trên mobile) */}
+      <div className="w-[14%] hidden sm:block">
         <Image
           src={inventory.image || fallbackImage}
           alt={inventory.title}
@@ -24,9 +24,9 @@ const ProductImages = ({ inventory }: ProductImagesProps) => {
         />
       </div>
 
-      {/* Ảnh chính bên phải */}
-      <div className="w-[86%]">
-        <div className="relative w-full min-h-[440px] rounded-xl border border-gray-200 overflow-hidden">
+      {/* Ảnh chính */}
+      <div className="w-full sm:w-[86%]">
+        <div className="relative w-full min-h-[300px] sm:min-h-[440px] rounded-xl border border-gray-200 overflow-hidden">
           <Image
             src={inventory.image || fallbackImage}
             alt={inventory.title}

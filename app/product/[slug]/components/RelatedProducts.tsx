@@ -9,7 +9,8 @@ type Props = {
   allProducts: Inventory[];
 };
 
-const ITEMS_PER_PAGE = 4;
+const ITEMS_PER_PAGE_DESKTOP = 4;
+const ITEMS_PER_PAGE_MOBILE = 2;
 
 const RelatedProducts = ({ currentInventory, allProducts }: Props) => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -48,22 +49,30 @@ const RelatedProducts = ({ currentInventory, allProducts }: Props) => {
     const el = scrollRef.current;
     if (!el) return;
     const card = el.querySelector("div > div");
-    const cardWidth = card ? (card as HTMLElement).offsetWidth + 16 : 220;
-    el.scrollBy({ left: cardWidth * ITEMS_PER_PAGE, behavior: "smooth" });
+    const cardWidth = card ? (card as HTMLElement).offsetWidth + 16 : 200;
+    const perPage =
+      window.innerWidth < 640
+        ? ITEMS_PER_PAGE_MOBILE
+        : ITEMS_PER_PAGE_DESKTOP;
+    el.scrollBy({ left: cardWidth * perPage, behavior: "smooth" });
   };
 
   const scrollBackAmount = () => {
     const el = scrollRef.current;
     if (!el) return;
     const card = el.querySelector("div > div");
-    const cardWidth = card ? (card as HTMLElement).offsetWidth + 16 : 220;
-    el.scrollBy({ left: -cardWidth * ITEMS_PER_PAGE, behavior: "smooth" });
+    const cardWidth = card ? (card as HTMLElement).offsetWidth + 16 : 200;
+    const perPage =
+      window.innerWidth < 640
+        ? ITEMS_PER_PAGE_MOBILE
+        : ITEMS_PER_PAGE_DESKTOP;
+    el.scrollBy({ left: -cardWidth * perPage, behavior: "smooth" });
   };
 
   if (related.length === 0) return null;
 
   return (
-    <div className="mt-6 relative">
+    <div className="mt-6 relative w-full overflow-hidden">
       <h2 className="text-2xl font-semibold mb-2 p-2 w-fit text-center rounded-xl">
         Sản phẩm liên quan
       </h2>
@@ -72,7 +81,7 @@ const RelatedProducts = ({ currentInventory, allProducts }: Props) => {
       {canScrollLeft && (
         <button
           onClick={scrollBackAmount}
-          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+          className="flex absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
         >
           <FaChevronLeft />
         </button>
@@ -81,12 +90,24 @@ const RelatedProducts = ({ currentInventory, allProducts }: Props) => {
       {/* Danh sách cuộn */}
       <div
         ref={scrollRef}
-        className="flex gap-4 scroll-smooth overflow-x-auto scrollbar-hide px-2"
+        className="
+          flex gap-x-3 sm:gap-x-4 
+          overflow-x-auto scroll-smooth scrollbar-hide 
+          px-2 sm:px-4
+          touch-pan-x snap-x snap-mandatory
+        "
       >
         {related.map((product) => (
           <div
             key={product.id}
-            className="min-w-[200px] max-w-[200px] flex-shrink-0 border border-gray-200 rounded-xl p-2"
+            className="
+              flex-shrink-0 
+              w-[calc(50%-0.375rem)]   /* Mobile: 2 sản phẩm */
+              sm:w-[clamp(140px,25vw,195px)] /* Desktop: size cố định */
+              border border-gray-200 rounded-xl 
+              p-2 sm:p-3 bg-white
+              snap-start
+            "
           >
             <ProductCard product={product} />
           </div>
@@ -97,7 +118,7 @@ const RelatedProducts = ({ currentInventory, allProducts }: Props) => {
       {canScrollRight && (
         <button
           onClick={scrollByAmount}
-          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
+          className="flex absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-white shadow p-2 rounded-full"
         >
           <FaChevronRight />
         </button>

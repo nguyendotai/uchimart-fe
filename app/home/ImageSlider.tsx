@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 type Banner = {
   id: number;
@@ -21,9 +22,7 @@ export default function ImageSlider() {
   const [isClient, setIsClient] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  useEffect(() => setIsClient(true), []);
 
   useEffect(() => {
     if (!isClient) return;
@@ -32,9 +31,7 @@ export default function ImageSlider() {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
       })
-      .then((json) => {
-        setBanners(json.data);
-      })
+      .then((json) => setBanners(json.data))
       .catch((err) => console.error("Lỗi tải banners:", err))
       .finally(() => setIsLoading(false));
   }, [isClient]);
@@ -47,19 +44,35 @@ export default function ImageSlider() {
     return () => clearInterval(interval);
   }, [banners]);
 
+  const goPrev = () => {
+    setIndex((prev) => (prev - 1 + banners.length) % banners.length);
+  };
+
+  const goNext = () => {
+    setIndex((prev) => (prev + 1) % banners.length);
+  };
+
   if (isLoading) {
     return (
-      <div className="w-full aspect-[2/1] bg-gray-200 animate-pulse rounded-xl shadow"></div>
+      <div className="w-full aspect-[4/1] bg-gray-200 animate-pulse rounded-xl shadow"></div>
     );
   }
 
   if (!isClient || banners.length === 0) return null;
 
-  const currentBanner = banners[index % banners.length];
+  const currentBanner = banners[index];
   if (!currentBanner) return null;
 
   return (
-    <div className="relative w-full aspect-[2/1] md:aspect-[16/6] rounded-xl bg-white shadow flex justify-center items-center">
+    <div className="relative w-full aspect-[4/1] md:aspect-[16/4] rounded-xl bg-white shadow flex justify-center items-center">
+      {/* Nút mũi tên trái */}
+      <button
+        onClick={goPrev}
+        className="absolute hidden md:left-1 z-20 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full transition"
+      >
+        <IoIosArrowBack size={24} />
+      </button>
+
       <div className="relative w-full h-full rounded-xl overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
@@ -80,13 +93,23 @@ export default function ImageSlider() {
                 src={currentBanner.desktop_image}
                 alt={`banner ${index + 1}`}
                 fill
+                className="object-cover"
               />
             </a>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 flex gap-2">
+      {/* Nút mũi tên phải */}
+      <button
+        onClick={goNext}
+        className="absolute hidden md:right-1 z-20 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full transition"
+      >
+        <IoIosArrowForward size={24} />
+      </button>
+
+      {/* Dots */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 hidden md:flex gap-2">
         {banners.map((_, i) => (
           <div
             key={i}

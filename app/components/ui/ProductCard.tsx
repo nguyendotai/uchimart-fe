@@ -108,7 +108,7 @@ const ProductCard = ({ product }: { product: Inventory }) => {
             setActionType("buyNow");
             setShowModal(true);
           }}
-          className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] text-xs sm:text-sm rounded-full px-2 py-1 w-[70%] hover:bg-[#921573] hover:text-white transition"
+          className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] text-xs sm:text-sm rounded-full px-2 py-1 w-[80%] hover:bg-[#921573] hover:text-white transition"
         >
           {t("buyNow")}
         </button>
@@ -118,7 +118,7 @@ const ProductCard = ({ product }: { product: Inventory }) => {
             setActionType("addToCart");
             setShowModal(true);
           }}
-          className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] text-sm rounded-full px-2 py-1 w-[30%] hover:bg-[#921573] hover:text-white transition"
+          className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] text-sm rounded-full px-2 py-1 w-[20%] hover:bg-[#921573] hover:text-white transition"
         >
           <MdOutlineAddShoppingCart size={16} />
         </button>
@@ -128,10 +128,10 @@ const ProductCard = ({ product }: { product: Inventory }) => {
       <div className="mt-2 px-1">
         <Link
           href={`/product/${product.slug}`}
-          className="block text-sm sm:text-[14px] font-normal truncate line-clamp-2 h-[38px]"
+          className="block text-sm sm:text-[14px] font-normal line-clamp-2 h-[38px] overflow-hidden"
         >
           {product.title}
-        </Link>
+        </Link> 
 
         {/* Giá */}
         <div className="text-sm sm:text-base mt-1">

@@ -23,7 +23,7 @@ const ScrollToTopButton = () => {
   return (
     <button
       onClick={handleScrollToTop}
-      className="fixed bottom-16 sm:bottom-6 right-4 z-[9999] p-3 rounded-full bg-[#921573] text-white shadow-lg hover:bg-[#740e5b] transition-all"
+      className="fixed bottom-16 right-2 sm:bottom-6 sm:right-4 z-[9999] p-3 rounded-full bg-[#921573] text-white shadow-lg hover:bg-[#740e5b] transition-all"
     >
       <FaArrowUp />
     </button>

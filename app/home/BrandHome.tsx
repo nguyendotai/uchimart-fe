@@ -13,8 +13,8 @@ const BrandHome = () => {
   }, []);
 
   return (
-    <div className="bg-white shadow rounded-xl p-4">
-      <ul className="flex flex-wrap justify-center items-center gap-4">
+    <div className="bg-white shadow rounded-xl">
+      <ul className="flex flex-wrap justify-between items-center gap-4 p-2">
         {brands.map((brand, index) => (
           <li key={index} className="flex items-center justify-center">
             <div className="aspect-square max-w-[60px] w-full">

@@ -119,6 +119,11 @@ const DetailProduct = () => {
     </div>
   );
 
+  const { ref: buyBoxMobileRef, inView: buyBoxMobileInView } = useInView({
+    triggerOnce: false,
+    threshold: 0.2,
+  });
+
   return (
     <PageTransitionWrapper>
       <div className="w-full">
@@ -143,31 +148,52 @@ const DetailProduct = () => {
               </div>
             ) : (
               <>
-                <div className="flex gap-2 justify-between">
-                  {/* Bên trái: hình ảnh, mô tả, banner */}
-                  <div className="w-[58.5%]">
+                <div className="flex flex-col sm:flex-row gap-2 justify-between">
+                  {/* Bên trái (mobile: ảnh + BuyBox + mô tả) */}
+                  <div className="w-full sm:w-[58.5%] flex flex-col order-1 sm:order-1">
+                    {/* Ảnh */}
                     <div ref={imagesRef}>
                       {imagesInView && (
-                        <>
-                          <ProductImages
-                            inventory={currentInventory}
-                            product={currentProduct}
-                          />
-                          <ProductInfo
-                            inventory={currentInventory}
-                            product={currentProduct}
-                          />
-                        </>
+                        <ProductImages
+                          inventory={currentInventory}
+                          product={currentProduct}
+                        />
                       )}
                     </div>
 
+                    {/* BuyBox: di chuyển vào cột trái trên mobile */}
+                    <div ref={buyBoxMobileRef} className="mt-4 sm:hidden">
+                      {buyBoxMobileInView && (
+                        <BuyBox
+                          inventory={currentInventory}
+                          product={currentProduct}
+                          allInventories={currentProduct?.inventories}
+                          onSelect={(inv) => setCurrentInventory(inv)}
+                        />
+                      )}
+                    </div>
+
+                    {/* Mô tả */}
+                    <div className="mt-4">
+                      {imagesInView && (
+                        <ProductInfo
+                          inventory={currentInventory}
+                          product={currentProduct}
+                        />
+                      )}
+                    </div>
+
+                    {/* Banner */}
                     <div ref={bannerRef} className="mt-4">
                       {bannerInView && <SliderBanner />}
                     </div>
                   </div>
 
-                  {/* Bên phải: thông tin mua hàng */}
-                  <div ref={buyBoxRef} className="w-[40%]">
+                  {/* Bên phải: BuyBox chỉ hiện ở desktop */}
+                  <div
+                    ref={buyBoxRef}
+                    className="w-[40%] hidden sm:block order-2"
+                  >
                     {buyBoxInView && (
                       <BuyBox
                         inventory={currentInventory}

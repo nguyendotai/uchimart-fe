@@ -53,6 +53,7 @@ const Search = ({ isMobile = false }: { isMobile?: boolean }) => {
       <div className="w-full flex gap-2 items-center">
         <div className="relative flex-1 min-w-0">
           <CiSearch
+            onClick={handleSearch}
             className={clsx(
               "absolute top-1/2 left-2 -translate-y-1/2 text-gray-400",
               isMobile ? "text-lg" : "text-xl"
@@ -91,7 +92,7 @@ const Search = ({ isMobile = false }: { isMobile?: boolean }) => {
 
         <button
           onClick={handleSearch}
-          className="h-8 sm:h-10 px-4 text-white rounded hover:bg-blue-600 whitespace-nowrap shrink-0"
+          className="hidden sm:block h-8 sm:h-10 px-4 text-white rounded hover:bg-blue-600 whitespace-nowrap shrink-0"
           style={{ backgroundColor: "#921573" }}
         >
           Tìm kiếm
