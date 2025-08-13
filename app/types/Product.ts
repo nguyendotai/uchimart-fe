@@ -22,6 +22,7 @@ export interface Subcategory {
 }
 
 export interface Inventory {
+  inventory_id: number;
   id: number;
   title: string;
   slug: string;
@@ -74,4 +75,5 @@ export interface Product {
 
 export type CartItem = Inventory & {
   cartQuantity: number;
+  quantity?: number;
 };

@@ -60,36 +60,35 @@ export const fetchCartFromApi = createAsyncThunk(
 // Đồng bộ giỏ hàng local -> DB khi login
 export const syncCartApi = createAsyncThunk(
   "cart/syncCart",
-  async (localItems: CartItem[]) => {
+  async (payload: { items: { inventory_id: number; quantity: number }[] }) => {
     const res = await axios.post(
       "http://127.0.0.1:8000/api/carts/sync-cart",
-      { items: localItems },
-      {
-        headers: getAuthHeader(),
-      }
+      payload, // ✅ payload đúng format { items: [...] }
+      { headers: getAuthHeader() }
     );
-    return res.data.data as CartItem[];
+    console.log("API sync-cart response:", res.data);
+    return res.data.cart.items as CartItem[];
   }
 );
+
+
 
 // Thêm sản phẩm vào giỏ (API)
 export const addToCartApi = createAsyncThunk(
   "cart/addToCartApi",
   async ({
-    product_id,
+    inventory_id,
     quantity,
   }: {
-    product_id: number;
+    inventory_id: number;
     quantity: number;
   }) => {
     const res = await axios.post(
       "http://127.0.0.1:8000/api/carts/items",
-      { product_id, quantity },
-      {
-        headers: getAuthHeader(),
-      }
+      { inventory_id, quantity },
+      { headers: getAuthHeader() }
     );
-    return res.data.data as CartItem;
+    return res.data.cart.items; // hoặc item tùy BE trả
   }
 );
 
@@ -100,11 +99,9 @@ export const updateCartItemApi = createAsyncThunk(
     const res = await axios.put(
       `http://127.0.0.1:8000/api/carts/items/${id}`,
       { quantity },
-      {
-        headers: getAuthHeader(),
-      }
+      { headers: getAuthHeader() }
     );
-    return res.data.data as CartItem;
+    return res.data.item;
   }
 );
 
@@ -202,37 +199,41 @@ const cartSlice = createSlice({
       localStorage.removeItem(CART_KEY);
     },
   },
-
+  // ==========================
+  // extraReducers
+  // ==========================
   extraReducers: (builder) => {
     builder
       // Fetch from API
       .addCase(fetchCartFromApi.fulfilled, (state, action) => {
-        state.items = action.payload;
+        state.items = action.payload; // backend trả về mảng CartItem trực tiếp
       })
+
       // Sync local to API
       .addCase(syncCartApi.fulfilled, (state, action) => {
-        state.items = action.payload;
+        // backend trả về { message, cart: { items: [...] } }
+        state.items = action.payload; // action.payload đã là CartItem[]
       })
+
       // Add API
       .addCase(addToCartApi.fulfilled, (state, action) => {
-        const index = state.items.findIndex((i) => i.id === action.payload.id);
-        if (index >= 0) {
-          state.items[index] = action.payload;
-        } else {
-          state.items.push(action.payload);
-        }
+        // backend trả về { message, cart: { items: [...] } }
+        state.items = action.payload; // gán mảng CartItem
       })
+
       // Update API
       .addCase(updateCartItemApi.fulfilled, (state, action) => {
-        const index = state.items.findIndex((i) => i.id === action.payload.id);
-        if (index >= 0) {
-          state.items[index] = action.payload;
-        }
+        // backend trả về { message, item }
+        const updatedItem = action.payload.item ?? action.payload; // phòng trường hợp BE trả về item trực tiếp
+        const index = state.items.findIndex((i) => i.id === updatedItem.id);
+        if (index >= 0) state.items[index] = updatedItem;
       })
+
       // Remove API
       .addCase(removeItemFromCartApi.fulfilled, (state, action) => {
         state.items = state.items.filter((item) => item.id !== action.payload);
       })
+
       // Clear API
       .addCase(clearCartApi.fulfilled, (state) => {
         state.items = [];

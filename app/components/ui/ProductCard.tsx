@@ -47,12 +47,14 @@ const ProductCard = ({ product }: { product: Inventory }) => {
 
     try {
       if (isLoggedIn) {
+        // Nếu API yêu cầu inventory_id thay vì product_id
         await dispatch(
           addToCartApi({
-            product_id: product.id,
+            inventory_id: product.inventory_id ?? product.id, // Ưu tiên inventory_id
             quantity,
-          } as any) // tuỳ kiểu API yêu cầu
+          })
         ).unwrap();
+
         toast.success("Đã thêm vào giỏ hàng (API)!");
       } else {
         dispatch(addToCartLocal(selectedItem));
