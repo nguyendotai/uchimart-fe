@@ -23,6 +23,7 @@ export default function AddressBook() {
 
     const fetchAddresses = () => {
         const token = localStorage.getItem("token");
+
         if (!token) return;
 
         axios
@@ -46,8 +47,10 @@ export default function AddressBook() {
                 }
 
             })
-            .catch(() => {
-                toast.error("Lỗi lấy danh sách địa chỉ");
+            .catch((err) => {
+                console.error("API lỗi:", err.response?.data || err);
+                toast.error(err.response?.data?.message || "Lỗi lấy danh sách địa chỉ");
+
             });
     };
 

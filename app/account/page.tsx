@@ -35,13 +35,12 @@ const Account = () => {
             setUser(userData);
 
             // Tính % hoàn thiện
-            const total = 5;
+            const total = 4;
             let done = 0;
             if (userData.name) done++;
             if (userData.email) done++;
             if (userData.phone_number) done++;
             if (userData.birthday) done++;
-            if (userData.avatar) done++;
 
             setCompletion(Math.floor((done / total) * 100));
         }
@@ -58,7 +57,7 @@ const Account = () => {
                             <div className="w-[48%] flex bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] items-center ">
                                 <Link href="./profile" className=" w-full ml-5  flex  items-center ">
                                     <img className="w-[80px] h-[80px] rounded-full object-cover cursor-pointer"
-                                        src={user?.avatar || "/img/default-avatar.jpg"} alt="" />
+                                        src={user?.avatar || "/img/login.jpg"} alt="" />
                                     <p className=" text-3xl font-bold cursor-pointer ml-4">{user?.name || "User"}</p>
                                 </Link>
                             </div>

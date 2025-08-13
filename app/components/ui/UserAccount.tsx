@@ -89,7 +89,7 @@ export default function UserAccount() {
           <div className="w-10 h-10 relative rounded-full overflow-hidden border border-gray-300 shrink-0">
             <Link href="/account">
               <Image
-                src={user.avatar}
+                src={user.avatar || "/img/login.jpg"}
                 alt="User avatar"
                 fill
                 // width={100}

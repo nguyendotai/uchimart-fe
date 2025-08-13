@@ -43,6 +43,21 @@ const Profile = () => {
         if (!user) return;
 
         const formData = new FormData(e.currentTarget);
+        const birthday = formData.get("birthday")?.toString() || "";
+
+        // ✅ Kiểm tra ngày sinh phải là quá khứ
+        if (birthday) {
+            const birthdayDate = new Date(birthday);
+            const today = new Date();
+            // Xóa phần giờ phút giây để so sánh đúng ngày
+            today.setHours(0, 0, 0, 0);
+
+            if (birthdayDate >= today) {
+                toast.error("Vui lòng nhập đúng ngày tháng năm sinh!");
+                return;
+            }
+        }
+
         const updatedUser = {
             ...user,
             name: formData.get("name")?.toString() || "",
@@ -100,7 +115,7 @@ const Profile = () => {
                     <div className="h-40 bg-gradient-to-r from-green-300 via-teal-400 to-blue-400 rounded-t-2xl"></div>
                     <div className="absolute -bottom-14 left-1/2 transform -translate-x-1/2">
                         <Image
-                            src={user?.avatar || '/img/default-avatar.jpg'}
+                            src={user?.avatar || '/img/login.jpg'}
                             alt="User avatar"
                             width={112} // w-28
                             height={112} // h-28
