@@ -7,9 +7,9 @@ import { toast } from "react-toastify";
 import { CgShapeZigzag } from "react-icons/cg";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { syncCartApi, fetchCartFromApi } from "@/store/slices/cartSlice";
-import type { AppDispatch, RootState } from "@/store";
+import type { AppDispatch} from "@/store";
 
 type IconData = {
   id: number;
