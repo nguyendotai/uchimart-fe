@@ -57,6 +57,7 @@ export default function Login() {
     try {
       setLoading(true);
 
+      // 1️⃣ Login
       const res = await axios.post<LoginResponse>(
         "http://localhost:8000/api/login",
         { email: form.email, password: form.password }
@@ -67,11 +68,20 @@ export default function Login() {
         return;
       }
 
+      // 2️⃣ Lưu token + user
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${res.data.token}`;
       window.dispatchEvent(new Event("userChanged"));
 
-      // 1️⃣ Lấy cart local
+      // 3️⃣ Gắn token vào axios để các request sau có auth
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${res.data.token}`;
+
+      // 4️⃣ Lấy cart local
       const persistedCart = localStorage.getItem("persist:cart");
       let cartItems: any[] = [];
       if (persistedCart) {
@@ -79,20 +89,24 @@ export default function Login() {
         cartItems = JSON.parse(parsed.items || "[]");
       }
 
-      // 2️⃣ Chuyển về đúng format { inventory_id, quantity }
+      // 5️⃣ Format lại cart trước khi sync
       const itemsToSync = cartItems.map((item: any) => ({
-        inventory_id: item.id,
-        quantity: item.cartQuantity,
+        inventory_id: item.inventory_id ?? item.id, // ưu tiên inventory_id, fallback sang id
+        quantity: item.quantity ?? item.cartQuantity,
       }));
 
-      // 3️⃣ Sync lên DB
+      // 6️⃣ Sync lên DB
       if (itemsToSync.length > 0) {
         await dispatch(syncCartApi({ items: itemsToSync }));
       }
 
-      // 4️⃣ Lấy lại cart từ DB để redux có id chuẩn
+      // 7️⃣ Lấy lại cart từ DB
       await dispatch(fetchCartFromApi());
 
+      // 8️⃣ Xoá giỏ local (tránh sync lại khi login lần sau)
+      localStorage.removeItem("persist:cart");
+
+      // 9️⃣ Chuyển về trang chủ
       router.push("/");
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {

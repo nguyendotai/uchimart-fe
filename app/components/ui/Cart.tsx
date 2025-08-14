@@ -8,8 +8,9 @@ import { useTranslation } from "react-i18next";
 
 const Cart = () => {
   const { t } = useTranslation();
+
   const totalItems = useSelector((state: RootState) =>
-    state.cart.items.reduce((sum, item) => sum + item.cartQuantity, 0)
+    state.cart.items.reduce((sum, item) => sum + (item.quantity ?? 0), 0)
   );
 
   return (

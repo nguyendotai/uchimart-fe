@@ -5,17 +5,14 @@ import { GoDotFill } from "react-icons/go";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
 import QuantityModal from "./QuantityModal";
 import type { Inventory, CartItem } from "@/app/types/Product";
 import { formatCurrencyToNumber } from "@/app/utils/helpers";
-
-// Import action mới từ cartSlice
 import { addToCartLocal, addToCartApi } from "@/store/slices/cartSlice";
-import { RootState } from "@/store";
 import { AppDispatch } from "@/store";
 
 const ProductCard = ({ product }: { product: Inventory }) => {
@@ -28,41 +25,56 @@ const ProductCard = ({ product }: { product: Inventory }) => {
     null
   );
 
-  // Kiểm tra trạng thái đăng nhập (từ store user)
   const isLoggedIn = !!localStorage.getItem("token");
 
   const salePrice = formatCurrencyToNumber(product.sale_price);
   const offerPrice = formatCurrencyToNumber(product.offer_price ?? "0");
-
   const hasSale = offerPrice > 0 && offerPrice < salePrice;
   const discount = hasSale
     ? Math.round(((salePrice - offerPrice) / salePrice) * 100)
     : 0;
 
   const handleConfirm = async (quantity: number) => {
-    const selectedItem: CartItem = {
-      ...product,
-      cartQuantity: quantity,
-    };
-
     try {
       if (isLoggedIn) {
-        // Nếu API yêu cầu inventory_id thay vì product_id
         await dispatch(
           addToCartApi({
-            inventory_id: product.inventory_id ?? product.id, // Ưu tiên inventory_id
+            inventory_id: product.id, // product ở đây là inventory
             quantity,
           })
         ).unwrap();
-
         toast.success("Đã thêm vào giỏ hàng (API)!");
       } else {
+        const selectedItem: CartItem = {
+          id: product.id,
+          inventory_id: product.id,
+          quantity,
+          sale_price: product.sale_price ?? "0₫",
+          offer_price: product.offer_price ?? null,
+          image: product.image ?? "",
+          title: product.title ?? "",
+          total_price:
+            quantity *
+            formatCurrencyToNumber(product.offer_price ?? product.sale_price),
+          inventory: product, // optional
+        };
+
         dispatch(addToCartLocal(selectedItem));
         toast.success("Đã thêm vào giỏ hàng (Local)!");
       }
 
       if (actionType === "buyNow") {
-        localStorage.setItem("selectedItems", JSON.stringify([selectedItem]));
+        localStorage.setItem(
+          "selectedItems",
+          JSON.stringify([
+            {
+              id: product.id,
+              inventory_id: product.id,
+              quantity,
+              inventory: { ...product },
+            },
+          ])
+        );
         router.push("/check-out");
       }
     } catch (error) {

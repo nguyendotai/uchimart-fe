@@ -27,11 +27,13 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [showConfirm, setShowConfirm] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [localQuantity, setLocalQuantity] = useState(item.quantity);
+  const [localQuantity, setLocalQuantity] = useState<number>(
+    item.quantity || 1
+  );
 
   // Sync localQuantity khi item thay đổi (Redux store update)
   useEffect(() => {
-    setLocalQuantity(item.quantity);
+    setLocalQuantity(item.quantity || 1);
   }, [item.quantity]);
 
   // Kiểm tra login
@@ -41,16 +43,26 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
   }, []);
 
   const title = item.inventory?.title ?? item.title ?? "Sản phẩm"; // fallback
-const image = item.inventory?.image ?? item.image ?? "/default.png";
-const salePrice = formatCurrencyToNumber(item.inventory?.sale_price ?? item.sale_price ?? "0");
-const offerPrice = formatCurrencyToNumber(item.inventory?.offer_price ?? item.offer_price ?? "0");
+  const image = item.image || item.inventory?.image || "/default.png";
 
-const hasDiscount = offerPrice > 0 && offerPrice < salePrice;
-const finalPrice = hasDiscount ? offerPrice : salePrice;
-const discount = hasDiscount
-  ? Math.round(((salePrice - offerPrice) / salePrice) * 100)
-  : 0;
+  const salePrice = Number(
+    formatCurrencyToNumber(item.sale_price ?? item.inventory?.sale_price ?? "0")
+  );
+  const offerPrice = Number(
+    formatCurrencyToNumber(
+      item.offer_price ?? item.inventory?.offer_price ?? "0"
+    )
+  );
 
+  const hasDiscount = offerPrice > 0 && offerPrice < salePrice;
+  const finalPrice = hasDiscount ? offerPrice : salePrice;
+  const safeQuantity = Number(localQuantity ?? 1);
+  const discount = hasDiscount
+    ? Math.round(((salePrice - offerPrice) / salePrice) * 100)
+    : 0;
+  const totalPrice = isNaN(finalPrice * safeQuantity)
+    ? 0
+    : finalPrice * safeQuantity;
 
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -67,7 +79,9 @@ const discount = hasDiscount
   };
 
   const changeQuantity = (newQuantity: number) => {
-    const stockQuantity = item.inventory?.stock_quantity ?? 0;
+    const stockQuantity =
+      item.inventory?.stock_quantity ?? Number.MAX_SAFE_INTEGER; // cho phép cộng/trừ thoải mái nếu không có stock
+
     if (newQuantity < 1 || newQuantity > stockQuantity) return;
 
     // 1️⃣ Cập nhật UI ngay
@@ -127,7 +141,7 @@ const discount = hasDiscount
 
           <div className="flex items-center gap-2 mt-1">
             <span className="text-[#FB5D08] font-semibold text-sm">
-              {formatNumberToCurrency(finalPrice * localQuantity)}₫
+              {formatNumberToCurrency(totalPrice)}₫
             </span>
             {hasDiscount && (
               <del className="text-xs text-gray-400">
@@ -174,7 +188,7 @@ const discount = hasDiscount
 
             <div className="flex items-center gap-3">
               <div className="text-sm font-semibold text-right text-gray-700">
-                {formatNumberToCurrency(finalPrice * localQuantity)}₫
+                {formatNumberToCurrency(totalPrice)}₫
               </div>
               <button
                 className="text-red-500 hover:text-red-700 text-lg"
