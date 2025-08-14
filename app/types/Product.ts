@@ -75,9 +75,14 @@ export interface Product {
 
 // frontend CartItem type
 export type CartItem= {
+  offer_price: string | null | undefined;
+  sale_price: string | undefined;
+  image: string | undefined;
+  title: string | undefined;
   id: number;
   inventory_id: number;
-  cartQuantity: number;
+  quantity: number;
+  total_price: number; // tổng giá trị của mặt hàng trong giỏ hàng
   inventory?: Inventory; // ✅ inventory optional
 };
 

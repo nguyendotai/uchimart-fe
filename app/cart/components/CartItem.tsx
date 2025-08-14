@@ -5,15 +5,16 @@ import { useDispatch } from "react-redux";
 import {
   setQuantityLocal,
   removeFromCartLocal,
-  increaseQuantityLocal,
-  decreaseQuantityLocal,
-  removeItemFromCartApi,
   updateCartItemApi,
+  removeItemFromCartApi,
 } from "@/store/slices/cartSlice";
 import type { CartItem as CartItemType } from "@/app/types/Product";
 import ConfirmModal from "./ComfirmModal";
 import { FaRegTrashCan } from "react-icons/fa6";
-import { formatCurrencyToNumber, formatNumberToCurrency } from "@/app/utils/helpers";
+import {
+  formatCurrencyToNumber,
+  formatNumberToCurrency,
+} from "@/app/utils/helpers";
 import type { AppDispatch } from "@/store/index";
 
 type Props = {
@@ -26,17 +27,30 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [showConfirm, setShowConfirm] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [localQuantity, setLocalQuantity] = useState(item.quantity);
 
+  // Sync localQuantity khi item thay đổi (Redux store update)
+  useEffect(() => {
+    setLocalQuantity(item.quantity);
+  }, [item.quantity]);
+
+  // Kiểm tra login
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
   }, []);
 
-  const salePrice = formatCurrencyToNumber(item.inventory?.sale_price ?? "0");
-  const offerPrice = formatCurrencyToNumber(item.inventory?.offer_price ?? "0");
-  const hasDiscount = offerPrice > 0 && offerPrice < salePrice;
-  const finalPrice = hasDiscount ? offerPrice : salePrice;
-  const discount = hasDiscount ? Math.round(((salePrice - offerPrice) / salePrice) * 100) : 0;
+  const title = item.inventory?.title ?? item.title ?? "Sản phẩm"; // fallback
+const image = item.inventory?.image ?? item.image ?? "/default.png";
+const salePrice = formatCurrencyToNumber(item.inventory?.sale_price ?? item.sale_price ?? "0");
+const offerPrice = formatCurrencyToNumber(item.inventory?.offer_price ?? item.offer_price ?? "0");
+
+const hasDiscount = offerPrice > 0 && offerPrice < salePrice;
+const finalPrice = hasDiscount ? offerPrice : salePrice;
+const discount = hasDiscount
+  ? Math.round(((salePrice - offerPrice) / salePrice) * 100)
+  : 0;
+
 
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -56,10 +70,20 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
     const stockQuantity = item.inventory?.stock_quantity ?? 0;
     if (newQuantity < 1 || newQuantity > stockQuantity) return;
 
-    if (isLoggedIn) {
-      dispatch(updateCartItemApi({ id: item.id, quantity: newQuantity }));
-    } else {
+    // 1️⃣ Cập nhật UI ngay
+    setLocalQuantity(newQuantity);
+
+    // 2️⃣ Cập nhật Redux local
+    if (!isLoggedIn) {
       dispatch(setQuantityLocal({ id: item.id, quantity: newQuantity }));
+    } else {
+      // 3️⃣ Gọi API
+      dispatch(updateCartItemApi({ id: item.id, quantity: newQuantity }))
+        .unwrap()
+        .catch(() => {
+          // Rollback nếu API lỗi
+          setLocalQuantity(item.quantity);
+        });
     }
   };
 
@@ -86,8 +110,8 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
 
         <div className="relative w-20 h-20 flex-shrink-0 rounded overflow-hidden">
           <Image
-            src={item.inventory?.image ?? ""}
-            alt={item.inventory?.title ?? ""}
+            src={image ?? ""}
+            alt={title ?? ""}
             fill
             className="object-contain"
           />
@@ -99,11 +123,11 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
         </div>
 
         <div className="flex flex-col flex-1 gap-1">
-          <div className="font-medium text-sm">{item.inventory?.title}</div>
+          <div className="font-medium text-sm">{title}</div>
 
           <div className="flex items-center gap-2 mt-1">
             <span className="text-[#FB5D08] font-semibold text-sm">
-              {formatNumberToCurrency(finalPrice)}₫
+              {formatNumberToCurrency(finalPrice * localQuantity)}₫
             </span>
             {hasDiscount && (
               <del className="text-xs text-gray-400">
@@ -117,8 +141,9 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (item.cartQuantity > 1) changeQuantity(item.cartQuantity - 1);
+                  changeQuantity(localQuantity - 1);
                 }}
+                className="border px-2 rounded"
               >
                 -
               </button>
@@ -127,7 +152,7 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
                 type="number"
                 min={1}
                 max={item.inventory?.stock_quantity ?? 0}
-                value={item.cartQuantity}
+                value={localQuantity}
                 onClick={(e) => e.stopPropagation()}
                 onChange={(e) => {
                   const value = parseInt(e.target.value, 10);
@@ -139,9 +164,9 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (item.cartQuantity < (item.inventory?.stock_quantity ?? 0))
-                    changeQuantity(item.cartQuantity + 1);
+                  changeQuantity(localQuantity + 1);
                 }}
+                className="border px-2 rounded"
               >
                 +
               </button>
@@ -149,7 +174,7 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
 
             <div className="flex items-center gap-3">
               <div className="text-sm font-semibold text-right text-gray-700">
-                {formatNumberToCurrency(finalPrice * item.cartQuantity)}₫
+                {formatNumberToCurrency(finalPrice * localQuantity)}₫
               </div>
               <button
                 className="text-red-500 hover:text-red-700 text-lg"

@@ -168,19 +168,16 @@ const cartSlice = createSlice({
       if (index >= 0) {
         const currentItem = state.items[index];
         const stockQuantity = currentItem.inventory?.stock_quantity ?? 0;
-        const maxAddable = stockQuantity - currentItem.cartQuantity;
-        const quantityToAdd = Math.min(action.payload.cartQuantity, maxAddable);
+        const maxAddable = stockQuantity - currentItem.quantity;
+        const quantityToAdd = Math.min(action.payload.quantity, maxAddable);
 
         if (quantityToAdd > 0) {
-          currentItem.cartQuantity += quantityToAdd;
+          currentItem.quantity += quantityToAdd;
         }
       } else {
         const stockQuantity = action.payload.inventory?.stock_quantity ?? 0;
-        const quantityToAdd = Math.min(
-          action.payload.cartQuantity,
-          stockQuantity
-        );
-        state.items.push({ ...action.payload, cartQuantity: quantityToAdd });
+        const quantityToAdd = Math.min(action.payload.quantity, stockQuantity);
+        state.items.push({ ...action.payload, quantity: quantityToAdd });
       }
 
       saveCartToLocal(state.items);
@@ -194,16 +191,16 @@ const cartSlice = createSlice({
     increaseQuantityLocal(state, action: PayloadAction<number>) {
       const item = state.items.find((item) => item.id === action.payload);
       const stockQuantity = item?.inventory?.stock_quantity ?? 0;
-      if (item && item.cartQuantity < stockQuantity) {
-        item.cartQuantity += 1;
+      if (item && item.quantity < stockQuantity) {
+        item.quantity += 1;
         saveCartToLocal(state.items);
       }
     },
 
     decreaseQuantityLocal(state, action: PayloadAction<number>) {
       const item = state.items.find((item) => item.id === action.payload);
-      if (item && item.cartQuantity > 1) {
-        item.cartQuantity -= 1;
+      if (item && item.quantity > 1) {
+        item.quantity -= 1;
         saveCartToLocal(state.items);
       }
     },
@@ -217,7 +214,7 @@ const cartSlice = createSlice({
       const stockQuantity = item?.inventory?.stock_quantity ?? 0;
       if (item) {
         const newQuantity = Math.max(1, Math.min(quantity, stockQuantity));
-        item.cartQuantity = newQuantity;
+        item.quantity = newQuantity;
         saveCartToLocal(state.items);
       }
     },
@@ -255,10 +252,12 @@ const cartSlice = createSlice({
 
       // Update API
       .addCase(updateCartItemApi.fulfilled, (state, action) => {
-        // backend trả về { message, item }
-        const updatedItem = action.payload.item ?? action.payload; // phòng trường hợp BE trả về item trực tiếp
+        const updatedItem = action.payload.item ?? action.payload;
         const index = state.items.findIndex((i) => i.id === updatedItem.id);
-        if (index >= 0) state.items[index] = updatedItem;
+        if (index >= 0) {
+          state.items[index].quantity = updatedItem.quantity;
+          saveCartToLocal(state.items);
+        }
       })
 
       // Remove API
