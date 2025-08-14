@@ -104,7 +104,7 @@ export default function AddressBook() {
                 <div className="w-[70%] flex justify-between mb-7">
                     <div className="w-[48%] bg-white rounded-[5px] shadow-sm flex">
                         <div className="py-5 ml-5 flex items-center">
-                            <FaBookBookmark className='text-4xl text-[#01BF61]' />
+                            <FaBookBookmark className='text-4xl ' />
                             <p className="pl-4 font-bold text-2xl">Sổ địa chỉ</p>
                         </div>
                     </div>

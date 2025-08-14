@@ -31,7 +31,7 @@ const PocilyList = () => {
                 <ul className="list-disc pl-6">
                     {policies.map((policy) => (
                         <li key={policy.id} className="mb-2">
-                            <Link href={`/pages/${policy.slug}`} className="text-blue-600 hover:underline">
+                            <Link href={`/pocilyDetail/${policy.slug}`} className="text-blue-600 hover:underline">
                                 {policy.name}
                             </Link>
                         </li>

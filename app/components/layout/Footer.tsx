@@ -10,7 +10,7 @@ type Page = {
   name: string;
   slug: string;
   title: string;
-  description: string | null;
+  content: string | null;
   order: number;
   code: string | null;
   display_in: string | null;
@@ -31,7 +31,7 @@ const Footer = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  const veChungToiSlug = ["chinh-sach-bao-mat", "dieu-khoan-giao-dich"];
+  const veChungToiSlug = ["chinh-sach-bao-mat", "dieu-khoan-giao-dich", "quy-che-hoat-ong-cua-website-uchimartsite"];
 
   const hoTroSlug = [
     "chinh-sach-giao-hang",
@@ -77,7 +77,7 @@ const Footer = () => {
                 {veChungToi.map((page) => (
                   <li key={page.id}>
                     <Link
-                      href={`/pages/${page.slug}`}
+                      href={`/policy/${page.slug}`}
                       className="hover:underline"
                     >
                       {page.name}
@@ -98,7 +98,7 @@ const Footer = () => {
                 {hoTroKhachHang.map((page) => (
                   <li key={page.id}>
                     <Link
-                      href={`/pages/${page.slug}`}
+                      href={`/policy/${page.slug}`}
                       className="hover:underline"
                     >
                       {page.name}

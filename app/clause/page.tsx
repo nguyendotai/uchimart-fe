@@ -10,169 +10,119 @@ const Clause = () => {
                         <div className="py-5">
                             <div className="mb-4">
 
-                                <h1 className="text-center text-3xl font-medium text-[#00BF63] mb-4">BẢN ĐIỀU KHOẢN VÀ ĐIỀU KIỆN GIAO DỊCH</h1>
-                                <p className="">Các điều khoản và điều kiện quy định tại đây là những thỏa thuận ràng buộc giữa Khách hàng và Công ty Cổ phần Uchi Mart (gọi riêng là “Uchi Mart” hoặc gọi chung là “Công ty”) liên quan đến việc đăng ký tài khoản, mua hàng, cung cấp và sử dụng các Sản phẩm/Dịch vụ do Uchi Mart cung cấp, bao gồm cả chính sách hậu mãi khi Khách hàng thực hiện giao dịch thông qua website https://uchimart.vn (“Bản Điều khoản và Điều kiện”).</p>
+                                <h1 className="text-center text-3xl font-medium text-[#00BF63] mb-4">Quy chế hoạt động của website uchimart.site</h1>
+                                <p className="">Áp dụng từ ngày: 16/08/2024</p>
                             </div>
 
                             <div className="mb-4">
-                                <p className="font-bold text-xl">1. Quy định chung</p>
-                                <p className="font-bold text-1xl">1.1 Định nghĩa</p>
-                                <pre className="whitespace-pre-wrap font-sans">- Giao Dịch: là bất kỳ giao dịch nào của Khách hàng liên quan đến việc đăng ký tài khoản, mua sắm và/hoặc sử dụng Sản Phẩm/Dịch Vụ do Uchi Mart cung cấp.
-                                    - Khách hàng: là người truy cập vào website https://uchimart.vn, đăng ký tài khoản, mua và/hoặc sử dụng các Sản Phẩm/Dịch Vụ của Uchi Mart.
-                                    - Uchi Mart: là thương hiệu thuộc quyền quản lý, phát triển và vận hành của Công ty Cổ phần Uchi Mart, liên quan đến các sản phẩm tiêu dùng, thẻ mua hàng, phiếu mua hàng, có hoặc không kèm theo khuyến mãi.
-                                    - Sản Phẩm/Dịch Vụ: là các sản phẩm, dịch vụ được cung cấp bởi Uchi Mart thông qua website https://uchimart.vn.
-                                    - Công ty: là Công ty Cổ phần Uchi Mart.
-                                    - Tài Khoản Uchi Mart: là tài khoản điện tử trên hệ thống công nghệ thông tin do Khách hàng tạo lập và quản lý để truy cập, mua sắm và/hoặc sử dụng các Sản Phẩm/Dịch Vụ trên https://uchimart.vn.
-                                    - Thẻ Uchi Mart: là thẻ mua hàng hoặc phiếu mua hàng có hoặc không kèm khuyến mãi do Công ty phát hành dưới thương hiệu Uchi Mart.
-                                    - Website Uchi Mart: là nền tảng trực tuyến tại địa chỉ https://uchimart.vn cho phép Khách hàng tạo lập tài khoản, mua sắm và/hoặc sử dụng các Sản Phẩm/Dịch Vụ của Uchi Mart.</pre>
+                                <p className="font-bold text-xl">1. Nguyên tắc chung</p>
+                                <pre className="whitespace-pre-wrap font-sans">Website/Ứng dụng thương mại điện tử Uchi Mart do Công Ty Cổ Phần Thương Mại Uchi Martket (sau đây gọi tắt là “Uchi Mart”) là đơn vị chủ quản, chịu trách nhiệm và thực hiện các giao dịch liên quan đến mua sắm hàng hóa tiêu dùng thiết yếu.
+                                    Đối tượng phục vụ là tất cả Quý Khách Hàng có nhu cầu mua hàng trực tuyến và nhận hàng tại nhà hoặc tại các khu vực/tỉnh thành mà Uchi Martket triển khai hoạt động kinh doanh tại từng thời điểm.
+                                    Hàng hóa được kinh doanh tại Uchi Mart đảm bảo đáp ứng đầy đủ các quy định của pháp luật hiện hành, không kinh doanh hàng giả, hàng không rõ nguồn gốc, hàng nhập lậu hoặc hàng xách tay.
+                                    Mọi hoạt động mua bán trên Uchi Martket được thực hiện công khai, minh bạch, đảm bảo quyền lợi hợp pháp của người tiêu dùng theo quy định pháp luật Việt Nam.</pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-1xl">1.2 Giới thiệu</p>
-                                <pre className="whitespace-pre-wrap font-sans">Uchi Mart có quyền vận hành hợp pháp đối với website https://uchimart.vn. Đối tượng phục vụ là tất cả Khách hàng có nhu cầu mua và sử dụng Sản Phẩm/Dịch Vụ của Uchi Mart.
-                                    Uchi Mart đảm bảo các Sản Phẩm/Dịch Vụ được cung cấp tại website là hợp pháp, đảm bảo chất lượng, an toàn và bảo mật.
-                                    Việc giao tiếp giữa Khách hàng và Công ty được thực hiện qua các kênh: thông tin trên website, email và điện thoại hỗ trợ.
-                                    Mọi thắc mắc hoặc cần hỗ trợ, xin vui lòng liên hệ:
-                                    Số điện thoại: 1800 6804
-                                    Email: hotro@uchimart.vn
-                                    Thời gian làm việc: 07:00 – 21:00 hàng ngày (trừ ngày Lễ, Tết)
-                                    Uchi Mart cam kết mọi hoạt động mua bán và cung cấp dịch vụ tại https://uchimart.vn được thực hiện minh bạch và đảm bảo quyền lợi Khách hàng.
-                                    Chính sách giao dịch bao gồm:
-                                    a. Quyền và nghĩa vụ của Công ty: xem mục 1.4
-                                    b. Quyền và nghĩa vụ của Khách hàng: xem mục 1.5
-                                    c. Quy trình thực hiện giao dịch: xem mục 1.7
-                                    d. Giải quyết khiếu nại và tranh chấp: xem Phần II
-                                    e. Đăng ký hoặc ngừng sử dụng Tài Khoản: xem Phần III
-                                    f. Chính sách bảo mật thông tin Khách hàng: xem Phần IV</pre>
+                                <p className="font-bold text-xl">2. Quy định chung</p>
+                                <pre className="whitespace-pre-wrap font-sans">Website/Ứng dụng thương mại điện tử bán hàng Uchi Mart do Công Ty Cổ Phần Thương Mại Uchi Martket phát triển, với tên miền giao dịch là: https://www.uchimart.site/ và tên ứng dụng là “Uchi Mart”.</pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-1xl">1.3 Hiệu lực và luật điều chỉnh</p>
-                                <pre className="whitespace-pre-wrap font-sans">- Bản Điều khoản và Điều kiện có hiệu lực kể từ khi Khách hàng đăng ký Tài Khoản Uchi Mart, mua hoặc sử dụng các Sản Phẩm/Dịch Vụ.
-                                    - Khách hàng đồng ý tuân thủ đầy đủ các nội dung được nêu trong tài liệu này khi giao dịch trên https://uchimart.vn.
-                                    - Mọi thay đổi sẽ được thông báo trước ít nhất 15 ngày trên website.
-                                    - Văn bản này được điều chỉnh theo pháp luật Việt Nam.
-                                    - Trường hợp có phát sinh ngoài quy định, pháp luật Việt Nam sẽ được áp dụng.</pre>
+                                <p className="font-bold text-xl">3. Định nghĩa chung</p>
+                                <pre className="whitespace-pre-wrap font-sans">Người bán là Công Ty Cổ Phần Thương Mại Uchi Martket.
+                                    Quý Khách Hàng là cá nhân hoặc tổ chức có nhu cầu mua hàng hóa từ Uchi Mart để sử dụng cho mục đích tiêu dùng cuối cùng. Quý Khách Hàng có thể lựa chọn đăng ký tài khoản hoặc không cần đăng ký tài khoản để thực hiện giao dịch mua hàng.
+                                    Nội dung của bản Điều kiện giao dịch chung (sau đây gọi là “Quy chế”) được xây dựng phù hợp và tuân thủ theo các quy định pháp luật hiện hành của nước Cộng hòa Xã hội Chủ nghĩa Việt Nam. Khi tham gia Website/Ứng dụng, Quý Khách Hàng có trách nhiệm tìm hiểu và tuân thủ các quy định pháp luật có liên quan, đồng thời cam kết thực hiện đầy đủ những nội dung trong Quy chế này.</pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-1xl">1.4 Quyền và nghĩa vụ của Công ty</p>
-                                <pre className="whitespace-pre-wrap font-sans">- Cung cấp đầy đủ thông tin giới thiệu, điều kiện sử dụng, giá cả, hậu mãi...
-                                    - Đảm bảo chất lượng, an toàn và bảo mật của sản phẩm/dịch vụ.
-                                    - Hướng dẫn sử dụng sản phẩm/dịch vụ cho Khách hàng.
-                                    - Yêu cầu Khách hàng cung cấp thông tin chính xác phục vụ giao dịch.
-                                    - Tuân thủ đúng theo các điều khoản trong văn bản này.</pre>
+                                <p className="font-bold text-xl">4. Quy trình giao dịch</p>
+                                <pre className="whitespace-pre-wrap font-sans">Bước 1: Tìm kiếm hàng hóa cần mua trên Website/Ứng dụng Uchi Mart.
+                                    Bước 2: Xem giá bán và thông tin chi tiết của sản phẩm. Nếu Quý Khách Hàng đồng ý đặt mua, vui lòng chọn màu sắc (nếu có), số lượng sản phẩm, ghi chú (nếu cần), sau đó bấm nút “Mua”.
+                                    Bước 3: Điền đầy đủ thông tin nhận hàng, bao gồm:
+                                    a. Nếu Quý Khách Hàng có Mã giảm giá, vui lòng nhập trực tiếp tại trang đặt hàng để được áp dụng mức giá chính xác sau khi giảm.
+                                    b. Quý Khách Hàng có thể lựa chọn thanh toán khi nhận hàng (COD) hoặc thanh toán online theo chính sách thanh toán được quy định tại Quy chế của Uchi Mart.
+                                    Bước 4: Sau khi nhận được đơn hàng, Uchi Mart sẽ liên hệ với Quý Khách Hàng thông qua số điện thoại đã cung cấp để xác nhận thông tin đơn hàng.
+                                    Bước 5: Uchi Mart tiến hành giao hàng tận nơi đến địa chỉ mà Quý Khách Hàng đã đăng ký.</pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-1xl">1.5 Quyền và nghĩa vụ của Khách hàng</p>
-                                <pre className="whitespace-pre-wrap font-sans">- Cung cấp thông tin chính xác khi đăng ký tài khoản.
-                                    - Đảm bảo đầy đủ năng lực pháp lý để giao dịch.
-                                    - Tự chịu trách nhiệm về mọi hoạt động thông qua tài khoản của mình.
-                                    - Không chia sẻ, cho thuê hoặc chuyển nhượng tài khoản cho bên thứ ba.
-                                    - Bảo mật thông tin tài khoản. Mọi rủi ro từ việc tiết lộ thông tin cá nhân sẽ do Khách hàng tự chịu trách nhiệm.
-                                    - Không được sử dụng website để thực hiện các hành vi trái pháp luật hoặc gây ảnh hưởng xấu đến bên thứ ba.
-                                    - Công ty có quyền tạm ngưng cung cấp dịch vụ nếu Khách hàng vi phạm quy tắc sử dụng.</pre>
+                                <p className="font-bold text-xl">5. Quy trình huỷ/chỉnh sửa đơn hàng trước khi giao hàng</p>
+                                <pre className="whitespace-pre-wrap font-sans">Khi có nhu cầu huỷ toàn bộ đơn hàng, Quý Khách Hàng có thể:a. Vào Website/Ứng Dụng, Phần lịch sử đơn hàng để trực tiếp hủy đơn hàng.b. Liên hệ ngay với Uchi Mart qua số 1900 2807 - 0332493487 (cước phí 1.000đ/phút - Thời gian làm việc từ 7h00 - 21h30) để xác nhận huỷ đơn hàng.</pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-1xl">1.6 Mệnh giá, phí dịch vụ, thuế giá trị gia tăng</p>
-                                <pre className="whitespace-pre-wrap font-sans">Mệnh giá và phí sử dụng Tài Khoản Uchi Mart và/hoặc Sản Phẩm/Dịch Vụ Uchi Mart sẽ được Công ty thông báo công khai trên website https://uchimart.vn và/hoặc Ứng dụng Uchi Mart.
-                                    Công ty, tùy theo quyết định riêng của mình, có thể cung cấp một số dịch vụ miễn phí cho Khách hàng vào từng thời điểm.
-                                    Mệnh giá và phí sử dụng Tài Khoản Uchi Mart và/hoặc Sản Phẩm/Dịch Vụ Uchi Mart thông tin đến Khách hàng là giá đã bao gồm thuế VAT theo quy định của pháp luật. Công ty hoặc đơn vị phát hành Thẻ Uchi Mart sẽ cung cấp hóa đơn điện tử theo quy định của pháp luật.</pre>
+                                <p className="font-bold text-xl">6. Chính sách kiểm hàng, đồng kiểm</p>
+                                <pre className="whitespace-pre-wrap font-sans">
+                                    Uchi Mart cho phép Khách Hàng đồng kiểm hàng hóa tại thời điểm nhận hàng. Trường hợp Hàng hóa có vấn đề hoặc không bảo đảm về chất lượng thì Uchi Mart sẽ chịu trách nhiệm đổi lại hàng hóa khác (miễn phí vận chuyển) hoặc hoàn trả lại tiền tùy theo yêu cầu của Khách hàng.
+                                </pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-1xl">1.7 Quy trình thực hiện giao dịch thông qua website https://uchimart.vn</p>
-                                <pre className="whitespace-pre-wrap font-sans">Bước 1: Vào website https://uchimart.vn và/hoặc Ứng dụng Uchi Mart, và đăng ký Tài Khoản Uchi Mart nếu là Khách hàng mới
-                                    Bước 2: Chọn loại Thẻ Uchi Mart, mệnh giá Thẻ Uchi Mart muốn mua
-                                    Bước 3: Chọn nguồn tiền cần thanh toán
-                                    Bước 4: Chọn xác nhận & thanh toán</pre>
+                                <p className="font-bold text-xl">7.Quy định về đổi trả hàng hóa</p>
+                                <pre className="whitespace-pre-wrap font-sans">Uchi Mart cam kết sản phẩm đến tay Khách Hàng đều là sản phẩm chất lượng, chính hãng 100%, có nguồn gốc rõ ràng và đúng như thông tin đã đăng tải trên Website/Ứng Dụng. Nếu nhận hàng không chất lượng, Khách Hàng sẽ được đổi trả hàng miễn phí, Uchi Mart sẽ hoàn lại tiền và tặng kèm phiếu mua hàng cho Khách Hàng theo các chính sách của Uchi Mart tại từng thời điểm.</pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-xl">2 CHÍNH SÁCH GIẢI QUYẾT KHIẾU NẠI VÀ TRANH CHẤP</p>
-                                <pre className="whitespace-pre-wrap font-sans">Công ty tiếp nhận mọi khiếu nại của Khách hàng liên quan đến việc sử dụng Tài Khoản Uchi Mart và/hoặc Sản Phẩm/Dịch Vụ Uchi Mart.
-                                    Khách hàng có thể liên hệ với Công ty thông qua hotline 1800 6804 hoặc email: hotro@uchimart.vn. Thời gian làm việc: 7:00 - 21:00 hằng ngày (trừ Lễ, Tết) để được hướng dẫn giải quyết khiếu nại.
-                                    Trường hợp hệ thống của Công ty gặp trục trặc, máy chủ bị sự cố vật lý, kết nối vào datacenter bị gián đoạn, lỗi phần mềm, lỗi hệ thống không mong muốn dẫn đến sự gián đoạn trong việc cung cấp một phần hoặc toàn bộ Tài Khoản Uchi Mart và/hoặc Sản Phẩm/Dịch Vụ Uchi Mart, Công ty bằng nguồn lực của mình, sẽ nỗ lực tối đa để khắc phục ngay lập tức và đưa hệ thống hoạt động trở lại sớm nhất có thể. Khách hàng đồng ý ghi nhận nỗ lực này của Công ty, xem như đây là sự kiện bất khả kháng và không phát sinh bất cứ khiếu nại hoặc yêu cầu bồi thường nào liên quan đến việc gián đoạn cung cấp một phần hoặc toàn bộ Tài Khoản Uchi Mart và/hoặc Sản Phẩm/Dịch Vụ Uchi Mart cũng như những hậu quả của việc gián đoạn này gây ra.
-                                    Trong trường hợp xảy ra sự kiện bất khả kháng khác, hai bên sẽ cùng nhau thương lượng và giải quyết. Để làm rõ, các sự kiện bất khả kháng bao gồm tai nạn, cướp giật, thiên tai, hỏa hoạn, dịch bệnh, cách ly, gián đoạn kết nối internet không do lỗi của Công ty, lỗi hệ thống và những sự kiện khác nằm ngoài tầm kiểm soát của Công ty.
-                                    Công ty chỉ chịu trách nhiệm bồi thường thiệt hại trực tiếp theo phán quyết sau cùng của cơ quan giải quyết tranh chấp có thẩm quyền và trong mọi trường hợp, tổng giá trị bồi thường của Công ty cho Khách hàng không vượt quá tổng giá trị giao dịch phát sinh của Khách hàng.</pre>
+                                <p className="font-bold text-1xl">7.1. Điều kiện và thời gian đổi trả</p>
+                                <pre className="whitespace-pre-wrap font-sans">Đối với các sản phẩm Khách Hàng mua tại Website/Ứng Dụng, khi kiểm tra sản phẩm cùng nhân viên giao hàng, nếu gặp trường hợp:
+                                    a. Sản phẩm bị rách bao bì
+                                    b. Bị hư hỏng do vi khuẩn hoặc côn trùng xâm nhập
+                                    c. Bị hư hỏng trong quá trình vận chuyển
+                                    d. Bị hư hỏng do bảo quản trước khi Khách Hàng nhận hàng.
+                                    e. Sản phẩm hết hạn sử dụng.
+                                    Uchi Mart đồng ý cho Khách Hàng đổi hoặc trả trong thời hạn như sau:
+                                    a. Trong vòng 01 Ngày: Hàng đông lạnh, hàng sơ chế, thịt, cá, hải sản.
+                                    b. Trong vòng 02 Ngày: Trái cây, rau củ tươi.
+                                    c. Trong vòng 07 Ngày: Các sản phẩm khác.Uchi Mart không áp dụng đổi trả nhóm hàng thực phẩm tiêu dùng, trừ trường hợp phát hiện hàng bị lỗi bảo quản hay bị hư hại trong quá trình vận chuyển. Thời hạn đổi, trả được tính kể từ ngày Khách Hàng nhận được hàng hóa. Khách hàng có thể lựa chọn: (i) trả lại hàng hóa bị lỗi, hoặc (ii) đổi sang hàng hóa khác.</pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-xl">3 ĐĂNG KÝ, NGƯNG SỬ DỤNG TÀI KHOẢN UCHI MART</p>
-                                <p className="font-bold text-1xl">3.1 Đăng ký và sử dụng Tài Khoản Uchi Mart</p>
-                                <pre className="whitespace-pre-wrap font-sans">Để sử dụng Tài Khoản Uchi Mart, Khách hàng cần truy cập website https://uchimart.vn và/hoặc Ứng dụng Uchi Mart, cung cấp thông tin mở Tài Khoản và làm theo hướng dẫn.
-                                    Khách hàng đồng ý cung cấp cho Công ty Uchi Mart các thông tin đầy đủ, cập nhật và chính xác theo yêu cầu vào từng thời điểm để sử dụng Tài Khoản Uchi Mart. Đồng thời, Khách hàng có trách nhiệm thông báo ngay cho Công ty về bất kỳ thay đổi nào liên quan đến Hồ sơ Tài Khoản và các thông tin đã cung cấp. Khách hàng cam kết rằng các thông tin đã cung cấp là trung thực, chính xác và hoàn toàn chịu trách nhiệm đối với các thông tin đã kê khai trên website https://uchimart.vn và/hoặc Ứng dụng Uchi Mart.
-                                    Theo yêu cầu hợp lý của Công ty, Khách hàng sẽ cung cấp thông tin liên quan đến việc sử dụng Tài Khoản Uchi Mart để:
-                                    Hỗ trợ Công ty tuân thủ các nghĩa vụ pháp lý;
-                                    Báo cáo các cơ quan quản lý hoặc cơ quan chính phủ theo quy định;
-                                    Đánh giá mức độ tuân thủ của Khách hàng đối với Bản Điều Khoản và Điều Kiện Giao Dịch này.
-                                    Việc thanh toán sản phẩm/dịch vụ trên Uchi Mart của Khách hàng phải thực hiện thông qua:
-                                    Tài khoản thanh toán, thẻ ghi nợ hoặc ví điện tử đứng tên Khách hàng;
-                                    Khách hàng có thể sử dụng Thẻ Uchi Mart (nếu có) để:
-                                    Thanh toán cho hàng hóa, dịch vụ theo quy định sử dụng thẻ của Công ty.
-                                    Khách hàng cam kết không sử dụng Tài Khoản Uchi Mart cho bất kỳ mục đích nào trái pháp luật Việt Nam.
-                                    Khách hàng chịu trách nhiệm bảo mật thông tin tài khoản, mật khẩu, thiết bị truy cập và các biện pháp xác thực liên quan đến Tài Khoản. Trong trường hợp thông tin tài khoản bị mất, đánh cắp hoặc rò rỉ trái phép, Khách hàng phải nhanh chóng cập nhật lại thông tin thông qua các công cụ có sẵn trên website https://uchimart.vn và/hoặc Ứng dụng Uchi Mart, hoặc thông báo ngay đến Bộ phận Chăm Sóc Khách Hàng để tạm ngừng tài khoản. Việc tạm ngừng tài khoản chỉ có hiệu lực khi Khách hàng đã cung cấp đầy đủ thông tin xác minh theo yêu cầu của Công ty.
-                                    Trong quá trình sử dụng Tài Khoản Uchi Mart, Khách hàng hoàn toàn chịu trách nhiệm về mọi hành động và giao dịch được thực hiện thông qua tài khoản của mình. Trường hợp xảy ra sai sót hoặc sự cố, Khách hàng phải liên hệ ngay với Bộ phận Chăm Sóc Khách Hàng để được hỗ trợ.</pre>
+                                <p className="font-bold text-1xl">7.2. Quy trình đổi trả hàng</p>
+                                <pre className="whitespace-pre-wrap font-sans">Khi sản phẩm Khách Hàng mua gặp lỗi (giao không đúng loại, số lượng, sản phẩm bị lỗi, móp, méo, rách tem niêm phong, v.v), Khách Hàng liên lạc ngay đến số tổng đài 1900 2807. Uchi Mart sẽ nhanh chóng cho nhân viên đến tận nơi để xác nhận lỗi và đổi trả sản phẩm nếu xác định lỗi do Uchi Mart hoặc lỗi sản phẩm của nhà cung cấp/nhà sản xuất.</pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-1xl">3.2 Ngưng sử dụng Tài Khoản Uchi Mart</p>
-                                <pre className="whitespace-pre-wrap font-sans">Công ty chấm dứt, ngừng hoặc hủy bỏ Tài Khoản Uchi Mart:
-                                    Khách hàng đồng ý rằng Công ty có toàn quyền chấm dứt, ngừng hoặc hủy bỏ Tài Khoản (hoặc một phần) nếu Khách hàng vi phạm bất kỳ điều khoản nào trong Bản Điều Khoản và Điều Kiện này, hoặc có hành vi vi phạm pháp luật liên quan đến việc sử dụng Tài Khoản và/hoặc dịch vụ của Uchi Mart.
-                                    Việc chấm dứt có thể được thông báo trước ít nhất 07 ngày thông qua website https://uchimart.vn và/hoặc Ứng dụng Uchi Mart. Sau khi tài khoản bị hủy hoặc ngưng, việc mở lại sẽ phụ thuộc hoàn toàn vào quyết định của Công ty.
-                                    Khách hàng yêu cầu ngưng sử dụng Tài Khoản Uchi Mart:
-                                    Khách hàng có thể yêu cầu ngưng hoặc hủy bỏ tài khoản của mình tại bất kỳ thời điểm nào bằng cách đến trực tiếp các điểm giao dịch của Uchi Mart hoặc liên hệ Bộ phận Chăm Sóc Khách Hàng để được hướng dẫn chi tiết.
-                                    Sau khi tài khoản bị ngừng hoặc hủy bỏ (bởi Công ty hoặc Khách hàng):
-                                    Tất cả các quyền của Khách hàng theo Bản Điều Khoản và Điều Kiện này sẽ chấm dứt ngay lập tức;
-                                    Công ty sẽ hoàn trả số dư còn lại trong tài khoản (nếu có) sau khi khấu trừ các khoản phí, lệ phí, hoặc công nợ (nếu có);
-                                    Các sản phẩm/dịch vụ đã mua thông qua Thẻ Uchi Mart (nếu có) vẫn có giá trị sử dụng theo chính sách của các đối tác liên kết hoặc đơn vị phát hành thẻ.</pre>
+                                <p className="font-bold text-1xl">7.3. Quy trình hoàn tiền</p>
+                                <pre className="whitespace-pre-wrap font-sans">Uchi Mart sẽ thực hiện hoàn tiền cho Khách Hàng đối với các đơn hàng đã thanh toán trước như sau:
+                                    a. Khi Khách hàng trả, đổi hàng hóa có giá trị nhỏ hơn hoặc Uchi Mart giao thiếu, hết hàng:
+                                    - Nếu tiền cần hoàn cho Khách hàng không quá 50.000 đồng, Quý Khách Hàng đồng ý để Uchi Mart hoàn lại vào mục Tiền Dư tại Website/Ứng Dụng.
+                                    - Nếu tiền cần hoàn trên 50.000 đồng thì Quý Khách Hàng có quyền lựa chọn: (i) hoàn vào mục Tiền Dư hoặc (ii) yêu cầu Uchi Mart hoàn trả lại qua phương thức mà Khách Hàng đã thanh trước cho đơn hàng đó.
+                                    b. Khi Khách Hàng hủy toàn bộ đơn: Uchi Mart hoàn tiền qua phương thức mà Khách hàng đã thanh toán theo thời hạn tại mục 8.4.</pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-xl">4 CHÍNH SÁCH BẢO MẬT THÔNG TIN KHÁCH HÀNG</p>
-                                <p className="font-bold text-1xl">4.1 Phạm vi thu thập thông tin</p>
-                                <pre className="whitespace-pre-wrap font-sans">Khi Khách hàng giao dịch với Công ty tại bất kỳ giai đoạn nào, thông tin mà Công ty có thể thu thập từ Khách hàng (“Thông Tin Khách Hàng”) bao gồm:
-                                    Họ và tên;
-                                    Địa chỉ;
-                                    Số điện thoại;
-                                    Tài khoản ngân hàng và thông tin thanh toán;
-                                    Các thông tin được gửi bởi hoặc liên quan đến thiết bị được sử dụng để truy cập vào website https://uchimart.vn và Ứng dụng Uchi Mart.
-                                    Công ty sẽ nỗ lực hết sức để bảo mật Thông Tin Khách Hàng trong suốt thời gian Khách hàng sử dụng dịch vụ hợp lệ.
-                                    Khách hàng cam kết bảo mật (không tiết lộ) thông tin liên quan đến tài khoản, ứng dụng, dịch vụ, các giao dịch giữa Khách hàng và Công ty, cũng như các thông tin mà Công ty gửi cho Khách hàng qua tài khoản hoặc các phương tiện khác. Nếu phát hiện hoặc nghi ngờ thông tin tài khoản bị mất cắp, lộ lọt, Khách hàng cần liên hệ ngay với Công ty để được hỗ trợ và khắc phục kịp thời.</pre>
+                                <p className="font-bold text-1xl">7.4. Thời hạn hoàn tiền được tính kể từ thời điểm Khách hàng yêu cầu và Bách Hóa Xanh xác định có phát sinh các lỗi phải hoàn tiền cho Khách hàng:</p>
+                                <pre className="whitespace-pre-wrap font-sans">a. Đối với hoàn vào mục Tiền Dư: trong vòng tối đa 48 giờ.
+                                    b. Đối với thẻ ATM (nội địa)/ví Momo/ví Zalo Pay và các trung gian thanh toán khác: Quý Khách Hàng nhận được tiền hoàn từ 03 đến 05 ngày (trừ thứ 7, chủ nhật và ngày lễ). Nếu qua thời gian trên không nhận được tiền, Uchi Mart sẽ hỗ trợ liên hệ ngân hàng của Quý Khách Hàng để giải quyết.
+                                    c. Đối với thẻ Visa/Master card/JCB: Quý Khách Hàng nhận được tiền hoàn từ 12 đến 15 ngày. Nếu qua thời gian trên Quý Khách Hàng không nhận được tiền, Quý Khách Hàng liên hệ ngân hàng để giải quyết.</pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-1xl">4.2 Phạm vi và đối tượng sử dụng thông tin</p>
-                                <p className="font-bold text-1xl">4.2.1 Mục tiêu sử dụng thông tin</p>
-                                <pre className="whitespace-pre-wrap font-sans">Thông Tin Khách Hàng chỉ được Công ty sử dụng cho một hoặc tất cả các mục tiêu sau đây:
-                                    Xử lý giao dịch và cung cấp sản phẩm, dịch vụ cho Khách hàng;
-                                    Cung cấp thông tin, chính sách, tiến độ thanh toán liên quan đến sản phẩm, dịch vụ; hỗ trợ khi Khách hàng có yêu cầu;
-                                    Quản lý tài khoản Khách hàng;
-                                    Xác nhận và thực hiện các giao dịch tài chính liên quan đến các khoản thanh toán trực tuyến của Khách hàng;
-                                    Gửi thông tin sản phẩm, dịch vụ mới;
-                                    Cập nhật sự kiện, khuyến mãi nếu Khách hàng đăng ký nhận email hoặc SMS;
-                                    Phân tích, đánh giá và nâng cao chất lượng dịch vụ;
-                                    Hỗ trợ Khách hàng trong bảo hành, đổi trả hoặc hoàn tiền;
-                                    Giải quyết tranh chấp, khiếu nại liên quan.</pre>
+                                <p className="font-bold text-1xl">7.5. Sử dụng tiền tại mục Tiền Dư:</p>
+                                <pre className="whitespace-pre-wrap font-sans">Khách hàng có thể yêu cầu Uchi Mart hoàn lại Tiền Dư qua tài khoản ngân hàng cho Khách hàng bằng hình thức chuyển khoản với điều kiện số tiền hoàn lại lớn hơn 10.000 VND (Mười nghìn đồng).Lưu ý: 
+                                    Mục Tiền Dư áp dụng từ ngày 16/08/2024 và có thể thay đổi, chấm dứt theo thông báo của Uchi Mart tại từng thời điểm.</pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-1xl">4.2.2 Đối tượng sử dụng thông tin</p>
-                                <pre className="whitespace-pre-wrap font-sans">Trừ trường hợp tại mục 4.2.3 bên dưới, chỉ Công ty Uchi Mart, đại lý, nhà thầu, đơn vị cung cấp dịch vụ của Công ty hoặc bên thứ ba liên quan đến việc cung cấp sản phẩm/dịch vụ của Công ty mới được tiếp cận Thông Tin Khách Hàng để thực hiện các mục tiêu nêu trên.</pre>
+                                <p className="font-bold text-xl">8. Quy trình giải quyết khiếu nại</p>
+                                <pre className="whitespace-pre-wrap font-sans">Bước 1: Quý Khách Hàng có thể gửi khiếu nại của mình đến Uchi Mart qua các phương tiện sau:
+                                    a. Qua tổng đài giải quyết khiếu nại: 1900 2807 - 0332493487. Thời gian làm việc từ 7h00 - 21h30
+                                    b. Qua email: lienhe@uchimart.site
+                                    c. Tại địa chỉ liên hệ: Lô T2-1.2, Đường D1, Khu Công Nghệ Cao, P. Tân Phú, Thành phố Thủ Đức, TP. HCM.
+                                    d. Hoặc các kênh tiếp nhận khác được Uchi Mart triển khai tại Website/Ứng dụng tại từng thời điểm.
+                                    Bước 2: Uchi Mart sẽ liên lạc với Quý Khách Hàng để tìm hiểu nguyên nhân và thoả thuận đền bù hoặc hoàn trả tiền cho Quý Khách Hàng nếu do lỗi của Uchi Mart hoặc nhân viên của Uchi Mart.</pre>
                             </div>
 
 
@@ -184,20 +134,20 @@ const Clause = () => {
 
                             <div className="mb-4">
                                 <p className="font-bold text-1xl">4.3 Thời gian lưu trữ thông tin</p>
-                                <pre className="whitespace-pre-wrap font-sans">Đối với thông tin cá nhân, Công ty chỉ xóa dữ liệu nếu Khách hàng có yêu cầu gửi mail về hotro@uchimart.vn. Ngoài ra, Thông Tin Khách Hàng được bảo mật và lưu trữ trên máy chủ của website https://uchimart.vn.</pre>
+                                <pre className="whitespace-pre-wrap font-sans">Đối với thông tin cá nhân, Công ty chỉ xóa dữ liệu nếu Khách hàng có yêu cầu gửi mail về hotro@uchimart.site. Ngoài ra, Thông Tin Khách Hàng được bảo mật và lưu trữ trên máy chủ của website https://uchimart.site.</pre>
                             </div>
 
 
                             <div className="mb-4">
                                 <p className="font-bold text-1xl">4.4 Địa chỉ đơn vị thu thập và quản lý thông tin</p>
-                                <pre className="whitespace-pre-wrap font-sans">CÔNG TY CỔ PHẦN UCHI MART Địa chỉ: [Địa chỉ chính xác của Uchi Mart, bạn có thể cung cấp để thay thế] Website: https://uchimart.vn Email: hotro@uchimart.vn</pre>
+                                <pre className="whitespace-pre-wrap font-sans">CÔNG TY CỔ PHẦN UCHI MART Địa chỉ: [Địa chỉ chính xác của Uchi Mart, bạn có thể cung cấp để thay thế] Website: https://uchimart.site Email: hotro@uchimart.site</pre>
                             </div>
 
 
                             <div className="mb-4">
                                 <p className="font-bold text-1xl">4.5 Hiệu lực của Chính sách bảo mật thông tin khách hàng</p>
                                 <pre className="whitespace-pre-wrap font-sans">Công ty Uchi Mart cam kết bảo mật Thông Tin Khách Hàng và sử dụng đúng theo quy định của Chính sách bảo mật này. Chính sách có thể được cập nhật, bổ sung nhằm hoàn thiện theo thời gian. Khách hàng nên thường xuyên xem lại để cập nhật và bảo vệ quyền lợi của mình.
-                                    Mọi thắc mắc, góp ý về chính sách bảo mật hoặc khi phát hiện việc sử dụng sai mục đích thông tin, vui lòng liên hệ hotline: 1800 xxxx hoặc email: hotro@uchimart.vn Thời gian làm việc: 7:00 - 21:00 hàng ngày (trừ lễ, Tết).
+                                    Mọi thắc mắc, góp ý về chính sách bảo mật hoặc khi phát hiện việc sử dụng sai mục đích thông tin, vui lòng liên hệ hotline: 1800 xxxx hoặc email: hotro@uchimart.site Thời gian làm việc: 7:00 - 21:00 hàng ngày (trừ lễ, Tết).
                                     Để xác nhận Khách hàng đã hiểu và đồng ý với Bản Điều khoản và Điều kiện, vui lòng nhấn “Đồng ý”.</pre>
                             </div>
 

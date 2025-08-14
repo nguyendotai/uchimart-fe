@@ -160,7 +160,7 @@ const Header = () => {
               className="mr-1 text-xl"
               style={{ color: "#FFA629" }}
             />
-            <span>30 ngày đổi trả</span>
+            <span>Liên hệ</span>
           </a>
           <span className="text-gray-400">|</span>
           <a href="/settings" className="flex items-center font-medium">
