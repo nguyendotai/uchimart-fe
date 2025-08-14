@@ -4,10 +4,10 @@ const Clause = () => {
 
     return (
         <div>
-            <main className="my-[50px]">
-                <div className="w-[80%] mx-auto bg-white rounded-2xl">
-                    <div className="w-[60%] mx-auto">
-                        <div className="py-5">
+            <main className="my-[50px] ">
+                <div className="w-[80%]  mx-auto bg-white rounded-2xl">
+                    <div className="w-[60%] sm:w-[90%]  mx-auto">
+                        <div className="py-5 ">
                             <div className="mb-4">
 
                                 <h1 className="text-center text-3xl font-medium text-[#00BF63] mb-4">Quy chế hoạt động của website uchimart.site</h1>

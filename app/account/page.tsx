@@ -9,9 +9,9 @@ import { MdOutlineBook, MdOutlineSecurity } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { resetCart } from "@/store/slices/cartSlice"; // import action resetCart
 
-import { Canvas } from "@react-three/fiber";
-import { Environment, OrbitControls } from "@react-three/drei";
-import SmolModel from "../components/Animation/smol/components/smol";
+// import { Canvas } from "@react-three/fiber";
+// import { Environment, OrbitControls } from "@react-three/drei";
+// import SmolModel from "../components/Animation/smol/components/smol";
 
 const Account = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -51,178 +51,149 @@ const Account = () => {
 
   return (
     <div className="">
-      <main className="my-[100px] ">
-        <div className="w-[80%] mx-auto flex justify-between ">
-          {/* <!-- info right --> */}
-          <div className="w-[70%]">
-            {/* <!-- row1 --> */}
-            <div className="w-full flex justify-between mb-7">
-              <div className="w-[48%] flex bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] items-center ">
-                <Link
-                  href="./profile"
-                  className=" w-full ml-5  flex  items-center "
-                >
-                  <img
-                    className="w-[80px] h-[80px] rounded-full object-cover cursor-pointer"
-                    src={user?.avatar || "/img/login.jpg"}
-                    alt=""
-                  />
-                  <p className=" text-3xl font-bold cursor-pointer ml-4">
-                    {user?.name || "User"}
-                  </p>
-                </Link>
-              </div>
+      <main className="my-[50px] sm:my-[100px]">
+  <div className="w-[95%]  sm:w-[80%] mx-auto flex flex-col lg:flex-row lg:justify-between gap-6">
+    {/* <!-- info right --> */}
+    <div className="w-full mx-auto lg:w-[70%] flex flex-col gap-7">
+      
+      {/* <!-- row1 --> */}
+      <div className="flex flex-col sm:flex-row justify-between gap-5">
+        <div className="w-full sm:w-[48%] flex bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] items-center p-4">
+          <Link
+            href="./profile"
+            className="w-full flex items-center gap-4"
+          >
+            <img
+              className="w-[60px] sm:w-[80px] h-[60px] sm:h-[80px] rounded-full object-cover cursor-pointer"
+              src={user?.avatar || "/img/login.jpg"}
+              alt=""
+            />
+            <p className="text-xl sm:text-3xl font-bold cursor-pointer">
+              {user?.name || "User"}
+            </p>
+          </Link>
+        </div>
 
-              <div className="w-[48%] bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)]">
-                <div className="p-5">
-                  <div className=" flex justify-between mb-3">
-                    <strong>Hoàn thiện hồ sơ của bạn</strong>
-                    <p className="text-green-500 font-bold">{completion}%</p>
-                  </div>
-
-                  <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
-                    <div
-                      className="bg-green-500 h-2 rounded-full"
-                      style={{ width: `${completion ?? 0}%` }}
-                    ></div>
-                  </div>
-
-                  {completion === 100 && (
-                    <div className="mt-4 p-3 bg-green-100 text-green-800 rounded-lg text-sm font-semibold text-center transition-all duration-500 animate-fade-in">
-                      🎉 Hồ sơ của bạn đã hoàn thành! <br /> Mua sắm ngay thôi!
-                    </div>
-                  )}
-
-                  {completion !== 100 && (
-                    <div className="flex justify-between">
-                      <p className="w-[70%] text-sm">
-                        Bổ sung các thông tin giúp bạn thanh toán nhanh chóng và
-                        an toàn hơn
-                      </p>
-                      <Link
-                        href="/profile"
-                        className="px-5 py-2 bg-[#327FF6] text-[#F5F5FA] rounded-full cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out"
-                      >
-                        Tiếp tục
-                      </Link>
-                    </div>
-                  )}
-                </div>
-              </div>
+        <div className="w-full sm:w-[48%] bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)]">
+          <div className="p-5">
+            <div className="flex justify-between mb-3">
+              <strong>Hoàn thiện hồ sơ của bạn</strong>
+              <p className="text-green-500 font-bold">{completion}%</p>
             </div>
-
-            {/* <!-- row2 --> */}
-            <div className="w-full flex justify-between mb-7">
-              {/* <!-- Đơn hàng --> */}
-              <div className="w-[30%] p-5 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
-                <Link href="/order" className="flex items-center">
-                  {/* <i className="fa-regular fa-file-lines p-1 text-xl text-[#327FF6]"></i> */}
-                  <FaClipboardList className=" text-2xl text-[#327FF6]" />
-                  <p className="p-2 font-medium text-[rgb(45,55,72)]">
-                    Đơn hàng
-                  </p>
-                </Link>
-              </div>
-
-              {/* <!-- Voucher --> */}
-              <div className="w-[30%] p-5 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
-                <div className="flex items-center">
-                  <FaTicketAlt className=" text-2xl text-[#921573c2]" />
-
-                  <Link
-                    href="/voucher"
-                    className="p-2 font-medium text-[rgb(45,55,72)]"
-                  >
-                    Voucher
-                  </Link>
-                </div>
-              </div>
-
-              {/* <!-- Gopoint --> */}
-              <div className="w-[30%] p-5 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
-                <div className="flex items-center">
-                  <IoCard className=" text-2xl text-[#921573c2]" />
-                  <p className="p-2 font-medium text-[rgb(45,55,72)]">
-                    Thẻ Gopoint
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* <!-- row3 --> */}
-            <div className="w-full flex justify-between mb-7">
-              <Link
-                href="/addressBook"
-                className="w-[48%] px-5 py-2 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center justify-center">
-                    <MdOutlineBook className=" text-2xl" />
-                    <p className="p-2 text-[rgb(45,55,72)]">Sổ địa chỉ</p>
-                  </div>
-
-                  <FaChevronRight className=" text-xl" />
-                </div>
-              </Link>
-
-              <Link
-                href="/clause"
-                className="w-[48%] px-5 py-2 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center justify-center">
-                    <IoDocumentTextOutline className=" text-2xl" />
-
-                    <p className="p-2 text-[rgb(45,55,72)]">Điều khoản</p>
-                  </div>
-                  <FaChevronRight className=" text-xl" />
-                </div>
-              </Link>
-            </div>
-
-            {/* <!-- row4 --> */}
-            <div className="w-full flex justify-between ">
-              <div className="w-[48%] px-5 py-2  bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center justify-center">
-                    <MdOutlineSecurity className=" text-2xl" />
-
-                    <p className="p-2 text-[rgb(45,55,72)]">
-                      Chính sách bảo mật
-                    </p>
-                  </div>
-                  <FaChevronRight className=" text-xl" />
-                </div>
-              </div>
-
+            <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
               <div
-                className="w-[48%] flex items-center justify-center px-5 py-2 bg-[#921573] rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer"
-                onClick={handleLogout}
-              >
-                <button className="text-[#F5F5FA] text-lg cursor-pointer">
-                  Đăng xuất
-                </button>
-              </div>
+                className="bg-green-500 h-2 rounded-full"
+                style={{ width: `${completion ?? 0}%` }}
+              ></div>
             </div>
-          </div>
-
-          {/* <!-- info left --> */}
-          <div className="w-[25%]   rounded-xl p-4 ">
-            <Canvas>
-              <ambientLight intensity={0.5} />
-              <directionalLight position={[10, 10, 10]} />
-              <OrbitControls
-                enableZoom={false} // ❌ Không cho phóng to/thu nhỏ
-                enablePan={false} // ❌ Không cho kéo toàn cảnh
-                minPolarAngle={Math.PI / 2} // 🔒 Giới hạn góc nhìn lên xuống
-                maxPolarAngle={Math.PI / 2} // 🔒 Chỉ cho xoay trái – phải
-              />
-              <SmolModel scale={1.4} position={[-0.2, 0, 0]} />
-              <Environment preset="sunset" />
-            </Canvas>
+            {completion === 100 && (
+              <div className="mt-4 p-3 bg-green-100 text-green-800 rounded-lg text-sm font-semibold text-center">
+                🎉 Hồ sơ của bạn đã hoàn thành! <br /> Mua sắm ngay thôi!
+              </div>
+            )}
+            {completion !== 100 && (
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-3 sm:gap-0">
+                <p className="w-full sm:w-[70%] text-sm">
+                  Bổ sung các thông tin giúp bạn thanh toán nhanh chóng và an toàn hơn
+                </p>
+                <Link
+                  href="/profile"
+                  className="px-5 py-2 bg-[#327FF6] text-[#F5F5FA] rounded-full hover:bg-blue-700 transition duration-300 text-center"
+                >
+                  Tiếp tục
+                </Link>
+              </div>
+            )}
           </div>
         </div>
-      </main>
+      </div>
+
+      {/* <!-- row2 --> */}
+      <div className="flex flex-col sm:flex-row justify-between gap-5">
+        <div className="w-full sm:w-[30%] p-5 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
+          <Link href="/order" className="flex items-center">
+            <FaClipboardList className="text-2xl text-[#327FF6]" />
+            <p className="p-2 font-medium text-[rgb(45,55,72)]">Đơn hàng</p>
+          </Link>
+        </div>
+        <div className="w-full sm:w-[30%] p-5 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
+          <div className="flex items-center">
+            <FaTicketAlt className="text-2xl text-[#921573c2]" />
+            <Link href="/voucher" className="p-2 font-medium text-[rgb(45,55,72)]">
+              Voucher
+            </Link>
+          </div>
+        </div>
+        <div className="w-full sm:w-[30%] p-5 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
+          <div className="flex items-center">
+            <IoCard className="text-2xl text-[#921573c2]" />
+            <p className="p-2 font-medium text-[rgb(45,55,72)]">Thẻ Gopoint</p>
+          </div>
+        </div>
+      </div>
+
+      {/* <!-- row3 --> */}
+      <div className="flex flex-col sm:flex-row justify-between gap-5">
+        <Link
+          href="/addressBook"
+          className="w-full sm:w-[48%] px-5 py-2 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <MdOutlineBook className="text-2xl" />
+              <p className="p-2 text-[rgb(45,55,72)]">Sổ địa chỉ</p>
+            </div>
+            <FaChevronRight className="text-xl" />
+          </div>
+        </Link>
+
+        <Link
+          href="/clause"
+          className="w-full sm:w-[48%] px-5 py-2 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <IoDocumentTextOutline className="text-2xl" />
+              <p className="p-2 text-[rgb(45,55,72)]">Điều khoản</p>
+            </div>
+            <FaChevronRight className="text-xl" />
+          </div>
+        </Link>
+      </div>
+
+      {/* <!-- row4 --> */}
+      <div className="flex flex-col sm:flex-row justify-between gap-5">
+        <div className="w-full sm:w-[48%] px-5 py-2 bg-white rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <MdOutlineSecurity className="text-2xl" />
+              <p className="p-2 text-[rgb(45,55,72)]">Chính sách bảo mật</p>
+            </div>
+            <FaChevronRight className="text-xl" />
+          </div>
+        </div>
+        <div
+          className="w-full sm:w-[48%] flex items-center justify-center px-5 py-2 bg-[#921573] rounded-[8px] shadow-[0_4px_10px_rgba(0,0,0,0.08)] cursor-pointer"
+          onClick={handleLogout}
+        >
+          <button className="text-[#F5F5FA] text-lg">Đăng xuất</button>
+        </div>
+      </div>
+    </div>
+
+    {/* <!-- info left -->
+    <div className="w-full lg:w-[25%] rounded-xl p-4 h-[300px] sm:h-auto">
+      <Canvas>
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[10, 10, 10]} />
+        <OrbitControls enableZoom={false} enablePan={false} minPolarAngle={Math.PI / 2} maxPolarAngle={Math.PI / 2} />
+        <SmolModel scale={1.4} position={[-0.2, 0, 0]} />
+        <Environment preset="sunset" />
+      </Canvas>
+    </div> */}
+  </div>
+</main>
+
     </div>
   );
 };
