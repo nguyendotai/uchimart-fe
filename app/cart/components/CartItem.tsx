@@ -13,10 +13,7 @@ import {
 import type { CartItem as CartItemType } from "@/app/types/Product";
 import ConfirmModal from "./ComfirmModal";
 import { FaRegTrashCan } from "react-icons/fa6";
-import {
-  formatCurrencyToNumber,
-  formatNumberToCurrency,
-} from "@/app/utils/helpers";
+import { formatCurrencyToNumber, formatNumberToCurrency } from "@/app/utils/helpers";
 import type { AppDispatch } from "@/store/index";
 
 type Props = {
@@ -30,19 +27,16 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Kiểm tra trạng thái login từ localStorage
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
   }, []);
 
-  const salePrice = formatCurrencyToNumber(item.sale_price);
-  const offerPrice = formatCurrencyToNumber(item.offer_price ?? "0");
+  const salePrice = formatCurrencyToNumber(item.inventory?.sale_price ?? "0");
+  const offerPrice = formatCurrencyToNumber(item.inventory?.offer_price ?? "0");
   const hasDiscount = offerPrice > 0 && offerPrice < salePrice;
   const finalPrice = hasDiscount ? offerPrice : salePrice;
-  const discount = hasDiscount
-    ? Math.round(((salePrice - offerPrice) / salePrice) * 100)
-    : 0;
+  const discount = hasDiscount ? Math.round(((salePrice - offerPrice) / salePrice) * 100) : 0;
 
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -51,15 +45,16 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
 
   const confirmDelete = () => {
     if (isLoggedIn) {
-      dispatch(removeItemFromCartApi(item.id)); // API mode
+      dispatch(removeItemFromCartApi(item.id));
     } else {
-      dispatch(removeFromCartLocal(item.id)); // Local mode
+      dispatch(removeFromCartLocal(item.id));
     }
     setShowConfirm(false);
   };
 
   const changeQuantity = (newQuantity: number) => {
-    if (newQuantity < 1 || newQuantity > item.stock_quantity) return;
+    const stockQuantity = item.inventory?.stock_quantity ?? 0;
+    if (newQuantity < 1 || newQuantity > stockQuantity) return;
 
     if (isLoggedIn) {
       dispatch(updateCartItemApi({ id: item.id, quantity: newQuantity }));
@@ -74,7 +69,7 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
         open={showConfirm}
         onClose={() => setShowConfirm(false)}
         onConfirm={confirmDelete}
-        message={`Bạn có chắc chắn muốn xóa "${item.title}" khỏi giỏ hàng?`}
+        message={`Bạn có chắc chắn muốn xóa "${item.inventory?.title}" khỏi giỏ hàng?`}
       />
 
       <div
@@ -91,8 +86,8 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
 
         <div className="relative w-20 h-20 flex-shrink-0 rounded overflow-hidden">
           <Image
-            src={item.image}
-            alt={item.title}
+            src={item.inventory?.image ?? ""}
+            alt={item.inventory?.title ?? ""}
             fill
             className="object-contain"
           />
@@ -104,8 +99,7 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
         </div>
 
         <div className="flex flex-col flex-1 gap-1">
-          <div className="font-medium text-sm">{item.title}</div>
-          <div className="text-xs text-gray-500">Đã bán {item.sold_count}</div>
+          <div className="font-medium text-sm">{item.inventory?.title}</div>
 
           <div className="flex items-center gap-2 mt-1">
             <span className="text-[#FB5D08] font-semibold text-sm">
@@ -123,18 +117,7 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (item.cartQuantity > 1) {
-                    if (isLoggedIn) {
-                      dispatch(
-                        updateCartItemApi({
-                          id: item.id,
-                          quantity: item.cartQuantity - 1,
-                        })
-                      );
-                    } else {
-                      dispatch(decreaseQuantityLocal(item.id));
-                    }
-                  }
+                  if (item.cartQuantity > 1) changeQuantity(item.cartQuantity - 1);
                 }}
               >
                 -
@@ -143,14 +126,12 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
               <input
                 type="number"
                 min={1}
-                max={item.stock_quantity}
+                max={item.inventory?.stock_quantity ?? 0}
                 value={item.cartQuantity}
                 onClick={(e) => e.stopPropagation()}
                 onChange={(e) => {
                   const value = parseInt(e.target.value, 10);
-                  if (!isNaN(value)) {
-                    changeQuantity(value);
-                  }
+                  if (!isNaN(value)) changeQuantity(value);
                 }}
                 className="w-12 text-center border rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
@@ -158,18 +139,8 @@ export default function CartItem({ item, checked, onItemClick }: Props) {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (item.cartQuantity < item.stock_quantity) {
-                    if (isLoggedIn) {
-                      dispatch(
-                        updateCartItemApi({
-                          id: item.id,
-                          quantity: item.cartQuantity + 1,
-                        })
-                      );
-                    } else {
-                      dispatch(increaseQuantityLocal(item.id));
-                    }
-                  }
+                  if (item.cartQuantity < (item.inventory?.stock_quantity ?? 0))
+                    changeQuantity(item.cartQuantity + 1);
                 }}
               >
                 +

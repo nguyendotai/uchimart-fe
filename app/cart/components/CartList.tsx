@@ -1,9 +1,12 @@
 "use client";
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
-import { removeFromCartLocal } from "@/store/slices/cartSlice";
+import { RootState, AppDispatch } from "@/store";
+import {
+  removeFromCartLocal,
+  removeItemFromCartApi,
+  fetchCartFromApi,
+} from "@/store/slices/cartSlice";
 import CartItem from "./CartItem";
 import ConfirmModal from "./ComfirmModal";
 
@@ -13,9 +16,19 @@ interface Props {
 }
 
 export default function CartList({ selectedIds, setSelectedIds }: Props) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+
+    if (token) {
+      dispatch(fetchCartFromApi());
+    }
+  }, [dispatch]);
 
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -36,7 +49,11 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
   };
 
   const confirmDelete = () => {
-    selectedIds.forEach((id) => dispatch(removeFromCartLocal(id)));
+    if (isLoggedIn) {
+      selectedIds.forEach((id) => dispatch(removeItemFromCartApi(id)));
+    } else {
+      selectedIds.forEach((id) => dispatch(removeFromCartLocal(id)));
+    }
     setSelectedIds([]);
     setShowConfirm(false);
   };

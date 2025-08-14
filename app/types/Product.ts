@@ -73,7 +73,11 @@ export interface Product {
   updated_at: string;
 }
 
-export type CartItem = Inventory & {
+// frontend CartItem type
+export type CartItem= {
+  id: number;
+  inventory_id: number;
   cartQuantity: number;
-  quantity?: number;
+  inventory?: Inventory; // ✅ inventory optional
 };
+

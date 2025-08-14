@@ -69,15 +69,28 @@ export default function Login() {
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
-
       window.dispatchEvent(new Event("userChanged"));
 
-      // 🔹 Gọi merge cart ngay sau login thành công
-      if (cartItems.length > 0) {
-        await dispatch(syncCartApi(cartItems));
+      // 1️⃣ Lấy cart local
+      const persistedCart = localStorage.getItem("persist:cart");
+      let cartItems: any[] = [];
+      if (persistedCart) {
+        const parsed = JSON.parse(persistedCart);
+        cartItems = JSON.parse(parsed.items || "[]");
       }
 
-      // 🔹 Lấy lại cart từ DB để Redux có đúng cart_item_id
+      // 2️⃣ Chuyển về đúng format { inventory_id, quantity }
+      const itemsToSync = cartItems.map((item: any) => ({
+        inventory_id: item.id,
+        quantity: item.cartQuantity,
+      }));
+
+      // 3️⃣ Sync lên DB
+      if (itemsToSync.length > 0) {
+        await dispatch(syncCartApi({ items: itemsToSync }));
+      }
+
+      // 4️⃣ Lấy lại cart từ DB để redux có id chuẩn
       await dispatch(fetchCartFromApi());
 
       router.push("/");

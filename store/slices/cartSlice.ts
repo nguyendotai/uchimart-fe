@@ -50,10 +50,41 @@ const getAuthHeader = () => {
 export const fetchCartFromApi = createAsyncThunk(
   "cart/fetchFromApi",
   async () => {
-    const res = await axios.get("http://127.0.0.1:8000/api/carts", {
+    // 1. Lấy cart từ API
+    const resCart = await axios.get("http://127.0.0.1:8000/api/carts", {
       headers: getAuthHeader(),
     });
-    return res.data.data as CartItem[];
+    const cartItems = resCart.data.data as CartItem[];
+
+    // 2. Lấy toàn bộ product (có inventory bên trong)
+    const resProduct = await axios.get("http://127.0.0.1:8000/api/products", {
+      headers: getAuthHeader(),
+    });
+    const products = resProduct.data.data;
+
+    // 3. Map cartItem với inventory tương ứng
+    const cartItemsWithInventory = cartItems.map((item) => {
+      const product = products.find((p: any) =>
+        p.inventories.some((inv: any) => inv.id === item.inventory_id)
+      );
+      const inventory = product?.inventories.find(
+        (inv: any) => inv.id === item.inventory_id
+      );
+
+      return {
+        ...item,
+        inventory: {
+          ...inventory,
+          sale_price: inventory?.sale_price ?? "0₫",
+          offer_price: inventory?.offer_price ?? "0₫",
+          stock_quantity: inventory?.stock_quantity ?? 0,
+          title: inventory?.title ?? "", // fallback là string rỗng
+          image: inventory?.image ?? "", // fallback là string rỗng
+        },
+      };
+    });
+
+    return cartItemsWithInventory;
   }
 );
 
@@ -70,8 +101,6 @@ export const syncCartApi = createAsyncThunk(
     return res.data.cart.items as CartItem[];
   }
 );
-
-
 
 // Thêm sản phẩm vào giỏ (API)
 export const addToCartApi = createAsyncThunk(
@@ -138,19 +167,19 @@ const cartSlice = createSlice({
 
       if (index >= 0) {
         const currentItem = state.items[index];
-        const maxAddable =
-          currentItem.stock_quantity - currentItem.cartQuantity;
+        const stockQuantity = currentItem.inventory?.stock_quantity ?? 0;
+        const maxAddable = stockQuantity - currentItem.cartQuantity;
         const quantityToAdd = Math.min(action.payload.cartQuantity, maxAddable);
 
         if (quantityToAdd > 0) {
           currentItem.cartQuantity += quantityToAdd;
         }
       } else {
+        const stockQuantity = action.payload.inventory?.stock_quantity ?? 0;
         const quantityToAdd = Math.min(
           action.payload.cartQuantity,
-          action.payload.stock_quantity
+          stockQuantity
         );
-
         state.items.push({ ...action.payload, cartQuantity: quantityToAdd });
       }
 
@@ -164,7 +193,8 @@ const cartSlice = createSlice({
 
     increaseQuantityLocal(state, action: PayloadAction<number>) {
       const item = state.items.find((item) => item.id === action.payload);
-      if (item && item.cartQuantity < item.stock_quantity) {
+      const stockQuantity = item?.inventory?.stock_quantity ?? 0;
+      if (item && item.cartQuantity < stockQuantity) {
         item.cartQuantity += 1;
         saveCartToLocal(state.items);
       }
@@ -184,11 +214,9 @@ const cartSlice = createSlice({
     ) {
       const { id, quantity } = action.payload;
       const item = state.items.find((item) => item.id === id);
+      const stockQuantity = item?.inventory?.stock_quantity ?? 0;
       if (item) {
-        const newQuantity = Math.max(
-          1,
-          Math.min(quantity, item.stock_quantity)
-        );
+        const newQuantity = Math.max(1, Math.min(quantity, stockQuantity));
         item.cartQuantity = newQuantity;
         saveCartToLocal(state.items);
       }
@@ -197,6 +225,10 @@ const cartSlice = createSlice({
     clearCartLocal(state) {
       state.items = [];
       localStorage.removeItem(CART_KEY);
+    },
+    resetCart(state) {
+      state.items = [];
+      saveCartToLocal([]); // local cũng trống
     },
   },
   // ==========================
@@ -248,6 +280,7 @@ export const {
   decreaseQuantityLocal,
   setQuantityLocal,
   clearCartLocal,
+  resetCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
