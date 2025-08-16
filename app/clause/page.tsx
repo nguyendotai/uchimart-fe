@@ -110,7 +110,7 @@ const Clause = () => {
 
                             <div className="mb-4">
                                 <p className="font-bold text-1xl">7.5. Sử dụng tiền tại mục Tiền Dư:</p>
-                                <pre className="whitespace-pre-wrap font-sans">Khách hàng có thể yêu cầu Uchi Mart hoàn lại Tiền Dư qua tài khoản ngân hàng cho Khách hàng bằng hình thức chuyển khoản với điều kiện số tiền hoàn lại lớn hơn 10.000 VND (Mười nghìn đồng).Lưu ý: 
+                                <pre className="whitespace-pre-wrap font-sans">Khách hàng có thể yêu cầu Uchi Mart hoàn lại Tiền Dư qua tài khoản ngân hàng cho Khách hàng bằng hình thức chuyển khoản với điều kiện số tiền hoàn lại lớn hơn 10.000 VND (Mười nghìn đồng).Lưu ý:
                                     Mục Tiền Dư áp dụng từ ngày 16/08/2024 và có thể thay đổi, chấm dứt theo thông báo của Uchi Mart tại từng thời điểm.</pre>
                             </div>
 
@@ -118,38 +118,82 @@ const Clause = () => {
                             <div className="mb-4">
                                 <p className="font-bold text-xl">8. Quy trình giải quyết khiếu nại</p>
                                 <pre className="whitespace-pre-wrap font-sans">Bước 1: Quý Khách Hàng có thể gửi khiếu nại của mình đến Uchi Mart qua các phương tiện sau:
-                                    a. Qua tổng đài giải quyết khiếu nại: 1900 2807 - 0332493487. Thời gian làm việc từ 7h00 - 21h30
-                                    b. Qua email: lienhe@uchimart.site
+                                    a. Qua tổng đài giải quyết khiếu nại: 1900 2807 - 0332493487. Thời gian làm việc từ 7h00 - 21h30)
+                                    b. Qua email: lienhe@uchimart.vn
                                     c. Tại địa chỉ liên hệ: Lô T2-1.2, Đường D1, Khu Công Nghệ Cao, P. Tân Phú, Thành phố Thủ Đức, TP. HCM.
                                     d. Hoặc các kênh tiếp nhận khác được Uchi Mart triển khai tại Website/Ứng dụng tại từng thời điểm.
-                                    Bước 2: Uchi Mart sẽ liên lạc với Quý Khách Hàng để tìm hiểu nguyên nhân và thoả thuận đền bù hoặc hoàn trả tiền cho Quý Khách Hàng nếu do lỗi của Uchi Mart hoặc nhân viên của Uchi Mart.</pre>
+                                    Bước 2: Uchi Mart sẽ liên lạc với Quý Khách Hàng để tìm hiểu nguyên nhân và thoả thuận đền bù hoặc hoàn trả tiền cho Quý Khách Hàng nếu do lỗi của Uchi Mart hoặc nhân viên của Uchi Mart.
+                                </pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-1xl">4.2.3 Cơ quan thẩm quyền</p>
-                                <pre className="whitespace-pre-wrap font-sans">Trong trường hợp có yêu cầu bằng văn bản từ cơ quan nhà nước có thẩm quyền (Viện kiểm sát, Tòa án, Công an điều tra, hoặc các tổ chức thẻ tín dụng liên quan đến hành vi vi phạm pháp luật hoặc gian lận của Khách hàng), Công ty Uchi Mart có trách nhiệm hợp tác cung cấp Thông Tin Khách Hàng theo quy định pháp luật.</pre>
+                                <p className="font-bold text-xl">9. Quy trình thanh toán</p>
+                                <p className="font-bold text-1xl">9.1. Thanh toán sau (COD – giao hàng và thu tiền tận nơi bằng tiền mặt hoặc thanh toán bằng thẻ ngân hàng):</p>
+                                <pre className="whitespace-pre-wrap font-sans">Bước 1: Quý Khách Hàng tìm hiểu thông tin về hàng hóa, dịch vụ được đăng tại Website/Ứng Dụng và xác thực đơn hàng (điện thoại, tin nhắn, email).
+                                    Bước 2: Quý Khách Hàng thanh toán online qua cổng thanh toán hoặc các phương thức được tích hợp tại Website/Ứng dụng.
+                                    Bước 3: Uchi Mart xác nhận thông tin Quý Khách Hàng và tiến hành giao hàng.
+                                    Bước 4: Quý Khách Hàng nhận hàng.</pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-1xl">4.3 Thời gian lưu trữ thông tin</p>
-                                <pre className="whitespace-pre-wrap font-sans">Đối với thông tin cá nhân, Công ty chỉ xóa dữ liệu nếu Khách hàng có yêu cầu gửi mail về hotro@uchimart.site. Ngoài ra, Thông Tin Khách Hàng được bảo mật và lưu trữ trên máy chủ của website https://uchimart.site.</pre>
+                                <p className="font-bold text-1xl">9.2. Thanh toán online qua thẻ ngân hàng, chuyển khoản, hoặc các phương thức thanh toán khác:</p>
+                                <pre className="whitespace-pre-wrap font-sans">Bước 1: Quý Khách Hàng tìm hiểu thông tin về hàng hóa, dịch vụ được đăng tại Website/Ứng Dụng và xác thực đơn hàng (điện thoại, tin nhắn, email).
+                                    Bước 2: Quý Khách Hàng thanh toán online qua cổng thanh toán hoặc các phương thức được tích hợp tại Website/Ứng dụng.
+                                    Bước 3: Uchi Mart xác nhận thông tin Quý Khách Hàng và tiến hành giao hàng.
+                                    Bước 4: Quý Khách Hàng nhận hàng.
+                                </pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-1xl">4.4 Địa chỉ đơn vị thu thập và quản lý thông tin</p>
-                                <pre className="whitespace-pre-wrap font-sans">CÔNG TY CỔ PHẦN UCHI MART Địa chỉ: [Địa chỉ chính xác của Uchi Mart, bạn có thể cung cấp để thay thế] Website: https://uchimart.site Email: hotro@uchimart.site</pre>
+                                <p className="font-bold text-xl">10. Đảm bảo an toàn giao dịch</p>
+                                <pre className="whitespace-pre-wrap font-sans">10.1. Quý Khách Hàng nên cung cấp thông tin đầy đủ (họ và tên, địa chỉ, số điện thoại, email) khi tham gia mua hàng tại Website/Ứng Dụng để Uchi Mart có thể liên hệ nhanh lại với Quý Khách Hàng trong trường hợp xảy ra lỗi.
+                                    10.2. Trong trường hợp giao dịch nhận hàng tận nơi của Quý Khách Hàng, thì Quý Khách Hàng chỉ nên thanh toán sau khi đã kiểm tra hàng hoá chi tiết và hài lòng với hàng hóa.
+                                    10.3. Khi thanh toán trực tuyến bằng thẻ ATM (nội địa), Visa/Master và các hình thức tương đương, Quý Khách Hàng nên tự mình thực hiện và không được để lộ thông tin thẻ. Website/Ứng Dụng không lưu trữ thông tin thẻ của Quý Khách Hàng sau khi thanh toán, mà thông qua hệ thống của ngân hàng liên kết nên tuyệt đối bảo mật thông tin thẻ cho Quý Khách Hàng.
+                                    10.4. Trong trường lỗi xảy ra trong quá trình thanh toán trực tuyến, Website/Ứng Dụng sẽ là đơn vị hỗ trợ giải quyết cho Quý Khách Hàng sớm nhất có thể kể từ khi tiếp nhận thông tin từ người thực hiện giao dịch.</pre>
                             </div>
 
 
                             <div className="mb-4">
-                                <p className="font-bold text-1xl">4.5 Hiệu lực của Chính sách bảo mật thông tin khách hàng</p>
-                                <pre className="whitespace-pre-wrap font-sans">Công ty Uchi Mart cam kết bảo mật Thông Tin Khách Hàng và sử dụng đúng theo quy định của Chính sách bảo mật này. Chính sách có thể được cập nhật, bổ sung nhằm hoàn thiện theo thời gian. Khách hàng nên thường xuyên xem lại để cập nhật và bảo vệ quyền lợi của mình.
-                                    Mọi thắc mắc, góp ý về chính sách bảo mật hoặc khi phát hiện việc sử dụng sai mục đích thông tin, vui lòng liên hệ hotline: 1800 xxxx hoặc email: hotro@uchimart.site Thời gian làm việc: 7:00 - 21:00 hàng ngày (trừ lễ, Tết).
-                                    Để xác nhận Khách hàng đã hiểu và đồng ý với Bản Điều khoản và Điều kiện, vui lòng nhấn “Đồng ý”.</pre>
+                                <p className="font-bold text-xl">11. Bảo vệ thông tin cá nhân Quý Khách Hàng</p>
+                                <p className="font-bold text-1xl">11.1. Mục đích và phạm vi thu thập</p>
+                                <pre className="whitespace-pre-wrap font-sans">a. Để truy cập và sử dụng một số dịch vụ tại Website/Ứng Dụng (tạo đơn hàng, để lại bình luận đánh giá, liên hệ với chúng tôi...), Quý Khách Hàng có thể sẽ được yêu cầu để lại thông tin cho chúng tôi (Email, Họ tên, Số điện thoại, địa chỉ liên lạc, v.v). Mọi thông tin khai báo phải đảm bảo tính chính xác và hợp pháp. Uchi Mart không chịu mọi trách nhiệm liên quan đến pháp luật của thông tin khai báo.
+                                    b. Website/Ứng Dụng cũng có thể thu thập thông tin về số lần ghé thăm, bao gồm số trang Quý Khách Hàng xem, số links (liên kết) Quý Khách Hàng click và những thông tin khác liên quan đến việc kết nối đến site Uchi Mart. Chúng tôi cũng thu thập các thông tin mà trình duyệt Web (Browser) Quý Khách Hàng sử dụng mỗi khi truy cập vào Website/Ứng Dụng, bao gồm: địa chỉ IP, loại Browser, ngôn ngữ sử dụng, thời gian và những địa chỉ mà Browser truy xuất đến.</pre>
                             </div>
+
+                            <div className="mb-4">
+                                <p className="font-bold text-1xl">11.2. Phạm vi sử dụng thông tin: Các thông tin mà Website/Ứng Dụng thu thập của Khách Hàng sẽ được sử dụng trong phạm vi sau:</p>
+                                <pre className="whitespace-pre-wrap font-sans">a. Xử lý đơn hàng: gọi điện/tin nhắn xác nhận việc đặt hàng, thông báo về trạng thái đơn hàng & thời gian giao hàng, xác nhận việc huỷ đơn hàng (nếu có).
+                                    b. Gửi thư ngỏ/thư cảm ơn, giới thiệu hàng hóa mới, dịch vụ mới hoặc các chương trình khuyến mại của Uchi Mart.
+                                    c. Giải quyết khiếu nại.
+                                    d. Thông tin về việc trao thưởng cho Quý Khách Hàng khi trúng thưởng.
+                                    e. Các khảo sát để chăm sóc khách hàng tốt hơn.
+                                    f. Xác nhận các thông tin về kỹ thuật và bảo mật thông tin khách hàng.
+                                    g. Các trường hợp có sự yêu cầu của cơ quan nhà nước có thẩm quyền, theo đúng quy định của pháp luật.</pre>
+                            </div>
+
+                            <div className="mb-4">
+                                <p className="font-bold text-1xl">11.3. Thời gian lưu trữ thông tin</p>
+                                <pre className="whitespace-pre-wrap font-sans">Dữ liệu sẽ được lưu trữ cho đến khi có yêu cầu hủy bỏ. Còn lại trong mọi trường hợp thông tin cá nhân Quý Khách Hàng sẽ được bảo mật trên máy chủ của Website/Ứng Dụng.</pre>
+                            </div>
+
+                            <div className="mb-4">
+                                <p className="font-bold text-1xl">11.4. Những người hoặc tổ chức có thể thể tiếp cận thông tin cá nhân của Quý Khách Hàng</p>
+                                <pre className="whitespace-pre-wrap font-sans">a. Uchi Mart hoặc các đối tác mà Uchi Mart hợp tác nhằm thực hiện các công việc theo phạm vi nêu tại mục 13.2; và/hoặc
+                                    b. Các bên thứ ba khác nếu được sự đồng ý của Quý Khách Hàng tại từng thời điểm.</pre>
+                            </div>
+
+                            <div className="mb-4">
+                                <p className="font-bold text-1xl">11.5. Phương tiện và công cụ để Khách Hàng tiếp cận và chỉnh sửa dữ liệu cá nhân</p>
+                                <pre className="whitespace-pre-wrap font-sans">Việc tiếp cận và chỉnh sửa dữ liệu cá nhân dựa vào yêu cầu của Quý Khách Hàng bằng các hình thức sau:
+                                    a. Đăng nhập vào trang quản lý thông tin Quý Khách Hàng, và chỉnh sửa lại thông tin của Quý Khách Hàng.
+                                    b. Gọi điện thoại đến tổng đài chăm sóc khách hàng. Bằng nghiệp vụ chuyên môn xác định thông tin cá nhân, nhân viên tổng đài sẽ hỗ trợ chỉnh sửa, thay đổi thông tin Quý Khách Hàng.
+                                    c. Để lại bình luận hoặc gửi góp ý trực tiếp từ Website/Ứng Dụng, Uchi Mart kiểm tra thông tin và liên lạc lại với Quý Khách Hàng để xác nhận thông tin và chỉnh sửa thông tin Quý Khách Hàng khi các thông tin đã được xác minh đầy đủ và chính xác.</pre>
+                            </div>
+
+
 
 
 

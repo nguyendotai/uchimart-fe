@@ -13,6 +13,7 @@ const WebsiteReviews = () => {
     const [showEmoji, setShowEmoji] = useState(false);
     const emojiRef = useRef<HTMLDivElement>(null);
     const [reviews, setReviews] = useState<Review[]>([]);
+    const token = localStorage.getItem("token");
 
     // Lấy dữ liệu từ API khi load trang
     useEffect(() => {
@@ -26,33 +27,28 @@ const WebsiteReviews = () => {
             .catch((err) => console.error(err));
     }, []);
 
-    const handleAddReview = () => {
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (!content.trim() || rating === 0) return;
 
-    // Tạo object dữ liệu sẽ gửi
-    const reviewData = {
-        rating,
-        comment: content,
-        name: user.name || "Khách",
+    const handleAddReview = async () => {
+        if (!content.trim() || rating === 0) return;
+
+        try {
+            await axios.post(
+                "http://localhost:8000/api/web-reviews/store",
+                {
+                    rating,
+                    comment: content,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            alert("Bình luận thành công!");
+        } catch (error) {
+            console.error("Lỗi khi gửi review:", error);
+        }
     };
-
-    // Log dữ liệu ra console
-    console.log("Dữ liệu gửi đi:", reviewData);
-
-    axios.post("http://localhost:8000/api/website-reviews", reviewData)
-        .then(res => {
-            if (res.data.success) {
-                setReviews([res.data.data, ...reviews]);
-                setContent("");
-                setRating(0);
-                setIsFocused(false);
-            }
-        })
-        .catch(err => console.error(err));
-};
-
-
 
 
 
