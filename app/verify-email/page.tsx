@@ -12,7 +12,7 @@ const VerifyEmailPage = () => {
 
     const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
     const [message, setMessage] = useState("");
-    const [countdown, setCountdown] = useState(5); // 5 giây đếm ngược
+    const [countdown, setCountdown] = useState(3); // 3 giây đếm ngược
     const calledRef = React.useRef(false);
 
     useEffect(() => {

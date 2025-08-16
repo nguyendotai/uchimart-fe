@@ -147,29 +147,29 @@ const Header = () => {
           <a href="/account" className="flex items-center font-medium">
             <span style={{ color: "#FFA629" }}>Cam kết</span>
           </a>
-          <a href="/history" className="flex items-center font-medium">
+          <Link href="/history" className="flex items-center font-medium">
             <HiBadgeCheck
               className="mr-1 text-xl"
               style={{ color: "#FFA629" }}
             />
             <span>Chính sách</span>
-          </a>
+          </Link>
           <span className="text-gray-400">|</span>
-          <a href="/settings" className="flex items-center font-medium">
+          <Link href="/settings" className="flex items-center font-medium">
             <RiBankCardFill
               className="mr-1 text-xl"
               style={{ color: "#FFA629" }}
             />
             <span>Liên hệ</span>
-          </a>
+          </Link>
           <span className="text-gray-400">|</span>
-          <a href="/settings" className="flex items-center font-medium">
+          <Link href="/website-reviews" className="flex items-center font-medium">
             <HiMiniPercentBadge
               className="mr-1 text-xl"
               style={{ color: "#FFA629" }}
             />
-            <span>Giá siêu rẻ</span>
-          </a>
+            <span>Đánh giá Website</span>
+          </Link>
         </nav>
       </div>
     </div>
