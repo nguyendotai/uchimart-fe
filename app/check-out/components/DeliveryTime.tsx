@@ -16,26 +16,28 @@ type Props = {
 
 export default function DeliveryTime({ items, selectedTime, onChange }: Props) {
   return (
-    <div className="bg-[#f3e5f5] p-4 rounded-md shadow-sm">
+    <div className="bg-teal-50 p-5 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
       {/* Bước số */}
-      <div className="flex gap-2 items-center mb-3">
-        <h2 className="w-6 h-6 flex items-center justify-center bg-[#c67ed1] text-white rounded-full text-sm font-semibold">
+      <div className="flex gap-3 items-center mb-4">
+        <div className="w-7 h-7 flex items-center justify-center bg-teal-500 text-white rounded-full text-sm font-bold">
           3
+        </div>
+        <h2 className="text-base font-semibold text-gray-900 tracking-tight">
+          Chọn giờ giao nhận
         </h2>
-        <h2 className="text-sm font-semibold text-gray-800">Chọn giờ giao nhận</h2>
       </div>
 
       {/* Chọn giờ */}
-      <div className="border border-blue-300 rounded-lg overflow-hidden mb-4">
+      <div className="border border-teal-200 rounded-lg overflow-hidden mb-5">
         <div className="flex items-stretch">
-          <div className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-600 text-sm font-medium">
+          <div className="flex items-center gap-2 px-4 py-3 bg-white text-teal-600 text-sm font-medium">
             <MdAccessTime className="text-lg" />
             Chọn giờ giao
           </div>
           <select
             value={selectedTime}
             onChange={(e) => onChange(e.target.value)}
-            className="flex-1 text-sm px-4 py-2 border-l border-blue-200 focus:outline-none"
+            className="flex-1 text-sm px-4 py-3 bg-white border-l border-teal-200 focus:outline-none focus:ring-2 focus:ring-teal-300 transition-colors"
           >
             <option value="">Hôm nay, 15:00 - 16:00</option>
             <option value="8-9">Ngày mai, 8:00 - 9:00</option>
@@ -46,7 +48,7 @@ export default function DeliveryTime({ items, selectedTime, onChange }: Props) {
       </div>
 
       {/* Danh sách sản phẩm */}
-      <div className="space-y-3 mb-3">
+      <div className="space-y-4 mb-5">
         {items.map((item) => {
           const offerPrice = formatCurrencyToNumber(item.offer_price ?? "");
           const salePrice = formatCurrencyToNumber(item.sale_price);
@@ -56,29 +58,29 @@ export default function DeliveryTime({ items, selectedTime, onChange }: Props) {
           return (
             <div
               key={item.id}
-              className="flex items-start gap-3 border-b pb-3 last:border-none"
+              className="flex items-start gap-4 border-b border-gray-100 pb-4 last:border-none"
             >
               <Image
                 src={item.image || "/fallback.jpg"}
                 alt={item.title}
                 width={48}
                 height={48}
-                className="rounded object-cover w-12 h-12"
+                className="rounded-lg object-cover w-12 h-12"
               />
               <div className="flex-1">
-                <p className="text-sm text-gray-800">{item.title}</p>
+                <p className="text-sm text-gray-800 font-medium">{item.title}</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="font-semibold text-gray-800">
+                  <span className="font-semibold text-gray-900">
                     {formatNumberToCurrency(unitPrice)} ₫
                   </span>
                   {offerPrice > 0 && offerPrice < salePrice && (
-                    <span className="text-red-500 text-xs bg-red-100 px-2 py-[2px] rounded-full">
+                    <span className="text-rose-500 text-xs bg-rose-100 px-2 py-0.5 rounded-full font-medium">
                       Ưu đãi
                     </span>
                   )}
                 </div>
               </div>
-              <span className="text-sm text-gray-700 whitespace-nowrap">
+              <span className="text-sm text-gray-700 font-medium whitespace-nowrap">
                 x{item.cartQuantity}
               </span>
             </div>
@@ -89,16 +91,16 @@ export default function DeliveryTime({ items, selectedTime, onChange }: Props) {
       {/* Ghi chú đơn */}
       <textarea
         placeholder="Nhập ghi chú đơn"
-        className="w-full rounded-md bg-gray-50 px-3 py-2 text-sm mb-3 resize-none border border-gray-200"
+        className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-300 transition-colors resize-none"
       />
 
       {/* Khuyến mãi */}
-      <p className="text-sm text-gray-600 mb-2">
-        Mua thêm <span className="font-medium">36k</span> để được giảm phí ship
+      <p className="text-sm text-gray-600 mt-4 mb-3">
+        Mua thêm <span className="font-semibold text-gray-800">36k</span> để được giảm phí ship
       </p>
 
       {/* Điểm thưởng */}
-      <div className="bg-green-50 text-green-600 px-4 py-2 rounded text-sm font-medium">
+      <div className="bg-teal-100 text-teal-700 px-4 py-2 rounded-lg text-sm font-medium">
         Dự kiến <span className="font-semibold">+35 điểm</span> cho đơn
       </div>
     </div>

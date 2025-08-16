@@ -43,7 +43,7 @@ const ProductCard = ({ product }: { product: Inventory }) => {
             quantity,
           })
         ).unwrap();
-        toast.success("Đã thêm vào giỏ hàng (API)!");
+        toast.success("Đã thêm vào giỏ hàng ");
       } else {
         const selectedItem: CartItem = {
           id: product.id,
@@ -60,7 +60,7 @@ const ProductCard = ({ product }: { product: Inventory }) => {
         };
 
         dispatch(addToCartLocal(selectedItem));
-        toast.success("Đã thêm vào giỏ hàng (Local)!");
+        toast.success("Đã thêm vào giỏ hàng ");
       }
 
       if (actionType === "buyNow") {

@@ -131,7 +131,6 @@ const Product = () => {
             </div>
 
             {/* Sale Products */}
-            {/* Sale Products */}
             <div className="w-full mb-4" ref={saleRef}>
               {saleInView && (
                 <ListSaleProduct
@@ -146,9 +145,7 @@ const Product = () => {
 
             {/* SubCategory Filter */}
             {!isSalePage && (
-              <div className="z-30 sticky top-0 mb-4">
-                <ListSubCategory sortBy={sortBy} setSortBy={setSortBy} />
-              </div>
+              <ListSubCategory sortBy={sortBy} setSortBy={setSortBy} />
             )}
 
             {/* Product Count */}

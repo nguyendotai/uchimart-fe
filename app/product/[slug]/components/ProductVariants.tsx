@@ -49,8 +49,8 @@ const ProductVariants = ({
 
             {/* Giá theo đơn vị */}
             <div className="text-xs text-gray-500 mb-1">
-              ({(displayPrice / variant.stock_quantity).toLocaleString()} đ/
-              {variant.unit ?? "sp"})
+              ({(displayPrice / variant.quantity_in_unit).toLocaleString()} đ/
+              {variant.unit_type ?? "sp"})
             </div>
 
             {/* Tình trạng + đã bán */}

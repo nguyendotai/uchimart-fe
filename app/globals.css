@@ -14,7 +14,7 @@ html.dark body {
 /* Ví dụ cho header, footer, ... */
 .header {
   background-color: white;
-}
+} 
 
 html.dark .header {
   background-color: #1a1a1a;

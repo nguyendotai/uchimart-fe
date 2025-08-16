@@ -31,49 +31,50 @@ export default function DeliveryAddress() {
 
   return (
     <>
-      <div className="bg-[#f3e5f5] p-4 rounded-md">
+      <div className="bg-teal-50 p-5 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
         {/* Header */}
-        <div className="flex gap-2 items-center mb-3">
-          <h2 className="w-6 h-6 flex items-center justify-center bg-[#c67ed1] text-white rounded-full text-sm font-semibold">
+        <div className="flex gap-3 items-center mb-4">
+          <div className="w-7 h-7 flex items-center justify-center bg-teal-500 text-white rounded-full text-sm font-bold">
             2
-          </h2>
-          <h2 className="text-sm font-semibold text-gray-800">
+          </div>
+          <h2 className="text-base font-semibold text-gray-900 tracking-tight">
             Chọn địa chỉ giao
           </h2>
         </div>
 
         {/* Địa chỉ */}
-        <div className="flex justify-between items-start mb-3">
-          <div className="flex items-start gap-2">
-            <PiMapPinFill className="text-red-400 mt-1" />
+        <div className="flex justify-between items-start mb-4">
+          <div className="flex items-start gap-3">
+            <PiMapPinFill className="text-rose-500 mt-1 text-lg" />
             <div className="text-sm">
-              <p>
-                Giao đến{" "}
-                <span className="font-semibold">{selectedAddress.name}</span>
+              <p className="text-gray-800">
+                Giao đến <span className="font-semibold text-gray-900">{selectedAddress.name}</span>
               </p>
-              <p className="text-gray-700">{selectedAddress.fullAddress}</p>
+              <p className="text-gray-600 mt-1">{selectedAddress.fullAddress}</p>
             </div>
           </div>
           <button
             onClick={() => setShowModal(true)}
-            className="text-blue-600 text-sm font-medium whitespace-nowrap"
+            className="text-teal-600 text-sm font-medium hover:text-teal-700 transition-colors whitespace-nowrap"
           >
             Đổi địa chỉ
           </button>
         </div>
 
         {/* Siêu thị */}
-        <div className="relative bg-blue-100 px-4 py-3 rounded-md text-sm text-gray-800 flex justify-between items-start">
-          <div className="absolute -top-2 left-6 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-blue-100" />
-          <div>
-            <p className="text-xs text-gray-500 mb-1">Siêu thị phục vụ bạn</p>
-            <p className="font-semibold text-sm">
-              Uchimart – 448 Phạm Văn Bạch, Quận Gò Vấp
-            </p>
+        <div className="relative bg-white px-5 py-4 rounded-lg text-sm text-gray-800 shadow-sm">
+          <div className="absolute -top-2 left-6 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-teal-100" />
+          <div className="flex justify-between items-start">
+            <div>
+              <p className="text-xs text-gray-500 mb-1">Siêu thị phục vụ bạn</p>
+              <p className="font-semibold text-sm text-gray-900">
+                Uchimart – 448 Phạm Văn Bạch, Quận Gò Vấp
+              </p>
+            </div>
+            <button className="text-teal-600 text-sm font-medium hover:text-teal-700 transition-colors whitespace-nowrap ml-2">
+              Đổi siêu thị
+            </button>
           </div>
-          <button className="text-blue-600 text-sm font-medium whitespace-nowrap ml-2">
-            Đổi siêu thị
-          </button>
         </div>
       </div>
 
@@ -85,8 +86,8 @@ export default function DeliveryAddress() {
           setShowModal(false);
         }}
         onRequestCreate={() => {
-          setShowModal(false); // đóng modal địa chỉ
-          setShowCreateModal(true); // mở modal tạo địa chỉ
+          setShowModal(false);
+          setShowCreateModal(true);
         }}
       />
 

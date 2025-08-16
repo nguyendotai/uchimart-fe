@@ -48,7 +48,7 @@ const ListProductByCategoryChildren = () => {
               ...inv,
               product,
               subcategories: product.subcategories,
-              unit: inv.unit ?? "sp",
+              unit_type: inv.unit_type ?? "sp",
             }))
           );
 

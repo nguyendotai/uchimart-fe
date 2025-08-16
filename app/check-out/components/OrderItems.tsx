@@ -16,7 +16,7 @@ export default function OrderSummary({ items }: Props) {
     const offerPrice = formatCurrencyToNumber(item.offer_price ?? "0");
     const price = offerPrice > 0 && offerPrice < salePrice ? offerPrice : salePrice;
 
-    return sum + price * item.cartQuantity;
+    return sum + price * item.quantity;
   }, 0);
 
   const shippingFee = 16000;
@@ -25,21 +25,21 @@ export default function OrderSummary({ items }: Props) {
   const finalTotal = subTotal + shippingFee - totalDiscount;
 
   return (
-    <div className="bg-[#f3e5f5] rounded-lg shadow-sm text-sm p-4 space-y-4">
+    <div className="bg-teal-50 rounded-xl shadow-sm text-sm p-5 space-y-5">
       {/* VAT */}
-      <label className="flex items-center gap-2 cursor-pointer">
+      <label className="flex items-center gap-3 cursor-pointer">
         <input
           type="checkbox"
           checked={vatChecked}
           onChange={() => setVatChecked(!vatChecked)}
-          className="w-4 h-4"
+          className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-300"
         />
         <span className="text-gray-800 font-medium">Xuất hóa đơn VAT</span>
       </label>
 
       {/* Tóm tắt đơn hàng */}
-      <div className="bg-gray-50 p-4 rounded-md space-y-3 border border-gray-300">
-        <p className="font-semibold text-gray-800">Tóm tắt đơn hàng</p>
+      <div className="bg-white p-4 rounded-lg space-y-4 border border-gray-200 shadow-sm">
+        <p className="font-semibold text-gray-900 text-base">Tóm tắt đơn hàng</p>
 
         <div className="flex justify-between">
           <span className="text-gray-600">Tổng tạm tính</span>
@@ -63,14 +63,14 @@ export default function OrderSummary({ items }: Props) {
                 {showDetails ? "▲" : "▼"}
               </span>
             </span>
-            <span className="text-green-600 font-medium">
+            <span className="text-teal-600 font-medium">
               -{(totalDiscount ?? 0).toLocaleString()} đ
             </span>
           </div>
 
           {/* Chi tiết khuyến mãi */}
           {showDetails && (
-            <div className="ml-2 mt-1 text-gray-600 text-xs">
+            <div className="ml-2 mt-2 text-gray-600 text-xs">
               Giảm giá phí vận chuyển: -{shippingDiscount.toLocaleString()} đ
             </div>
           )}
@@ -78,20 +78,20 @@ export default function OrderSummary({ items }: Props) {
       </div>
 
       {/* Tổng tiền */}
-      <div className="pt-2 border-t">
-        <div className="flex justify-between items-center mb-1">
-          <span className="text-green-600 text-sm font-medium">
+      <div className="pt-3 border-t border-gray-200">
+        <div className="flex justify-between items-center mb-2">
+          <span className="text-teal-600 text-sm font-medium">
             Tiết kiệm {shippingDiscount / 1000}K
           </span>
         </div>
 
-        <div className="flex justify-between items-center text-lg font-semibold mb-4">
+        <div className="flex justify-between items-center text-lg font-bold text-gray-900 mb-4">
           <span>Tổng tiền</span>
           <span className="text-orange-600">{(finalTotal ?? 0).toLocaleString()} đ</span>
         </div>
 
         <button
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-full transition"
+          className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-full transition-colors duration-200"
           onClick={() => alert("Đặt đơn thành công!")}
         >
           Đặt đơn

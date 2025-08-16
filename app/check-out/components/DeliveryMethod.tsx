@@ -9,29 +9,31 @@ type Props = {
 
 export default function DeliveryMethod({ value, onChange }: Props) {
   return (
-    <div className="bg-[#f3e5f5] p-4 rounded-md">
+    <div className="bg-teal-50 p-5 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
       {/* Header */}
-      <div className="flex gap-2 items-center mb-3">
-        <h2 className="w-6 h-6 flex items-center justify-center bg-[#c67ed1] text-white rounded-full text-sm font-semibold">
+      <div className="flex gap-3 items-center mb-4">
+        <div className="w-7 h-7 flex items-center justify-center bg-teal-500 text-white rounded-full text-sm font-bold">
           1
+        </div>
+        <h2 className="text-base font-semibold text-gray-900 tracking-tight">
+          Chọn phương thức giao
         </h2>
-        <h2 className="text-sm font-semibold text-gray-800">Chọn phương thức giao</h2>
       </div>
 
       {/* Options */}
-      <div className="flex border border-blue-200 rounded-lg overflow-hidden text-sm font-medium">
+      <div className="flex border border-teal-200 rounded-lg overflow-hidden text-sm font-medium">
         {/* Giao hàng */}
         <button
           onClick={() => onChange("delivery")}
-          className={`flex flex-1 items-center justify-center gap-2 py-3 transition-colors
+          className={`flex flex-1 items-center justify-center gap-3 py-3 transition-all duration-200
             ${
               value === "delivery"
-                ? "bg-blue-100 text-blue-600"
-                : "bg-white text-gray-800"
+                ? "bg-teal-100 text-teal-700"
+                : "bg-white text-gray-800 hover:bg-teal-50"
             }`}
         >
-          <span className="w-6 h-6 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full">
-            <MdDeliveryDining className="text-base" />
+          <span className="w-6 h-6 flex items-center justify-center bg-teal-100 text-teal-600 rounded-full">
+            <MdDeliveryDining className="text-lg" />
           </span>
           Giao hàng
         </button>
@@ -39,15 +41,15 @@ export default function DeliveryMethod({ value, onChange }: Props) {
         {/* Tự đến nhận */}
         <button
           onClick={() => onChange("pickup")}
-          className={`flex flex-1 items-center justify-center gap-2 py-3 transition-colors
+          className={`flex flex-1 items-center justify-center gap-3 py-3 transition-all duration-200
             ${
               value === "pickup"
-                ? "bg-blue-100 text-blue-600"
-                : "bg-white text-gray-800"
+                ? "bg-teal-100 text-teal-700"
+                : "bg-white text-gray-800 hover:bg-teal-50"
             }`}
         >
-          <span className="w-6 h-6 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full">
-            <FaWalking className="text-base" />
+          <span className="w-6 h-6 flex items-center justify-center bg-teal-100 text-teal-600 rounded-full">
+            <FaWalking className="text-lg" />
           </span>
           Tự đến nhận
         </button>

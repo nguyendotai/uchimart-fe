@@ -43,11 +43,12 @@ export interface Inventory {
   sold_count: number;
   created_at: string;
   updated_at: string;
+  quantity_in_unit: number;
 
   product?: Product;
 
   subcategories?: Subcategory[];
-  unit?: string;
+  unit_type?: string;
 }
 
 export interface Product {

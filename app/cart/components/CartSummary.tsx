@@ -43,12 +43,12 @@ export default function CartSummary({ selectedIds }: Props) {
   };
 
   return (
-    <div className="bg-white shadow rounded-xl p-5 w-full max-w-sm text-sm text-gray-700">
-      <h2 className="text-lg font-semibold mb-4">Tóm tắt đơn hàng</h2>
+    <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md text-gray-700 text-sm font-sans transition-all duration-300 hover:shadow-xl">
+      <h2 className="text-xl font-bold text-gray-800 mb-5 tracking-tight">Tóm tắt đơn hàng</h2>
 
-      <div className="mb-4">
-        <h3 className="font-medium mb-2">Sản phẩm đã chọn</h3>
-        <ul className="space-y-2 max-h-40 overflow-y-auto pr-1">
+      <div className="mb-6">
+        <h3 className="font-semibold text-gray-800 mb-3 text-base">Sản phẩm đã chọn</h3>
+        <ul className="space-y-4 max-h-48 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
           {selectedItems.map((item) => {
             const title = item.title ?? item.inventory?.title ?? "Sản phẩm";
             const image = item.image ?? item.inventory?.image ?? "/fallback.jpg";
@@ -58,18 +58,16 @@ export default function CartSummary({ selectedIds }: Props) {
             const unitPrice = offerPrice > 0 && offerPrice < salePrice ? offerPrice : salePrice;
 
             return (
-              <li key={item.id} className="flex gap-3 items-center">
-                <div className="relative w-14 h-14 flex-shrink-0">
-                  <Image src={image} alt={title} fill className="object-contain rounded" />
+              <li key={item.id} className="flex gap-4 items-center py-2 border-b border-gray-100 last:border-b-0">
+                <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden">
+                  <Image src={image} alt={title} fill className="object-cover" />
                 </div>
                 <div className="flex-1">
-                  <div className="font-medium line-clamp-1">{title}</div>
-                  <div className="text-xs text-gray-500">
-                    Đơn giá: {formatNumberToCurrency(unitPrice)}₫
-                  </div>
+                  <div className="font-semibold text-gray-800 line-clamp-1">{title}</div>
+                  <div className="text-xs text-gray-500 mt-1">Đơn giá: {formatNumberToCurrency(unitPrice)}₫</div>
                   <div className="text-xs text-gray-500">Số lượng: {quantity}</div>
                 </div>
-                <div className="font-medium whitespace-nowrap">
+                <div className="font-semibold text-gray-800 whitespace-nowrap">
                   {formatNumberToCurrency(unitPrice * quantity)}₫
                 </div>
               </li>
@@ -78,40 +76,41 @@ export default function CartSummary({ selectedIds }: Props) {
         </ul>
       </div>
 
-      <hr className="mb-4" />
+      <hr className="border-gray-200 mb-6" />
 
-      <div className="space-y-3 mb-4">
-        <div className="flex justify-between">
-          <span>Số lượng sản phẩm</span>
-          <span>
+      <div className="space-y-4 mb-6">
+        <div className="flex justify-between items-center">
+          <span className="font-medium text-gray-600">Số lượng sản phẩm</span>
+          <span className="font-semibold text-gray-800">
             {selectedItems.reduce(
               (sum, item) => sum + (item.quantity ?? item.quantity ?? 1),
               0
             )}
           </span>
         </div>
-        <div className="flex justify-between">
-          <span>Tạm tính</span>
-          <span>{formatNumberToCurrency(subTotal)}₫</span>
+        <div className="flex justify-between items-center">
+          <span className="font-medium text-gray-600">Tạm tính</span>
+          <span className="font-semibold text-gray-800">{formatNumberToCurrency(subTotal)}₫</span>
         </div>
-        <div className="flex justify-between">
-          <span>Phí vận chuyển</span>
-          <span>{formatNumberToCurrency(shipping)}₫</span>
+        <div className="flex justify-between items-center">
+          <span className="font-medium text-gray-600">Phí vận chuyển</span>
+          <span className="font-semibold text-gray-800">{formatNumberToCurrency(shipping)}₫</span>
         </div>
-        <div className="flex justify-between">
-          <span>Thuế</span>
-          <span>{formatNumberToCurrency(taxes)}₫</span>
+        <div className="flex justify-between items-center">
+          <span className="font-medium text-gray-600">Thuế</span>
+          <span className="font-semibold text-gray-800">{formatNumberToCurrency(taxes)}₫</span>
         </div>
       </div>
 
-      <hr className="my-4" />
-      <div className="flex justify-between text-base font-semibold mb-6">
+      <hr className="border-gray-200 my-6" />
+
+      <div className="flex justify-between items-center text-base font-bold text-gray-800 mb-6">
         <span>Tổng cộng</span>
-        <span>{formatNumberToCurrency(total)}₫</span>
+        <span className="text-green-600">{formatNumberToCurrency(total)}₫</span>
       </div>
 
       <button
-        className="w-full bg-green-600 text-white py-2 rounded-full text-center font-medium hover:bg-green-700 transition"
+        className="w-full bg-green-600 text-white py-3 rounded-full text-base font-semibold hover:bg-green-700 transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
         onClick={handleCheckout}
         disabled={selectedItems.length === 0}
       >
