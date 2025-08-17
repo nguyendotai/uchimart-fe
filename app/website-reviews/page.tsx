@@ -4,6 +4,9 @@ import { FaStar, FaRegSmile } from "react-icons/fa";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import { Review } from "../types/Review";
 import axios from "axios";
+import { toast } from "react-toastify";
+import Image from "next/image";
+
 
 const WebsiteReviews = () => {
     const [isFocused, setIsFocused] = useState(false);
@@ -21,18 +24,24 @@ const WebsiteReviews = () => {
             .get("http://localhost:8000/api/website-reviews")
             .then((res) => {
                 if (res.data.success) {
-                    setReviews(res.data.data);
+                    const sorted: Review[] = res.data.data.sort(
+                        (a: Review, b: Review) =>
+                            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+                    );
+                    setReviews(sorted);
                 }
             })
             .catch((err) => console.error(err));
     }, []);
 
 
+
+
     const handleAddReview = async () => {
         if (!content.trim() || rating === 0) return;
 
         try {
-            await axios.post(
+            const res = await axios.post(
                 "http://localhost:8000/api/web-reviews/store",
                 {
                     rating,
@@ -44,11 +53,20 @@ const WebsiteReviews = () => {
                     },
                 }
             );
-            alert("Bình luận thành công!");
+
+            if (res.data.success) {
+                const newReview: Review = res.data.data;
+                setReviews((prev) => (newReview?.status === 2 ? [newReview, ...prev] : prev));
+                setContent("");
+                setRating(0);
+                setIsFocused(false);
+                toast.success("Bình luận đang được phê duyệt"); // thông báo duyệt
+            }
         } catch (error) {
             console.error("Lỗi khi gửi review:", error);
         }
     };
+
 
 
 
@@ -113,9 +131,14 @@ const WebsiteReviews = () => {
 
             {/* Form đánh giá kiểu YouTube */}
             <div className="flex items-start gap-3 mb-8">
-                <img
-                    src="http://localhost:3001/_next/image?url=%2Fimg%2Flogin.jpg&w=1920&q=75"
+                <Image
+                    src={
+                        JSON.parse(localStorage.getItem("user") || "{}")?.avatar ||
+                        "/img/login.jpg"
+                    }
                     alt="avatar"
+                    width={48}
+                    height={48}
                     className="w-12 h-12 rounded-full object-cover"
                 />
                 <div className="flex-1">
@@ -185,36 +208,38 @@ const WebsiteReviews = () => {
 
             {/* Danh sách bình luận */}
             <div className="space-y-6">
-                {reviews.map((review) => (
+                {reviews
+                    ?.filter((review) => review?.status === 2)
+                    .map((review) => (
 
-                    <div
-                        key={review.id}
-                        className="bg-white rounded-lg shadow p-5 border border-gray-100 hover:shadow-lg transition"
-                    >
-                        <div className="flex items-center mb-3">
-                            <img
-                                src={"http://localhost:3001/_next/image?url=%2Fimg%2Flogin.jpg&w=1920&q=75"}
-                                alt={review.name}
-                                className="w-10 h-10 rounded-full mr-3"
-                            />
-                            <div>
-                                <p className="font-semibold">{review.name}</p>
-                                <p className="text-sm text-gray-500">
-                                    {new Date(review.created_at).toLocaleDateString("vi-VN")}
-                                </p>
+                        <div
+                            key={review.id}
+                            className="bg-white rounded-lg shadow p-5 border border-gray-100 hover:shadow-lg transition"
+                        >
+                            <div className="flex items-center mb-3">
+                                <img
+                                    src={review.avatar || "/img/login.jpg"}
+                                    alt={review.name}
+                                    className="w-10 h-10 rounded-full mr-3"
+                                />
+                                <div>
+                                    <p className="font-semibold">{review.name}</p>
+                                    <p className="text-sm text-gray-500">
+                                        {new Date(review.created_at).toLocaleDateString("vi-VN")}
+                                    </p>
+                                </div>
+                                <span className="ml-auto text-yellow-400">
+                                    {"★".repeat(review.rating) + "☆".repeat(5 - review.rating)}
+                                </span>
                             </div>
-                            <span className="ml-auto text-yellow-400">
-                                {"★".repeat(review.rating) + "☆".repeat(5 - review.rating)}
-                            </span>
+                            <p className="text-gray-600 italic relative pl-6">
+                                <span className="absolute left-0 top-0 text-3xl text-yellow-400">
+                                    “
+                                </span>
+                                {review.comment}
+                            </p>
                         </div>
-                        <p className="text-gray-600 italic relative pl-6">
-                            <span className="absolute left-0 top-0 text-3xl text-yellow-400">
-                                “
-                            </span>
-                            {review.comment}
-                        </p>
-                    </div>
-                ))}
+                    ))}
             </div>
         </div>
     );
