@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaStar, FaRegSmile } from "react-icons/fa";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
-import { Review, RatingCounts } from "../types/Review";
+import { Review } from "../types/Review";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Image from "next/image";
@@ -12,29 +12,11 @@ const WebsiteReviews = () => {
     const [isFocused, setIsFocused] = useState(false);
     const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(0);
-
-
     const [content, setContent] = useState("");
     const [showEmoji, setShowEmoji] = useState(false);
     const emojiRef = useRef<HTMLDivElement>(null);
     const [reviews, setReviews] = useState<Review[]>([]);
-
-
     const token = localStorage.getItem("token");
-
-    // Khai báo thêm state cho summary
-    const [summary, setSummary] = useState<{
-        total: number;
-        average: number;
-        counts: RatingCounts;
-    }>({
-        total: 0,
-        average: 0,
-        counts: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
-    });
-
-
-
 
     // Lấy dữ liệu từ API khi load trang
     useEffect(() => {
@@ -47,41 +29,10 @@ const WebsiteReviews = () => {
                             new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
                     );
                     setReviews(sorted);
-
-                    // Tính toán dữ liệu thật
-                    const approved = sorted.filter(r => r.status === 2);
-                    const total = approved.length;
-                    const counts: RatingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-                    let sum = 0;
-
-                    approved.forEach((r) => {
-                        counts[r.rating as 1 | 2 | 3 | 4 | 5] += 1;
-                        sum += r.rating;
-                    });
-
-                    const average = total > 0 ? (sum / total).toFixed(1) : "0";
-
-                    setSummary({ total, average: Number(average), counts });
                 }
             })
             .catch((err) => console.error(err));
     }, []);
-
-
-    const renderStars = (average: number) => {
-        const fullStars = Math.floor(average);
-        const halfStar = average - fullStars >= 0.5;
-        const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-
-        return (
-            <>
-                {"★".repeat(fullStars)}
-                {halfStar && "⯪"} {/* hoặc icon half-star */}
-                {"☆".repeat(emptyStars)}
-            </>
-        );
-    };
-
 
 
 
@@ -152,37 +103,31 @@ const WebsiteReviews = () => {
             {/* Tóm tắt đánh giá */}
             <div className="bg-yellow-50 rounded-lg p-6 flex flex-col md:flex-row gap-6 mb-10 shadow">
                 <div className="flex-1 space-y-2">
-                    {[5, 4, 3, 2, 1].map((star) => {
-                        const count = summary.counts[star as keyof RatingCounts] || 0;
-                        const percent = summary.total > 0 ? (count / summary.total) * 100 : 0;
-
-                        return (
-                            <div key={star} className="flex items-center text-sm">
-                                <span className="w-14">{star} sao</span>
-                                <div className="flex-1 h-2 bg-gray-200 rounded mx-2 overflow-hidden">
-                                    <div
-                                        className="h-full bg-yellow-400"
-                                        style={{ width: `${percent}%` }}
-                                    ></div>
-                                </div>
-                                <span className="w-12 text-right">{count}</span>
+                    {[
+                        { label: "5 sao", count: "1.2k", width: "w-[85%]" },
+                        { label: "4 sao", count: "450", width: "w-[40%]" },
+                        { label: "3 sao", count: "120", width: "w-[15%]" },
+                        { label: "2 sao", count: "25", width: "w-[5%]" },
+                        { label: "1 sao", count: "10", width: "w-[2%]" },
+                    ].map((item, i) => (
+                        <div key={i} className="flex items-center text-sm">
+                            <span className="w-14">{item.label}</span>
+                            <div className="flex-1 h-2 bg-gray-200 rounded mx-2 overflow-hidden">
+                                <div
+                                    className={`h-full bg-yellow-400 ${item.width}`}
+                                ></div>
                             </div>
-                        );
-                    })}
-
+                            <span className="w-12 text-right">{item.count}</span>
+                        </div>
+                    ))}
                 </div>
 
                 <div className="flex flex-col items-center justify-center min-w-[120px]">
-                    <span className="text-4xl font-bold">{summary.average}</span>
-                    <span className="text-yellow-400 text-lg">
-                        {renderStars(summary.average)}
-                    </span>
-                    <span className="text-sm text-gray-600">
-                        {summary.total} lượt đánh giá
-                    </span>
+                    <span className="text-4xl font-bold">4.7</span>
+                    <span className="text-yellow-400 text-lg">★★★★★</span>
+                    <span className="text-sm text-gray-600">1.8k lượt đánh giá</span>
                 </div>
             </div>
-
 
             {/* Form đánh giá kiểu YouTube */}
             <div className="flex items-start gap-3 mb-8">
