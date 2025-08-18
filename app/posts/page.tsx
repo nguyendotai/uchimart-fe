@@ -9,7 +9,6 @@ export default function OrganicPage() {
     <div className="max-w-6xl mx-auto p-6 space-y-12">
       <HeroSection />
       <TabsSection />
-      <VideoSection />
       <RecipeSection />
     </div>
   );
