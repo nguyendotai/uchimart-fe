@@ -86,10 +86,6 @@ export default function ProductSuggestions() {
 
   return (
     <div className="relative w-full overflow-hidden">
-      <h2 className="text-2xl font-semibold mb-2 text-[#921573] p-2 rounded w-fit ">
-        Có thể bạn cũng thích
-      </h2>
-
       <div className="relative max-w-[1296px] mx-auto overflow-hidden">
         {/* Nút trái */}
         {canScrollLeft && (

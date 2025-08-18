@@ -43,8 +43,7 @@ export default function CartSummary({ selectedIds }: Props) {
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md text-gray-700 text-sm font-sans transition-all duration-300 hover:shadow-xl">
-      <h2 className="text-xl font-bold text-gray-800 mb-5 tracking-tight">Tóm tắt đơn hàng</h2>
+    <div className="bg-white rounded-2xl p-6 w-full max-w-md text-gray-700 text-sm font-sans ">
 
       <div className="mb-6">
         <h3 className="font-semibold text-gray-800 mb-3 text-base">Sản phẩm đã chọn</h3>
