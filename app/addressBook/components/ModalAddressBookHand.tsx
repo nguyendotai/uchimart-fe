@@ -276,8 +276,11 @@ export default function AddressBookHand({ onClose, onSuccess, addressToEdit }: P
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 50 }}
                     transition={{ duration: 0.3 }}
-                    className="w-full max-w-2xl bg-white rounded-t-2xl shadow-lg max-h-[90vh] overflow-y-auto"
+                    className="w-full bg-white shadow-lg max-h-[90vh] overflow-y-auto
+                 h-full rounded-none
+                 sm:max-w-2xl sm:rounded-t-2xl sm:h-auto"
                 >
+                    {/* Header */}
                     <div className="flex justify-between items-center p-4 border-b">
                         <h2 className="text-lg font-semibold">Chi tiết địa chỉ</h2>
                         <button onClick={onClose}>
@@ -285,92 +288,103 @@ export default function AddressBookHand({ onClose, onSuccess, addressToEdit }: P
                         </button>
                     </div>
 
+                    {/* Content */}
                     <div className="p-6">
-                        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
+                        <form
+                            onSubmit={handleSubmit}
+                            className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+                        >
                             <input
                                 type="text"
                                 placeholder="Tên người nhận"
                                 value={userName}
                                 onChange={(e) => setUserName(e.target.value)}
-                                className="col-span-1 border border-gray-300 rounded-md px-3 py-2"
+                                className="border border-gray-300 rounded-md px-3 py-2"
                             />
                             <input
                                 type="text"
                                 placeholder="Số điện thoại"
                                 value={userPhone}
                                 onChange={(e) => setUserPhone(e.target.value)}
-                                className="col-span-1 border border-gray-300 rounded-md px-3 py-2"
+                                className="border border-gray-300 rounded-md px-3 py-2"
                             />
                             <select
                                 value={selectedProvince}
                                 onChange={(e) => setSelectedProvince(e.target.value)}
-                                className="col-span-2 border border-gray-300 rounded-md px-3 py-2"
+                                className="border border-gray-300 rounded-md px-3 py-2 col-span-1 sm:col-span-2"
                             >
                                 <option value="">Chọn tỉnh/thành</option>
                                 {provinces.map((p) => (
-                                    <option key={p.code} value={p.code}>{p.name}</option>
+                                    <option key={p.code} value={p.code}>
+                                        {p.name}
+                                    </option>
                                 ))}
                             </select>
                             <select
-                                value={selectedDistrict}
-                                onChange={(e) => setSelectedDistrict(e.target.value)}
-                                disabled={!selectedProvince}
-                                className="col-span-1 border border-gray-300 rounded-md px-3 py-2"
+                            value={selectedDistrict}
+                            onChange={(e) => setSelectedDistrict(e.target.value)}
+                            disabled={!selectedProvince}
+                            className="border border-gray-300 rounded-md px-3 py-2"
                             >
-                                <option value="">Chọn quận/huyện</option>
-                                {districts.map((d) => (
-                                    <option key={d.code} value={d.code}>{d.name}</option>
-                                ))}
-                            </select>
-                            <select
-                                value={selectedWard}
-                                onChange={(e) => setSelectedWard(e.target.value)}
-                                disabled={!selectedDistrict}
-                                className="col-span-1 border border-gray-300 rounded-md px-3 py-2"
-                            >
-                                <option value="">Chọn phường/xã</option>
-                                {wards.map((w) => (
-                                    <option key={w.code} value={w.code}>{w.name}</option>
-                                ))}
-                            </select>
-                            <input
-                                value={addressLine}
-                                onChange={(e) => setAddressLine(e.target.value)}
-                                type="text"
-                                placeholder="Số nhà, tên đường"
-                                className="col-span-2 border border-gray-300 rounded-md px-3 py-2"
-                            />
-                            <textarea
-                                value={note}
-                                onChange={(e) => setNote(e.target.value)}
-                                rows={3}
-                                placeholder="Ghi chú giao hàng (không bắt buộc)"
-                                className="col-span-2 border border-gray-300 rounded-md px-3 py-2"
-                            />
-                            <div className="col-span-2 flex justify-between items-center mt-4">
-                                <label className="flex items-center gap-2 text-sm">
-                                    <span>Đặt làm mặc định</span>
-                                    <button
-                                        type="button"
-                                        onClick={() => setEnabled(!enabled)}
-                                        className={`relative inline-flex items-center h-6 rounded-full w-11 transition ${enabled ? "bg-blue-600" : "bg-gray-300"}`}
-                                    >
-                                        <span
-                                            className={`inline-block w-4 h-4 transform bg-white rounded-full transition ${enabled ? "translate-x-6" : "translate-x-1"}`}
-                                        />
-                                    </button>
-                                </label>
+                            <option value="">Chọn quận/huyện</option>
+                            {districts.map((d) => (
+                                <option key={d.code} value={d.code}>
+                                    {d.name}
+                                </option>
+                            ))}
+                        </select>
+                        <select
+                            value={selectedWard}
+                            onChange={(e) => setSelectedWard(e.target.value)}
+                            disabled={!selectedDistrict}
+                            className="border border-gray-300 rounded-md px-3 py-2"
+                        >
+                            <option value="">Chọn phường/xã</option>
+                            {wards.map((w) => (
+                                <option key={w.code} value={w.code}>
+                                    {w.name}
+                                </option>
+                            ))}
+                        </select>
+                        <input
+                            value={addressLine}
+                            onChange={(e) => setAddressLine(e.target.value)}
+                            type="text"
+                            placeholder="Số nhà, tên đường"
+                            className="border border-gray-300 rounded-md px-3 py-2 col-span-1 sm:col-span-2"
+                        />
+                        <textarea
+                            value={note}
+                            onChange={(e) => setNote(e.target.value)}
+                            rows={3}
+                            placeholder="Ghi chú giao hàng (không bắt buộc)"
+                            className="border border-gray-300 rounded-md px-3 py-2 col-span-1 sm:col-span-2"
+                        />
+                        <div className="flex flex-col gap-3 col-span-1 sm:col-span-2 sm:flex-row sm:justify-between sm:items-center">
+                            <label className="flex items-center gap-2 text-sm">
+                                <span>Đặt làm mặc định</span>
                                 <button
-                                    type="submit"
-                                    className="bg-blue-600 text-white px-6 py-2 rounded-full text-sm hover:bg-blue-700 cursor-pointer"
-                                >
-                                    Lưu
+                                    type="button"
+                                    onClick={() => setEnabled(!enabled)}
+                                    className={`relative inline-flex items-center h-6 rounded-full w-11 transition ${enabled ? "bg-blue-600" : "bg-gray-300"
+                                        }`}
+                                ><span
+                                        className={`inline-block w-4 h-4 transform bg-white rounded-full transition ${enabled ? "translate-x-6" : "translate-x-1"
+                                            }`}
+                                    />
                                 </button>
-                            </div>
-                        </form>
-                    </div>
-                </motion.div>
+                            </label>
+                            <button
+                                type="submit"
+                                className="bg-blue-600 text-white px-6 py-2 rounded-full text-sm hover:bg-blue-700 cursor-pointer"
+                            >
+                                Lưu
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </motion.div>
-        </AnimatePresence>
+        </motion.div>
+        </AnimatePresence >
     );
 }

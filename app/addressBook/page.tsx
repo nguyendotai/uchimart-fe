@@ -99,23 +99,29 @@ export default function AddressBook() {
 
     return (
         <main className="my-[50px]">
-            <div className="w-[80%] mx-auto">
+            <div className="w-full sm:w-[80%] mx-auto">
                 {/* Header */}
-                <div className="w-[70%] flex justify-between mb-7">
-                    <div className="w-[48%] bg-white rounded-[5px] shadow-sm flex">
+                <div className="w-full sm:w-[70%] flex flex-col gap-3 sm:flex-row sm:justify-between mb-7">
+                    {/* Box 1 */}
+                    <div className="w-full sm:w-[48%] bg-white rounded-[5px] shadow-sm flex">
                         <div className="py-5 ml-5 flex items-center">
-                            <FaBookBookmark className='text-4xl ' />
+                            <FaBookBookmark className="text-4xl" />
                             <p className="pl-4 font-bold text-2xl">Sổ địa chỉ</p>
                         </div>
                     </div>
-                    <div className="w-[48%] bg-white rounded-[5px] shadow-sm">
+
+                    {/* Box 2 */}
+                    <div className="w-full sm:w-[48%] bg-white rounded-[5px] shadow-sm">
                         <div className="p-2">
                             <div className="p-2">
                                 <button
                                     onClick={() => setIsMapModalOpen(true)}
-                                    className="flex items-center">
-                                    <FaMap className='text-[#327FF6]' />
-                                    <p className="pl-2 text-[#327FF6] font-medium">Tạo địa chỉ bằng bản đồ</p>
+                                    className="flex items-center"
+                                >
+                                    <FaMap className="text-[#327FF6]" />
+                                    <p className="pl-2 text-[#327FF6] font-medium">
+                                        Tạo địa chỉ bằng bản đồ
+                                    </p>
                                 </button>
                             </div>
                             <div className="p-2">
@@ -123,8 +129,10 @@ export default function AddressBook() {
                                     onClick={() => setIsModalOpen(true)}
                                     className="flex items-center"
                                 >
-                                    <FaPlus className='text-[#327FF6]' />
-                                    <p className="pl-2 text-[#327FF6] font-medium cursor-pointer">Tạo địa chỉ nhập tay</p>
+                                    <FaPlus className="text-[#327FF6]" />
+                                    <p className="pl-2 text-[#327FF6] font-medium cursor-pointer">
+                                        Tạo địa chỉ nhập tay
+                                    </p>
                                 </button>
                             </div>
                         </div>
@@ -132,14 +140,15 @@ export default function AddressBook() {
                 </div>
 
                 {/* Danh sách địa chỉ */}
-                <div className="w-[70%] flex flex-col gap-3">
+                <div className="w-full sm:w-[70%] flex flex-col gap-3">
                     {addresses.length > 0 ? (
                         addresses.map((address) => (
                             <div
                                 key={address.id}
-                                className="relative w-[48%] bg-white border border-gray-200 rounded-lg p-4 flex gap-3 items-center hover:shadow-sm transition"
+                                className="relative w-full sm:w-[48%] bg-white border border-gray-200 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center gap-3 hover:shadow-sm transition"
                             >
-                                <div className="absolute right-2 top-2 cursor-pointer  menu-container">
+                                {/* Menu */}
+                                <div className="absolute right-2 top-2 cursor-pointer menu-container">
                                     <FaEllipsisV
                                         className="text-[#718096]"
                                         onClick={(e) => {
@@ -147,21 +156,18 @@ export default function AddressBook() {
                                             setOpenMenuId(openMenuId === address.id ? null : address.id);
                                         }}
                                     />
-
-                                    {/* Menu sửa & xóa */}
                                     {openMenuId === address.id && (
                                         <div className="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded shadow-lg z-50">
                                             <button
                                                 onClick={() => {
                                                     setOpenMenuId(null);
-                                                    setAddressToEdit(address); // gán địa chỉ đang sửa
-                                                    setIsModalOpen(true); // mở modal
+                                                    setAddressToEdit(address);
+                                                    setIsModalOpen(true);
                                                 }}
                                                 className="flex items-center w-full text-left px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                                             >
-                                                <HiPencilSquare className='text-lg mr-1' /> Sửa
+                                                <HiPencilSquare className="text-lg mr-1" /> Sửa
                                             </button>
-
                                             <button
                                                 onClick={() => {
                                                     setOpenMenuId(null);
@@ -169,39 +175,37 @@ export default function AddressBook() {
                                                 }}
                                                 className="flex items-center w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
                                             >
-                                                <MdDelete className='text-lg mr-1' /> Xóa
+                                                <MdDelete className="text-lg mr-1" /> Xóa
                                             </button>
                                         </div>
                                     )}
                                 </div>
 
                                 {/* Radio chọn địa chỉ */}
-                                <label className="flex items-center gap-2 cursor-pointer">
+                                <label className="flex items-center gap-2 cursor-pointer mb-2 sm:mb-0">
                                     <input
                                         type="radio"
                                         name="address"
-                                        checked={address.is_default == 1} // dùng == cho chắc, tránh case boolean
+                                        checked={address.is_default == 1}
                                         onChange={() => handleSetDefault(address.id)}
                                         className="hidden peer"
                                     />
                                     <span
                                         className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition
-      peer-checked:border-blue-700 peer-checked:bg-blue-700 border-gray-400`}
+                            peer-checked:border-blue-700 peer-checked:bg-blue-700 border-gray-400`}
                                     >
-                                        <span className="w-2 h-2 rounded-full bg-white"></span>
-                                    </span>
+                                        <span className="w-2 h-2 rounded-full bg-white"></span></span>
                                 </label>
-
-
-
-
 
                                 {/* Nội dung địa chỉ */}
                                 <div className="flex-1">
-                                    <p className="font-semibold text-gray-800">{address.address_line}</p>
+                                    <p className="font-semibold text-gray-800">
+                                        {address.address_line}
+                                    </p>
                                     <p className="text-[#718096]">{address.name}</p>
                                     <p className="text-[#718096] text-sm leading-snug">
-                                        {address.address_line}, {address.ward?.name}, Quận {address.district?.name}, {address.province?.name}
+                                        {address.address_line}, {address.ward?.name}, Quận{" "}
+                                        {address.district?.name}, {address.province?.name}
                                     </p>
                                     {address.is_default && (
                                         <span className="inline-block mt-2 bg-green-50 border border-green-400 text-green-600 px-2 py-0.5 rounded text-xs font-medium">
@@ -209,8 +213,6 @@ export default function AddressBook() {
                                         </span>
                                     )}
                                 </div>
-
-
                             </div>
                         ))
                     ) : (
@@ -224,19 +226,18 @@ export default function AddressBook() {
                 <ModalAddressBookHand
                     onClose={() => {
                         setIsModalOpen(false);
-                        setAddressToEdit(null); // reset sau khi đóng
+                        setAddressToEdit(null);
                     }}
                     onSuccess={() => {
                         setIsModalOpen(false);
                         setAddressToEdit(null);
                         fetchAddresses();
                     }}
-                    addressToEdit={addressToEdit} // 👈 truyền dữ liệu xuống
+                    addressToEdit={addressToEdit}
                 />
             )}
 
-
-            {/* // Hiển thị modal */}
+            {/* Modal bản đồ */}
             {isMapModalOpen && (
                 <ModalAddressBookMap
                     onClose={() => setIsMapModalOpen(false)}
@@ -244,12 +245,9 @@ export default function AddressBook() {
                         setIsMapModalOpen(false);
                         fetchAddresses();
                     }}
-                    addressToEdit={addressToEdit} // có thể truyền vào khi sửa
+                    addressToEdit={addressToEdit}
                 />
             )}
-
-
-
         </main>
     );
 }
