@@ -86,9 +86,6 @@ export default function ListSaleProduct() {
 
   return (
     <div className="relative w-full overflow-hidden mt-6">
-      <h2 className="text-2xl font-semibold mb-2 text-[#921573] p-2 rounded w-fit mx-auto text-center">
-        Sản phẩm khuyến mãi
-      </h2>
 
       <div className="relative max-w-[1296px] mx-auto overflow-hidden">
         {/* Nút trái */}

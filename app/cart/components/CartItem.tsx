@@ -99,7 +99,7 @@ export default function CartItem  ({
       />
 
       <div
-        className="flex items-center gap-4 p-4 rounded-lg shadow-sm hover:shadow-lg bg-white transition-shadow duration-300"
+        className="flex items-center gap-4 p-4 hover:shadow-lg bg-white transition-shadow duration-300"
         onClick={onItemClick}
       >
         {/* Checkbox */}
