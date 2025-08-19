@@ -57,9 +57,7 @@ const ListSaleProduct = ({ currentProduct, allProducts }: Props) => {
     const card = el.querySelector("div > div");
     const cardWidth = card ? (card as HTMLElement).offsetWidth + 16 : 200;
     const perPage =
-      window.innerWidth < 640
-        ? ITEMS_PER_PAGE_MOBILE
-        : ITEMS_PER_PAGE_DESKTOP;
+      window.innerWidth < 640 ? ITEMS_PER_PAGE_MOBILE : ITEMS_PER_PAGE_DESKTOP;
     el.scrollBy({ left: cardWidth * perPage, behavior: "smooth" });
   };
 
@@ -69,9 +67,7 @@ const ListSaleProduct = ({ currentProduct, allProducts }: Props) => {
     const card = el.querySelector("div > div");
     const cardWidth = card ? (card as HTMLElement).offsetWidth + 16 : 200;
     const perPage =
-      window.innerWidth < 640
-        ? ITEMS_PER_PAGE_MOBILE
-        : ITEMS_PER_PAGE_DESKTOP;
+      window.innerWidth < 640 ? ITEMS_PER_PAGE_MOBILE : ITEMS_PER_PAGE_DESKTOP;
     el.scrollBy({ left: -cardWidth * perPage, behavior: "smooth" });
   };
 
@@ -79,8 +75,8 @@ const ListSaleProduct = ({ currentProduct, allProducts }: Props) => {
 
   return (
     <div className="mt-6 relative w-full overflow-hidden">
-      <h2 className="text-xl font-semibold mb-4 text-[#921573] pl-2">
-        Sản phẩm đang khuyến mãi
+      <h2 className="text-2xl font-semibold mb-2 p-2 w-fit text-center rounded-xl">
+        Sản phẩm khuyến mãi
       </h2>
 
       {/* Nút trái */}
@@ -99,7 +95,7 @@ const ListSaleProduct = ({ currentProduct, allProducts }: Props) => {
         className="
           flex gap-x-3 sm:gap-x-4 
           overflow-x-auto scroll-smooth scrollbar-hide 
-          px-2 sm:px-4
+          px-2 sm:px-2
           touch-pan-x snap-x snap-mandatory
         "
       >
@@ -109,7 +105,7 @@ const ListSaleProduct = ({ currentProduct, allProducts }: Props) => {
             className="
               flex-shrink-0 
               w-[calc(50%-0.375rem)]   /* Mobile: 2 sản phẩm */
-              sm:w-[clamp(140px,25vw,195px)]
+              sm:w-[clamp(140px,25vw,195px)] /* Desktop: size cố định */
               border border-gray-200 rounded-xl 
               p-2 sm:p-3 bg-white
               snap-start

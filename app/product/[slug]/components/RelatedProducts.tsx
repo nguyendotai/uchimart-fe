@@ -93,7 +93,7 @@ const RelatedProducts = ({ currentInventory, allProducts }: Props) => {
         className="
           flex gap-x-3 sm:gap-x-4 
           overflow-x-auto scroll-smooth scrollbar-hide 
-          px-2 sm:px-4
+          px-2 sm:px-2
           touch-pan-x snap-x snap-mandatory
         "
       >

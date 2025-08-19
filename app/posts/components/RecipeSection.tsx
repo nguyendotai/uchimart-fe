@@ -13,7 +13,11 @@ interface Post {
   created_at?: string;
 }
 
-export default function RecipeSection({ categoryId }: { categoryId: number | null }) {
+export default function RecipeSection({
+  categoryId,
+}: {
+  categoryId: number | null;
+}) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,12 +28,15 @@ export default function RecipeSection({ categoryId }: { categoryId: number | nul
       try {
         setLoading(true);
         const res = await fetch(
-          `http://127.0.0.1:8000/api/posts?category_id=${categoryId}`
+          `http://127.0.0.1:8000/api/post-categories/${categoryId}`
         );
         const json = await res.json();
-        setPosts(json.data ?? []);
+
+        // nếu API trả về { id, name, posts: [...] }
+        setPosts(json.data?.posts ?? []);
       } catch (err) {
         console.error("Error fetching posts:", err);
+        setPosts([]);
       } finally {
         setLoading(false);
       }
@@ -44,8 +51,6 @@ export default function RecipeSection({ categoryId }: { categoryId: number | nul
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.4 }}
     >
-      <h2 className="text-xl font-bold mt-10 mb-4">Công thức nấu ăn</h2>
-
       {loading && <p>Đang tải...</p>}
 
       <div className="flex flex-col gap-4">
@@ -59,15 +64,19 @@ export default function RecipeSection({ categoryId }: { categoryId: number | nul
               src={post.image ?? "/img/image_post.png"}
               alt={post.name}
               width={180}
-              height={120}
-              className="rounded-lg object-cover"
+              height={90}
+              className="w-[180px] h-[90px] rounded-lg object-cover"
             />
+
             <div>
-              <p className="font-semibold text-sm">{post.name}</p>
+              <p className="font-semibold">{post.name}</p>
               <p className="text-xs text-gray-400">
                 {post.created_at
                   ? new Date(post.created_at).toLocaleDateString("vi-VN")
                   : ""}
+              </p>
+              <p className="text-sm text-gray-600 line-clamp-2 mt-1">
+                {post.content.replace(/<[^>]+>/g, "")}
               </p>
             </div>
           </Link>

@@ -28,7 +28,7 @@ const Cart = () => {
       </span>
 
       {totalItems > 0 && (
-        <span className="absolute -top-2 right-14 bg-green-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+        <span className="md:flex absolute -top-2 right-14 bg-green-600 text-white text-xs w-5 h-5 hidden items-center justify-center rounded-full">
           {totalItems}
         </span>
       )}
