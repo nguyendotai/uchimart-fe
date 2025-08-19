@@ -13,25 +13,30 @@ interface Post {
   created_at?: string;
 }
 
-export default function RecipeSection() {
+export default function RecipeSection({ categoryId }: { categoryId: number | null }) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!categoryId) return; // chưa chọn category thì bỏ qua
+
     const fetchPosts = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/posts");
+        setLoading(true);
+        const res = await fetch(
+          `http://127.0.0.1:8000/api/posts?category_id=${categoryId}`
+        );
         const json = await res.json();
-        console.log("API posts:", json);
-        setPosts(json.data); // 👈 lấy đúng mảng trong object
+        setPosts(json.data ?? []);
       } catch (err) {
         console.error("Error fetching posts:", err);
       } finally {
         setLoading(false);
       }
     };
+
     fetchPosts();
-  }, []);
+  }, [categoryId]);
 
   return (
     <motion.div
@@ -47,7 +52,7 @@ export default function RecipeSection() {
         {posts.map((post) => (
           <Link
             key={post.id}
-            href={`/posts/${post.id}`} // 👈 dùng id để gọi API
+            href={`/posts/${post.id}`}
             className="flex gap-4 items-center"
           >
             <Image
