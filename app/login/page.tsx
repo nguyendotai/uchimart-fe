@@ -9,7 +9,7 @@ import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { syncCartApi, fetchCartFromApi } from "@/store/slices/cartSlice";
-import type { AppDispatch} from "@/store";
+import type { AppDispatch } from "@/store";
 
 type IconData = {
   id: number;
@@ -162,156 +162,161 @@ export default function Login() {
 
   return (
     <div className="relative w-full h-[83vh] overflow-hidden">
-      {/* Ảnh nền */}
-      <div className="absolute inset-0">
-        <div
-          className="absolute inset-0 z-1 bg-contain bg-right bg-no-repeat opacity-40"
-          style={{ backgroundImage: "url('./img/bglogin1.png')" }}
-        ></div>
-        <div
-          className="absolute inset-0 z-1 bg-contain bg-left bg-no-repeat opacity-50"
-          style={{ backgroundImage: "url('./img/bglogin2.1.png')" }}
-        ></div>
+  {/* Ảnh nền */}
+  <div className="absolute inset-0 hidden lg:block">
+    <div
+      className="absolute inset-0 z-1 bg-contain bg-right bg-no-repeat opacity-40"
+      style={{ backgroundImage: "url('./img/bglogin1.png')" }}
+    ></div>
+    <div
+      className="absolute inset-0 z-1 bg-contain bg-left bg-no-repeat opacity-50"
+      style={{ backgroundImage: "url('./img/bglogin2.1.png')" }}
+    ></div>
+  </div>
+
+  {/* SVG background */}
+  <svg
+    className="absolute inset-0 w-full h-full hidden lg:block"
+    viewBox="0 0 100 100"
+    preserveAspectRatio="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M0,0 L0,97 C15,70 20,0 180,0 Z" fill="#8FC446" />
+  </svg>
+
+  {/* Div màu đen bên trái */}
+  <div
+    className="absolute top-0 left-[12%] h-full w-[17%] bg-white opacity-80 z-5 bg-cover hidden lg:block"
+    style={{
+      backgroundImage:
+        "linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('https://images.pexels.com/photos/4877842/pexels-photo-4877842.jpeg')",
+    }}
+  >
+    <img
+      src="./img/logo2rb.png"
+      alt=""
+      className="w-[60%] mx-auto mt-3 drop-shadow-lg"
+    />
+  </div>
+
+  {/* Hình ảnh trang trí */}
+  <div className="hidden lg:block">
+    <img
+      src="./img/salad3.png"
+      alt=""
+      className="absolute top-5 left-5 z-10 w-[35%]"
+    />
+    <img
+      src="./img/fruits1.png"
+      alt=""
+      className="absolute top-30 left-20 z-9 w-[35%]"
+    />
+    <img
+      src="./img/salad1.png"
+      alt=""
+      className="absolute top-95 left-10 z-8 w-[30%]"
+    />
+  </div>
+
+  {/* Form đăng nhập */}
+  <div className="absolute lg:top-[55%] top-[50%] z-20 lg:right-[18%] right-1/2 lg:translate-x-0 translate-x-1/2 transform -translate-y-1/2 lg:w-[27%] w-[90%] p-8 bg-white lg:bg-transparent rounded-lg shadow lg:shadow-none">
+    <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+      Đăng nhập
+    </h2>
+
+    <form
+      className="space-y-4"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit();
+      }}
+    >
+      {/* Email */}
+      <input
+        name="email"
+        type="email"
+        placeholder="E-mail"
+        value={form.email}
+        onChange={handleChange}
+        className="w-full bg-gray-100 rounded-lg px-4 py-3 focus:outline-none"
+      />
+
+      {/* Password */}
+      <input
+        name="password"
+        type="password"
+        placeholder="Password"
+        value={form.password}
+        onChange={handleChange}
+        className="w-full bg-gray-100 rounded-lg px-4 py-3 focus:outline-none"
+      />
+
+      {/* Forgot password */}
+      <div className="text-right">
+        <Link
+          href="/forgotPassword"
+          className="text-sm text-green-600 hover:underline"
+        >
+          Quên mật khẩu?
+        </Link>
       </div>
 
-      {/* SVG background */}
-      <svg
-        className="absolute inset-0 w-full h-full"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-        xmlns="http://www.w3.org/2000/svg"
+      {/* Login button */}
+      <button
+        disabled={loading}
+        className="w-full bg-[#89C841] hover:bg-[#00A63E] text-white py-3 rounded-lg font-semibold transition cursor-pointer"
       >
-        <path d="M0,0 L0,97 C15,70 20,0 180,0 Z" fill="#8FC446" />
-      </svg>
+        {loading ? "Đang đăng nhập..." : "Đăng nhập"}
+      </button>
+    </form>
 
-      {/* Div màu đen bên trái */}
+    {/* Hoặc */}
+    <div className="flex items-center my-6">
+      <div className="flex-grow border-t border-green-500"></div>
+      <span className="mx-3 text-gray-500">Hoặc</span>
+      <div className="flex-grow border-t border-green-500"></div>
+    </div>
+
+    {/* Social login */}
+    <div className="flex gap-4">
+      <button
+        onClick={handleLoginWithGoogle}
+        className="flex-1 flex items-center justify-center border border-gray-300 rounded-full py-2 hover:bg-gray-50 cursor-pointer"
+      >
+        <FcGoogle className="w-5 h-5 mr-2" />
+        Google
+      </button>
+    </div>
+
+    {/* Sign up */}
+    <p className="text-sm text-gray-500 mt-4 text-center">
+      Bạn chưa có tài khoản?{" "}
+      <Link href="/register" className="text-[#00A63E] hover:underline">
+        Đăng ký ngay!
+      </Link>
+    </p>
+  </div>
+
+  {/* Icons di chuyển mượt */}
+  <div className="hidden lg:block">
+    {icons.map((icon) => (
       <div
-        className="absolute top-0 left-[12%] h-full w-[17%] bg-white opacity-80 z-5 bg-cover"
+        key={icon.id}
+        className="absolute z-10"
         style={{
-          backgroundImage:
-            "linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('https://images.pexels.com/photos/4877842/pexels-photo-4877842.jpeg')",
+          top: `${icon.y}%`,
+          left: `${icon.x}%`,
+          transform: `rotate(${icon.rotate}deg)`,
+          fontSize: "50px",
+          color: icon.color,
         }}
       >
-        <img
-          src="./img/logo2rb.png"
-          alt=""
-          className="w-[60%] mx-auto mt-3 drop-shadow-lg"
-        />
+        <CgShapeZigzag />
       </div>
+    ))}
+  </div>
+</div>
 
-      <div>
-        <img
-          src="./img/salad3.png"
-          alt=""
-          className="absolute top-5 left-5 z-10 w-[35%]"
-        />
-        <img
-          src="./img/fruits1.png"
-          alt=""
-          className="absolute top-30 left-20 z-9 w-[35%]"
-        />
-        <img
-          src="./img/salad1.png"
-          alt=""
-          className="absolute top-95 left-10 z-8 w-[30%]"
-        />
-      </div>
 
-      {/* Form đăng nhập */}
-      <div className="absolute top-[55%] z-20 right-[18%] transform -translate-y-1/2 w-[27%] p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-          Đăng nhập
-        </h2>
-
-        <form
-          className="space-y-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-        >
-          {/* Email */}
-          <input
-            name="email"
-            type="email"
-            placeholder="E-mail"
-            value={form.email}
-            onChange={handleChange}
-            className="w-full bg-gray-100 rounded-lg px-4 py-3 focus:outline-none"
-          />
-
-          {/* Password */}
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            className="w-full bg-gray-100 rounded-lg px-4 py-3 focus:outline-none"
-          />
-
-          {/* Forgot password */}
-          <div className="text-right">
-            <Link
-              href="/forgotPassword"
-              className="text-sm text-green-600 hover:underline"
-            >
-              Quên mật khẩu?
-            </Link>
-          </div>
-
-          {/* Login button */}
-          <button
-            disabled={loading}
-            className="w-full bg-[#89C841] hover:bg-[#00A63E] text-white py-3 rounded-lg font-semibold transition cursor-pointer"
-          >
-            {loading ? "Đang đăng nhập..." : "Đăng nhập"}
-          </button>
-        </form>
-
-        {/* Hoặc */}
-        <div className="flex items-center my-6">
-          <div className="flex-grow border-t border-green-500"></div>
-          <span className="mx-3 text-gray-500">Hoặc</span>
-          <div className="flex-grow border-t border-green-500"></div>
-        </div>
-
-        {/* Social login */}
-        <div className="flex gap-4">
-          <button
-            onClick={handleLoginWithGoogle}
-            className="flex-1 flex items-center justify-center border border-gray-300 rounded-full py-2 hover:bg-gray-50 cursor-pointer"
-          >
-            <FcGoogle className="w-5 h-5 mr-2" />
-            Google
-          </button>
-        </div>
-
-        {/* Sign up */}
-        <p className="text-sm text-gray-500 mt-4 text-center">
-          Bạn chưa có tài khoản?{" "}
-          <Link href="/register" className="text-[#00A63E] hover:underline">
-            Đăng ký ngay!
-          </Link>
-        </p>
-      </div>
-
-      {/* Icons di chuyển mượt */}
-      {icons.map((icon) => (
-        <div
-          key={icon.id}
-          className="absolute z-10"
-          style={{
-            top: `${icon.y}%`,
-            left: `${icon.x}%`,
-            transform: `rotate(${icon.rotate}deg)`,
-            fontSize: "50px",
-            color: icon.color,
-          }}
-        >
-          <CgShapeZigzag />
-        </div>
-      ))}
-    </div>
   );
 }
