@@ -109,33 +109,34 @@ const Profile = () => {
 
     return (
         <div>
-            <div className="max-w-3xl mx-auto my-10 bg-white p-6 rounded-2xl shadow-xl">
+            <div className="w-[90%] sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] mx-auto my-10 bg-white p-4 sm:p-6 md:p-8 rounded-2xl shadow-xl">
                 {/* Banner + Avatar */}
                 <div className="relative mb-20">
-                    <div className="h-40 bg-gradient-to-r from-green-300 via-teal-400 to-blue-400 rounded-t-2xl"></div>
-                    <div className="absolute -bottom-14 left-1/2 transform -translate-x-1/2">
+                    <div className="h-32 sm:h-40 bg-gradient-to-r from-green-300 via-teal-400 to-blue-400 rounded-t-2xl"></div>
+                    <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2">
                         <Image
-                            src={user?.avatar || '/img/login.jpg'}
+                            src={user?.avatar || "/img/login.jpg"}
                             alt="User avatar"
-                            width={112} // w-28
-                            height={112} // h-28
-                            className="rounded-full flex items-center justify-center shadow-lg border-4 border-white object-cover"
+                            width={128}
+                            height={128}
+                            className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full shadow-lg border-4 border-white object-cover"
                         />
                     </div>
                 </div>
 
                 {/* Form */}
-                <form className="grid grid-cols-1 gap-4 mt-4"
+                <form
+                    className="grid grid-cols-1 gap-4 mt-4"
                     onSubmit={handleUpdate}
                 >
                     {/* Tên đầy đủ */}
-                    <div >
+                    <div>
                         <label className="block mb-1 text-sm font-semibold text-gray-700">Tên</label>
                         <input
                             type="text"
-                            name='name'
+                            name="name"
                             defaultValue={user?.name || ""}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
                     </div>
 
@@ -144,13 +145,13 @@ const Profile = () => {
                         <label className="block mb-1 text-sm font-semibold text-gray-700">Số điện thoại</label>
                         <input
                             type="text"
-                            name='phone_number'
+                            name="phone_number"
                             defaultValue={user?.phone_number || ""}
                             readOnly={user?.access_channel_type !== 1}
                             className={
                                 user?.access_channel_type !== 1
-                                    ? "w-full px-4 py-2 border border-gray-200 bg-gray-100 text-gray-500 rounded-lg"
-                                    : "w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    ? "w-full px-4 py-2 border border-gray-200 bg-gray-100 text-gray-500 rounded-lg text-sm sm:text-base"
+                                    : "w-full px-4 py-2 border border-gray-300 rounded-lg text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
                             }
                         />
                     </div>
@@ -160,20 +161,21 @@ const Profile = () => {
                         <label className="block mb-1 text-sm font-semibold text-gray-700">Email</label>
                         <input
                             type="email"
-                            name='email'
+                            name="email"
                             defaultValue={user?.email || ""}
                             readOnly={user?.access_channel_type === 1}
                             className={
                                 user?.access_channel_type === 1
-                                    ? "w-full px-4 py-2 border border-gray-200 bg-gray-100 text-gray-500 rounded-lg outline-none"
-                                    : "w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 outline-none"
-                            } />
+                                    ? "w-full px-4 py-2 border border-gray-200 bg-gray-100 text-gray-500 rounded-lg text-sm sm:text-base"
+                                    : "w-full px-4 py-2 border border-gray-300 rounded-lg text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            }
+                        />
                     </div>
 
                     {/* Giới tính */}
                     <div>
                         <label className="block mb-1 text-sm font-semibold text-gray-700">Giới tính</label>
-                        <div className="flex items-center gap-6 mt-2">
+                        <div className="flex items-center gap-6 mt-2 text-sm sm:text-base">
                             <label className="flex items-center gap-2">
                                 <input
                                     type="radio"
@@ -202,13 +204,13 @@ const Profile = () => {
                         <label className="block mb-1 text-sm font-semibold text-gray-700">Ngày sinh</label>
                         <input
                             type="date"
-                            name='birthday'
+                            name="birthday"
                             defaultValue={
                                 user?.birthday
-                                    ? new Date(user.birthday).toISOString().split('T')[0]
+                                    ? new Date(user.birthday).toISOString().split("T")[0]
                                     : ""
                             }
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
                     </div>
 
@@ -217,15 +219,16 @@ const Profile = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className={`w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full text-lg font-semibold shadow-md transition cursor-pointer ${loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"}`}
+                            className={`w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full text-base sm:text-lg font-semibold shadow-md transition cursor-pointer ${loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
+                                }`}
                         >
                             {loading ? "Đang cập nhật..." : "Cập nhật"}
                         </button>
                     </div>
                 </form>
-            </div >
+            </div>
+        </div>
 
-        </div >
     );
 };
 

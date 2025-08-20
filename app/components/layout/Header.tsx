@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 
+import { AddressItem } from "../../types/address";
+import { useAddress } from "../../Address-context/page";
 // 🔍 Functional Components
 import Search from "../ui/Search";
 import UserAccount from "../ui/UserAccount";
@@ -25,10 +27,16 @@ import { HiMiniPercentBadge } from "react-icons/hi2";
 import { MdArticle } from "react-icons/md";
 
 const Header = () => {
+  const { defaultAddress } = useAddress();
   const [showHeader, setShowHeader] = useState(true);
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   // const [lastScrollY, setLastScrollY] = useState(0);
+
+  const formatAddress = (addr: AddressItem) => {
+    if (!addr.ward || !addr.district || !addr.province) return "";
+    return `${addr.address_line}, P.${addr.ward.name}, Q.${addr.district.name}, TP.${addr.province.name}`;
+  };
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -136,7 +144,10 @@ const Header = () => {
             <div className="flex flex-col text-xs">
               <span className="text-[#921573] font-semibold">Giao hàng</span>
               <span className="text-gray-800 font-medium whitespace-nowrap">
-                P.Thạnh Xuân, Q.12, TP.Hồ Chí Minh
+                {/* P.Thạnh Xuân, Q.12, TP.Hồ Chí Minh */}
+                {defaultAddress
+                  ? formatAddress(defaultAddress)
+                  : "Chưa có địa chỉ mặc định"}
               </span>
             </div>
           </div>

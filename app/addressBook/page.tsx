@@ -9,50 +9,16 @@ import ModalAddressBookHand from './components/ModalAddressBookHand';
 import { HiPencilSquare } from 'react-icons/hi2';
 import { MdDelete } from 'react-icons/md';
 import ModalAddressBookMap from './components/ModalAddressBookMap';
+import { useAddress } from "../Address-context/page";
 
 const API_BASE = "http://127.0.0.1:8000/api";
 
 export default function AddressBook() {
-    const [addresses, setAddresses] = useState<AddressItem[]>([]);
+    const { addresses, refreshAddresses } = useAddress();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [openMenuId, setOpenMenuId] = useState<number | null>(null);
     const [addressToEdit, setAddressToEdit] = useState<AddressItem | null>(null);
     const [isMapModalOpen, setIsMapModalOpen] = useState(false);
-
-
-
-    const fetchAddresses = () => {
-        const token = localStorage.getItem("token");
-
-        if (!token) return;
-
-        axios
-            .get(`${API_BASE}/addresses`, {
-                headers: { Authorization: `Bearer ${token}` }
-            })
-            .then((res) => {
-                if (res.data.success) {
-                    const data = res.data.data;
-
-                    let result;
-                    if (data.length >= 6) {
-                        // ≥ 6 địa chỉ → đưa mặc định lên đầu
-                        result = [...data].sort((a, b) => b.is_default - a.is_default);
-                    } else {
-                        // < 6 địa chỉ → giữ nguyên thứ tự
-                        result = data;
-                    }
-
-                    setAddresses(result);
-                }
-
-            })
-            .catch((err) => {
-                console.error("API lỗi:", err.response?.data || err);
-                toast.error(err.response?.data?.message || "Lỗi lấy danh sách địa chỉ");
-
-            });
-    };
 
     const handleSetDefault = async (id: number) => {
         const token = localStorage.getItem("token");
@@ -65,37 +31,30 @@ export default function AddressBook() {
             await axios.post(`${API_BASE}/addresses/${id}/default`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-
             toast.success("Đã đặt làm địa chỉ mặc định");
-
-            // Cập nhật lại danh sách
-            fetchAddresses();
-
+            refreshAddresses();
         } catch (error) {
             console.error("Lỗi cập nhật mặc định:", error);
             toast.error("Không thể cập nhật mặc định");
         }
     };
 
-
-
     useEffect(() => {
-        fetchAddresses();
+        refreshAddresses();
     }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            // Nếu click bên ngoài menu thì đóng menu
             if (!(event.target as HTMLElement).closest(".menu-container")) {
                 setOpenMenuId(null);
             }
         };
-
         document.addEventListener("click", handleClickOutside);
         return () => {
             document.removeEventListener("click", handleClickOutside);
         };
     }, []);
+
 
     return (
         <main className="my-[50px]">
@@ -231,7 +190,7 @@ export default function AddressBook() {
                     onSuccess={() => {
                         setIsModalOpen(false);
                         setAddressToEdit(null);
-                        fetchAddresses();
+                        refreshAddresses();
                     }}
                     addressToEdit={addressToEdit}
                 />
@@ -243,7 +202,7 @@ export default function AddressBook() {
                     onClose={() => setIsMapModalOpen(false)}
                     onSuccess={() => {
                         setIsMapModalOpen(false);
-                        fetchAddresses();
+                        refreshAddresses();
                     }}
                     addressToEdit={addressToEdit}
                 />

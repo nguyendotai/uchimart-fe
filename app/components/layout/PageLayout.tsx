@@ -10,6 +10,7 @@ import ScrollToTopButton from "./ScrollToTopButton";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { FaTags, FaClipboardList, FaStore, FaUser } from "react-icons/fa";
+import { AddressProvider } from "../../Address-context/page";
 
 export default function PageLayout({
   children,
@@ -31,8 +32,8 @@ export default function PageLayout({
     <ReduxProvider>
       <I18nProvider>
         <ToastWrapper />
+        <AddressProvider>
         <Header />
-
         <div className="flex">
           {/* Sidebar desktop */}
           {hasSidebar && (
@@ -86,6 +87,7 @@ export default function PageLayout({
         {/* Portals */}
         <div id="dropdown-root" />
         <div id="sidebar-hover-root" />
+        </AddressProvider>
         <ScrollToTopButton />
       </I18nProvider>
     </ReduxProvider>
