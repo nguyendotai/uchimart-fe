@@ -145,9 +145,11 @@ const Header = () => {
               <span className="text-[#921573] font-semibold">Giao hàng</span>
               <span className="text-gray-800 font-medium whitespace-nowrap">
                 {/* P.Thạnh Xuân, Q.12, TP.Hồ Chí Minh */}
-                {defaultAddress
-                  ? formatAddress(defaultAddress)
-                  : "Chưa có địa chỉ mặc định"}
+                {!localStorage.getItem("token")
+                  ? "Vui lòng đăng nhập"
+                  : defaultAddress
+                    ? formatAddress(defaultAddress)
+                    : "Chưa có địa chỉ "}
               </span>
             </div>
           </div>
