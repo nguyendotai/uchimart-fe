@@ -1,20 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { Inventory, Product } from "@/app/types/Product";
+import Link from "next/link"; // ✅ thêm Link
+import { Inventory, Product, CartItem } from "@/app/types/Product";
 import { Brand } from "@/app/types/Brand";
 import { IoShareSocialSharp } from "react-icons/io5";
 import ProductVariants from "./ProductVariants";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import {
-  addToCartLocal,
-  increaseQuantityLocal,
-  decreaseQuantityLocal,
-  setQuantityLocal,
-} from "@/store/slices/cartSlice";
+import { addToCartLocal, addToCartApi } from "@/store/slices/cartSlice";
 import { RootState } from "@/store";
 import { formatCurrencyToNumber } from "@/app/utils/helpers";
+import { AppDispatch } from "@/store";
 
 type Props = {
   inventory: Inventory;
@@ -25,7 +22,7 @@ type Props = {
 };
 
 const BuyBox = ({ inventory, brand, allInventories, onSelect }: Props) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [quantity, setQuantity] = useState(1);
 
@@ -34,11 +31,9 @@ const BuyBox = ({ inventory, brand, allInventories, onSelect }: Props) => {
   const hasSale = offerPrice > 0 && offerPrice < salePrice;
 
   const cartItem = cartItems.find((item) => item.id === inventory.id);
-  const currentCartQuantity = cartItem?.cartQuantity || 0;
+  const currentCartQuantity = cartItem?.quantity || 0;
 
-  const onDecrease = () => {
-    setQuantity((prev) => Math.max(1, prev - 1));
-  };
+  const onDecrease = () => setQuantity((prev) => Math.max(1, prev - 1));
 
   const onIncrease = () => {
     setQuantity((prev) =>
@@ -49,19 +44,47 @@ const BuyBox = ({ inventory, brand, allInventories, onSelect }: Props) => {
     );
   };
 
-  const handleAddToCart = () => {
-    const maxAddable =
-      inventory.stock_quantity - currentCartQuantity;
+  const handleAddToCart = async () => {
+    const isLoggedIn = !!localStorage.getItem("token");
 
-    if (maxAddable <= 0) {
-      toast.warning("Đã đạt số lượng tối đa trong kho!");
-      return;
+    try {
+      if (isLoggedIn) {
+        await dispatch(
+          addToCartApi({
+            inventory_id: inventory.id,
+            quantity,
+          })
+        ).unwrap();
+        toast.success("Đã thêm vào giỏ hàng!");
+      } else {
+        const selectedItem: CartItem = {
+          id: inventory.id,
+          inventory_id: inventory.id,
+          quantity,
+          sale_price: inventory.sale_price ?? "0₫",
+          offer_price: inventory.offer_price ?? null,
+          image: inventory.image ?? "",
+          title: inventory.title ?? "",
+          total_price:
+            quantity *
+            formatCurrencyToNumber(
+              inventory.offer_price ?? inventory.sale_price
+            ),
+          inventory: {
+            ...inventory,
+            sale_price: inventory.sale_price ?? "0₫",
+            offer_price: inventory.offer_price ?? null,
+            stock_quantity: inventory.stock_quantity ?? 0,
+            title: inventory.title ?? "",
+            image: inventory.image ?? "",
+          },
+        };
+        dispatch(addToCartLocal(selectedItem));
+        toast.success("Đã thêm vào giỏ hàng!");
+      }
+    } catch {
+      toast.error("Lỗi khi thêm sản phẩm vào giỏ!");
     }
-
-    const quantityToAdd = Math.min(quantity, maxAddable);
-
-    dispatch(addToCartLocal({ ...inventory, cartQuantity: quantityToAdd }));
-    toast.success("Đã thêm vào giỏ hàng!");
   };
 
   const handleShare = async () => {
@@ -75,18 +98,26 @@ const BuyBox = ({ inventory, brand, allInventories, onSelect }: Props) => {
 
   return (
     <div className="bg-white p-4 rounded-xl shadow sticky top-2 self-start">
-      {brand && (
-        <div className="mb-1.5 flex items-center gap-2 w-full">
-          <span className="text-gray-600">Thương hiệu:</span>
-          <span className="text-[#327FF6]">{brand.name}</span>
-        </div>
-      )}
-
       <div className="flex justify-between mb-2">
-        <h3 className="w-[90%] text-xl font-semibold">{inventory.title}</h3>
+        <div className="w-[90%] ">
+          <div className="flex items-center gap-2 mb-2">
+            <p className="text-sm text-gray-400">Thương hiệu:</p>
+            {brand && (
+              <Link
+                href={`/brand/${brand.slug}`} // ✅ link sang brandpage
+                className="text-sm text-[#327FF6] font-medium block hover:underline"
+              >
+                {brand.name}
+              </Link>
+            )}
+          </div>
+
+          <h3 className="text-xl font-semibold">{inventory.title}</h3>
+        </div>
+
         <button
           onClick={handleShare}
-          className="flex justify-center items-center w-[10%] border border-gray-400 rounded text-gray-500 text-2xl hover:bg-gray-100 transition"
+          className="flex justify-center items-center w-[10%] rounded text-gray-500 text-2xl hover:text-blue-500"
           title="Sao chép đường dẫn"
         >
           <IoShareSocialSharp />
@@ -104,20 +135,18 @@ const BuyBox = ({ inventory, brand, allInventories, onSelect }: Props) => {
         </div>
         {hasSale && (
           <div className="text-green-600 font-medium">
-            Tiết kiệm{" "}
-            {Math.round(((salePrice - offerPrice) * quantity) / 1000)}K
+            Tiết kiệm {Math.round(((salePrice - offerPrice) * quantity) / 1000)}
+            K
           </div>
         )}
       </div>
 
-      {/* Biến thể */}
       <ProductVariants
         currentInventory={inventory}
         allInventories={allInventories}
         onSelect={onSelect}
       />
 
-      {/* Số lượng */}
       <div className="mb-4 w-full">
         <p className="font-medium mb-4">Số Lượng</p>
         <div className="flex border border-blue-400 rounded-full h-10 overflow-hidden w-full">
@@ -144,7 +173,6 @@ const BuyBox = ({ inventory, brand, allInventories, onSelect }: Props) => {
         )}
       </div>
 
-      {/* Tạm tính */}
       <div className="mb-4">
         <p className="font-medium">Tạm tính</p>
         <span className="text-lg font-bold text-[#921573]">

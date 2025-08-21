@@ -1,5 +1,5 @@
 // types/Inventory.ts
-
+import { Brand } from "./Brand";
 export interface CategoryGroup {
   image: any;
   id: number;
@@ -44,7 +44,7 @@ export interface Inventory {
   created_at: string;
   updated_at: string;
   quantity_in_unit: number;
-
+  brand?: Brand;
   product?: Product;
 
   subcategories?: Subcategory[];
@@ -60,11 +60,7 @@ export interface Product {
   primary_image: string;
   media?: any[];
 
-  brand: {
-    id: number;
-    name: string;
-    image: string;
-  };
+  brand: Brand;
 
   subcategories: Subcategory[];
 

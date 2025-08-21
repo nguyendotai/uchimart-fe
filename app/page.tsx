@@ -114,11 +114,16 @@ export default function Home() {
           {/* Brand Section */}
           <div className="w-full mx-auto mt-4 md:mt-6">
             <div className="w-full px-2 md:px-4">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-4 w-full">
-                <span className="flex-1 bg-white shadow rounded-xl px-3 py-4 md:py-5.5 flex items-center text-lg md:text-2xl font-semibold">
-                  Duy nhất hôm nay
-                </span>
-                <div className="flex-[2] w-full">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+                {/* Title */}
+                <div className="md:col-span-4">
+                  <span className="block bg-white shadow rounded-xl px-4 py-3 md:py-5 text-lg md:text-2xl font-semibold text-center md:text-left">
+                    Duy nhất hôm nay
+                  </span>
+                </div>
+
+                {/* Brand List */}
+                <div className="md:col-span-8">
                   <BrandHome />
                 </div>
               </div>

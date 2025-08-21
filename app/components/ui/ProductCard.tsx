@@ -169,17 +169,34 @@ const ProductCard = ({ product }: { product: Inventory }) => {
         </div>
 
         <div className="flex flex-wrap items-center text-xs sm:text-sm text-gray-600 mt-1 gap-x-2">
-          <div className="flex items-center gap-1 text-[#26AA99]">
+          <div className="flex items-center gap-1">
             <MdEventAvailable
-              className={product.status_name !== "Active" ? "text-red-500" : ""}
               size={14}
+              className={
+                product.stock_quantity === 0
+                  ? "text-red-500"
+                  : product.stock_quantity <= 20
+                  ? "text-orange-500"
+                  : "text-[#26AA99]"
+              }
             />
             <span
-              className={product.status_name !== "Active" ? "text-red-500" : ""}
+              className={
+                product.stock_quantity === 0
+                  ? "text-red-500"
+                  : product.stock_quantity <= 20
+                  ? "text-orange-500"
+                  : "text-[#26AA99]"
+              }
             >
-              {product.status_name === "Active" ? "Còn hàng" : "Hết hàng"}
+              {product.stock_quantity === 0
+                ? "Hết hàng"
+                : product.stock_quantity <= 20
+                ? "Sắp hết"
+                : "Còn hàng"}
             </span>
           </div>
+
           <div className="flex items-center gap-1 text-gray-500">
             <GoDotFill className="text-[8px]" />
             <span>Đã bán {product.sold_count}</span>

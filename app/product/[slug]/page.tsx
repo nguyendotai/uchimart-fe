@@ -80,9 +80,13 @@ const DetailProduct = () => {
           for (const inv of product.inventories || []) {
             const inventory: Inventory = {
               ...inv,
-              product: { code: product.code },
+              product: {
+                code: product.code,
+                brand: product.brand, // ✅ giữ brand
+              },
               subcategories: product.subcategories,
             };
+
             inventories.push(inventory);
             if (inv.slug === slug) {
               selectedInventory = inventory;
@@ -198,6 +202,7 @@ const DetailProduct = () => {
                       <BuyBox
                         inventory={currentInventory}
                         product={currentProduct}
+                        brand={currentProduct?.brand}
                         allInventories={currentProduct?.inventories}
                         onSelect={(inv) => setCurrentInventory(inv)}
                       />
