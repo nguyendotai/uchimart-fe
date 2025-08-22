@@ -23,8 +23,10 @@ export default function PageLayout({
     pathname === "/" ||
     pathname === "/product" ||
     pathname === "/search" ||
+    pathname === "/brand" ||
     pathname.startsWith("/product/") ||
-    pathname.startsWith("/search");
+    pathname.startsWith("/search/") ||
+    pathname.startsWith("/brand/");
 
   const isAccountPage = pathname.startsWith("/account");
 

@@ -8,9 +8,10 @@ const ShowSidebar = () => {
   const shouldShowSidebar =
     pathname === "/" ||
     pathname === "/product" ||
-    pathname === "/search/[search]" ||
+    pathname === "/brand" ||
     pathname.startsWith("/product/") ||
-    pathname.startsWith("/search");
+    pathname.startsWith("/search") ||
+    pathname.startsWith("/brand");
 
   return shouldShowSidebar ? <ListCategories /> : null;
 };

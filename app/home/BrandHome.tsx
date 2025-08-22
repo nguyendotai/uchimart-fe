@@ -65,7 +65,7 @@ const BrandHome = () => {
       {/* Thanh cuộn ngang */}
       <div
         ref={scrollRef}
-        className="flex gap-x-3 overflow-x-auto scroll-smooth scrollbar-hide px-1 touch-pan-x snap-x snap-mandatory"
+        className="flex gap-x-3 overflow-x-auto scroll-smooth items-center scrollbar-hide px-1 touch-pan-x snap-x snap-mandatory"
       >
         {brands.map((brand) => (
           <div

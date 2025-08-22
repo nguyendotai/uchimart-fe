@@ -53,30 +53,29 @@ export default function BrandPage() {
   const brandInfo = products[0]?.brand;
 
   return (
-    <div className="max-w-[1200px] mx-auto px-4 py-6">
+    <div className="p-4 space-y-4">
       {/* Brand info */}
       {brandInfo && (
-        <div className="flex items-center gap-4 mb-6">
-          <img
-            src={brandInfo.image}
-            alt={brandInfo.name}
-            className="w-[80px] h-[80px] object-contain"
-          />
-          <h1 className="text-2xl font-bold">{brandInfo.name}</h1>
+        <div className="flex items-center gap-2 mb-6">
+          <h1 className="text-xl font-bold">Các sản phẩm của thương hiệu:</h1>
+          <h1 className="text-xl font-bold text-[#921573]">{brandInfo.name}</h1>
         </div>
       )}
 
       {/* Product list */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 ">
         {products.flatMap((product: Product) =>
           product.inventories.map((inventory: Inventory) => (
-            <ProductCard
-              key={inventory.id}
-              product={{
-                ...inventory, // field inventory
-                brand: product.brand, // ✅ gắn brand cha
-              }}
-            />
+            <div className="border border-gray-200 rounded-xl 
+          p-2 sm:p-3 bg-white">
+              <ProductCard
+                key={inventory.id}
+                product={{
+                  ...inventory, // field inventory
+                  brand: product.brand, // ✅ gắn brand cha
+                }}
+              />
+            </div>
           ))
         )}
       </div>
