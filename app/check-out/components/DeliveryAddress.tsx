@@ -1,33 +1,19 @@
 "use client";
+
 import React, { useState } from "react";
 import { PiMapPinFill } from "react-icons/pi";
-import AddressModal from "./AddressModal";
-import { Address } from "./CreateAddressModal";
-import CreateAddressModal from "./CreateAddressModal";
+import SelectAddressModal from "./SelectAddressModal";
+import { useAddress } from "../../Address-context/page";
+import { AddressItem } from "../../types/address";
 
 export default function DeliveryAddress() {
   const [showModal, setShowModal] = useState(false);
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [addresses, setAddresses] = useState<Address[]>([
-    {
-      name: "Nguyễn Đỗ Tài",
-      fullAddress:
-        "256 Đường Phan Huy Ích, Phường 12, Quận Gò Vấp, TP. Hồ Chí Minh",
-    },
-  ]);
-  const [selectedAddress, setSelectedAddress] = useState<Address>({
-    name: "Nguyễn Đỗ Tài",
-    fullAddress:
-      "256 Đường Phan Huy Ích, Phường 12, Quận Gò Vấp, Thành phố Hồ Chí Minh",
-  });
+  const { addresses, defaultAddress } = useAddress();
 
-  const handleCreateAddress = (newAddress: Address) => {
-    const newList = [...addresses, newAddress];
-    setAddresses(newList);
-    setSelectedAddress(newAddress);
-    setShowCreateModal(false);
-    setShowModal(true); // mở lại modal chọn địa chỉ nếu bạn muốn
-  };
+  // state lưu địa chỉ được chọn
+  const [selectedAddress, setSelectedAddress] = useState<AddressItem | null>(
+    defaultAddress ?? null
+  );
 
   return (
     <>
@@ -48,9 +34,31 @@ export default function DeliveryAddress() {
             <PiMapPinFill className="text-rose-500 mt-1 text-lg" />
             <div className="text-sm">
               <p className="text-gray-800">
-                Giao đến <span className="font-semibold text-gray-900">{selectedAddress.name}</span>
+                Giao đến{" "}
+                <span className="font-semibold text-gray-900">
+                  {selectedAddress?.name || "Chưa chọn"}
+                </span>
               </p>
-              <p className="text-gray-600 mt-1">{selectedAddress.fullAddress}</p>
+              <p className="text-gray-600 mt-1">
+                {selectedAddress ? (
+                  <span>
+                    {selectedAddress.address_line}
+                    {selectedAddress.ward?.name ? `, P.${selectedAddress.ward.name}` : ""}
+                    {selectedAddress.district?.name ? `, Q.${selectedAddress.district.name}` : ""}
+                    {selectedAddress.province?.name ? `, TP.${selectedAddress.province.name}` : ""}
+                  </span>
+                ) : defaultAddress ? (
+                  <span>
+                    {defaultAddress.address_line}
+                    {defaultAddress.ward?.name ? `, ${defaultAddress.ward.name}` : ""}
+                    {defaultAddress.district?.name ? `, ${defaultAddress.district.name}` : ""}
+                    {defaultAddress.province?.name ? `, ${defaultAddress.province.name}` : ""}
+                  </span>
+                ) : (
+                  <span>Bạn chưa có địa chỉ mặc định</span>
+                )}
+              </p>
+
             </div>
           </div>
           <button
@@ -72,29 +80,18 @@ export default function DeliveryAddress() {
               </p>
             </div>
             <button className="text-teal-600 text-sm font-medium hover:text-teal-700 transition-colors whitespace-nowrap ml-2">
-              Đổi siêu thị
+              Xem trên bản đồ
             </button>
           </div>
         </div>
       </div>
 
-      <AddressModal
+      {/* Modal chọn địa chỉ */}
+      <SelectAddressModal
         open={showModal}
         onClose={() => setShowModal(false)}
-        onSelect={(address) => {
-          setSelectedAddress(address);
-          setShowModal(false);
-        }}
-        onRequestCreate={() => {
-          setShowModal(false);
-          setShowCreateModal(true);
-        }}
-      />
-
-      <CreateAddressModal
-        open={showCreateModal}
-        onClose={() => setShowCreateModal(false)}
-        onCreate={handleCreateAddress}
+        addresses={addresses}
+        onSelect={(address: AddressItem) => setSelectedAddress(address)}
       />
     </>
   );

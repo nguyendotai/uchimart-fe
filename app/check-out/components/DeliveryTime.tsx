@@ -94,11 +94,6 @@ export default function DeliveryTime({ items, selectedTime, onChange }: Props) {
         className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-300 transition-colors resize-none"
       />
 
-      {/* Khuyến mãi */}
-      <p className="text-sm text-gray-600 mt-4 mb-3">
-        Mua thêm <span className="font-semibold text-gray-800">36k</span> để được giảm phí ship
-      </p>
-
       {/* Điểm thưởng */}
       <div className="bg-teal-100 text-teal-700 px-4 py-2 rounded-lg text-sm font-medium">
         Dự kiến <span className="font-semibold">+35 điểm</span> cho đơn

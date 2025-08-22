@@ -2,25 +2,24 @@
 import React, { useState } from "react";
 import ModalPortal from "@/app/components/ui/ModalPortal";
 import { motion, AnimatePresence } from "framer-motion";
-import CreateAddressModal, { Address } from "./CreateAddressModal";
+import { AddressItem } from "../../types/address";
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  onSelect: (address: Address) => void;
+  addresses: AddressItem[];
+  onSelect: (address: AddressItem) => void;
   onRequestCreate: () => void;
 };
 
-export default function AddressModal({ open, onClose, onSelect, onRequestCreate }: Props) {
-  const [addresses, setAddresses] = useState<Address[]>([
-    {
-      name: "Nguyễn Đỗ Tài",
-      fullAddress:
-        "256 Đường Phan Huy Ích, Phường 12, Quận Gò Vấp, TP. Hồ Chí Minh",
-    },
-  ]);
-
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
+export default function AddressModal({
+  open,
+  onClose,
+  addresses,
+  onSelect,
+  onRequestCreate,
+}: Props) {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const handleConfirm = () => {
     if (selectedIndex !== null) {
@@ -62,26 +61,41 @@ export default function AddressModal({ open, onClose, onSelect, onRequestCreate 
             </p>
 
             {/* Danh sách địa chỉ */}
-            {addresses.map((addr, index) => (
-              <div
-                key={index}
-                className={`border rounded p-3 mb-3 cursor-pointer ${
-                  selectedIndex === index
-                    ? "bg-blue-100 border-blue-500"
-                    : "bg-gray-50"
-                }`}
-                onClick={() => setSelectedIndex(index)}
-              >
-                <p className="font-semibold">{addr.name}</p>
-                <p className="text-sm text-gray-600">{addr.fullAddress}</p>
-              </div>
-            ))}
+            <ul className="space-y-4">
+              {addresses.map((addr, idx) => (
+                <li
+                  key={addr.id}
+                  className={`p-4 border rounded-lg cursor-pointer hover:bg-gray-100 ${
+                    selectedIndex === idx ? "border-blue-500 bg-blue-50" : ""
+                  }`}
+                  onClick={() => setSelectedIndex(idx)}
+                >
+                  <div className="font-semibold">
+                    {addr.name} ({addr.phone})
+                  </div>
+                  <div className="text-gray-700">
+                    {addr.address_line}, {addr.ward?.name}, {addr.district?.name},{" "}
+                    {addr.province?.name}
+                  </div>
+                  {addr.note && (
+                    <div className="text-sm text-gray-500 italic">
+                      Ghi chú: {addr.note}
+                    </div>
+                  )}
+                  {addr.is_default === 1 && (
+                    <span className="inline-block mt-1 px-2 py-1 text-xs bg-green-100 text-green-700 rounded">
+                      Mặc định
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
 
             {/* Nút tạo địa chỉ */}
             <button
               onClick={() => {
-                onClose(); // đóng modal chọn địa chỉ
-                onRequestCreate(); // mở modal tạo địa chỉ
+                onClose();
+                onRequestCreate();
               }}
               className="w-full border text-blue-600 py-2 rounded text-sm mb-3"
             >
