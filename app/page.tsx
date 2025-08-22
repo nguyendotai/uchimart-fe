@@ -113,7 +113,7 @@ export default function Home() {
 
           {/* Brand Section */}
           <div className="w-full mx-auto mt-4 md:mt-6">
-            <div className="w-full px-2 md:px-4">
+            <div className="w-full">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
                 {/* Title */}
                 <div className="md:col-span-4">
