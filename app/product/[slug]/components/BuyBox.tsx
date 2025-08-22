@@ -96,6 +96,8 @@ const BuyBox = ({ inventory, brand, allInventories, onSelect }: Props) => {
     }
   };
 
+  const isOutOfStock = inventory.stock_quantity === 0;
+
   return (
     <div className="bg-white p-4 rounded-xl shadow sticky top-2 self-start">
       <div className="flex justify-between mb-2">
@@ -182,9 +184,16 @@ const BuyBox = ({ inventory, brand, allInventories, onSelect }: Props) => {
 
       <button
         onClick={handleAddToCart}
-        className="text-[#0e9d1a] border px-6 py-2 rounded hover:bg-[#0e9d1a] hover:text-white transition w-full"
+        disabled={isOutOfStock}
+        title={isOutOfStock ? "Hết hàng" : "Thêm vào giỏ hàng"}
+        className={`border px-6 py-2 rounded transition w-full
+    ${
+      isOutOfStock
+        ? " text-[#bbf1bf] cursor-not-allowed"
+        : "text-[#0e9d1a] border-[#0e9d1a] hover:bg-[#0e9d1a] hover:text-white"
+    }`}
       >
-        Thêm vào giỏ hàng
+        {isOutOfStock ? "Hết hàng" : "Thêm vào giỏ hàng"}
       </button>
     </div>
   );
