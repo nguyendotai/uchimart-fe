@@ -20,9 +20,10 @@ const ListProduct = () => {
       })
       .then((res) => {
         const products = res.data || [];
-        const allInventories: Inventory[] = products.flatMap(
-          (p: { inventories: Inventory[] }) => p.inventories || []
-        );
+        const allInventories: Inventory[] = products
+          .flatMap((p: { inventories: Inventory[] }) => p.inventories || [])
+          .sort((a: { id: number; }, b: { id: number; }) => b.id - a.id); // 👉 mới nhất trước
+
         setAllProducts(allInventories);
       })
       .catch((err) => console.error("Lỗi tải products:", err));

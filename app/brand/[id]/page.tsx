@@ -44,9 +44,16 @@ export default function BrandPage() {
 
   if (products.length === 0)
     return (
-      <p className="text-center py-10">
-        Không tìm thấy sản phẩm thuộc brand này
-      </p>
+      <div className="flex flex-col items-center justify-center py-10">
+        <img
+          src="/img/online-store-10.png" // 👉 thay bằng link ảnh cụ thể bạn chọn
+          alt="Không có sản phẩm"
+          className="w-72 h-72 object-contain"
+        />
+        <p className="mt-4 text-gray-600">
+          Không có sản phẩm thuộc brand này
+        </p>
+      </div>
     );
 
   // ✅ brand chung cho trang (lấy từ sản phẩm đầu tiên)
@@ -66,8 +73,10 @@ export default function BrandPage() {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 ">
         {products.flatMap((product: Product) =>
           product.inventories.map((inventory: Inventory) => (
-            <div className="border border-gray-200 rounded-xl 
-          p-2 sm:p-3 bg-white">
+            <div
+              className="border border-gray-200 rounded-xl 
+          p-2 sm:p-3 bg-white"
+            >
               <ProductCard
                 key={inventory.id}
                 product={{

@@ -114,13 +114,22 @@ const ListProductByCate = () => {
         return (
           <div key={group.id} className=" w-full space-y-6 mb-8 relative">
             {/* Banner nhóm danh mục */}
-            <div className="w-full rounded-lg overflow-hidden relative flex bg-gray-100 h-auto min-h-[6rem]">
-              <div className=" max-w-[40%]">
+            {/* Banner nhóm danh mục */}
+            <div className="w-full rounded-lg overflow-hidden relative flex bg-gray-100 h-auto min-h-[6rem] items-center">
+              {/* Ảnh: chỉ hiện từ sm trở lên */}
+              <div className="hidden sm:block max-w-[40%]">
                 <img
                   src={group.cover || "/default-category.png"}
                   alt={group.name}
                   className="w-full h-full object-cover"
                 />
+              </div>
+
+              {/* Tên: chỉ hiện ở mobile */}
+              <div className="sm:hidden flex-1 flex items-center justify-center px-3">
+                <h2 className="text-lg font-semibold text-gray-800">
+                  {group.name}
+                </h2>
               </div>
             </div>
 

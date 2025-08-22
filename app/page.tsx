@@ -118,7 +118,7 @@ export default function Home() {
                 {/* Title */}
                 <div className="md:col-span-4">
                   <span className="block bg-white shadow rounded-xl px-4 py-3 md:py-5 text-lg md:text-2xl font-semibold text-center md:text-left">
-                    Duy nhất hôm nay
+                    Sản phẩm mới nhất
                   </span>
                 </div>
 

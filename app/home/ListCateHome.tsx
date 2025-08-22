@@ -103,7 +103,7 @@ const ListCateHome = () => {
                   className="w-full h-full object-contain"
                 />
               </div>
-              <p className="text-[11px] sm:text-sm font-medium truncate">
+              <p className="text-[11px] sm:text-sm truncate">
                 {group.name}
               </p>
             </div>

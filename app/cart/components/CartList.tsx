@@ -101,7 +101,24 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
   };
 
   if (cartItems.length === 0)
-    return <p className="text-gray-500">Giỏ hàng của bạn đang trống.</p>;
+    return (
+      <div className="flex flex-col items-center justify-center py-16">
+        <img
+          src="/img/shopping-cart-77.png" // 👉 thay bằng ảnh bạn muốn (SVG/PNG)
+          alt="Giỏ hàng trống"
+          className="w-64 h-64 object-contain"
+        />
+        <p className="mt-6 text-gray-600 text-lg font-medium">
+          Giỏ hàng của bạn đang trống
+        </p>
+        <button
+          onClick={() => (window.location.href = "/")} // 👉 hoặc điều hướng bằng next/link
+          className="mt-4 px-6 py-2 rounded-lg bg-[#921573] text-white hover:bg-[#7a125f] transition-colors"
+        >
+          Mua sắm ngay
+        </button>
+      </div>
+    );
 
   return (
     <>
@@ -146,16 +163,21 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
       </div>
 
       <div className="grid gap-4">
-        {cartItems.map(item => (
+        {cartItems.map((item) => (
           <CartItem
             key={item.id}
-            item={{ ...item, quantity: pendingQuantities[item.id] ?? item.quantity }}
+            item={{
+              ...item,
+              quantity: pendingQuantities[item.id] ?? item.quantity,
+            }}
             checked={selectedIds.includes(item.id)}
             onItemClick={() => toggleSelect(item.id)}
-            onQuantityChange={(qty: number) => handleQuantityChange(item.id, qty)}
+            onQuantityChange={(qty: number) =>
+              handleQuantityChange(item.id, qty)
+            }
           />
         ))}
       </div>
     </>
-);
+  );
 }

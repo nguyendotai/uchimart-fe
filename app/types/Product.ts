@@ -31,6 +31,7 @@ export interface Inventory {
   image: string;
   status: number;
   status_name: string;
+  description: string;
   purchase_price: string;      // ví dụ: "N/A"
   sale_price: string;          // ví dụ: "59,000₫"
   offer_price?: string | null;

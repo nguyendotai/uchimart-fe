@@ -4,10 +4,10 @@ import { Product, Inventory } from "@/app/types/Product";
 
 type Props = {
   product: Product;
-  inventory?: Inventory; // Optional, in case you want to use inventory data
+  inventory: Inventory; // Optional, in case you want to use inventory data
 };
 
-const ProductInfo = ({ product }: Props) => {
+const ProductInfo = ({ inventory }: Props) => {
   const [showMore, setShowMore] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -31,11 +31,11 @@ const ProductInfo = ({ product }: Props) => {
       ref={contentRef}
     >
       <h2 className="font-semibold text-xl mb-2">Mô tả</h2>
-      <div className={`${!showMore ? "max-h-[250px] overflow-hidden relative" : ""}`}>
+      <div className={`${!showMore ? "max-h-[300px] overflow-hidden relative" : ""}`}>
         <div
           className="mt-2 prose prose-sm max-w-none"
           dangerouslySetInnerHTML={{
-            __html: cleanHTML(product.description || "<p>Chưa có mô tả</p>"),
+            __html: cleanHTML(inventory.description || "<p>Chưa có mô tả</p>"),
           }}
         />
 
