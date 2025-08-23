@@ -2,24 +2,16 @@
 import React, { useState } from "react";
 import ModalPortal from "@/app/components/ui/ModalPortal";
 import { motion, AnimatePresence } from "framer-motion";
-
-type Voucher = {
-  code: string;
-  description: string;
-};
+import type { Voucher } from "../../types/Voucher";
 
 type Props = {
   open: boolean;
   onClose: () => void;
   onSelect: (code: string) => void;
+  vouchers: Voucher[];
 };
 
-const vouchers: Voucher[] = [
-  { code: "FREESHIP", description: "Miễn phí vận chuyển" },
-  { code: "DISCOUNT10", description: "Giảm 10% tổng đơn hàng" },
-];
-
-export default function VoucherModal({ open, onClose, onSelect }: Props) {
+export default function VoucherModal({ open, onClose, onSelect, vouchers }: Props) {
   const [tempSelected, setTempSelected] = useState<string>("");
 
   const handleConfirm = () => {
@@ -66,7 +58,10 @@ export default function VoucherModal({ open, onClose, onSelect }: Props) {
                   }`}
                 >
                   <p className="font-medium">{voucher.code}</p>
-                  <p className="text-sm text-gray-600">{voucher.description}</p>
+                  <p className="text-sm text-gray-600">{voucher.title}</p>
+                  <p className="text-xs text-gray-500">
+                    Hết hạn: {new Date(voucher.end_date).toLocaleDateString("vi-VN")}
+                  </p>
                 </li>
               ))}
             </ul>

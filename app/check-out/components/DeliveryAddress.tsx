@@ -6,7 +6,13 @@ import SelectAddressModal from "./SelectAddressModal";
 import { useAddress } from "../../Address-context/page";
 import { AddressItem } from "../../types/address";
 
-export default function DeliveryAddress() {
+
+type Props = {
+    onSelectAddress: (address: AddressItem) => void; // 👈 nhận object thay vì id
+};
+
+
+export default function DeliveryAddress({ onSelectAddress }: Props) {
   const [showModal, setShowModal] = useState(false);
   const { addresses, defaultAddress } = useAddress();
 
@@ -91,7 +97,10 @@ export default function DeliveryAddress() {
         open={showModal}
         onClose={() => setShowModal(false)}
         addresses={addresses}
-        onSelect={(address: AddressItem) => setSelectedAddress(address)}
+        onSelect={(address: AddressItem) => {
+          setSelectedAddress(address);
+          onSelectAddress(address); // 👉 gửi id về cha
+        }}
       />
     </>
   );

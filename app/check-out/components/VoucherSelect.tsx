@@ -1,20 +1,43 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import VoucherModal from "./VoucherModal";
+import type { Voucher } from "../../types/Voucher";
+import axios from "axios";
 
 type Props = {
-  selectedVoucher: string;
-  onChange: (voucher: string) => void;
+  selectedVoucher: Voucher | null;
+  onChange: (voucher: Voucher | null) => void;
 };
 
 export default function VoucherSelect({ selectedVoucher, onChange }: Props) {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [vouchers, setVouchers] = useState<Voucher[]>([]);
 
+  // Fetch danh sách voucher
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/api/coupons")
+      .then((res) => {
+        setVouchers(res.data.data);
+      })
+      .catch((err) => {
+        console.error("Lỗi khi fetch voucher:", err);
+      });
+  }, []);
+
+  // Xử lý nhập thủ công
   const handleApply = () => {
     if (input.trim()) {
-      onChange(input.trim());
-      setInput("");
+      const foundVoucher = vouchers.find(
+        (v) => v.code.toLowerCase() === input.trim().toLowerCase()
+      );
+      if (foundVoucher) {
+        onChange(foundVoucher); // ✅ truyền Voucher object
+        setInput("");
+      } else {
+        alert("Mã voucher không hợp lệ");
+      }
     }
   };
 
@@ -55,17 +78,47 @@ export default function VoucherSelect({ selectedVoucher, onChange }: Props) {
             Áp dụng
           </button>
         </div>
+
+       {selectedVoucher ? (
+  <div className="flex items-center justify-between mt-3 p-3 rounded-lg border border-green-300 bg-green-50 shadow-sm">
+    <div className="flex flex-col">
+      <span className="text-sm font-semibold text-green-700">
+        Voucher đã chọn
+      </span>
+      <span className="text-sm text-gray-700">
+        {selectedVoucher.title} <span className="text-gray-500">({selectedVoucher.code})</span>
+      </span>
+    </div>
+    <button
+      onClick={() => onChange(null)}
+      className="ml-4 px-3 py-1 text-sm font-medium text-red-600 bg-red-100 rounded-lg hover:bg-red-200 transition"
+    >
+      Hủy
+    </button>
+  </div>
+) : (
+  <div className="mt-3 p-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-500 text-sm text-center">
+    ❌ Chưa chọn voucher
+  </div>
+)}
+
+
       </div>
 
       {/* Modal chọn mã */}
       <VoucherModal
         open={open}
         onClose={() => setOpen(false)}
-        onSelect={(code) => {
-          onChange(code);
+        onSelect={(code) => { // ⚡ nhận string
+          const foundVoucher = vouchers.find((v) => v.code === code);
+          if (foundVoucher) {
+            onChange(foundVoucher);
+          }
           setOpen(false);
         }}
+        vouchers={vouchers}
       />
+
     </>
   );
 }

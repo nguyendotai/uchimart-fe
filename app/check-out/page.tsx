@@ -7,6 +7,8 @@ import OrderItems from "./components/OrderItems";
 import VoucherSelect from "./components/VoucherSelect";
 import { FaCheckCircle } from "react-icons/fa";
 import { CartItem } from "../types/Product";
+import { Voucher } from "../types/Voucher";
+import { AddressItem } from "../types/address";
 
 // --- Thêm interface này ở đây ---
 interface StoredCartItem {
@@ -22,58 +24,66 @@ interface StoredCartItem {
   };
 }
 
+
+interface Section {
+  id: number;
+  title: string;
+  component: React.ReactNode;
+}
+
 export default function CheckoutPage() {
-const [items, setItems] = useState<CartItem[]>([]);
+  const [items, setItems] = useState<CartItem[]>([]);
   const [deliveryMethod, setDeliveryMethod] = useState<"delivery" | "pickup">("delivery");
   const [selectedTime, setSelectedTime] = useState("");
-  const [selectedVoucher, setSelectedVoucher] = useState("");
+  const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
   const [activeSection, setActiveSection] = useState(1);
+  // state lưu địa chỉ được chọn
+  const [selectedAddress, setSelectedAddress] = useState<AddressItem | null>(null);
 
-  // ✅ Lấy dữ liệu từ localStorage
+
+
+  // ✅ Lấy dữ liệu từ localStorage (chỉ lấy selectedItems thay vì toàn bộ giỏ hàng)
   useEffect(() => {
-  const stored = localStorage.getItem("persist:cart");
-  if (!stored) return;
+    const stored = localStorage.getItem("selectedItems");
+    if (!stored) return;
 
-  try {
-    const parsed = JSON.parse(stored);
-    const itemsString = parsed.items;
-    if (!itemsString) return;
+    try {
+      const selected: StoredCartItem[] = JSON.parse(stored);
 
-    const storedItems: StoredCartItem[] = JSON.parse(itemsString);
+      // map sang CartItem hợp lệ
+      const cartItems: CartItem[] = selected.map((item) => {
+        const inv = item.inventory;
+        const salePrice = inv?.sale_price ?? undefined;
+        const offerPrice = inv?.offer_price ?? null;
 
-    // map sang CartItem hợp lệ
-    const cartItems: CartItem[] = storedItems.map((item) => {
-      const inv = item.inventory;
-      const salePrice = inv?.sale_price ?? undefined;
-      const offerPrice = inv?.offer_price ?? null;
+        return {
+          id: item.id,
+          inventory_id: item.inventory_id,
+          title: inv?.title,
+          image: inv?.image,
+          sale_price: salePrice,
+          offer_price: offerPrice,
+          quantity: item.quantity,
+          total_price: Number(item.total_price), // number thay vì string
+          inventory: undefined, // hoặc giữ raw inv nếu bạn muốn
+        };
+      });
 
-      return {
-        id: item.id,
-        inventory_id: item.inventory_id,
-        title: inv?.title,
-        image: inv?.image,
-        sale_price: salePrice,
-        offer_price: offerPrice,
-        quantity: item.quantity,
-        total_price: Number(item.total_price), // number thay vì string
-        inventory: undefined, // Không set Inventory thực, tránh lỗi type
-      };
-    });
-
-    setItems(cartItems);
-  } catch (error) {
-    console.error("Failed to parse cart from localStorage", error);
-  }
-}, []);
+      setItems(cartItems);
+    } catch (error) {
+      console.error("Failed to parse selectedItems from localStorage", error);
+    }
+  }, []);
 
 
 
-  const sections = [
-    { id: 1, title: "Phương thức giao hàng", component: <DeliveryMethod value={deliveryMethod} onChange={setDeliveryMethod} /> },
-    { id: 2, title: "Địa chỉ giao hàng", component: <DeliveryAddress /> },
-    { id: 3, title: "Thời gian giao nhận", component: <DeliveryTime items={items} selectedTime={selectedTime} onChange={setSelectedTime} /> },
-    { id: 4, title: "Khuyến mãi", component: <VoucherSelect selectedVoucher={selectedVoucher} onChange={setSelectedVoucher} /> },
-  ];
+
+  const sections: Section[] = [
+  { id: 1, title: "Phương thức giao hàng", component: <DeliveryMethod value={deliveryMethod} onChange={setDeliveryMethod} /> },
+  { id: 2, title: "Địa chỉ giao hàng", component: <DeliveryAddress onSelectAddress={(address: AddressItem) => setSelectedAddress(address)} /> },
+  { id: 3, title: "Thời gian giao nhận", component: <DeliveryTime items={items} selectedTime={selectedTime} onChange={setSelectedTime} /> },
+  { id: 4, title: "Khuyến mãi", component: <VoucherSelect selectedVoucher={selectedVoucher} onChange={setSelectedVoucher} /> },
+];
 
   return (
     <div className="w-full bg-gray-50 py-8 px-4 md:px-6">
@@ -83,11 +93,10 @@ const [items, setItems] = useState<CartItem[]>([]);
           {sections.map((section, index) => (
             <div key={section.id} className="flex flex-col items-center">
               <div
-                className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold ${
-                  activeSection >= section.id
+                className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold ${activeSection >= section.id
                     ? "bg-teal-500 text-white"
                     : "bg-gray-200 text-gray-600"
-                } transition-all duration-300`}
+                  } transition-all duration-300`}
               >
                 {activeSection > section.id ? <FaCheckCircle /> : section.id}
               </div>
@@ -96,9 +105,8 @@ const [items, setItems] = useState<CartItem[]>([]);
               </span>
               {index < sections.length - 1 && (
                 <div
-                  className={`h-1 mt-2 ${
-                    activeSection > section.id ? "bg-teal-500" : "bg-gray-200"
-                  }`}
+                  className={`h-1 mt-2 ${activeSection > section.id ? "bg-teal-500" : "bg-gray-200"
+                    }`}
                 />
               )}
             </div>
@@ -161,7 +169,7 @@ const [items, setItems] = useState<CartItem[]>([]);
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
               Tóm tắt đơn hàng
             </h3>
-            <OrderItems items={items} />
+            <OrderItems items={items} voucher={selectedVoucher} selectedAddress={selectedAddress} />
           </div>
         </div>
       </div>

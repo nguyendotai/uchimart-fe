@@ -62,7 +62,7 @@ export default function DeliveryTime({ items, selectedTime, onChange }: Props) {
             >
               <Image
                 src={item.image || "/fallback.jpg"}
-                alt={item.title}
+                alt={item.title ?? "No title"}
                 width={48}
                 height={48}
                 className="rounded-lg object-cover w-12 h-12"
@@ -91,7 +91,7 @@ export default function DeliveryTime({ items, selectedTime, onChange }: Props) {
       {/* Ghi chú đơn */}
       <textarea
         placeholder="Nhập ghi chú đơn"
-        className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-300 transition-colors resize-none"
+        className="w-full h-24 rounded-lg bg-gray-50 px-3 py-3 text-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-300 transition-colors resize-none"
       />
     </div>
   );
