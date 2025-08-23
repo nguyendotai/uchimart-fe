@@ -6,55 +6,74 @@ import DeliveryTime from "./components/DeliveryTime";
 import OrderItems from "./components/OrderItems";
 import VoucherSelect from "./components/VoucherSelect";
 import { FaCheckCircle } from "react-icons/fa";
+import { CartItem } from "../types/Product";
+
+// --- Thêm interface này ở đây ---
+interface StoredCartItem {
+  id: number;
+  inventory_id: number;
+  quantity: number;
+  total_price: string;
+  inventory?: {
+    title?: string;
+    image?: string;
+    sale_price?: string;
+    offer_price?: string | null;
+  };
+}
 
 export default function CheckoutPage() {
-  const [deliveryMethod, setDeliveryMethod] = useState<"delivery" | "pickup">(
-    "delivery"
-  );
+const [items, setItems] = useState<CartItem[]>([]);
+  const [deliveryMethod, setDeliveryMethod] = useState<"delivery" | "pickup">("delivery");
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedVoucher, setSelectedVoucher] = useState("");
-  const [items, setItems] = useState([]);
-
   const [activeSection, setActiveSection] = useState(1);
 
-  const sections = [
-    {
-      id: 1,
-      title: "Phương thức giao hàng",
-      component: (
-        <DeliveryMethod value={deliveryMethod} onChange={setDeliveryMethod} />
-      ),
-    },
-    { id: 2, title: "Địa chỉ giao hàng", component: <DeliveryAddress /> },
-    {
-      id: 3,
-      title: "Thời gian giao nhận",
-      component: (
-        <DeliveryTime
-          selectedTime={selectedTime}
-          onChange={setSelectedTime}
-          items={items}
-        />
-      ),
-    },
-    {
-      id: 4,
-      title: "Khuyến mãi",
-      component: (
-        <VoucherSelect
-          selectedVoucher={selectedVoucher}
-          onChange={setSelectedVoucher}
-        />
-      ),
-    },
-  ];
-
+  // ✅ Lấy dữ liệu từ localStorage
   useEffect(() => {
-    const stored = localStorage.getItem("selectedItems");
-    if (stored) {
-      setItems(JSON.parse(stored));
-    }
-  }, []);
+  const stored = localStorage.getItem("persist:cart");
+  if (!stored) return;
+
+  try {
+    const parsed = JSON.parse(stored);
+    const itemsString = parsed.items;
+    if (!itemsString) return;
+
+    const storedItems: StoredCartItem[] = JSON.parse(itemsString);
+
+    // map sang CartItem hợp lệ
+    const cartItems: CartItem[] = storedItems.map((item) => {
+      const inv = item.inventory;
+      const salePrice = inv?.sale_price ?? undefined;
+      const offerPrice = inv?.offer_price ?? null;
+
+      return {
+        id: item.id,
+        inventory_id: item.inventory_id,
+        title: inv?.title,
+        image: inv?.image,
+        sale_price: salePrice,
+        offer_price: offerPrice,
+        quantity: item.quantity,
+        total_price: Number(item.total_price), // number thay vì string
+        inventory: undefined, // Không set Inventory thực, tránh lỗi type
+      };
+    });
+
+    setItems(cartItems);
+  } catch (error) {
+    console.error("Failed to parse cart from localStorage", error);
+  }
+}, []);
+
+
+
+  const sections = [
+    { id: 1, title: "Phương thức giao hàng", component: <DeliveryMethod value={deliveryMethod} onChange={setDeliveryMethod} /> },
+    { id: 2, title: "Địa chỉ giao hàng", component: <DeliveryAddress /> },
+    { id: 3, title: "Thời gian giao nhận", component: <DeliveryTime items={items} selectedTime={selectedTime} onChange={setSelectedTime} /> },
+    { id: 4, title: "Khuyến mãi", component: <VoucherSelect selectedVoucher={selectedVoucher} onChange={setSelectedVoucher} /> },
+  ];
 
   return (
     <div className="w-full bg-gray-50 py-8 px-4 md:px-6">

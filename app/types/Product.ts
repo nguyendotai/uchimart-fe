@@ -1,7 +1,7 @@
 // types/Inventory.ts
 import { Brand } from "./Brand";
 export interface CategoryGroup {
-  image: any;
+  image: string | null;
   id: number;
   name: string;
   slug: string;
@@ -59,7 +59,7 @@ export interface Product {
   code: string;
   description: string | null;
   primary_image: string;
-  media?: any[];
+  media?: string[];
 
   brand: Brand;
 

@@ -9,8 +9,6 @@ type Props = {
 
 export default function OrderSummary({ items }: Props) {
   const [showDetails, setShowDetails] = useState(false);
-  const [vatChecked, setVatChecked] = useState(false);
-
   const subTotal = items.reduce((sum, item) => {
     const salePrice = formatCurrencyToNumber(item.sale_price);
     const offerPrice = formatCurrencyToNumber(item.offer_price ?? "0");
@@ -26,16 +24,6 @@ export default function OrderSummary({ items }: Props) {
 
   return (
     <div className="bg-teal-50 rounded-xl shadow-sm text-sm p-5 space-y-5">
-      {/* VAT */}
-      <label className="flex items-center gap-3 cursor-pointer">
-        <input
-          type="checkbox"
-          checked={vatChecked}
-          onChange={() => setVatChecked(!vatChecked)}
-          className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-300"
-        />
-        <span className="text-gray-800 font-medium">Xuất hóa đơn VAT</span>
-      </label>
 
       {/* Tóm tắt đơn hàng */}
       <div className="bg-white p-4 rounded-lg space-y-4 border border-gray-200 shadow-sm">
