@@ -4,12 +4,30 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useInView } from "react-intersection-observer";
 import dynamic from "next/dynamic";
+import { FaSpinner } from "react-icons/fa";
 
 // 📦 Animation Wrapper
 import PageTransitionWrapper from "../components/Animation/PageTransitionWrapper";
 
 // 📂 Kiểu dữ liệu
 import { Category } from "../types/Category";
+
+// 💀 Skeleton Component
+const Skeleton = ({ height = 200, grid = 1, sections = 1 }) => (
+  <div className="space-y-4">
+    {Array.from({ length: sections }).map((_, idx) => (
+      <div key={idx} className={`grid grid-cols-${grid} gap-4`}>
+        {Array.from({ length: grid }).map((_, i) => (
+          <div
+            key={i}
+            style={{ height }}
+            className="bg-gray-200 animate-pulse rounded-md"
+          ></div>
+        ))}
+      </div>
+    ))}
+  </div>
+);
 
 // 🐢 Dynamic Imports with Skeleton loading
 const ListSaleProduct = dynamic(() => import("./components/ListSaleProduct"), {
@@ -43,23 +61,6 @@ const ListProductByCate = dynamic(() => import("../home/ListProductByCate"), {
   loading: () => <Skeleton height={240} grid={4} />,
 });
 
-// 💀 Skeleton Component
-const Skeleton = ({ height = 200, grid = 1, sections = 1 }) => (
-  <div className="space-y-4">
-    {Array.from({ length: sections }).map((_, idx) => (
-      <div key={idx} className={`grid grid-cols-${grid} gap-4`}>
-        {Array.from({ length: grid }).map((_, i) => (
-          <div
-            key={i}
-            style={{ height }}
-            className="bg-gray-200 animate-pulse rounded-md"
-          ></div>
-        ))}
-      </div>
-    ))}
-  </div>
-);
-
 const Product = () => {
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("category");
@@ -67,6 +68,7 @@ const Product = () => {
 
   const isSalePage = filter === "khuyen-mai-hot";
   const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState<string>("");
 
   const { ref: saleRef, inView: saleInView } = useInView({
@@ -91,20 +93,23 @@ const Product = () => {
   });
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/category-groups")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
+    const fetchCategories = async () => {
+      try {
+        setLoading(true); // 🟢 reset loading mỗi lần thay đổi query
+        const res = await fetch("http://127.0.0.1:8000/api/category-groups");
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const data = await res.json();
         setCategories(data.data || []);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Lỗi khi fetch category groups:", error);
-      });
-  }, []);
+        setCategories([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, [categoryId, filter]); // 🟢 thêm dependency
 
   const currentCategory = categoryId
     ? categories.find((c) => c.id === Number(categoryId))
@@ -113,6 +118,15 @@ const Product = () => {
   const categoryName = isSalePage
     ? "Khuyến mãi hot"
     : currentCategory?.name || "Tất cả sản phẩm";
+
+  // 🌀 Overlay spinner khi chưa fetch xong categories
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <FaSpinner className="animate-spin text-4xl text-[#921573]" />
+      </div>
+    );
+  }
 
   return (
     <PageTransitionWrapper>
@@ -137,7 +151,7 @@ const Product = () => {
                   categoryGroupId={
                     !isSalePage && categoryId && !isNaN(Number(categoryId))
                       ? Number(categoryId)
-                      : 0 // hoặc một giá trị mặc định phù hợp, ví dụ: 0
+                      : 0
                   }
                 />
               )}
@@ -157,15 +171,13 @@ const Product = () => {
             </div>
 
             {/* Product Preview by Category */}
-            <div className="w-full mb-4" ref={previewRef}>
-              {categoryId && !isNaN(Number(categoryId)) && previewInView && (
-                <CategoryProductPreview
-                  categoryId={Number(categoryId)}
-                  categoryName={categoryName}
-                  sortBy={sortBy}
-                />
-              )}
-            </div>
+            {previewInView && (
+              <CategoryProductPreview
+                categoryId={categoryId ? Number(categoryId) : null}
+                categoryName={categoryName}
+                sortBy={sortBy}
+              />
+            )}
 
             {!isSalePage && <hr className="text-gray-400 mb-4" />}
 

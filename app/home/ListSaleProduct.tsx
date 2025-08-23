@@ -10,16 +10,18 @@ const ListSaleProduct = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Cập nhật số sản phẩm mỗi trang tùy vào kích thước màn hình
   useEffect(() => {
-    const updateItemsPerPage = () => {
-      setItemsPerPage(window.innerWidth < 768 ? 4 : 12);
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      setItemsPerPage(mobile ? 4 : 12); // 👈 mobile = 4, desktop = 12
     };
 
-    updateItemsPerPage();
-    window.addEventListener("resize", updateItemsPerPage);
-    return () => window.removeEventListener("resize", updateItemsPerPage);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // Fetch dữ liệu sản phẩm
@@ -104,21 +106,40 @@ const ListSaleProduct = () => {
               >
                 <FaAngleLeft />
               </button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <button
-                    key={page}
-                    className={`px-4 py-2 rounded ${
-                      page === currentPage
-                        ? "bg-[#921573] text-white"
-                        : "bg-gray-100 hover:bg-gray-200"
-                    }`}
-                    onClick={() => setCurrentPage(page)}
-                  >
-                    {page}
-                  </button>
-                )
-              )}
+
+              {/* Trang số */}
+              {isMobile
+                ? [currentPage - 1, currentPage, currentPage + 1]
+                    .filter((page) => page > 0 && page <= totalPages)
+                    .map((page) => (
+                      <button
+                        key={page}
+                        className={`px-4 py-2 rounded ${
+                          page === currentPage
+                            ? "bg-[#921573] text-white"
+                            : "bg-gray-100 hover:bg-gray-200"
+                        }`}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </button>
+                    ))
+                : Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => (
+                      <button
+                        key={page}
+                        className={`px-4 py-2 rounded ${
+                          page === currentPage
+                            ? "bg-[#921573] text-white"
+                            : "bg-gray-100 hover:bg-gray-200"
+                        }`}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </button>
+                    )
+                  )}
+
               <button
                 className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-300 disabled:opacity-50"
                 disabled={currentPage === totalPages}

@@ -24,7 +24,6 @@ const ListSaleProduct = ({ categoryGroupId }: Props) => {
           p.inventories.map((inv) => ({
             ...inv,
             subcategories: p.subcategories,
-            unit: inv.unit ?? "sp",
             product: p,
           }))
         );

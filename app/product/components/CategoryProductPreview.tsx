@@ -4,7 +4,7 @@ import ProductCard from "../../components/ui/ProductCard";
 import { Inventory, Product } from "@/app/types/Product";
 
 type Props = {
-  categoryId: number;
+  categoryId: number | null;
   categoryName?: string;
   sortBy: string;
 };
@@ -38,11 +38,14 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
           }))
         );
 
-        const filtered = inventories.filter((item) => {
-          const groupId =
-            item?.subcategories?.[0]?.category?.category_group?.id;
-          return groupId === categoryId;
-        });
+        const filtered =
+          categoryId === null
+            ? inventories
+            : inventories.filter((item) => {
+                const groupId =
+                  item?.subcategories?.[0]?.category?.category_group?.id;
+                return groupId === categoryId;
+              });
 
         const sorted = [...filtered];
         switch (sortBy) {

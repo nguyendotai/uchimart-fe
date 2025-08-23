@@ -36,9 +36,11 @@ const SearchPage = () => {
       .catch((err) => console.error("Lỗi fetch dữ liệu:", err))
       .finally(() => setLoading(false));
   }, []);
+
   const matchedInventories = inventories.filter((inv) =>
     inv.title.toLowerCase().includes(keyword)
   );
+
   const matchedCategoryGroupIds = Array.from(
     new Set(
       matchedInventories
@@ -48,33 +50,34 @@ const SearchPage = () => {
         .filter(Boolean)
     )
   );
+
   const matchedGroups = categoryGroups.filter((g) =>
     matchedCategoryGroupIds.includes(g.id)
   );
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-2 sm:p-4 space-y-4">
       {loading ? (
         <p>Đang tải dữ liệu...</p>
       ) : (
         <>
-          <h2 className="text-xl font-medium">
+          <h2 className="text-lg sm:text-xl font-medium">
             Có {matchedInventories.length} sản phẩm theo từ khóa:{" "}
             <span className="text-[#921573] font-bold">"{keyword}"</span>
           </h2>
 
           {/* Category Group */}
-          <div className="flex gap-4 flex-wrap">
+          <div className="flex flex-wrap gap-2 sm:gap-4">
             {matchedGroups.map((group) => (
               <div
                 key={group.id}
-                className="flex items-center gap-2 px-3 py-1 rounded-full border text-sm text-[#921573] border-[#921573] bg-white hover:bg-[#921573] hover:text-white transition"
+                className="flex items-center gap-2 px-2 sm:px-3 py-1 rounded-full border text-xs sm:text-sm text-[#921573] border-[#921573] bg-white hover:bg-[#921573] hover:text-white transition"
               >
                 {group.image && (
                   <img
                     src={group.image}
                     alt={group.name}
-                    className="w-6 h-6 object-cover rounded-full"
+                    className="w-5 h-5 sm:w-6 sm:h-6 object-cover rounded-full"
                   />
                 )}
                 <span>{group.name}</span>
@@ -83,7 +86,7 @@ const SearchPage = () => {
           </div>
 
           {/* Inventories */}
-          <div className="grid grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
             {matchedInventories.map((inv) => (
               <div
                 key={inv.id}
@@ -95,7 +98,9 @@ const SearchPage = () => {
           </div>
 
           {matchedInventories.length === 0 && (
-            <p className="text-gray-500 italic">Không tìm thấy sản phẩm nào.</p>
+            <p className="text-gray-500 italic">
+              Không tìm thấy sản phẩm nào.
+            </p>
           )}
         </>
       )}
