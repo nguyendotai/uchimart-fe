@@ -93,7 +93,7 @@ const ListProduct = () => {
           w-[calc(50%-0.375rem)]   /* 2 sản phẩm/1 hàng mobile */
           sm:w-[clamp(140px,25vw,195px)]
           border border-gray-200 rounded-xl 
-          p-2 sm:p-3 bg-white
+          p-2 bg-white
           snap-start
         "
           >

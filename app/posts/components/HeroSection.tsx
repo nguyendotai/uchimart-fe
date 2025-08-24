@@ -17,14 +17,6 @@ export default function HeroSection() {
         <p className="text-gray-700 mb-4">
           Sản phẩm hữu cơ là thực phẩm được nuôi trồng không dùng hóa chất, an toàn cho sức khỏe và thân thiện với môi trường...
         </p>
-        <div className="space-x-4">
-          <button className="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600">
-            Khám phá sản phẩm Hữu cơ tại Mini Mart
-          </button>
-          <button className="bg-green-100 text-green-700 px-4 py-2 rounded-full hover:bg-green-200">
-            Xem ưu đãi hôm nay
-          </button>
-        </div>
       </div>
       <div>
         <Image

@@ -150,8 +150,7 @@ const ListProductByCate = () => {
               }}
               onScroll={() => updateScrollButtons(group.id)}
               className="
-    flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide select-none
-    px-1 touch-pan-x
+    flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide select-none touch-pan-x
   "
             >
               {groupProducts.slice(0, 12).map((inv) => (
@@ -161,7 +160,7 @@ const ListProductByCate = () => {
         flex-shrink-0 
         w-[calc(50%-0.5rem)]    /* mobile ~376px */
         sm:w-[clamp(140px,25vw,195px)] 
-        border border-gray-200 rounded-xl p-2 sm:p-3 bg-white
+        border border-gray-200 rounded-xl p-2 bg-white
       "
                 >
                   <ProductCard product={inv} />

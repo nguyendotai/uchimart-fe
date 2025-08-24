@@ -27,6 +27,17 @@ const ProductVariants = ({
         const hasSale = offerPrice > 0 && offerPrice < salePrice;
         const displayPrice = hasSale ? offerPrice : salePrice;
 
+        // ✅ Xử lý trạng thái dựa vào số lượng tồn kho
+        let stockLabel = "Còn hàng";
+        let stockClass = "bg-green-100 text-green-700";
+        if (variant.stock_quantity === 0) {
+          stockLabel = "Hết hàng";
+          stockClass = "bg-red-100 text-red-600";
+        } else if (variant.stock_quantity > 0 && variant.stock_quantity <= 20) {
+          stockLabel = "Còn hàng";
+          stockClass = "bg-green-100 text-green-700";
+        }
+
         return (
           <Link
             key={variant.slug}
@@ -53,16 +64,12 @@ const ProductVariants = ({
               {variant.unit_type ?? "sp"})
             </div>
 
-            {/* Tình trạng + đã bán */}
+            {/* Trạng thái + đã bán */}
             <div className="flex items-center gap-2 mt-auto">
               <span
-                className={`text-xs px-1.5 py-0.5 rounded ${
-                  variant.status_name === "Active"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-600"
-                }`}
+                className={`text-xs px-1.5 py-0.5 rounded ${stockClass}`}
               >
-                {variant.status_name === "Active" ? "Còn hàng" : "Hết hàng"}
+                {stockLabel}
               </span>
               <span className="text-gray-400 text-[10px] flex items-center">
                 <GoDotFill className="text-[8px]" />

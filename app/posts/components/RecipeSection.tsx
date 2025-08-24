@@ -22,18 +22,19 @@ export default function RecipeSection({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!categoryId) return; // chưa chọn category thì bỏ qua
+    if (!categoryId) return;
 
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const res = await fetch(
-          `http://127.0.0.1:8000/api/post-categories/${categoryId}`
-        );
+        const res = await fetch("http://127.0.0.1:8000/api/post-categories");
         const json = await res.json();
 
-        // nếu API trả về { id, name, posts: [...] }
-        setPosts(json.data?.posts ?? []);
+        // nếu API trả về { success: true, data: [...] }
+        const categories = Array.isArray(json.data) ? json.data : json;
+
+        const category = categories.find((c: any) => c.id === categoryId);
+        setPosts(category?.posts ?? []);
       } catch (err) {
         console.error("Error fetching posts:", err);
         setPosts([]);
@@ -57,7 +58,7 @@ export default function RecipeSection({
         {posts.map((post) => (
           <Link
             key={post.id}
-            href={`/posts/${post.id}`}
+            href={`/posts/${post.slug}`} // nên dùng slug thay vì id
             className="flex gap-4 items-center"
           >
             <Image

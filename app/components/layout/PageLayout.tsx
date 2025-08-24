@@ -64,14 +64,15 @@ export default function PageLayout({
               </div>
             </main>
           </div>
-
           {/* Footer desktop */}
           <div
             className={`w-full ${
-              hasSidebar ? "lg:ml-[250px]" : ""
-            } lg:max-w-[1300px] mx-auto px-4 sm:px-6 hidden md:block`}
+              hasSidebar ? "lg:ml-[180px] lg:max-w-[1000px]" : ""
+            } lg:max-w-[1600px] mx-auto hidden md:block`}
           >
-            <Footer />
+            <div className="border-t border-gray-200">
+              <Footer />
+            </div>
           </div>
 
           {/* Bottom nav mobile */}

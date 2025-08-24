@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { CategoryGroup, Category } from "@/app/types/Category";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
+import Image from "next/image";
 
 const SIDEBAR_WIDTH = 240;
 const CHILD_WIDTH = 0.4;
@@ -22,7 +24,7 @@ const ListCategories = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [expandedChildIds, setExpandedChildIds] = useState<number[]>([]);
 
-  const {t, i18n} = useTranslation();
+  const { t, i18n } = useTranslation();
   const isExpanded = (childId: number) => expandedChildIds.includes(childId);
 
   const toggleExpand = (childId: number) => {
@@ -61,13 +63,12 @@ const ListCategories = () => {
   };
 
   const handleCategoryClick = (groupId: number, slug?: string) => {
-  if (slug === "khuyen-mai-hot") {
-    router.push("/product?filter=khuyen-mai-hot");
-  } else {
-    router.push(`/product?category=${groupId}`);
-  }
-};
-
+    if (slug === "khuyen-mai-hot") {
+      router.push("/product?filter=khuyen-mai-hot");
+    } else {
+      router.push(`/product?category=${groupId}`);
+    }
+  };
 
   const handleChildCategoryClick = (child: Category, groupId: number) => {
     router.push(`/product?category=${groupId}&child=${child.id}`);
@@ -85,11 +86,15 @@ const ListCategories = () => {
         <div className="w-[240px]  bg-white sticky top-2 rounded-xl z-10 group-hover:z-60 transition-all duration-300 overflow-hidden">
           {/* Logo */}
           <div className="flex justify-center pt-4 pb-4 mt-2 mb-4 bg-white sticky top-0 z-30">
-            <img
-              src="/logo.png"
-              alt="Logo"
-              className="w-[240px] h-auto object-contain transition-opacity duration-300"
-            />
+            <Link href="/">
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={240}
+                height={80}
+                className="object-contain transition-opacity duration-300 cursor-pointer"
+              />
+            </Link>
           </div>
 
           {/* "Danh mục" tiêu đề */}
@@ -145,35 +150,39 @@ const ListCategories = () => {
                 }}
                 onMouseLeave={handleMouseLeave}
               >
-                  <div className="grid grid-cols-4 gap-6">
-                    {filteredChildren.map((category) => (
-                      <div
-                        key={category.id}
-                        className="flex flex-col gap-2 cursor-pointer p-2 rounded transition"
-                        onClick={() =>
-                          router.push(
-                            `/product?category=${hoveredGroupId}&child=${category.id}`
-                          )
-                        }
-                      >
-                        {/* Hình ảnh và tên danh mục cấp 2 */}
-                        <div className="">
-                          <img
-                            src={category.image || "/default.png"}
-                            alt={category.name}
-                            className="w-20 h-20 object-cover rounded-full"
-                          />
-                          <span className="font-semibold text-gray-800">
-                            {category.name}
-                          </span>
-                        </div>
+                <div className="grid grid-cols-4 gap-6">
+                  {filteredChildren.map((category) => (
+                    <div
+                      key={category.id}
+                      className="flex flex-col gap-2 cursor-pointer p-2 rounded transition"
+                      onClick={() =>
+                        router.push(
+                          `/product?category=${hoveredGroupId}&child=${category.id}`
+                        )
+                      }
+                    >
+                      {/* Hình ảnh và tên danh mục cấp 2 */}
+                      <div className="">
+                        <img
+                          src={category.image || "/default.png"}
+                          alt={category.name}
+                          className="w-20 h-20 object-cover rounded-full"
+                        />
+                        <span className="font-semibold text-gray-800">
+                          {category.name}
+                        </span>
+                      </div>
 
-                        {/* Danh mục cấp 3 */}
-                        <div className="grid grid-cols-1 gap-3 ml-2 mt-2">
-                          {(isExpanded(category.id)
-                            ? category.subcategories
-                            : category.subcategories.slice(0, 5)
-                          ).map((sub: { id: React.Key | null | undefined; name: string }) => (
+                      {/* Danh mục cấp 3 */}
+                      <div className="grid grid-cols-1 gap-3 ml-2 mt-2">
+                        {(isExpanded(category.id)
+                          ? category.subcategories
+                          : category.subcategories.slice(0, 5)
+                        ).map(
+                          (sub: {
+                            id: React.Key | null | undefined;
+                            name: string;
+                          }) => (
                             <div
                               key={sub.id}
                               onClick={() =>
@@ -185,21 +194,22 @@ const ListCategories = () => {
                             >
                               <span className="underline">{sub.name}</span>
                             </div>
-                          ))}
+                          )
+                        )}
 
-                          {/* Nếu có nhiều hơn 8 thì hiển thị nút Xem thêm / Thu gọn */}
-                          {category.subcategories.length > 8 && (
-                            <div
-                              onClick={() => toggleExpand(category.id)}
-                              className="text-sm text-blue-600 hover:underline cursor-pointer mt-1"
-                            >
-                              {isExpanded(category.id) ? "Thu gọn" : "Xem thêm"}
-                            </div>
-                          )}
-                        </div>
+                        {/* Nếu có nhiều hơn 8 thì hiển thị nút Xem thêm / Thu gọn */}
+                        {category.subcategories.length > 8 && (
+                          <div
+                            onClick={() => toggleExpand(category.id)}
+                            className="text-sm text-blue-600 hover:underline cursor-pointer mt-1"
+                          >
+                            {isExpanded(category.id) ? "Thu gọn" : "Xem thêm"}
+                          </div>
+                        )}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Overlay phần còn lại */}

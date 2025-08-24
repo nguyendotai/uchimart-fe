@@ -17,13 +17,13 @@ import {
 import type { AppDispatch } from "@/store/index";
 
 type Props = {
-  item: CartItemType;
+  item: CartItemType; 
   checked: boolean;
   onItemClick: () => void;
-  onQuantityChange?: (quantity: number) => void; // <-- thêm
+  onQuantityChange?: (quantity: number) => void;
 };
 
-export default function CartItem  ({
+export default function CartItem({
   item,
   checked,
   onItemClick,
@@ -66,6 +66,9 @@ export default function CartItem  ({
     ? 0
     : finalPrice * safeQuantity;
 
+  const stockQuantity = item.inventory?.stock_quantity ?? 0;
+  const isOutOfStock = stockQuantity <= 0; // ✅ kiểm tra hết hàng
+
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowConfirm(true);
@@ -81,16 +84,14 @@ export default function CartItem  ({
   };
 
   const changeQuantity = (newQuantity: number) => {
-    const stockQuantity =
-      item.inventory?.stock_quantity ?? Number.MAX_SAFE_INTEGER;
+    if (isOutOfStock) return; // ✅ không cho thay đổi nếu hết hàng
     if (newQuantity < 1 || newQuantity > stockQuantity) return;
     setLocalQuantity(newQuantity);
-    if (onQuantityChange) onQuantityChange(newQuantity); // <-- gửi lên CartList
+    if (onQuantityChange) onQuantityChange(newQuantity);
   };
 
   return (
     <>
-      {/* Toast notification for delete confirmation */}
       <ConfirmModal
         open={showConfirm}
         onClose={() => setShowConfirm(false)}
@@ -98,14 +99,19 @@ export default function CartItem  ({
         message={`Bạn có chắc chắn muốn xóa "${item.inventory?.title}" khỏi giỏ hàng?`}
       />
 
+      {/* Wrapper giỏ hàng */}
       <div
-        className="flex items-center gap-4 p-4 hover:shadow-lg bg-white transition-shadow duration-300"
-        onClick={onItemClick}
+        className={`flex items-center gap-4 p-4 hover:shadow-lg bg-white transition-shadow duration-300 ${
+          isOutOfStock ? "opacity-50" : ""
+        }`}
+        onClick={!isOutOfStock ? onItemClick : undefined}
+        style={{ cursor: isOutOfStock ? "not-allowed" : "pointer" }} // 🚫 hiện hình cấm khi hết hàng
       >
         {/* Checkbox */}
         <input
           type="checkbox"
           checked={checked}
+          disabled={isOutOfStock} // ✅ disable checkbox nếu hết hàng
           onChange={(e) => e.stopPropagation()}
           onClick={(e) => e.stopPropagation()}
           className="w-5 h-5 text-blue-600 rounded focus:ring-blue-400"
@@ -150,62 +156,37 @@ export default function CartItem  ({
                   e.stopPropagation();
                   changeQuantity(localQuantity - 1);
                 }}
-                className="w-9 h-9 border border-gray-200 rounded-lg bg-white text-gray-600 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={localQuantity <= 1}
+                disabled={isOutOfStock || localQuantity <= 1} // ✅ disable khi hết hàng
+                className="w-9 h-9 border border-gray-200 rounded-lg bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <svg
-                  className="w-4 h-4 mx-auto"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M18 12H6"
-                  />
-                </svg>
+                -
               </button>
               <input
                 type="number"
                 min={1}
-                max={item.inventory?.stock_quantity ?? 0}
+                max={stockQuantity}
                 value={localQuantity}
+                disabled={isOutOfStock} // ✅ disable input nếu hết hàng
                 onClick={(e) => e.stopPropagation()}
                 onChange={(e) => {
                   const value = parseInt(e.target.value, 10);
                   if (!isNaN(value)) changeQuantity(value);
                 }}
-                className="w-14 h-9 text-center bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 font-medium text-gray-800 transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                className="w-14 h-9 text-center bg-white border border-gray-200 rounded-lg disabled:bg-gray-100"
               />
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   changeQuantity(localQuantity + 1);
                 }}
-                className="w-9 h-9 border border-gray-200 rounded-lg bg-white text-gray-600 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={
-                  localQuantity >= (item.inventory?.stock_quantity ?? 0)
-                }
+                disabled={isOutOfStock || localQuantity >= stockQuantity} // ✅ disable khi hết hàng
+                className="w-9 h-9 border border-gray-200 rounded-lg bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <svg
-                  className="w-4 h-4 mx-auto"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 6v12m6-6H6"
-                  />
-                </svg>
+                +
               </button>
             </div>
 
-            {/* Total Price and Delete Button */}
+            {/* Delete Button (luôn hoạt động) */}
             <div className="flex items-center gap-4">
               <span className="text-base font-semibold text-gray-700">
                 {formatNumberToCurrency(totalPrice)}₫
@@ -221,5 +202,5 @@ export default function CartItem  ({
         </div>
       </div>
     </>
-);
+  );
 }

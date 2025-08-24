@@ -4,9 +4,7 @@ import { MdOutlineAddShoppingCart, MdEventAvailable } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
 import QuantityModal from "./QuantityModal";
@@ -17,13 +15,8 @@ import { AppDispatch } from "@/store";
 
 const ProductCard = ({ product }: { product: Inventory }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
-  const { t } = useTranslation();
 
   const [showModal, setShowModal] = useState(false);
-  const [actionType, setActionType] = useState<"addToCart" | "buyNow" | null>(
-    null
-  );
 
   const isLoggedIn = !!localStorage.getItem("token");
 
@@ -39,11 +32,10 @@ const ProductCard = ({ product }: { product: Inventory }) => {
       if (isLoggedIn) {
         await dispatch(
           addToCartApi({
-            inventory_id: product.id, // product ở đây là inventory
+            inventory_id: product.id,
             quantity,
           })
         ).unwrap();
-        toast.success("Đã thêm vào giỏ hàng ");
       } else {
         const selectedItem: CartItem = {
           id: product.id,
@@ -56,39 +48,22 @@ const ProductCard = ({ product }: { product: Inventory }) => {
           total_price:
             quantity *
             formatCurrencyToNumber(product.offer_price ?? product.sale_price),
-          inventory: product, // optional
+          inventory: product,
         };
-
         dispatch(addToCartLocal(selectedItem));
-        toast.success("Đã thêm vào giỏ hàng ");
       }
-
-      if (actionType === "buyNow") {
-        localStorage.setItem(
-          "selectedItems",
-          JSON.stringify([
-            {
-              id: product.id,
-              inventory_id: product.id,
-              quantity,
-              inventory: { ...product },
-            },
-          ])
-        );
-        router.push("/check-out");
-      }
+      toast.success("Đã thêm vào giỏ hàng ");
     } catch (error) {
       toast.error("Lỗi khi thêm sản phẩm vào giỏ!");
     }
 
     setShowModal(false);
-    setActionType(null);
   };
 
   return (
     <div className="relative group w-full max-w-[200px] mx-auto">
       <QuantityModal
-        key={actionType ?? "modal"}
+        key="modal"
         open={showModal}
         onClose={() => setShowModal(false)}
         onConfirm={handleConfirm}
@@ -121,25 +96,19 @@ const ProductCard = ({ product }: { product: Inventory }) => {
         />
       </Link>
 
-      <div className="flex justify-between gap-2 py-1 px-1">
+      <div className="flex justify-center py-1 px-1">
         <button
-          onClick={() => {
-            setActionType("buyNow");
-            setShowModal(true);
-          }}
-          className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] text-xs sm:text-sm rounded-full px-2 py-1 w-[80%] hover:bg-[#921573] hover:text-white transition"
+          onClick={() => setShowModal(true)}
+          className="flex justify-center items-center text-sm rounded-full px-2 
+               py-1 sm:py-2 w-full 
+               bg-white border border-[#921573] text-[#921573] 
+               hover:bg-[#921573] hover:text-white transition"
         >
-          {t("buyNow")}
-        </button>
-
-        <button
-          onClick={() => {
-            setActionType("addToCart");
-            setShowModal(true);
-          }}
-          className="flex justify-center items-center bg-white border border-[#921573] text-[#921573] text-sm rounded-full px-2 py-1 w-[20%] hover:bg-[#921573] hover:text-white transition"
-        >
-          <MdOutlineAddShoppingCart size={16} />
+          {/* Desktop: Thêm vào giỏ hàng */}
+          <span className="hidden sm:inline">Thêm vào giỏ</span>
+          {/* Mobile: Mua rồi */}
+          <span className="sm:hidden">Mua ngay</span>
+          <MdOutlineAddShoppingCart size={16} className="ml-3" />
         </button>
       </div>
 
@@ -173,16 +142,21 @@ const ProductCard = ({ product }: { product: Inventory }) => {
             <MdEventAvailable
               size={14}
               className={
-                product.stock_quantity === 0
+                discount > 50
+                  ? "text-[#921573]" // nếu giảm giá > 50% thì màu tím
+                  : product.stock_quantity === 0
                   ? "text-red-500"
                   : product.stock_quantity <= 20
                   ? "text-orange-500"
                   : "text-[#26AA99]"
               }
             />
+
             <span
               className={
-                product.stock_quantity === 0
+                discount > 50
+                  ? "text-[#921573]"
+                  : product.stock_quantity === 0
                   ? "text-red-500"
                   : product.stock_quantity <= 20
                   ? "text-orange-500"

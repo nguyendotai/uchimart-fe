@@ -21,18 +21,18 @@ type Page = {
 
 const Footer = () => {
   const [pages, setPages] = useState<Page[]>([]);
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
     axios
-      .get<{ success: boolean; data: Page[] }>(
-        "http://localhost:8000/api/pages"
-      )
+      .get<{ success: boolean; data: Page[] }>("http://localhost:8000/api/pages")
       .then((res) => setPages(res.data.data))
       .catch((err) => console.error(err));
   }, []);
 
   const veChungToiSlug = ["chinh-sach-bao-mat", "dieu-khoan-giao-dich", "quy-che-hoat-ong-cua-website-uchimartsite"];
-
   const hoTroSlug = [
     "chinh-sach-giao-hang",
     "chinh-sach-thanh-toan",
@@ -42,137 +42,136 @@ const Footer = () => {
 
   const veChungToi = pages.filter((p) => veChungToiSlug.includes(p.slug));
   const hoTroKhachHang = pages.filter((p) => hoTroSlug.includes(p.slug));
+
+  // 📩 Gửi email đăng ký
+  const handleSubscribe = async () => {
+    if (!email) {
+      setMessage("Vui lòng nhập email.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setMessage(null);
+
+      const res = await axios.post("http://127.0.0.1:8000/api/subscribers", {
+        email,
+      });
+
+      if (res.data.success) {
+        setMessage("🎉 " + res.data.message);
+        setEmail(""); // reset input
+      }
+    } catch (err: any) {
+      if (err.response?.data?.errors?.email) {
+        setMessage(err.response.data.errors.email[0]); // lỗi validation Laravel
+      } else {
+        setMessage("Có lỗi xảy ra, vui lòng thử lại.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="mt-10">
-      <div className="bg-white rounded-xl">
-        <div className="p-5">
-          <div className="flex flex-col gap-7 border-b-2 border-[#DDDDE3] md:flex-row md:flex-wrap">
-            {/* Cột logo + thông tin */}
-            <div className="w-full md:w-1/3 lg:w-[30%]">
-              <div className="mb-7">
-                <img src="./logo.png" alt="" className="w-[90%]" />
-              </div>
+    <footer className=" text-white py-10">
+      <div className="max-w-7xl mx-auto">
+        {/* Main Footer Content */}
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-8">
+          {/* Left: Logo & Company Info */}
+          <div className="flex-1">
+            <img src="./logo.png" alt="Uchi Mart Logo" className="w-36 mb-4" />
+            <p className="text-sm text-black leading-relaxed max-w-sm">
+              Công Ty Cổ Phần Dịch Vụ Thương Mại Tổng Hợp WinCommerce<br />
+              Mã số doanh nghiệp: 0104918404<br />
+              Đăng ký lần đầu: 20/09/2010, thay đổi lần thứ 48: 30/06/2023
+            </p>
+            <img src="./img/certification.png" alt="Certification" className="w-28 mt-4" />
+          </div>
 
-              <div className="mb-4 text-sm">
-                <p className="mb-4">
-                  Công Ty Cổ Phần Dịch Vụ Thương Mại Tổng Hợp WinCommerce
-                </p>
-                <p>
-                  Mã số doanh nghiệp: 0104918404 Đăng ký lần đầu ngày 20 tháng
-                  09 năm 2010, đăng ký thay đổi lần thứ 48, ngày 30 tháng 06 năm
-                  2023
-                </p>
-              </div>
-              <div>
-                <img src="./img/certification.png" alt="" className="w-[60%]" />
-              </div>
-            </div>
-
-            {/* Về chúng tôi */}
-            <div className="w-full md:w-1/3 lg:w-[20%]">
-              <div className="mt-2 mb-4">
-                <h1 className="text-lg font-medium">Về chúng tôi</h1>
-              </div>
-              <ul className="flex flex-col gap-2 text-sm">
+          {/* Center: Links */}
+          <div className="flex-1 flex flex-col sm:flex-row gap-8">
+            <div>
+              <h3 className="text-xl font-bold text-green-400 mb-3">Về chúng tôi</h3>
+              <ul className="space-y-2 text-black">
                 {veChungToi.map((page) => (
                   <li key={page.id}>
-                    <Link
-                      href={`/policy/${page.slug}`}
-                      className="hover:underline"
-                    >
+                    <Link href={`/policy/${page.slug}`} className="hover:text-green-500 transition-colors">
                       {page.name}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
-
-            {/* Hỗ trợ khách hàng */}
-            <div className="w-full md:w-1/3 lg:w-[20%]">
-              <div className="mt-2 mb-4">
-                <h1 className="text-lg font-medium text-[rgb(45,55,72)]">
-                  Hỗ trợ khách hàng
-                </h1>
-              </div>
-              <ul className="flex flex-col gap-2 text-sm">
+            <div>
+              <h3 className="text-xl font-bold text-green-400 mb-3">Hỗ trợ khách hàng</h3>
+              <ul className="space-y-2 text-black">
                 {hoTroKhachHang.map((page) => (
                   <li key={page.id}>
-                    <Link
-                      href={`/policy/${page.slug}`}
-                      className="hover:underline"
-                    >
+                    <Link href={`/policy/${page.slug}`} className="hover:text-green-500 transition-colors">
                       {page.name}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
+          </div>
 
-            {/* Chăm sóc khách hàng */}
-            <div className="w-full md:w-1/3 lg:w-[20%]">
-              <div className="mt-2 mb-4">
-                <h1 className="text-lg font-medium">Chăm sóc khách hàng</h1>
-              </div>
-              <ul className="flex flex-col gap-2 text-sm">
-                <li>Mua online: 0332493487</li>
-                <li>Email: cskh@uchimart.com</li>
-              </ul>
-            </div>
-
-            {/* Đăng ký nhận ưu đãi */}
-            <div className="w-full md:w-1/2 lg:w-[30%]">
-              <div className="mt-2 mb-4">
-                <h1 className="text-lg font-medium">Đăng ký nhận ưu đãi</h1>
-              </div>
-              <p className="mb-4 text-sm">
-                Bạn muốn nhận khuyến mãi đặc biệt? Đăng ký tham gia ngay cộng
-                đồng của chúng tôi để cập nhật khuyến mãi ngay lập tức
-              </p>
-              <form className="flex flex-col gap-2 sm:flex-row">
+          {/* Right: Customer Support & Subscription */}
+          <div className="flex-1">
+            <h3 className="text-xl font-bold text-green-400 mb-3">Liên hệ & Đăng ký</h3>
+            <ul className="space-y-2  text-black mb-4">
+              <li>
+                Hotline: <a href="tel:0332493487" className="hover:text-green-500">0332493487</a>
+              </li>
+              <li>
+                Email: <a href="mailto:cskh@uchimart.com" className="hover:text-green-500">cskh@uchimart.com</a>
+              </li>
+            </ul>
+            <div className="mt-4">
+              <p className=" text-black mb-3">Đăng ký để nhận ưu đãi độc quyền!</p>
+              <div className="flex items-center gap-2">
                 <input
                   type="email"
-                  placeholder="Email của bạn..."
-                  className="flex-1 p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-green-500"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Nhập email của bạn"
+                  className="flex-1 p-2 rounded-md border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 text-sm"
                 />
                 <button
-                  type="submit"
-                  className="px-4 py-3 text-sm bg-green-600 text-white rounded-full hover:bg-green-700 transition duration-300 cursor-pointer"
+                  onClick={handleSubscribe}
+                  disabled={loading}
+                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors text-sm disabled:opacity-50"
                 >
-                  Đăng ký
+                  {loading ? "Đang gửi..." : "Đăng ký"}
                 </button>
-              </form>
+              </div>
+              {message && (
+                <p className="mt-2 text-sm text-red-500">{message}</p>
+              )}
             </div>
-
-            {/* Social icons */}
-            <div className="w-full flex gap-5 md:w-auto md:flex-col md:items-start md:mt-6">
-              <Link href="https://www.facebook.com/tuan.anh.358553">
-                <BsFacebook className="text-4xl text-blue-500" />
+            <div className="flex gap-4 mt-4">
+              <Link href="https://www.facebook.com/tuan.anh.358553" className="hover:text-blue-400 transition-colors">
+                <BsFacebook className="text-xl" />
               </Link>
-              <Link href="https://www.facebook.com/tuan.anh.358553">
-                <FaYoutube className="text-4xl text-red-500" />
+              <Link href="https://www.youtube.com" className="hover:text-red-400 transition-colors">
+                <FaYoutube className="text-xl" />
               </Link>
-              <Link href="https://www.facebook.com/tuan.anh.358553">
-                <FaTiktok className="text-4xl" />
+              <Link href="https://www.tiktok.com" className="hover:text-green-500 transition-colors">
+                <FaTiktok className="text-xl" />
               </Link>
             </div>
-          </div>
-
-          {/* Footer bottom */}
-          <div className="text-center mt-5">
-            <p className="mx-auto text-[12px] text-[#A29E9E] max-w-[900px]">
-              © 2025. Công Ty TNHH Uchi Martket. GPDKKD: 0310471746 do sở KH &
-              ĐT TP.HCM cấp ngày 23/11/2010. Giấy phép thiết lập mạng xã hội
-              trên mạng (Số 20/GP-BTTTT) do Bộ Thông Tin Và Truyền Thông cấp
-              ngày 11/01/2021, tạm ngưng từ ngày 18/10/2024 - 03/03/2025. Trụ sở
-              chính: 128 Thạnh Xuấn 14, P.Thạnh Xuân, Quận.12, TP.HCM. Địa chỉ
-              liên hệ: Toà nhà MWG, Lô T2-1.2, Đường D1, Khu Công Nghệ Cao, P.
-              Tân Phú, TP.Thủ Đức, TP.HCM. Email:lienhe@uchimart.com SĐT:
-              0332493487 Chịu trách nhiệm nội dung: TuanXji.
-            </p>
           </div>
         </div>
+
+        {/* Footer Bottom */}
+        <div className="mt-8 pt-6 border-t border-gray-700 text-center text-xs text-black">
+          <p>
+            © 2025 Công Ty TNHH Uchi Martket. ...
+          </p>
+        </div>
       </div>
-    </div>
+    </footer>
   );
 };
 
