@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { FaChevronDown, FaChevronRight, FaChevronLeft } from "react-icons/fa";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { CategoryGroup, Category } from "@/app/types/Category";
 
 type Option = {
@@ -22,16 +22,20 @@ const options: Option[] = [
 ];
 
 const ListSubCategory = ({ sortBy, setSortBy }: Props) => {
-  const [displayedCategories, setDisplayedCategories] = useState<Category[]>(
-    []
-  );
+  const [displayedCategories, setDisplayedCategories] = useState<
+    Category[] | null
+  >(null);
+  const [loading, setLoading] = useState(true);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchAndFilterCategories = async () => {
+      setLoading(true);
       try {
         const res = await fetch("http://127.0.0.1:8000/api/category-groups");
         const json = await res.json();
@@ -61,6 +65,8 @@ const ListSubCategory = ({ sortBy, setSortBy }: Props) => {
       } catch (err) {
         console.error("Lỗi khi tải danh mục:", err);
         setDisplayedCategories([]);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -89,6 +95,15 @@ const ListSubCategory = ({ sortBy, setSortBy }: Props) => {
     }
   };
 
+  const handleCategoryClick = (category: Category) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("child", category.id.toString()); // lọc theo category cấp 2
+    if (category.category_group_id) {
+      params.set("category", category.category_group_id.toString()); // giữ group id
+    }
+    router.push(`?${params.toString()}`);
+  };
+
   return (
     <div className="sticky top-0 z-30">
       {/* Danh mục con */}
@@ -100,25 +115,20 @@ const ListSubCategory = ({ sortBy, setSortBy }: Props) => {
             className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth"
             ref={scrollRef}
           >
-            {displayedCategories.length > 0 ? (
+            {loading ? (
+              // Skeleton tạm thời
+              Array.from({ length: 4 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="min-w-[140px] h-20 bg-gray-200 animate-pulse rounded-md"
+                />
+              ))
+            ) : displayedCategories && displayedCategories.length > 0 ? (
               displayedCategories.map((category) => (
                 <div
                   key={category.id}
                   className="min-w-[140px] text-center flex-shrink-0 cursor-pointer"
-                  onClick={() => {
-                    const el = document.getElementById(
-                      `category-child-${category.id}`
-                    );
-                    if (el) {
-                      const yOffset = -190; // 👈 Offset cao hơn 100px (tuỳ chỉnh nếu sticky header cao hơn)
-                      const y =
-                        el.getBoundingClientRect().top +
-                        window.pageYOffset +
-                        yOffset;
-
-                      window.scrollTo({ top: y, behavior: "smooth" });
-                    }
-                  }}
+                  onClick={() => handleCategoryClick(category)}
                 >
                   <img
                     src={category.image}

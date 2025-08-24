@@ -5,10 +5,11 @@ import { Inventory, Product } from "@/app/types/Product";
 import { formatCurrencyToNumber } from "@/app/utils/helpers";
 
 interface Props {
-  categoryGroupId: number;
+  categoryGroupId: number | null; // nếu null => lấy tất cả
+  categoryId: number | null;      // nếu null => lấy theo group
 }
 
-const ListSaleProduct = ({ categoryGroupId }: Props) => {
+const ListSaleProduct = ({ categoryGroupId, categoryId }: Props) => {
   const [saleProducts, setSaleProducts] = useState<Inventory[]>([]);
 
   useEffect(() => {
@@ -35,13 +36,22 @@ const ListSaleProduct = ({ categoryGroupId }: Props) => {
           const hasValidDiscount =
             !isNaN(sale) && !isNaN(promo) && promo > 0 && promo < sale;
 
-          const inSameCategoryGroup = categoryGroupId
-            ? inv.subcategories?.some(
-                (sub) => sub.category.category_group.id === categoryGroupId
-              ) ?? false
-            : true; // nếu không truyền categoryGroupId, lấy tất cả
+          let inValidCategory = true;
 
-          return hasValidDiscount && inSameCategoryGroup;
+          if (categoryId) {
+            // Ưu tiên lọc theo category
+            inValidCategory =
+              inv.subcategories?.some((sub) => sub.category.id === categoryId) ??
+              false;
+          } else if (categoryGroupId) {
+            // Nếu không có category nhưng có group thì lọc theo group
+            inValidCategory =
+              inv.subcategories?.some(
+                (sub) => sub.category.category_group.id === categoryGroupId
+              ) ?? false;
+          }
+
+          return hasValidDiscount && inValidCategory;
         });
 
         // Sắp xếp theo ngày mới nhất
@@ -54,7 +64,7 @@ const ListSaleProduct = ({ categoryGroupId }: Props) => {
         setSaleProducts(sorted.slice(0, 6));
       })
       .catch((err) => console.error("Lỗi tải dữ liệu:", err));
-  }, [categoryGroupId]);
+  }, [categoryGroupId, categoryId]);
 
   if (saleProducts.length === 0) return null;
 

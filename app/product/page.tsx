@@ -10,7 +10,7 @@ import { FaSpinner } from "react-icons/fa";
 import PageTransitionWrapper from "../components/Animation/PageTransitionWrapper";
 
 // 📂 Kiểu dữ liệu
-import { Category } from "../types/Category";
+import { Category, CategoryGroup } from "../types/Category";
 
 // 💀 Skeleton Component
 const Skeleton = ({ height = 200, grid = 1, sections = 1 }) => (
@@ -64,10 +64,11 @@ const ListProductByCate = dynamic(() => import("../home/ListProductByCate"), {
 const Product = () => {
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("category");
+  const childId = searchParams.get("child");
   const filter = searchParams.get("filter");
 
   const isSalePage = filter === "khuyen-mai-hot";
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<CategoryGroup[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState<string>("");
 
@@ -111,13 +112,24 @@ const Product = () => {
     fetchCategories();
   }, [categoryId, filter]); // 🟢 thêm dependency
 
-  const currentCategory = categoryId
-    ? categories.find((c) => c.id === Number(categoryId))
-    : null;
+  let currentCategoryName = "Tất cả sản phẩm";
 
-  const categoryName = isSalePage
-    ? "Khuyến mãi hot"
-    : currentCategory?.name || "Tất cả sản phẩm";
+  if (isSalePage) {
+    currentCategoryName = "Khuyến mãi hot";
+  } else if (categoryId) {
+    const group = categories.find((c) => c.id === Number(categoryId));
+    currentCategoryName = group?.name || currentCategoryName;
+
+    if (childId) {
+      // tìm danh mục con
+      const childCategory = group?.categories?.find(
+        (cat) => cat.id === Number(childId)
+      );
+      currentCategoryName = childCategory?.name || currentCategoryName;
+    }
+  }
+
+  const categoryName = currentCategoryName;
 
   // 🌀 Overlay spinner khi chưa fetch xong categories
   if (loading) {
@@ -147,13 +159,23 @@ const Product = () => {
             {/* Sale Products */}
             <div className="w-full mb-4" ref={saleRef}>
               {saleInView && (
-                <ListSaleProduct
-                  categoryGroupId={
-                    !isSalePage && categoryId && !isNaN(Number(categoryId))
-                      ? Number(categoryId)
-                      : 0
-                  }
-                />
+                <div className="w-full mb-4">
+                  <ListSaleProduct
+                    categoryGroupId={
+                      !isSalePage &&
+                      !childId &&
+                      categoryId &&
+                      !isNaN(Number(categoryId))
+                        ? Number(categoryId)
+                        : null
+                    }
+                    categoryId={
+                      !isSalePage && childId && !isNaN(Number(childId))
+                        ? Number(childId)
+                        : null
+                    }
+                  />
+                </div>
               )}
             </div>
 
@@ -162,29 +184,31 @@ const Product = () => {
               <ListSubCategory sortBy={sortBy} setSortBy={setSortBy} />
             )}
 
-            {/* Product Count */}
-            <div className="w-full mb-4">
-              <CountProduct
-                categoryId={categoryId ? Number(categoryId) : null}
-                categoryName={categoryName}
-              />
-            </div>
-
             {/* Product Preview by Category */}
-            {previewInView && (
-              <CategoryProductPreview
-                categoryId={categoryId ? Number(categoryId) : null}
-                categoryName={categoryName}
-                sortBy={sortBy}
-              />
-            )}
+            <CategoryProductPreview
+              categoryGroupId={
+                !isSalePage &&
+                categoryId &&
+                !childId &&
+                !isNaN(Number(categoryId))
+                  ? Number(categoryId) // đây là groupId
+                  : null
+              }
+              categoryId={
+                !isSalePage && childId && !isNaN(Number(childId))
+                  ? Number(childId) // đây là categoryId (danh mục con)
+                  : null
+              }
+              sortBy={sortBy}
+              categoryName={categoryName} // 🟢 truyền tên danh mục vào
+            />
 
             {!isSalePage && <hr className="text-gray-400 mb-4" />}
 
             {/* Category Info */}
             {!isSalePage && (
-              <div className="w-full mb-4" ref={infoRef}>
-                {categoryId && !isNaN(Number(categoryId)) && infoInView && (
+              <div className="w-full mb-4">
+                {categoryId && !isNaN(Number(categoryId)) && (
                   <CategoryInfo categoryId={Number(categoryId)} />
                 )}
               </div>
@@ -201,12 +225,7 @@ const Product = () => {
 
             {/* List sản phẩm theo danh mục hoặc theo danh mục con */}
             <div className="w-full mb-4" ref={childRef}>
-              {childInView &&
-                (isSalePage ? (
-                  <ListProductByCate />
-                ) : (
-                  <ListProductByChildCategory />
-                ))}
+              {isSalePage ? <ListProductByCate /> : <ListProductByChildCategory />}
             </div>
           </div>
         </div>

@@ -4,12 +4,18 @@ import ProductCard from "../../components/ui/ProductCard";
 import { Inventory, Product } from "@/app/types/Product";
 
 type Props = {
+  categoryGroupId: number | null;
   categoryId: number | null;
-  categoryName?: string;
   sortBy: string;
+  categoryName?: string;
 };
 
-const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
+const CategoryProductPreview = ({
+  categoryGroupId,
+  categoryId,
+  sortBy,
+  categoryName = "tất cả danh mục",
+}: Props) => {
   const [allProducts, setAllProducts] = useState<Inventory[]>([]);
   const [visibleCount, setVisibleCount] = useState(12);
   const [isMobile, setIsMobile] = useState(false);
@@ -35,18 +41,27 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
           p.inventories.map((inv) => ({
             ...inv,
             subcategories: p.subcategories,
+            product: p,
           }))
         );
 
-        const filtered =
-          categoryId === null
-            ? inventories
-            : inventories.filter((item) => {
-                const groupId =
-                  item?.subcategories?.[0]?.category?.category_group?.id;
-                return groupId === categoryId;
-              });
+        // 🔎 Lọc theo category hoặc group
+        const filtered = inventories.filter((item) => {
+          if (categoryId) {
+            // Ưu tiên lọc theo category
+            return item.subcategories?.some(
+              (sub) => sub.category?.id === categoryId
+            );
+          } else if (categoryGroupId) {
+            // Nếu không có category nhưng có group thì lọc theo group
+            return item.subcategories?.some(
+              (sub) => sub.category?.category_group?.id === categoryGroupId
+            );
+          }
+          return true; // không chọn gì thì lấy tất cả
+        });
 
+        // 🔎 Sắp xếp
         const sorted = [...filtered];
         switch (sortBy) {
           case "price-asc":
@@ -76,22 +91,29 @@ const CategoryProductPreview = ({ categoryId, sortBy }: Props) => {
         }
 
         setAllProducts(sorted);
-        setVisibleCount(isMobile ? 12 : 12); // Mobile bắt đầu 4 sp, desktop 12 sp
+        setVisibleCount(isMobile ? 12 : 12);
       })
       .catch((err) => {
         console.error("Lỗi khi tải sản phẩm:", err);
       });
-  }, [categoryId, sortBy, isMobile]);
+  }, [categoryGroupId, categoryId, sortBy, isMobile]);
 
   const visibleProducts = allProducts.slice(0, visibleCount);
   const hasMore = visibleCount < allProducts.length;
 
   const handleShowMore = () => {
-    setVisibleCount((prev) => prev + (isMobile ? 2 : 12)); // Mobile +2, Desktop +12
+    setVisibleCount((prev) => prev + (isMobile ? 2 : 12));
   };
 
   return (
     <div className="mb-6 p-2">
+      {/* ✅ Đếm sản phẩm giống CountProduct */}
+      <p className="p-2 text-gray-600 text-sm italic mb-3">
+        Có{" "}
+        <span className="font-semibold">{allProducts.length}</span> sản phẩm
+        trong {categoryName}
+      </p>
+
       {visibleProducts.length > 0 ? (
         <>
           <ul className="grid grid-cols-2 sm:grid-cols-6 gap-4">
