@@ -16,15 +16,22 @@ export default function VoucherSelect({ selectedVoucher, onChange }: Props) {
 
   // Fetch danh sách voucher
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/coupons")
-      .then((res) => {
-        setVouchers(res.data.data);
-      })
-      .catch((err) => {
-        console.error("Lỗi khi fetch voucher:", err);
-      });
-  }, []);
+  const token = localStorage.getItem("token"); // hoặc lấy token từ state/context
+
+  axios
+    .get("http://localhost:8000/api/coupons", {
+      headers: {
+        Authorization: `Bearer ${token}`, // thêm token vào header
+      },
+    })
+    .then((res) => {
+      setVouchers(res.data.data);
+    })
+    .catch((err) => {
+      console.error("Lỗi khi fetch voucher:", err);
+    });
+}, []);
+
 
   // Xử lý nhập thủ công
   const handleApply = () => {

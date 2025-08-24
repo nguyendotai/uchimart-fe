@@ -31,10 +31,10 @@ export type OrderData = {
   total_item: number;
   total_quantity: number;
   total_price: string;
-  grand_total: string;
+  grand_total?: string | number;
   payment_status: string;
   order_status: number;
   created_at: string;
   updated_at: string;
-  order_items: OrderItemData[];
+  items: OrderItemData[];
 };

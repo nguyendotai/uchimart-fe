@@ -88,12 +88,13 @@ export default function OrderSummary({ items, voucher, selectedAddress, paymentM
   const payload = {
     user_id: user.id,
     cart_items: items.map(item => ({
-      inventory_id: item.id,
+      inventory_id: item.inventory_id,
       quantity: item.quantity,
     })),
     fullname: selectedAddress.name,
     email: user.email,
     phone: selectedAddress.phone,
+    address_id: selectedAddress.id,
     province_code: selectedAddress.province?.code,
     district_code: selectedAddress.district?.code,
     ward_code: selectedAddress.ward?.code,
@@ -123,16 +124,18 @@ export default function OrderSummary({ items, voucher, selectedAddress, paymentM
     else if (paymentMethod === "online") {
       // Gọi API tạo payment cho VNPAY
       const res = await axios.post(
-        "http://localhost:8000/api/payment/create",
+        "http://localhost:8000/api/payment/create-session",
         payload,
-        { headers: { Authorization: `Bearer ${token}` } }
+        
+        { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } },
+        
       );
 
       console.log("VNPAY payment response:", res.data);
 
-      if (res.data && res.data.paymentUrl) {
+      if (res.data && res.data.url) {
         // Redirect sang VNPAY để thanh toán
-        window.location.href = res.data.paymentUrl;
+        // window.location.href = res.data.url;
       } else {
         toast.error("Không nhận được đường dẫn thanh toán VNPAY");
       }

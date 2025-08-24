@@ -12,35 +12,45 @@ const Order = () => {
     const [status, setStatus] = useState<string | null>(null);
 
     const fetchOrders = async (statusFilter: string | null) => {
-        setLoading(true);
-        try {
-            const token = localStorage.getItem("token");
-            let url = "http://localhost:8000/api/orders";
-            if (statusFilter) {
-                url += `?order_status=${statusFilter}`;
-            }
-
-            const res = await axios.get(url, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            if (res.data.success) {
-                setOrders(res.data.data);
-            }
-
-            console.log("Fetch URL:", url);
-            console.log("Orders Response:", res.data);
-
-        } catch (err) {
-            console.error("Lỗi fetch đơn hàng:", err);
-        } finally {
-            setLoading(false);
+    setLoading(true);
+    try {
+        const token = localStorage.getItem("token");
+        let url = "http://localhost:8000/api/orders"; // Lấy tất cả đơn hàng của user
+        if (statusFilter) {
+            url += `?order_status=${statusFilter}`;
         }
-    };
+
+        const res = await axios.get(url, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (res.data.success) {
+            // res.data.data là array
+            console.log("Raw orders from API:", res.data.data);
+
+            // Loại bỏ trùng (nếu có)
+            const uniqueOrders = Array.from(
+                new Map((res.data.data as OrderData[]).map(o => [o.id, o])).values()
+            );
+
+            console.log("Unique orders after Map:", uniqueOrders);
+            setOrders(uniqueOrders);
+        }
+    } catch (err) {
+        console.error("Lỗi fetch đơn hàng:", err);
+    } finally {
+        setLoading(false);
+    }
+};
+
+
 
     useEffect(() => {
         fetchOrders(status);
-    }, [status]);
+    }, [status]); // chạy lần đầu + khi status thay đổi
+
+
+
 
     if (loading) return <p className="text-center">Đang tải đơn hàng...</p>;
 
@@ -144,7 +154,7 @@ const Order = () => {
                                 </div>
 
                                 {/* Sản phẩm trong đơn hàng */}
-                                {order.order_items?.map((item) => (
+                                {order.items?.map((item) => (
                                     <div key={item.id} className="flex gap-4 mt-2 ml-2">
                                         <img
                                             src={item.inventory.image || item.inventory.product.primary_image}
@@ -154,7 +164,7 @@ const Order = () => {
 
                                         <div className="flex-1 text-sm text-gray-700">
                                             <p className="font-medium mt-1 mb-2">{item.inventory.title}</p>
-                                            <p className="text-[#898991] mb-2">Phân loại hàng: {item.inventory.product.name}</p>
+                                            <p className="text-[#898991] mb-2">  Phân loại hàng: {item.inventory?.product?.name || "Không xác định"}</p>
                                             <p className="font-medium mb-2">Số lượng: {item.quantity}</p>
                                         </div>
 
@@ -206,9 +216,14 @@ const Order = () => {
                                 {/* Tổng tiền đơn hàng */}
                                 <div className="border-t mt-3 pt-3 text-right">
                                     <p className="text-base font-medium">
-                                        Tổng tiền đơn hàng:{" "}
-                                        <span className="text-[#921573] font-bold">210.000đ</span>
+                                        Tổng tiền đơn hàng: <span className="text-[#921573] font-bold">
+                                            {order.grand_total}đ
+                                        </span>
+
+
                                     </p>
+
+
                                 </div>
 
                                 {/* Hành động */}
