@@ -11,9 +11,10 @@ type Props = {
   items: CartItem[];
   voucher?: Voucher | null;
   selectedAddress?: AddressItem | null; // 👈 nhận object thay vì number
+  paymentMethod: "cod" | "online";
 };
 
-export default function OrderSummary({ items, voucher, selectedAddress }: Props) {
+export default function OrderSummary({ items, voucher, selectedAddress, paymentMethod }: Props) {
   const [showDetails, setShowDetails] = useState(false);
   const [loading, setLoading] = useState(false);
   // --- Tính tổng tạm tính ---
@@ -68,69 +69,87 @@ export default function OrderSummary({ items, voucher, selectedAddress }: Props)
 
 
   const handlePlaceOrder = async () => {
-    const userStr = localStorage.getItem("user");
-    const user = userStr ? JSON.parse(userStr) : null;
+  const userStr = localStorage.getItem("user");
+  const user = userStr ? JSON.parse(userStr) : null;
 
-    if (!user) {
-      toast.error("Vui lòng đăng nhập trước khi đặt hàng");
-      return;
-    }
-    if (!selectedAddress) {
-      toast.error("Vui lòng chọn địa chỉ giao hàng");
-      return;
-    }
+  if (!user) {
+    toast.error("Vui lòng đăng nhập trước khi đặt hàng");
+    return;
+  }
 
-    setLoading(true);
+  if (!selectedAddress) {
+    toast.error("Vui lòng chọn địa chỉ giao hàng");
+    return;
+  }
 
-    // Chuẩn bị payload theo yêu cầu
-    const payload = {
-      user_id: user.id, // hoặc lấy từ context/auth
-      cart_items: items.map(item => ({
-        inventory_id: item.id,
-        quantity: item.quantity,
-      })),
-      fullname: selectedAddress.name,
-      email: user.email,
-      phone: selectedAddress.phone,
-      province_code: selectedAddress.province?.code,
-      district_code: selectedAddress.district?.code,
-      ward_code: selectedAddress.ward?.code,
-      address_line: selectedAddress.address_line,
-      user_note: "",
-      shipping_option_id: 1,
-      payment_option_id: 1,
-      // coupon_id: voucher?.id ?? null,
-    };
+  setLoading(true);
 
-    console.log("Payload gửi lên API:", payload);
+  // Chuẩn bị payload
+  const payload = {
+    user_id: user.id,
+    cart_items: items.map(item => ({
+      inventory_id: item.id,
+      quantity: item.quantity,
+    })),
+    fullname: selectedAddress.name,
+    email: user.email,
+    phone: selectedAddress.phone,
+    province_code: selectedAddress.province?.code,
+    district_code: selectedAddress.district?.code,
+    ward_code: selectedAddress.ward?.code,
+    address_line: selectedAddress.address_line,
+    user_note: "",
+    shipping_option_id: 1,
+    payment_option_id: paymentMethod === "cod" ? 1 : 2,
+    coupon_code: voucher?.code ?? null,
+  };
 
-    try {
-      const token = localStorage.getItem("token");
+  console.log("Payload gửi lên API:", payload);
 
+  const token = localStorage.getItem("token");
+
+  try {
+    if (paymentMethod === "cod") {
+      // Gọi API tạo order cho COD
       const res = await axios.post(
         "http://localhost:8000/api/orders",
         payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       toast.success("Đặt hàng thành công!");
       console.log("Order created:", res.data);
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        toast.error(err.response?.data?.message || "Đặt hàng thất bại");
-        console.error("Axios error:", err.response);
+    } 
+    else if (paymentMethod === "online") {
+      // Gọi API tạo payment cho VNPAY
+      const res = await axios.post(
+        "http://localhost:8000/api/payment/create",
+        payload,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      console.log("VNPAY payment response:", res.data);
+
+      if (res.data && res.data.paymentUrl) {
+        // Redirect sang VNPAY để thanh toán
+        window.location.href = res.data.paymentUrl;
       } else {
-        toast.error("Có lỗi không xác định");
-        console.error("Unknown error:", err);
+        toast.error("Không nhận được đường dẫn thanh toán VNPAY");
       }
-    } finally {
-      setLoading(false);
     }
-  };
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      toast.error(err.response?.data?.message || "Đặt hàng thất bại");
+      console.error("Axios error:", err.response);
+    } else {
+      toast.error("Có lỗi không xác định");
+      console.error("Unknown error:", err);
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+
 
 
 

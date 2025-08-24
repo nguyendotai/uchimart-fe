@@ -9,6 +9,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { CartItem } from "../types/Product";
 import { Voucher } from "../types/Voucher";
 import { AddressItem } from "../types/address";
+import PaymentMethod from "./components/PaymentMethod";
 
 // --- Thêm interface này ở đây ---
 interface StoredCartItem {
@@ -36,6 +37,9 @@ export default function CheckoutPage() {
   const [deliveryMethod, setDeliveryMethod] = useState<"delivery" | "pickup">("delivery");
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<"cod" | "online">("cod");
+
+
   const [activeSection, setActiveSection] = useState(1);
   // state lưu địa chỉ được chọn
   const [selectedAddress, setSelectedAddress] = useState<AddressItem | null>(null);
@@ -79,23 +83,26 @@ export default function CheckoutPage() {
 
 
   const sections: Section[] = [
-  { id: 1, title: "Phương thức giao hàng", component: <DeliveryMethod value={deliveryMethod} onChange={setDeliveryMethod} /> },
-  { id: 2, title: "Địa chỉ giao hàng", component: <DeliveryAddress onSelectAddress={(address: AddressItem) => setSelectedAddress(address)} /> },
-  { id: 3, title: "Thời gian giao nhận", component: <DeliveryTime items={items} selectedTime={selectedTime} onChange={setSelectedTime} /> },
-  { id: 4, title: "Khuyến mãi", component: <VoucherSelect selectedVoucher={selectedVoucher} onChange={setSelectedVoucher} /> },
-];
+    { id: 1, title: "Phương thức giao hàng", component: <DeliveryMethod value={deliveryMethod} onChange={setDeliveryMethod} /> },
+    { id: 2, title: "Địa chỉ giao hàng", component: <DeliveryAddress onSelectAddress={(address: AddressItem) => setSelectedAddress(address)} /> },
+    { id: 3, title: "Thời gian giao nhận", component: <DeliveryTime items={items} selectedTime={selectedTime} onChange={setSelectedTime} /> },
+    { id: 4, title: "Khuyến mãi", component: <VoucherSelect selectedVoucher={selectedVoucher} onChange={setSelectedVoucher} /> },
+    {
+      id: 5, title: "Phương thức thanh toán", component: <PaymentMethod value={paymentMethod} onChange={setPaymentMethod} />
+    }
+  ];
 
   return (
     <div className="w-full bg-gray-50 py-8 px-4 md:px-6">
       {/* Progress Tracker */}
       <div className="max-w-4xl mx-auto mb-8">
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-5 gap-2">
           {sections.map((section, index) => (
             <div key={section.id} className="flex flex-col items-center">
               <div
                 className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold ${activeSection >= section.id
-                    ? "bg-teal-500 text-white"
-                    : "bg-gray-200 text-gray-600"
+                  ? "bg-teal-500 text-white"
+                  : "bg-gray-200 text-gray-600"
                   } transition-all duration-300`}
               >
                 {activeSection > section.id ? <FaCheckCircle /> : section.id}
@@ -169,7 +176,7 @@ export default function CheckoutPage() {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
               Tóm tắt đơn hàng
             </h3>
-            <OrderItems items={items} voucher={selectedVoucher} selectedAddress={selectedAddress} />
+            <OrderItems items={items} voucher={selectedVoucher} selectedAddress={selectedAddress} paymentMethod={paymentMethod}/>
           </div>
         </div>
       </div>
