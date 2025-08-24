@@ -160,7 +160,7 @@ const Header = () => {
           <a href="/account" className="flex items-center font-medium">
             <span style={{ color: "#FFA629" }}>Cam kết</span>
           </a>
-          <Link href="/history" className="flex items-center font-medium">
+          <Link href="/policy/chinh-sach-bao-mat" className="flex items-center font-medium">
             <HiBadgeCheck
               className="mr-1 text-xl"
               style={{ color: "#FFA629" }}

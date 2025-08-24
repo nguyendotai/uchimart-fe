@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { syncCartApi, fetchCartFromApi } from "@/store/slices/cartSlice";
 import type { AppDispatch } from "@/store";
+import { useSearchParams } from "next/navigation";
 
 type IconData = {
   id: number;
@@ -23,6 +24,7 @@ type IconData = {
 };
 
 export default function Login() {
+  const searchParams = useSearchParams();
   const router = useRouter();
   const [form, setForm] = useState({
     email: "",
@@ -118,6 +120,12 @@ export default function Login() {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    const errorMsg = searchParams.get("error");
+    if (errorMsg) {
+      toast.error(errorMsg); // hiển thị popup
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const initIcons: IconData[] = Array.from({ length: numIcons }, (_, i) => ({
