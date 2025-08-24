@@ -5,7 +5,7 @@ import axios from "axios";
 // ==========================
 // Helpers for localStorage
 // ==========================
-const CART_KEY = "cart";
+const CART_KEY = "persist:cart";
 
 const saveCartToLocal = (items: CartItem[]) => {
   localStorage.setItem(CART_KEY, JSON.stringify(items));
