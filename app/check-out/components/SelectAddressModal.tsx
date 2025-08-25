@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AddressItem } from "../../types/address";
 import { X } from "lucide-react";
@@ -10,6 +10,7 @@ type Props = {
   open: boolean;
   onClose: () => void;
   addresses: AddressItem[];
+  selectedAddress?: AddressItem;
   onSelect: (address: AddressItem) => void;
 };
 
@@ -17,6 +18,7 @@ export default function SelectAddressModal({
   open,
   onClose,
   addresses,
+  selectedAddress,
   onSelect,
 }: Props) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -28,6 +30,14 @@ export default function SelectAddressModal({
       onClose();
     }
   };
+
+  useEffect(() => {
+  if (selectedAddress) {
+    const idx = addresses.findIndex(addr => addr.id === selectedAddress.id);
+    setSelectedIndex(idx !== -1 ? idx : null);
+  }
+}, [selectedAddress, addresses]);
+
 
   return (
     <AnimatePresence>

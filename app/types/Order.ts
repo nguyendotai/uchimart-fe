@@ -37,4 +37,5 @@ export type OrderData = {
   created_at: string;
   updated_at: string;
   items: OrderItemData[];
+  order_items?: OrderItemData[];
 };

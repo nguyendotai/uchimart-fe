@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FaWalking } from "react-icons/fa";
 import { IoStorefrontSharp } from "react-icons/io5";
 import { OrderData } from "../types/Order";
 import axios from "axios";
 import OrderStatusBadge from "./components/OrderStatusBadge";
+import { FaTruckFast } from "react-icons/fa6";
 
 const Order = () => {
     const [orders, setOrders] = useState<OrderData[]>([]);
@@ -12,36 +12,38 @@ const Order = () => {
     const [status, setStatus] = useState<string | null>(null);
 
     const fetchOrders = async (statusFilter: string | null) => {
-    setLoading(true);
-    try {
-        const token = localStorage.getItem("token");
-        let url = "http://localhost:8000/api/orders"; // Lấy tất cả đơn hàng của user
-        if (statusFilter) {
-            url += `?order_status=${statusFilter}`;
+        setLoading(true);
+        try {
+            const token = localStorage.getItem("token");
+            let url = "http://localhost:8000/api/orders"; // Lấy tất cả đơn hàng của user
+            if (statusFilter) {
+                url += `?order_status=${statusFilter}`;
+            }
+
+            const res = await axios.get(url, {
+                headers: { Authorization: `Bearer ${token}` },
+                
+            });
+
+            if (res.data.success) {
+                console.log("Danh sách orders:", res.data);
+                // res.data.data là array
+                console.log("Raw orders from API:", res.data.data);
+
+                // Loại bỏ trùng (nếu có)
+                const uniqueOrders = Array.from(
+                    new Map((res.data.data as OrderData[]).map(o => [o.id, o])).values()
+                );
+
+                console.log("Unique orders after Map:", uniqueOrders);
+                setOrders(uniqueOrders);
+            }
+        } catch (err) {
+            console.error("Lỗi fetch đơn hàng:", err);
+        } finally {
+            setLoading(false);
         }
-
-        const res = await axios.get(url, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (res.data.success) {
-            // res.data.data là array
-            console.log("Raw orders from API:", res.data.data);
-
-            // Loại bỏ trùng (nếu có)
-            const uniqueOrders = Array.from(
-                new Map((res.data.data as OrderData[]).map(o => [o.id, o])).values()
-            );
-
-            console.log("Unique orders after Map:", uniqueOrders);
-            setOrders(uniqueOrders);
-        }
-    } catch (err) {
-        console.error("Lỗi fetch đơn hàng:", err);
-    } finally {
-        setLoading(false);
-    }
-};
+    };
 
 
 
@@ -127,6 +129,8 @@ const Order = () => {
                         <p>Chưa có đơn hàng nào.</p>
                     ) : (
                         orders.map((order) => (
+                            console.log("Order before render:", order),
+
                             <div
                                 key={order.id}
                                 className="bg-white shadow-sm rounded-lg p-4 mb-4"
@@ -148,8 +152,7 @@ const Order = () => {
                                         Thứ 7, 7/5/2025
                                     </p>
                                     <span className="flex items-center text-[14px]">
-                                        <FaWalking className="text-[#4DCB44] text-xl ml-2" /> Tự đến
-                                        nhận
+                                        <FaTruckFast className="text-[#4DCB44] text-xl mx-2" /> Giao hàng
                                     </span>
                                 </div>
 
@@ -233,18 +236,17 @@ const Order = () => {
                                             <IoStorefrontSharp className="text-xl" />
                                         </div>
                                         <span className="text-[14px]">
-                                            Nhận tại{" "}
+                                            {" "}
                                             <span className="font-medium">
                                                 UchiMart - 308 Thạnh Xuân, Quận 12
                                             </span>
                                         </span>
                                     </div>
 
-                                    <div className="w-[30%] flex justify-between">
-                                        <button className="w-[48%] bg-[#4DCB44] text-white px-4 py-1 rounded-md hover:bg-green-600 cursor-pointer">
-                                            Mua lại
-                                        </button>
-                                        <button className="w-[48%] border border-[#921573] text-[#921573] px-4 py-1 rounded-md hover:bg-pink-50 cursor-pointer">
+                                    <div className="w-[30%] flex justify-end">
+                                        <button className="w-[48%] border border-[#921573] text-[#921573] px-4 py-1 rounded-md hover:bg-pink-50 cursor-pointer"
+                                            onClick={() => window.location.href = `/order/${order.uuid}`}
+                                        >
                                             Chi tiết đơn hàng
                                         </button>
                                     </div>

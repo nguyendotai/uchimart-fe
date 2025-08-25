@@ -1,7 +1,8 @@
 "use client";
+
 import React, { useState } from "react";
-import ModalPortal from "@/app/components/ui/ModalPortal";
 import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 import type { Voucher } from "../../types/Voucher";
 
 type Props = {
@@ -24,69 +25,87 @@ export default function VoucherModal({ open, onClose, onSelect, vouchers }: Prop
   return (
     <AnimatePresence>
       {open && (
-        <ModalPortal>
-          {/* Overlay */}
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+        >
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/10 backdrop-blur-sm z-400"
-            onClick={onClose}
-          />
-
-          {/* Modal content */}
-          <motion.div
-            initial={{ y: "-50%", opacity: 0 }}
-            animate={{ y: "0%", opacity: 1 }}
-            exit={{ y: "-50%", opacity: 0 }}
-            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-lg z-500 w-[90%] max-w-md"
+            initial={{ y: 50, opacity: 0, scale: 0.95 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 50, opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="bg-white w-[420px] max-h-[80vh] rounded-2xl shadow-2xl p-6 flex flex-col z-50"
+            onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-xl font-semibold mb-4">Chọn mã giảm giá</h2>
-            <ul className="space-y-3 max-h-[300px] overflow-y-auto">
-              {vouchers.map((voucher) => (
-                <li
-                  key={voucher.code}
-                  onClick={() =>
-                    setTempSelected((prev) =>
-                      prev === voucher.code ? "" : voucher.code
-                    )
-                  }
-                  className={`p-3 border rounded cursor-pointer ${
-                    tempSelected === voucher.code
-                      ? "bg-blue-100 border-blue-500"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  <p className="font-medium">{voucher.code}</p>
-                  <p className="text-sm text-gray-600">{voucher.title}</p>
-                  <p className="text-xs text-gray-500">
-                    Hết hạn: {new Date(voucher.end_date).toLocaleDateString("vi-VN")}
-                  </p>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-6 flex justify-end gap-3">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-bold text-gray-800">
+                Chọn mã giảm giá
+              </h2>
               <button
                 onClick={onClose}
-                className="px-4 py-2 text-sm rounded bg-gray-200 hover:bg-gray-300"
+                className="p-1 rounded-full hover:bg-gray-200 transition"
               >
-                Huỷ
+                <X size={20} className="text-gray-600" />
               </button>
+            </div>
+
+            {/* Danh sách voucher */}
+            <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent flex-1">
+              {vouchers.length > 0 ? (
+                vouchers.map((voucher) => (
+                  <div
+                    key={voucher.code}
+                    onClick={() =>
+                      setTempSelected((prev) =>
+                        prev === voucher.code ? "" : voucher.code
+                      )
+                    }
+                    className={`p-4 border rounded-xl cursor-pointer transition-all ${
+                      tempSelected === voucher.code
+                        ? "border-blue-500 bg-blue-50 shadow-md"
+                        : "bg-gray-50 border-gray-200 hover:bg-gray-100"
+                    }`}
+                  >
+                    <p className="font-semibold text-gray-900">{voucher.code}</p>
+                    <p className="text-sm text-gray-600">{voucher.title}</p>
+                    <p className="text-xs text-gray-500">
+                      Hết hạn: {new Date(voucher.end_date).toLocaleDateString("vi-VN")}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-gray-500 text-center mt-6">
+                  Chưa có mã giảm giá nào
+                </p>
+              )}
+            </div>
+
+            {/* Buttons */}
+            <div className="mt-4 flex flex-col gap-3">
               <button
                 onClick={handleConfirm}
                 disabled={!tempSelected}
-                className={`px-4 py-2 text-sm rounded text-white ${
+                className={`w-full py-2 rounded-xl font-semibold text-white transition-colors ${
                   tempSelected
-                    ? "bg-[#921573] hover:opacity-90"
-                    : "bg-[#ccc] cursor-not-allowed"
+                    ? "bg-blue-600 hover:bg-blue-700 cursor-pointer"
+                    : "bg-blue-300 cursor-not-allowed"
                 }`}
               >
                 Áp dụng
               </button>
+              <button
+                onClick={onClose}
+                className="w-full bg-gray-100 text-gray-800 py-2 rounded-xl hover:bg-gray-200 transition cursor-pointer"
+              >
+                Huỷ
+              </button>
             </div>
           </motion.div>
-        </ModalPortal>
+        </motion.div>
       )}
     </AnimatePresence>
   );

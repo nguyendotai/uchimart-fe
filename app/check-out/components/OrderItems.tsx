@@ -27,7 +27,7 @@ export default function OrderSummary({ items, voucher, selectedAddress, paymentM
   }, 0);
 
   // --- Phí vận chuyển ---
-  const shippingFee = 16000;
+  const shippingFee = 0;
 
   // --- Hàm tính giảm giá voucher ---
   const calculateDiscount = (
@@ -120,6 +120,7 @@ export default function OrderSummary({ items, voucher, selectedAddress, paymentM
 
       toast.success("Đặt hàng thành công!");
       console.log("Order created:", res.data);
+      console.log("Payment status:", res.data.data.payment_status ?? "unknown");
     } 
     else if (paymentMethod === "online") {
       // Gọi API tạo payment cho VNPAY
@@ -135,7 +136,7 @@ export default function OrderSummary({ items, voucher, selectedAddress, paymentM
 
       if (res.data && res.data.url) {
         // Redirect sang VNPAY để thanh toán
-        // window.location.href = res.data.url;
+        window.location.href = res.data.url;
       } else {
         toast.error("Không nhận được đường dẫn thanh toán VNPAY");
       }

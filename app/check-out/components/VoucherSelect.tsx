@@ -104,8 +104,8 @@ export default function VoucherSelect({ selectedVoucher, onChange }: Props) {
     </button>
   </div>
 ) : (
-  <div className="mt-3 p-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-500 text-sm text-center">
-    ❌ Chưa chọn voucher
+  <div className="mt-3 p-3 rounded-lg border border-gray-200 bg-gray-50 text-red-500 text-sm text-center">
+    Chưa chọn voucher
   </div>
 )}
 

@@ -97,6 +97,7 @@ export default function DeliveryAddress({ onSelectAddress }: Props) {
         open={showModal}
         onClose={() => setShowModal(false)}
         addresses={addresses}
+        selectedAddress={selectedAddress ?? undefined}
         onSelect={(address: AddressItem) => {
           setSelectedAddress(address);
           onSelectAddress(address); // 👉 gửi id về cha
