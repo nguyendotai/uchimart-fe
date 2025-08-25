@@ -17,6 +17,7 @@ import {
   FaHome,
 } from "react-icons/fa";
 import { AddressProvider } from "../../Address-context/page";
+import { HiBadgeCheck } from "react-icons/hi";
 
 export default function PageLayout({
   children,
@@ -123,11 +124,11 @@ export default function PageLayout({
 
               {/* Right items */}
               <Link
-                href="/product"
+                href="/policy/chinh-sach-bao-mat"
                 className="flex flex-col items-center text-[#921573] text-sm py-2"
               >
-                <FaStore size={20} />
-                <span>Cửa hàng</span>
+                <HiBadgeCheck size={20} />
+                <span>Chính sách</span>
               </Link>
 
               <Link

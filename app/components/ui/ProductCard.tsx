@@ -76,7 +76,11 @@ const ProductCard = ({ product }: { product: Inventory }) => {
 
       {hasSale && (
         <div className="absolute top-[-8px] left-[-8px] z-10">
-          <div className="w-[70px] h-5 bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center rounded-tl-md rounded-br-md shadow">
+          <div
+            className={`w-[70px] h-5 text-white text-[10px] font-bold flex items-center justify-center rounded-tl-md rounded-br-md shadow ${
+              discount >= 50 ? "bg-red-500" : "bg-amber-500"
+            }`}
+          >
             GIẢM {discount}%
           </div>
         </div>
