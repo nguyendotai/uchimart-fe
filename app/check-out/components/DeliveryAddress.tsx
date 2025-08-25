@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PiMapPinFill } from "react-icons/pi";
 import SelectAddressModal from "./SelectAddressModal";
 import { useAddress } from "../../Address-context/page";
@@ -9,6 +9,7 @@ import { AddressItem } from "../../types/address";
 
 type Props = {
     onSelectAddress: (address: AddressItem) => void; // 👈 nhận object thay vì id
+    defaultAddress?: AddressItem; // thêm
 };
 
 
@@ -20,6 +21,15 @@ export default function DeliveryAddress({ onSelectAddress }: Props) {
   const [selectedAddress, setSelectedAddress] = useState<AddressItem | null>(
     defaultAddress ?? null
   );
+
+  // ✅ Gửi mặc định về cha ngay khi mount
+useEffect(() => {
+  if (defaultAddress) {
+    setSelectedAddress(defaultAddress);
+    onSelectAddress(defaultAddress); // gửi lên cha ngay khi mount
+  }
+}, [defaultAddress, onSelectAddress]);
+
 
   return (
     <>

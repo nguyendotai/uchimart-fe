@@ -10,6 +10,7 @@ import { CartItem } from "../types/Product";
 import { Voucher } from "../types/Voucher";
 import { AddressItem } from "../types/address";
 import PaymentMethod from "./components/PaymentMethod";
+import { useAddress } from "../Address-context/page";
 
 // --- Thêm interface này ở đây ---
 interface StoredCartItem {
@@ -42,8 +43,8 @@ export default function CheckoutPage() {
 
   const [activeSection, setActiveSection] = useState(1);
   // state lưu địa chỉ được chọn
-  const [selectedAddress, setSelectedAddress] = useState<AddressItem | null>(null);
-
+  const { defaultAddress } = useAddress(); // lấy từ context
+const [selectedAddress, setSelectedAddress] = useState<AddressItem | null>(defaultAddress ?? null);
 
 
   // ✅ Lấy dữ liệu từ localStorage (chỉ lấy selectedItems thay vì toàn bộ giỏ hàng)
@@ -84,7 +85,7 @@ export default function CheckoutPage() {
 
   const sections: Section[] = [
     { id: 1, title: "Phương thức giao hàng", component: <DeliveryMethod value={deliveryMethod} onChange={setDeliveryMethod} /> },
-    { id: 2, title: "Địa chỉ giao hàng", component: <DeliveryAddress onSelectAddress={(address: AddressItem) => setSelectedAddress(address)} /> },
+    { id: 2, title: "Địa chỉ giao hàng", component: <DeliveryAddress defaultAddress={defaultAddress ?? undefined} onSelectAddress={(address: AddressItem) => setSelectedAddress(address)} /> },
     { id: 3, title: "Thời gian giao nhận", component: <DeliveryTime items={items} selectedTime={selectedTime} onChange={setSelectedTime} /> },
     { id: 4, title: "Khuyến mãi", component: <VoucherSelect selectedVoucher={selectedVoucher} onChange={setSelectedVoucher} /> },
     {
@@ -176,7 +177,7 @@ export default function CheckoutPage() {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
               Tóm tắt đơn hàng
             </h3>
-            <OrderItems items={items} voucher={selectedVoucher} selectedAddress={selectedAddress} paymentMethod={paymentMethod}/>
+            <OrderItems items={items} voucher={selectedVoucher} selectedAddress={selectedAddress} paymentMethod={paymentMethod} />
           </div>
         </div>
       </div>
