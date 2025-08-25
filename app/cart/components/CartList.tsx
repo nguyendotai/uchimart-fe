@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/store";
@@ -33,7 +34,6 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
     if (token) dispatch(fetchCartFromApi());
   }, [dispatch]);
 
-  // Khởi tạo pendingQuantities khi cartItems thay đổi
   useEffect(() => {
     const quantities: Record<number, number> = {};
     cartItems.forEach((item) => {
@@ -75,9 +75,7 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
       for (const [id, qty] of updates) {
         const itemId = Number(id);
         if (isLoggedIn) {
-          await dispatch(
-            updateCartItemApi({ id: itemId, quantity: qty })
-          ).unwrap();
+          await dispatch(updateCartItemApi({ id: itemId, quantity: qty })).unwrap();
         } else {
           dispatch(setQuantityLocal({ id: itemId, quantity: qty }));
         }
@@ -104,7 +102,7 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
     return (
       <div className="flex flex-col items-center justify-center py-16">
         <img
-          src="/img/shopping-cart-77.png" // 👉 thay bằng ảnh bạn muốn (SVG/PNG)
+          src="/img/shopping-cart-77.png"
           alt="Giỏ hàng trống"
           className="w-64 h-64 object-contain"
         />
@@ -112,7 +110,7 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
           Giỏ hàng của bạn đang trống
         </p>
         <button
-          onClick={() => (window.location.href = "/")} // 👉 hoặc điều hướng bằng next/link
+          onClick={() => (window.location.href = "/")}
           className="mt-4 px-6 py-2 rounded-lg bg-[#921573] text-white hover:bg-[#7a125f] transition-colors"
         >
           Mua sắm ngay
@@ -129,7 +127,7 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
         message={`Bạn có chắc chắn muốn xóa ${selectedIds.length} sản phẩm đã chọn khỏi giỏ hàng?`}
       />
 
-      <div className="bg-white shadow-sm rounded-lg mb-6 p-4 flex items-center justify-between text-sm text-gray-600">
+      <div className="bg-white shadow-sm rounded-lg mb-6 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between text-sm text-gray-600 gap-3 sm:gap-0">
         <div className="flex items-center gap-3">
           <input
             id="selectAll"
@@ -143,7 +141,7 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
           </label>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
           {selectedIds.length > 0 && (
             <button
               onClick={handleRemoveSelected}
@@ -172,9 +170,7 @@ export default function CartList({ selectedIds, setSelectedIds }: Props) {
             }}
             checked={selectedIds.includes(item.id)}
             onItemClick={() => toggleSelect(item.id)}
-            onQuantityChange={(qty: number) =>
-              handleQuantityChange(item.id, qty)
-            }
+            onQuantityChange={(qty: number) => handleQuantityChange(item.id, qty)}
           />
         ))}
       </div>
