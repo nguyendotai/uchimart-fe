@@ -115,7 +115,7 @@ export const ModalVoucherDetail: React.FC<Props> = ({ open, onClose, voucher }) 
 
                             <div className='px-6 py-4 bg-white p-3 shadow-sm'>
                                 <strong>Nội dung</strong>
-                                <div dangerouslySetInnerHTML={{ __html: voucher.content }} />
+                                <div dangerouslySetInnerHTML={{ __html: voucher.content ?? "" }} />
                             </div>
 
                             {/* Dùng button */}

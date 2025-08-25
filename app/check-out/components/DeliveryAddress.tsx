@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { PiMapPinFill } from "react-icons/pi";
 import SelectAddressModal from "./SelectAddressModal";
-import { useAddress } from "../../Address-context/page";
+import { useAddress } from "../../Address-context/AddressProvider";
 import { AddressItem } from "../../types/address";
 
 

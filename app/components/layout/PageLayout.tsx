@@ -12,11 +12,10 @@ import Link from "next/link";
 import {
   FaTags,
   FaClipboardList,
-  FaStore,
   FaUser,
   FaHome,
 } from "react-icons/fa";
-import { AddressProvider } from "../../Address-context/page";
+import { AddressProvider } from "@/app/Address-context/AddressProvider";
 import { HiBadgeCheck } from "react-icons/hi";
 
 export default function PageLayout({

@@ -10,7 +10,7 @@ import { CartItem } from "../types/Product";
 import { Voucher } from "../types/Voucher";
 import { AddressItem } from "../types/address";
 import PaymentMethod from "./components/PaymentMethod";
-import { useAddress } from "../Address-context/page";
+import { useAddress } from "../Address-context/AddressProvider";
 
 // --- Thêm interface này ở đây ---
 interface StoredCartItem {

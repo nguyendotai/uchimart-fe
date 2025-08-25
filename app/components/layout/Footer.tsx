@@ -37,6 +37,7 @@ const Footer = () => {
   }, []);
 
   const veChungToiSlug = [
+    "lien-he",
     "chinh-sach-bao-mat",
     "dieu-khoan-giao-dich",
     "quy-che-hoat-ong-cua-website-uchimartsite",

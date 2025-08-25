@@ -9,7 +9,7 @@ import ModalAddressBookHand from './components/ModalAddressBookHand';
 import { HiPencilSquare } from 'react-icons/hi2';
 import { MdDelete } from 'react-icons/md';
 import ModalAddressBookMap from './components/ModalAddressBookMap';
-import { useAddress } from "../Address-context/page";
+import { useAddress } from "@/app/Address-context/AddressProvider";
 
 const API_BASE = "http://127.0.0.1:8000/api";
 

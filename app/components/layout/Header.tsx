@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import { AddressItem } from "../../types/address";
-import { useAddress } from "../../Address-context/page";
+import { useAddress } from "../../Address-context/AddressProvider";
 // 🔍 Functional Components
 import Search from "../ui/Search";
 import UserAccount from "../ui/UserAccount";
