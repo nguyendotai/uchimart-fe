@@ -244,6 +244,7 @@ const Order = () => {
                                     </div>
 
                                     <div className="w-[30%] flex justify-end">
+                                        <p>{order.uuid}</p>
                                         <button className="w-[48%] border border-[#921573] text-[#921573] px-4 py-1 rounded-md hover:bg-pink-50 cursor-pointer"
                                             onClick={() => window.location.href = `/order/${order.uuid}`}
                                         >

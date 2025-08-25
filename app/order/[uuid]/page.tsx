@@ -29,6 +29,32 @@ const OrderDetail = () => {
         }
     };
 
+
+    const handleCancelOrder = async () => {
+        if (!uuid) return;
+        if (!confirm("Bạn có chắc chắn muốn hủy đơn hàng này?")) return;
+
+        try {
+            const token = localStorage.getItem("token");
+            const res = await axios.patch(
+                `http://localhost:8000/api/orders/${uuid}/cancel`,
+                {},
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            if (res.data.success) {
+                alert("Hủy đơn hàng thành công!");
+                fetchOrderDetail(); // load lại chi tiết đơn hàng sau khi hủy
+            } else {
+                alert("Không thể hủy đơn hàng. Vui lòng thử lại.");
+            }
+        } catch (err) {
+            console.error("Lỗi khi hủy đơn hàng:", err);
+            alert("Có lỗi xảy ra khi hủy đơn hàng.");
+        }
+    };
+
+
     useEffect(() => {
         fetchOrderDetail();
     }, [uuid]);
@@ -130,6 +156,14 @@ const OrderDetail = () => {
 
                 {/* Hành động */}
                 <div className="flex flex-col sm:flex-row gap-3 mt-6 justify-end">
+                    {(order.order_status === 1 || order.order_status === 3) && (
+                        <button
+                            onClick={handleCancelOrder}
+                            className="border border-red-500 text-red-500 px-6 py-2 rounded-lg hover:bg-red-50 transition-colors duration-200"
+                        >
+                            Hủy đơn hàng
+                        </button>
+                    )}
                     <button className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors duration-200">
                         Mua lại
                     </button>
@@ -137,6 +171,7 @@ const OrderDetail = () => {
                         In hóa đơn
                     </button>
                 </div>
+
             </div>
         </div>
     );

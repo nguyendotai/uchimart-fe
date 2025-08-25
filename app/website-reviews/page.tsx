@@ -22,6 +22,8 @@ const WebsiteReviews = () => {
 
     const token = localStorage.getItem("token");
 
+
+
     // Khai báo thêm state cho summary
     const [summary, setSummary] = useState<{
         total: number;
@@ -88,6 +90,10 @@ const WebsiteReviews = () => {
 
     const handleAddReview = async () => {
         if (!content.trim() || rating === 0) return;
+        if (!token) {
+            toast.error("Vui lòng đăng nhập để bình luận!");
+            return;
+        }
 
         try {
             const res = await axios.post(
@@ -102,6 +108,8 @@ const WebsiteReviews = () => {
                     },
                 }
             );
+
+            
 
             if (res.data.success) {
                 const newReview: Review = res.data.data;

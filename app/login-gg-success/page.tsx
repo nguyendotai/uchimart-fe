@@ -44,6 +44,15 @@ const LoginGGSuccess = () => {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         window.dispatchEvent(new Event("userChanged"));
 
+
+        // ✅ Gọi API set-cookie để lưu token vào cookie cho middleware
+        await fetch("/api/auth/set-cookie", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token }),
+          credentials: "include", // BẮT BUỘC
+        });
+
         const persistedCart = localStorage.getItem("persist:cart");
         let cartItems: any[] = [];
         if (persistedCart) {
@@ -64,7 +73,11 @@ const LoginGGSuccess = () => {
         localStorage.removeItem("persist:cart");
 
         toast.success("Đăng nhập Google thành công!");
-        router.push("/");
+        
+        const from = searchParams.get("from") || "/";
+        router.push(from);
+
+        // router.push("/");
       }
     };
 
