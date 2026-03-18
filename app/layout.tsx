@@ -1,11 +1,15 @@
-// app/layout.tsx
 import "./globals.css";
 import PageLayout from "./components/layout/PageLayout";
+import type { Metadata, Viewport } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Uchimart - Mua sắm trực tuyến",
   description: "Mua sắm thực phẩm và đồ tiêu dùng giá rẻ mỗi ngày",
-  viewport: "width=device-width, initial-scale=1",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
