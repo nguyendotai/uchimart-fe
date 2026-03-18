@@ -26,20 +26,24 @@ async function getPost(id: string): Promise<Post | null> {
 export default async function PostDetail({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const post = await getPost(params.id);
+  const { id } = await params;
+
+  const post = await getPost(id);
 
   if (!post) return notFound();
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-4">
       <h1 className="text-2xl font-bold mb-4">{post.name}</h1>
+
       {post.created_at && (
         <p className="text-sm text-gray-500 mb-4">
           {new Date(post.created_at).toLocaleDateString("vi-VN")}
         </p>
       )}
+
       {post.image && (
         <Image
           src={post.image}
@@ -49,6 +53,7 @@ export default async function PostDetail({
           className="rounded-lg mb-6 object-cover w-full h-[400px]"
         />
       )}
+
       <div
         className="prose max-w-none"
         dangerouslySetInnerHTML={{ __html: post.content }}

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import { AddressItem } from "../../types/address";
-import { useAddress } from "../../Address-context/page";
+import { useAddress } from "@/app/Address-context/AddressProvider";
 // 🔍 Functional Components
 import Search from "../ui/Search";
 import UserAccount from "../ui/UserAccount";
@@ -148,8 +148,8 @@ const Header = () => {
                 {!localStorage.getItem("token")
                   ? "Vui lòng đăng nhập"
                   : defaultAddress
-                    ? formatAddress(defaultAddress)
-                    : "Chưa có địa chỉ "}
+                  ? formatAddress(defaultAddress)
+                  : "Chưa có địa chỉ "}
               </span>
             </div>
           </div>
@@ -160,7 +160,10 @@ const Header = () => {
           <a href="/account" className="flex items-center font-medium">
             <span style={{ color: "#FFA629" }}>Cam kết</span>
           </a>
-          <Link href="/policy/chinh-sach-bao-mat" className="flex items-center font-medium">
+          <Link
+            href="/policy/chinh-sach-bao-mat"
+            className="flex items-center font-medium"
+          >
             <HiBadgeCheck
               className="mr-1 text-xl"
               style={{ color: "#FFA629" }}
@@ -176,7 +179,10 @@ const Header = () => {
             <span>Liên hệ</span>
           </Link>
           <span className="text-gray-400">|</span>
-          <Link href="/website-reviews" className="flex items-center font-medium">
+          <Link
+            href="/website-reviews"
+            className="flex items-center font-medium"
+          >
             <HiMiniPercentBadge
               className="mr-1 text-xl"
               style={{ color: "#FFA629" }}
